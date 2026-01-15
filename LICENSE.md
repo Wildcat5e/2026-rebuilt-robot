@@ -1,0 +1,1 @@
+All code not copied from WPILib belongs to Ethan or Nicholas or mentors who helped. Please ask before using our code. For now, we retain Copyright.
