@@ -47,6 +47,13 @@ class Setup {
                 .withRotationalRate(-joystick.getRightX() * MAX_ANGULAR_SPEED) // Drive counterclockwise with negative X (left)
             ));
 
+
+
+        // reset the field-centric heading on left trigger
+        joystick.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); // Isn't drivetrain::seedFieldCentric equivalent?
+        // auto align with hub on left bumper press
+        // joystick.leftBumper().onTrue(autoAlignCommands.leftAutoAlign());
+
         /*
          * Tests for motor identification:
          * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
