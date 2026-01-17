@@ -10,11 +10,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
-        Setup.configureBindings();
+        Setup.bindingsSetup();
+        Setup.dashboardSetup();
     }
 
     @Override
-    public void robotPeriodic() {}
+    public void robotPeriodic() {
+        Setup.dashboardUpdate();
+    }
 
     @Override
     public void autonomousInit() {}
