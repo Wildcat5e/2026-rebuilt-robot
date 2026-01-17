@@ -3,16 +3,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 /**
- * The methods in this class are called automatically corresponding to each mode, as described in
- * the TimedRobot documentation. If you change the name of this class or the package after creating
- * this project, you must also update the Main.java file in the project.
+ * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after creating this project, you must also update
+ * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    /**
-     * This function is run when the robot is first started up and should be used for any
-     * initialization code.
-     */
-    public Robot() {}
+    /** This function is run when the robot is first started up and should be used for any initialization code. */
+    public Robot() {
+        Setup.configureBindings();
+    }
 
     @Override
     public void robotPeriodic() {}
