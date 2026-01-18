@@ -12,10 +12,12 @@ public class Robot extends TimedRobot {
     public Robot() {
         RobotContainer.bindingsSetup();
         RobotContainer.dashboardSetup();
+        RobotContainer.pathplannerSetup();
     }
 
     @Override
     public void robotPeriodic() {
+        RobotContainer.runCommands();
         RobotContainer.dashboardUpdate();
     }
 

@@ -4,9 +4,11 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
@@ -35,11 +37,7 @@ class RobotContainer {
     /** Dashboard field widget */
     static final Field2d field = new Field2d();
 
-    /**
-     * Sets up key/button/joystick bindings for driving and controlling the robot.
-     * 
-     * @apiNote Called once by {@link Robot#Robot Robot}.
-     */
+    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -70,24 +68,19 @@ class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
-    /**
-     * Set up dashboard widgets
-     * 
-     * @apiNote Called once by {@link Robot#Robot Robot}.
-     */
     static void dashboardSetup() {
         SmartDashboard.putData("Field", field);
     }
 
-    /**
-     * Update dashboard widgets
-     * 
-     * @apiNote Called periodically by {@link Robot#robotPeriodic()}.
-     */
     static void dashboardUpdate() {
         field.setRobotPose(drivetrain.getState().Pose);
     }
 
+    static void pathplannerSetup() {
+        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
+    }
 
-
+    static void runCommands() {
+        CommandScheduler.getInstance().run();
+    }
 }
