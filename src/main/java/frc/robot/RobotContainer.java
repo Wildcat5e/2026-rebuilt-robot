@@ -13,7 +13,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drivetrain;
 
 /** Used for Robot Setup. Lots of static methods and variables */
-class Setup {
+class RobotContainer {
     /** kSpeedAt12Volts desired top speed */
     static final double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /** 3/4 revs per sec max angular velocity in radians per second */
