@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drivetrain;
 
 /** Used for Robot Setup. Lots of static methods and variables */
@@ -23,6 +24,8 @@ class RobotContainer {
     static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** The only instance of the Xbox Controller. */
     static final CommandXboxController joystick = new CommandXboxController(0);
+    /** The only instance of the Controller. */
+    static final ControllerWrapper controller = new ControllerWrapper.Xbox(0);
     /** Setting up bindings for necessary control of the swerve drive platform */
     static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MAX_LINEAR_SPEED * 0.1).withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
@@ -42,9 +45,9 @@ class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MAX_LINEAR_SPEED) // Drive forward with negative Y (forward)
-                .withVelocityY(-joystick.getLeftX() * MAX_LINEAR_SPEED) // Drive left with negative X (left)
-                .withRotationalRate(-joystick.getRightX() * MAX_ANGULAR_SPEED) // Drive counterclockwise with negative X (left)
+            drivetrain.applyRequest(() -> drive.withVelocityX(controller.getX() * MAX_LINEAR_SPEED) // Drive forward with negative Y (forward)
+                .withVelocityY(controller.getY() * MAX_LINEAR_SPEED) // Drive left with negative X (left)
+                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED) // Drive counterclockwise with negative X (left)
             ));
 
 
