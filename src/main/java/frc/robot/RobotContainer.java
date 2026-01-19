@@ -24,14 +24,14 @@ class RobotContainer {
 
     /** The only instance of Drivetrain. */
     static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    /** The only instance of the Xbox Controller. */
-    static final CommandXboxController joystick = new CommandXboxController(0);
-    /** The only instance of the Controller. */
-    static final ControllerWrapper controller = new ControllerWrapper.Xbox(0);
     /** Setting up bindings for necessary control of the swerve drive platform */
     static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MAX_LINEAR_SPEED * 0.1).withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    /** The only instance of the Xbox Controller. */
+    static final CommandXboxController joystick = new CommandXboxController(0);
+    /** The only instance of the Controller. */
+    static final ControllerWrapper controller = new ControllerWrapper.Xbox(0);
 
 
     /** Dashboard field widget */
