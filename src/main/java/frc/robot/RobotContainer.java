@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PhotonVision;
 
 /** Used for Robot Setup. Lots of static methods and variables */
 class RobotContainer {
@@ -28,6 +29,8 @@ class RobotContainer {
     static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MAX_LINEAR_SPEED * 0.1).withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    /** The only instance of PhotonVision. */
+    static final PhotonVision photonVision = new PhotonVision(drivetrain);
     /** The only instance of the Xbox Controller. */
     static final CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */
