@@ -9,9 +9,13 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoAlign;
+import frc.robot.commands.Commands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drivetrain;
@@ -54,7 +58,10 @@ public interface RobotContainer {
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         // auto align with hub on left bumper press
-        // joystick.leftBumper().onTrue(autoAlignCommands.leftAutoAlign());
+        joystick.leftBumper().onTrue(Commands.autoAlign);
+
+        // cancel auto align command
+        joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
 
         /*
          * Tests for motor identification:
