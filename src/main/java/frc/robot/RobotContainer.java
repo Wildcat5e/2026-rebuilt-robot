@@ -43,10 +43,10 @@ public interface RobotContainer {
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() -> drive.withVelocityX(controller.getX() * MAX_LINEAR_SPEED)
-                .withVelocityY(controller.getY() * MAX_LINEAR_SPEED)
-                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED)));
+            // Raise raw inputs (range -1 to 1) to the power of 3 to scale back the small inputs.
+            drivetrain.applyRequest(() -> drive.withVelocityX(Math.pow(controller.getX(), 3) * MAX_LINEAR_SPEED)
+                .withVelocityY(Math.pow(controller.getY(), 3) * MAX_LINEAR_SPEED)
+                .withRotationalRate(Math.pow(controller.getRotation(), 3) * MAX_ANGULAR_SPEED)));
 
 
 
