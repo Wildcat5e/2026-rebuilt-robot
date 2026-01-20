@@ -42,19 +42,16 @@ public interface RobotContainer {
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() -> drive.withVelocityX(controller.getX() * MAX_LINEAR_SPEED) // Drive forward with negative Y (forward)
-                .withVelocityY(controller.getY() * MAX_LINEAR_SPEED) // Drive left with negative X (left)
-                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED) // Drive counterclockwise with negative X (left)
-            ));
+            drivetrain.applyRequest(() -> drive.withVelocityX(controller.getX() * MAX_LINEAR_SPEED)
+                .withVelocityY(controller.getY() * MAX_LINEAR_SPEED)
+                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED)));
 
 
 
         // reset the field-centric heading on left trigger
-        joystick.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); // Isn't drivetrain::seedFieldCentric equivalent?
+        joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         // auto align with hub on left bumper press
         // joystick.leftBumper().onTrue(autoAlignCommands.leftAutoAlign());
 
