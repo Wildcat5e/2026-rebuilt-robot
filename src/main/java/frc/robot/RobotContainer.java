@@ -17,28 +17,28 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
 
 /** Used for Robot Setup. Lots of static methods and variables */
-class RobotContainer {
+public interface RobotContainer {
     /** kSpeedAt12Volts desired top speed */
-    static final double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /** 3/4 revs per sec max angular velocity in radians per second */
-    static final double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+    double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
 
     /** The only instance of Drivetrain. */
-    static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
+    Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Setting up bindings for necessary control of the swerve drive platform */
-    static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-        .withDeadband(MAX_LINEAR_SPEED * 0.1).withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
+    SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDeadband(MAX_LINEAR_SPEED * 0.1)
+        .withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
-    static final PhotonVision photonVision = new PhotonVision(drivetrain);
+    PhotonVision photonVision = new PhotonVision(drivetrain);
     /** The only instance of the Xbox Controller. */
-    static final CommandXboxController joystick = new CommandXboxController(0);
+    CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */
-    static final ControllerWrapper controller = new ControllerWrapper.Xbox(0);
+    ControllerWrapper controller = new ControllerWrapper.Xbox(0);
 
 
     /** Dashboard field widget */
-    static final Field2d field = new Field2d();
+    Field2d field = new Field2d();
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
