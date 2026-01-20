@@ -26,7 +26,7 @@ public interface RobotContainer {
     /** The only instance of Drivetrain. */
     Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Setting up bindings for necessary control of the swerve drive platform */
-    SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDeadband(MAX_LINEAR_SPEED * 0.1)
+    SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDeadband(MAX_LINEAR_SPEED * 0.02)
         .withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
@@ -46,7 +46,7 @@ public interface RobotContainer {
             // Raise raw inputs (range -1 to 1) to the power of 3 to scale back the small inputs.
             drivetrain.applyRequest(() -> drive.withVelocityX(Math.pow(controller.getX(), 3) * MAX_LINEAR_SPEED)
                 .withVelocityY(Math.pow(controller.getY(), 3) * MAX_LINEAR_SPEED)
-                .withRotationalRate(Math.pow(controller.getRotation(), 3) * MAX_ANGULAR_SPEED)));
+                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED)));
 
 
 
