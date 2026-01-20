@@ -57,11 +57,10 @@ public interface RobotContainer {
 
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        // auto align with hub on left bumper press
         joystick.a().whileTrue(Commands.rotateToHub);
 
         // cancel auto align command
-        joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
+        // joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
 
         /*
          * Tests for motor identification:
