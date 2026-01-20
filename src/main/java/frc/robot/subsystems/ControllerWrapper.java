@@ -58,17 +58,17 @@ public interface ControllerWrapper {
 
         @Override
         public double getX() {
-            return controller.getRawAxis(0);
-        }
-
-        @Override
-        public double getY() {
             return controller.getRawAxis(1);
         }
 
         @Override
+        public double getY() {
+            return controller.getRawAxis(0);
+        }
+
+        @Override
         public double getRotation() {
-            return controller.getRawAxis(2);
+            return -controller.getRawAxis(2);
         }
     }
 }
