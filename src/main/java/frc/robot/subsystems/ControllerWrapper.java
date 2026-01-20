@@ -22,8 +22,6 @@ public interface ControllerWrapper {
     /** Get the rotation axis value. @return The axis value. */
     public double getRotation();
 
-    public
-
     static class Xbox implements ControllerWrapper {
         private final CommandXboxController controller;
 
