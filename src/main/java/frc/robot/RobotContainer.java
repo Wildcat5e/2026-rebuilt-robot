@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -40,7 +41,6 @@ public interface RobotContainer {
     /** The only instance of the Controller. */
     ControllerWrapper controller = new ControllerWrapper.Xbox(0);
 
-
     /** Dashboard field widget */
     Field2d field = new Field2d();
 
@@ -58,7 +58,7 @@ public interface RobotContainer {
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         // auto align with hub on left bumper press
-        joystick.leftBumper().onTrue(Commands.autoAlign);
+        joystick.a().whileTrue(Commands.rotateToHub);
 
         // cancel auto align command
         joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
@@ -76,16 +76,14 @@ public interface RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
-    static void dashboardSetup() {
-        SmartDashboard.putData("Field", field);
-    }
-
     static void dashboardUpdate() {
         field.setRobotPose(drivetrain.getState().Pose);
     }
 
-    static void pathplannerSetup() {
+    static void generalSetup() {
+        SmartDashboard.putData("Field", field);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
+        SignalLogger.enableAutoLogging(false);
     }
 
     static void runCommands() {
