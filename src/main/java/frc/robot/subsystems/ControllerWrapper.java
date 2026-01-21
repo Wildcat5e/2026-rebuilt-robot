@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -13,14 +11,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  *          coordinate system<a>.
  */
 public interface ControllerWrapper {
+    /** Deadzone to apply to joysticks as a proportion out of 1. */
+    double DEADZONE = .1;
+
+
     /** Get the X axis value. @return The axis value. */
-    public double getX();
+    double getX();
 
     /** Get the Y axis value. @return The axis value. */
-    public double getY();
+    double getY();
 
     /** Get the rotation axis value. @return The axis value. */
-    public double getRotation();
+    double getRotation();
 
     static class Xbox implements ControllerWrapper {
         private final CommandXboxController controller;
@@ -32,22 +34,24 @@ public interface ControllerWrapper {
 
         @Override
         public double getX() {
-            return -controller.getLeftY();
+            return applyDeadzone(-controller.getLeftY(), DEADZONE);
         }
 
         @Override
         public double getY() {
-            return -controller.getLeftX();
+            return applyDeadzone(-controller.getLeftX(), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return -controller.getRightX();
+            return applyDeadzone(-controller.getRightX(), DEADZONE);
         }
 
     }
     static class LogitechFlightStick implements ControllerWrapper {
         private final CommandJoystick controller;
+        /** Deadzone specific to flight stick. */
+        private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
 
         /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
         public LogitechFlightStick(int port) {
@@ -56,17 +60,34 @@ public interface ControllerWrapper {
 
         @Override
         public double getX() {
-            return controller.getRawAxis(1);
+            return applyDeadzone(controller.getRawAxis(1), DEADZONE);
         }
 
         @Override
         public double getY() {
-            return controller.getRawAxis(0);
+            return applyDeadzone(controller.getRawAxis(0), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return -controller.getRawAxis(2);
+            return applyDeadzone(-controller.getRawAxis(2), DEADZONE);
         }
+    }
+
+    /**
+     * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
+     * outside deadzone. The max value of 1 remains at the max.
+     * 
+     * @param axisValue raw value from controller
+     * @param deadZone proportion to eliminate
+     * @return axis value with zero above deadzone
+     */
+    static double applyDeadzone(double axisValue, double deadZone) {
+        if (Math.abs(axisValue) < deadZone) {
+            return 0;
+        } else if (axisValue > 0) {
+            return 1 / (1 - deadZone) * axisValue - deadZone;
+        } else
+            return 1 / (1 - deadZone) * axisValue + deadZone;
     }
 }

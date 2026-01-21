@@ -26,9 +26,8 @@ public interface RobotContainer {
     /** The only instance of Drivetrain. */
     Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Setting up bindings for necessary control of the swerve drive platform */
-    SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric().withDeadband(MAX_LINEAR_SPEED * 0.02)
-        .withRotationalDeadband(MAX_ANGULAR_SPEED * 0.1) // Add a 10% deadband
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    SwerveRequest.FieldCentric drive =
+        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
     PhotonVision photonVision = new PhotonVision(drivetrain);
     /** The only instance of the Xbox Controller. */
