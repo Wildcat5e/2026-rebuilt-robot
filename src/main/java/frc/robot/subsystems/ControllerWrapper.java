@@ -24,6 +24,9 @@ public interface ControllerWrapper {
     /** Get the rotation axis value. @return The axis value. */
     double getRotation();
 
+    /** Get magnitude of the vector of X and  Y. */
+    double getVectorMagnitude();
+
     static class Xbox implements ControllerWrapper {
         private final CommandXboxController controller;
 
@@ -46,7 +49,11 @@ public interface ControllerWrapper {
         public double getRotation() {
             return applyDeadzone(-controller.getRightX(), DEADZONE);
         }
-
+        
+        @Override
+        public double getVectorMagnitude() {
+            return Math.hypot(controller.getLeftY(), controller.getLeftX());
+        }
     }
     static class LogitechFlightStick implements ControllerWrapper {
         private final CommandJoystick controller;
@@ -72,18 +79,23 @@ public interface ControllerWrapper {
         public double getRotation() {
             return applyDeadzone(-controller.getRawAxis(2), DEADZONE);
         }
+        
+        @Override
+        public double getVectorMagnitude() {
+            return Math.hypot(controller.getRawAxis(1), controller.getRawAxis(0));
+        }
     }
 
     /**
      * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
-     * outside deadzone. The max value of 1 remains at the max.
+     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone.
      * 
      * @param axisValue raw value from controller
      * @param deadZone proportion to eliminate
      * @return axis value with zero above deadzone
      */
-    static double applyDeadzone(double axisValue, double deadZone) {
-        if (Math.abs(axisValue) < deadZone) {
+    static double applyDeadzone(double axisValue, double vectorMagnitude, double deadZone) {
+        if (vectorMagnitude) < deadZone) {
             return 0;
         } else if (axisValue > 0) {
             return 1 / (1 - deadZone) * axisValue - deadZone;
