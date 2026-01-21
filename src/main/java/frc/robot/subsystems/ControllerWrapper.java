@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public interface ControllerWrapper {
     /** Deadzone to apply to joysticks as a proportion out of 1. */
-    double DEADZONE = .1;
+    double DEADZONE = .2;
 
 
     /** Get the X axis value. @return The axis value. */
@@ -99,8 +99,8 @@ public interface ControllerWrapper {
         if (vectorMagnitude < deadZone) {
             return 0;
         } else if (axisValue > 0) {
-            return 1 / (1 - deadZone) * axisValue - deadZone;
+            return 1 / (1 - deadZone) * (axisValue - deadZone);
         } else
-            return 1 / (1 - deadZone) * axisValue + deadZone;
+            return 1 / (1 - deadZone) * (axisValue + deadZone);
     }
 }
