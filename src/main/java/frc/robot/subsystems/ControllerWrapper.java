@@ -24,7 +24,7 @@ public interface ControllerWrapper {
     /** Get the rotation axis value. @return The axis value. */
     double getRotation();
 
-    /** Get magnitude of the vector of X and  Y. */
+    /** Get magnitude of the vector of X and Y. */
     double getVectorMagnitude();
 
     static class Xbox implements ControllerWrapper {
@@ -49,7 +49,7 @@ public interface ControllerWrapper {
         public double getRotation() {
             return applyDeadzone(-controller.getRightX(), controller.getRightX(), DEADZONE);
         }
-        
+
         @Override
         public double getVectorMagnitude() {
             return Math.hypot(controller.getLeftY(), controller.getLeftX());
@@ -79,7 +79,7 @@ public interface ControllerWrapper {
         public double getRotation() {
             return applyDeadzone(-controller.getRawAxis(2), controller.getRawAxis(2), DEADZONE);
         }
-        
+
         @Override
         public double getVectorMagnitude() {
             return Math.hypot(controller.getRawAxis(1), controller.getRawAxis(0));
@@ -96,7 +96,7 @@ public interface ControllerWrapper {
      * @return axis value with zero above deadzone
      */
     static double applyDeadzone(double axisValue, double vectorMagnitude, double deadZone) {
-        if (vectorMagnitude) < deadZone) {
+        if (vectorMagnitude < deadZone) {
             return 0;
         } else if (axisValue > 0) {
             return 1 / (1 - deadZone) * axisValue - deadZone;
