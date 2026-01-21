@@ -37,17 +37,17 @@ public interface ControllerWrapper {
 
         @Override
         public double getX() {
-            return applyDeadzone(-controller.getLeftY(), DEADZONE);
+            return applyDeadzone(-controller.getLeftY(), getVectorMagnitude(), DEADZONE);
         }
 
         @Override
         public double getY() {
-            return applyDeadzone(-controller.getLeftX(), DEADZONE);
+            return applyDeadzone(-controller.getLeftX(), getVectorMagnitude(), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return applyDeadzone(-controller.getRightX(), DEADZONE);
+            return applyDeadzone(-controller.getRightX(), controller.getRightX(), DEADZONE);
         }
         
         @Override
@@ -67,17 +67,17 @@ public interface ControllerWrapper {
 
         @Override
         public double getX() {
-            return applyDeadzone(controller.getRawAxis(1), DEADZONE);
+            return applyDeadzone(controller.getRawAxis(1), getVectorMagnitude(), DEADZONE);
         }
 
         @Override
         public double getY() {
-            return applyDeadzone(controller.getRawAxis(0), DEADZONE);
+            return applyDeadzone(controller.getRawAxis(0), getVectorMagnitude(), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return applyDeadzone(-controller.getRawAxis(2), DEADZONE);
+            return applyDeadzone(-controller.getRawAxis(2), controller.getRawAxis(2), DEADZONE);
         }
         
         @Override
@@ -91,6 +91,7 @@ public interface ControllerWrapper {
      * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone.
      * 
      * @param axisValue raw value from controller
+     * @param vectorMagnitude positive value of the magnitude of the vector formed by two inputs
      * @param deadZone proportion to eliminate
      * @return axis value with zero above deadzone
      */
