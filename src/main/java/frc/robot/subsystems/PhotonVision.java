@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase {
     /** Standard deviations to weight vision pose updates. (Higher values weight vision less.) */
-    private static final Matrix<N3, N1> stddev = VecBuilder.fill(20, 20, 20);
+    private static final Matrix<N3, N1> stddev = VecBuilder.fill(1, 1, 1);
     private static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
     /** The Pose offset of the robot from the camera's position */
     private static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.114, 0, 0, new Rotation3d(0, 0, 0));
