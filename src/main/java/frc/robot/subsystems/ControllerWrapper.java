@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public interface ControllerWrapper {
     /** Deadzone to apply to joysticks as a proportion out of 1. */
-    double DEADZONE = .2;
+    double DEADZONE = .15;
     /** Exponent to raise inputs to the power of to create a curved response. */
-    double SCALE_EXPONENT = 2;
+    double SCALE_EXPONENT = 1;
 
     /** Call to update values before calling getX() or getY(). */
     Translation2d getTranslation();
@@ -34,7 +34,7 @@ public interface ControllerWrapper {
 
         @Override
         public Translation2d getTranslation() {
-            return applyRadialDeadzone(-controller.getLeftY(), -controller.getLeftX(), DEADZONE);
+            return applyRadialDeadzone(controller.getLeftY(), controller.getLeftX(), DEADZONE);
         }
 
         @Override
@@ -59,7 +59,7 @@ public interface ControllerWrapper {
 
         @Override
         public double getRotation() {
-            return MathUtil.applyDeadband(-controller.getRawAxis(2), DEADZONE);
+            return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
         }
     }
 
