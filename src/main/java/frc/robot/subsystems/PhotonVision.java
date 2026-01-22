@@ -39,7 +39,7 @@ public class PhotonVision extends SubsystemBase {
     public void periodic() {
         // get all vision updates and loop through them
         for (PhotonPipelineResult change : CAMERA.getAllUnreadResults()) {
-            // I think this converts the vision result to take the robot offset into account and other stuff.
+            // takes camera image and passes into photon estimator, returning pose data object
             Optional<EstimatedRobotPose> optionalVisionEst = ESTIMATOR.update(change);
             if (optionalVisionEst.isEmpty()) {
                 continue;
