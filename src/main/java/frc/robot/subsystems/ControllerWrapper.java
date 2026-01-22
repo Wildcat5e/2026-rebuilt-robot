@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -13,19 +15,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public interface ControllerWrapper {
     /** Deadzone to apply to joysticks as a proportion out of 1. */
     double DEADZONE = .2;
+    /** Exponent to raise inputs to the power of to create a curved response. */
+    double SCALE_EXPONENT = 2;
 
-
-    /** Get the X axis value. @return The axis value. */
-    double getX();
-
-    /** Get the Y axis value. @return The axis value. */
-    double getY();
+    /** Call to update values before calling getX() or getY(). */
+    Translation2d getTranslation();
 
     /** Get the rotation axis value. @return The axis value. */
     double getRotation();
-
-    /** Get magnitude of the vector of X and Y. */
-    double getVectorMagnitude();
 
     static class Xbox implements ControllerWrapper {
         private final CommandXboxController controller;
@@ -36,29 +33,19 @@ public interface ControllerWrapper {
         }
 
         @Override
-        public double getX() {
-            return applyDeadzone(-controller.getLeftY(), getVectorMagnitude(), DEADZONE);
-        }
-
-        @Override
-        public double getY() {
-            return applyDeadzone(-controller.getLeftX(), getVectorMagnitude(), DEADZONE);
+        public Translation2d getTranslation() {
+            return applyRadialDeadzone(-controller.getLeftY(), -controller.getLeftX(), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return applyDeadzone(-controller.getRightX(), controller.getRightX(), DEADZONE);
-        }
-
-        @Override
-        public double getVectorMagnitude() {
-            return Math.hypot(controller.getLeftY(), controller.getLeftX());
+            return MathUtil.applyDeadband(-controller.getRightX(), DEADZONE);
         }
     }
     static class LogitechFlightStick implements ControllerWrapper {
         private final CommandJoystick controller;
         /** Deadzone specific to flight stick. */
-        private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
+        // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
 
         /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
         public LogitechFlightStick(int port) {
@@ -66,41 +53,32 @@ public interface ControllerWrapper {
         }
 
         @Override
-        public double getX() {
-            return applyDeadzone(controller.getRawAxis(1), getVectorMagnitude(), DEADZONE);
-        }
-
-        @Override
-        public double getY() {
-            return applyDeadzone(controller.getRawAxis(0), getVectorMagnitude(), DEADZONE);
+        public Translation2d getTranslation() {
+            return applyRadialDeadzone(controller.getRawAxis(1), controller.getRawAxis(0), DEADZONE);
         }
 
         @Override
         public double getRotation() {
-            return applyDeadzone(-controller.getRawAxis(2), controller.getRawAxis(2), DEADZONE);
-        }
-
-        @Override
-        public double getVectorMagnitude() {
-            return Math.hypot(controller.getRawAxis(1), controller.getRawAxis(0));
+            return MathUtil.applyDeadband(-controller.getRawAxis(2), DEADZONE);
         }
     }
 
     /**
      * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
-     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone.
+     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
      * 
-     * @param axisValue raw value from controller
-     * @param vectorMagnitude positive value of the magnitude of the vector formed by two inputs
-     * @param deadZone proportion to eliminate
-     * @return axis value with zero above deadzone
+     * @param xAxis raw value from controller
+     * @param yAxis raw value from controller
+     * @param deadzone proportion to eliminate
+     * @return axis values in Translation2d
      */
-    static double applyDeadzone(double axisValue, double vectorMagnitude, double deadZone) {
-        if (vectorMagnitude < deadZone) {
-            return 0;
-        } else if (axisValue > 0) {
-            return 1 / (1 - deadZone) * (axisValue - deadZone);
-        } else
-            return 1 / (1 - deadZone) * (axisValue + deadZone);
+    static Translation2d applyRadialDeadzone(double xAxis, double yAxis, double deadzone) {
+        double magnitude = Math.hypot(xAxis, yAxis);
+        if (magnitude < deadzone) {
+            return new Translation2d(0, 0);
+        }
+        double scaledMagnitude = Math.pow(MathUtil.applyDeadband(magnitude, deadzone), SCALE_EXPONENT);
+        return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
+
     }
 }

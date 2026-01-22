@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -41,11 +42,12 @@ public interface RobotContainer {
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
-        drivetrain.setDefaultCommand(
-            // Raise raw inputs (range -1 to 1) to the power of 3 to scale back the small inputs.
-            drivetrain.applyRequest(() -> drive.withVelocityX(Math.pow(controller.getX(), 3) * MAX_LINEAR_SPEED)
-                .withVelocityY(Math.pow(controller.getY(), 3) * MAX_LINEAR_SPEED)
-                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED)));
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
+            Translation2d translation = controller.getTranslation();
+            return drive.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
+                .withVelocityY(translation.getY() * MAX_LINEAR_SPEED)
+                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
+        }));
 
 
 
