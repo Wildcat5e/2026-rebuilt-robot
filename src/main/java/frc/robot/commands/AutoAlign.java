@@ -60,9 +60,6 @@ public class AutoAlign extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {}
-
-    @Override
     public boolean isFinished() {
         if (isOverTimeLimit()) {
             System.out.println("_");

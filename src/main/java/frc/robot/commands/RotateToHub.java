@@ -71,7 +71,4 @@ public class RotateToHub extends Command {
         }
         drivetrain.setControl(RobotContainer.drive.withRotationalRate(outputSpeeds.omegaRadiansPerSecond));
     }
-
-    @Override
-    public void end(boolean interrupted) {}
 }
