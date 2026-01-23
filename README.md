@@ -25,6 +25,18 @@ Figure out settings on dashboard for quickly changing settings without needed to
 
 Check if height of robot to camera offset matters for Photon Vision.
 
+POTENTIAL BUTTON BINDINGS
+Left Joystick - Translation
+Right Joystick - Rotation
+
+Left Trigger - Intake (activate intake)
+Right Trigger - Shoot (activate flywheel, kicker, hopper)
+
+A - Automatic Rotate to Hub
+
+Right Bumper - Bring Intake Down
+Left Bumper - Raise Intake Up
+
 ## Team Documentation
 
 <https://github.com/Wildcat5e/documentation>

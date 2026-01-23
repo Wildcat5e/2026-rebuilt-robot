@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -11,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
+    // place holder
+    double GEAR_RATIO = 4;
     // CHANGE MOTOR ID OBVIOUSLY
     // conveyor is motor that connects to actual wheels to intake fuel into storage
     private final TalonFX conveyorMotor = new TalonFX(0);
@@ -19,11 +17,7 @@ public class Intake extends SubsystemBase {
 
 
     /** Creates a new Intake. */
-    public Intake() {
-
-
-
-    }
+    public Intake() {}
 
     @Override
     public void periodic() {
@@ -31,7 +25,50 @@ public class Intake extends SubsystemBase {
     }
 
     public Command dropArm() {
-        return new FunctionalCommand(null, null, null, null, null);
+        return new FunctionalCommand(
+            // initialize
+            // if this doesnt work, might have to put set voltage inside execute?
+            () -> extenderMotor.setVoltage(3),
+            // execute
+            () -> {
+            },
+            // end
+            interrupted -> extenderMotor.setVoltage(0),
+            // is finished
+            () -> {
+                // check sign
+                if (getExtenderPosition() >= .3) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            // requirements (what is this)
+            this);
     }
+
+    // TURN ON INTAKE TO TAKE IN FUEL COMMAND
+    // currently plan to bind to a while true button, but may be easier to have it on a
+    // toggle or have it to run the entire match,
+    public Command testFuelIntake() {
+        return startEnd(
+            // start
+            () -> conveyorMotor.setVoltage(4),
+            // end
+            () -> conveyorMotor.setVoltage(0));
+    }
+
+    public Command turnArmTest() {
+        return startEnd(
+            // start, runs once
+            () -> extenderMotor.setVoltage(3),
+            // end, runs once
+            () -> extenderMotor.setVoltage(0));
+    }
+
+    public double getExtenderPosition() {
+        return extenderMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
+    }
+
 
 }
