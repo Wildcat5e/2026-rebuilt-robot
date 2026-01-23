@@ -1,21 +1,16 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.pathplanner.lib.commands.PathfindingCommand;
+import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoAlign;
 import frc.robot.commands.Commands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
@@ -28,6 +23,7 @@ public interface RobotContainer {
     double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /** 3/4 revs per sec max angular velocity in radians per second */
     double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+    double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
 
     /** The only instance of Drivetrain. */
     Drivetrain drivetrain = TunerConstants.createDrivetrain();
