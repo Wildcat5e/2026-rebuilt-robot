@@ -39,7 +39,6 @@ public class RotateToHub extends Command {
                 Math.toDegrees(angleOfRobotToHub));
         }
         RobotContainer.drivetrain.setControl(
-            RobotContainer.drive.withRotationalRate(Math.min(outputSpeeds.omegaRadiansPerSecond, MAX_ANGULAR_SPEED))
-                .withDesaturateWheelSpeeds(isFinished()));
+            RobotContainer.drive.withRotationalRate(Math.min(outputSpeeds.omegaRadiansPerSecond, MAX_ANGULAR_SPEED)));
     }
 }
