@@ -55,10 +55,7 @@ public class RotateToHub extends Command {
         double robotXPose = currentPose.getX();
         double robotYPose = currentPose.getY();
 
-        // consider divide by 0 error
-        double angleOfRobotToHub = (180 / Math.PI) * Math.atan((hubYPose - robotYPose) / (hubXPose - robotXPose));
-
-
+        double angleOfRobotToHub = (180 / Math.PI) * Math.atan2((hubYPose - robotYPose), (hubXPose - robotXPose));
 
         goalState.pose = new Pose2d(robotXPose, robotYPose, Rotation2d.fromDegrees(angleOfRobotToHub));
         // if close enough then dont run pid

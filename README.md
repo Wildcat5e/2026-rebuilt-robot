@@ -10,8 +10,6 @@ We may want to disable controller rotation while rotating to hub.
 
 Figure out settings on dashboard for quickly changing settings without needed to redeploy.
 
-- [ ] Consider handling divide by zero with arctan in rotate to hub.
-
 LIST OF POSSIBLE THINGS TO WORK ON:
 
 1. Start planning and writing pseudo-code for the subsystems that will be on the robot for this year, like intake and shooting mechanism
