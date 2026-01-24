@@ -12,8 +12,6 @@ The center hub pose in RotateToHub is off by an insignificant amount.
 
 Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
 
-Fix rotate to hub calculation that is faster one way than the other specifically cut at the intersection of 180 and -180. This was caused by going from path planner holo controller to direct PID control.
-
 Figure out settings on dashboard for quickly changing settings without needed to redeploy.
 
 LIST OF POSSIBLE THINGS TO WORK ON:

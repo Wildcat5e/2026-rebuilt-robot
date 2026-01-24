@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
 public class RotateToHub extends Command {
-    private static final double MAX_ANGULAR_SPEED = 1;
+    private static final double MAX_ANGULAR_SPEED = 1; // rad/s
     private static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(10, 0, 0,
         new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, RobotContainer.MAX_ANGULAR_ACCEL - Math.PI));
     private double counter;
 
-    @Override
-    public void initialize() {
+    public RotateToHub() {
+        PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
         counter = 0;
     }
 
