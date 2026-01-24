@@ -20,11 +20,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class PhotonVision extends SubsystemBase {
     /** Standard deviations to weight vision pose updates. (Higher values weight vision less.) */
     private static final Matrix<N3, N1> stddev = VecBuilder.fill(1, 1, 1);
-    private static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
+
+    public static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
     /** The Pose offset of the robot from the camera's position */
-    private static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.114, 0, 0, new Rotation3d(0, 0, 0));
-    private static final AprilTagFieldLayout FIELD_LAYOUT =
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.114, 0, .1, new Rotation3d(0, 0, 0));
+    public static final AprilTagFieldLayout FIELD_LAYOUT =
         AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded); // change depending on field specs
+
     private static final PhotonPoseEstimator ESTIMATOR =
         new PhotonPoseEstimator(FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_CAMERA); // Deprecated without any replacement so we keep using it.
     private final Drivetrain drivetrain;

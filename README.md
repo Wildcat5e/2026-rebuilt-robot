@@ -23,6 +23,8 @@ Figure out settings on dashboard for quickly changing settings without needed to
 3. Make a method that calculates distance between hub and robot for knowing whether the robot is within shooting range, use LED lights or put on shuffleboard
 4. Figure out how to add configurable values in Glass like Shuffleboard.
 
+Check if height of robot to camera offset matters for Photon Vision.
+
 ## Team Documentation
 
 <https://github.com/Wildcat5e/documentation>
