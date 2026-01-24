@@ -21,13 +21,17 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousInit() {}
+    public void autonomousInit() {
+        RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_AUTONOMOUS);
+    }
 
     @Override
     public void autonomousPeriodic() {}
 
     @Override
-    public void teleopInit() {}
+    public void teleopInit() {
+        RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_TELEOP);
+    }
 
     @Override
     public void teleopPeriodic() {}

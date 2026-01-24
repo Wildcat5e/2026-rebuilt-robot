@@ -6,6 +6,10 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.PubSubOption;
+import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -49,6 +53,13 @@ public interface RobotContainer {
     /** Dashboard field widget */
     Field2d field = new Field2d();
 
+    /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
+    StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
+    StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
+    String ELASTIC_TELEOP = "Teleoperated";
+    String ELASTIC_AUTONOMOUS = "Autonomous";
+
+
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
@@ -89,6 +100,7 @@ public interface RobotContainer {
 
     static void generalSetup() {
         SmartDashboard.putData("Field", field);
+        SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
     }
