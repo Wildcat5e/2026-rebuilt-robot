@@ -19,6 +19,15 @@ import frc.robot.subsystems.PhotonVision;
 
 /** Used for Robot Setup. Lots of static methods and variables */
 public interface RobotContainer {
+    static final class Config {
+        private Config() {}
+
+        /** Change whether or not controller can control translation. */
+        public static boolean allowControllerTranslation = true;
+        /** Change whether or not controller can control rotation. */
+        public static boolean allowControllerRotation = true;
+    }
+
     /** kSpeedAt12Volts desired top speed */
     double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /** 3/4 revs per sec max angular velocity in radians per second */
@@ -44,12 +53,15 @@ public interface RobotContainer {
     static void bindingsSetup() {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
-            return drive.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
-                .withVelocityY(translation.getY() * MAX_LINEAR_SPEED)
-                .withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
+            if (Config.allowControllerTranslation) {
+                drive.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * MAX_LINEAR_SPEED);
+            }
+            if (Config.allowControllerRotation) {
+                drive.withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
+            }
+            return drive;
         }));
-
-
 
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));

@@ -14,12 +14,17 @@ public class RotateToHub extends Command {
 
     public RotateToHub() {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
-        counter = 0;
+    }
+
+    @Override
+    public void initialize() {
+        RobotContainer.Config.allowControllerRotation = false;
+        counter = 0; // debug
     }
 
     @Override
     public void execute() {
-        counter++;
+        counter++; // debug
         // POSE OF CENTER OF HUB (4.625, 4.025)
         double hubXPose = 4.625;
         double hubYPose = 4.025;
@@ -28,12 +33,17 @@ public class RotateToHub extends Command {
         double angleOfRobotToHub = Math.atan2((hubYPose - currentPose.getY()), (hubXPose - currentPose.getX()));
 
         double outputSpeeds = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), angleOfRobotToHub);
-        if (counter % 50 == 0) {
+        if (counter % 50 == 0) { // debug
             System.out.println(currentPose.getRotation());
             System.out.printf("angleOfRobotToHub(Rads: %.2f, Deg: %.2f)\n", angleOfRobotToHub,
                 Math.toDegrees(angleOfRobotToHub));
         }
         RobotContainer.drivetrain
             .setControl(RobotContainer.drive.withRotationalRate(Math.min(outputSpeeds, MAX_ANGULAR_SPEED)));
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        RobotContainer.Config.allowControllerRotation = true;
     }
 }

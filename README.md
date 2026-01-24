@@ -6,8 +6,6 @@ We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/Tune
 
 The applyDeadzone function in the alternative-deadzones branch doesn't do constant folding because any value can be a parameter.
 
-We may want to disable controller rotation while rotating to hub. To do this will need some way to set and change a variable for/in RobotContainer.
-
 The center hub pose in RotateToHub is off by an insignificant amount.
 
 Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
