@@ -39,6 +39,19 @@
               "trajectory_color": 4294967295,
               "show_robot_outside_widget": true
             }
+          },
+          {
+            "title": "Auto Command Chooser",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Command Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
           }
         ]
       }
