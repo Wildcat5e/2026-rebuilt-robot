@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
 public class RotateToHub extends Command {
-    private static final double MAX_ANGULAR_SPEED = 1; // rad/s
-    private static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(10, 0, 0,
+    private static final double MAX_ANGULAR_SPEED = Math.PI; // rad/s
+    private static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(20, 0, 0,
         new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, RobotContainer.MAX_ANGULAR_ACCEL - Math.PI));
-    private double counter;
+    private double counter; // debug
 
     public RotateToHub() {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
@@ -33,7 +33,7 @@ public class RotateToHub extends Command {
         double angleOfRobotToHub = Math.atan2((hubYPose - currentPose.getY()), (hubXPose - currentPose.getX()));
 
         double outputSpeeds = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), angleOfRobotToHub);
-        if (counter % 50 == 0) { // debug
+        if (counter % 20 == 0) { // debug
             System.out.println(currentPose.getRotation());
             System.out.printf("angleOfRobotToHub(Rads: %.2f, Deg: %.2f)\n", angleOfRobotToHub,
                 Math.toDegrees(angleOfRobotToHub));

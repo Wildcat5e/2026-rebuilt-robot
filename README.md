@@ -4,15 +4,19 @@
 
 We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/TunerConstants.java) with generated code once the robot is built.
 
-The applyDeadzone function in the alternative-deadzones branch doesn't do constant folding because any value can be a parameter.
+### RotateToHub
+
+Will need to go back and check the PID values and max speed.
 
 The center hub pose in RotateToHub is off by an insignificant amount.
 
 Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
 
+### Dashboard
+
 Figure out settings on dashboard for quickly changing settings without needed to redeploy.
 
-LIST OF POSSIBLE THINGS TO WORK ON:
+### LIST OF POSSIBLE THINGS TO WORK ON
 
 1. Start planning and writing pseudo-code for the subsystems that will be on the robot for this year, like intake and shooting mechanism
 2. Start mapping out potential autos or commands that would be used in autonomous
