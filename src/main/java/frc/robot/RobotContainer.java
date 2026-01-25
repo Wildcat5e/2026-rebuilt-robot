@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.Commands;
+import frc.robot.commands.RotateToHub;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drivetrain;
@@ -108,6 +109,7 @@ public interface RobotContainer {
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
+        SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
     }
 
     static void runCommands() {

@@ -8,7 +8,7 @@ import frc.robot.RobotContainer;
 
 public class RotateToHub extends Command {
     private static final double MAX_ANGULAR_SPEED = Math.PI; // rad/s
-    private static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(20, 0, 0,
+    public static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(20, 0, 0,
         new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, RobotContainer.MAX_ANGULAR_ACCEL - Math.PI));
     private double counter; // debug
 
