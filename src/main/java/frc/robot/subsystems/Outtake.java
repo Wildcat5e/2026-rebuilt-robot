@@ -60,7 +60,6 @@ public class Outtake extends SubsystemBase {
     }
 
 
-
     // final implementation should be a while true
     public Command shootFuel() {
         return new SequentialCommandGroup(new ParallelRaceGroup(startFlywheel(),

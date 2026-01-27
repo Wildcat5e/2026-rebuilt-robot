@@ -11,10 +11,16 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase {
@@ -30,13 +36,22 @@ public class PhotonVision extends SubsystemBase {
     private static final PhotonPoseEstimator ESTIMATOR =
         new PhotonPoseEstimator(FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_CAMERA); // Deprecated without any replacement so we keep using it.
     private final Drivetrain drivetrain;
+    DoublePublisher distancePublisher;
 
     public PhotonVision(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
+
+        NetworkTable photon = NetworkTableInstance.getDefault().getTable("Photon");
+        distancePublisher = photon.getDoubleTopic("Distance").publish();
+
     }
+
 
     @Override
     public void periodic() {
+
+        distancePublisher.set(getHubDistance());
+        SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance());
         // get all vision updates and loop through them
         for (PhotonPipelineResult change : CAMERA.getAllUnreadResults()) {
             // takes camera image and passes into photon estimator, returning pose data object
@@ -50,4 +65,20 @@ public class PhotonVision extends SubsystemBase {
         }
     }
 
+
+    public boolean withinShootingDistance() {
+        if (1 < getHubDistance() && getHubDistance() < 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getHubDistance() {
+        // translation2d is just pose2d without rotation factor
+        Translation2d hubTranslation = new Translation2d(4.625, 4.025);
+        Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
+        double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
+        return distanceRobotHub;
+    }
 }

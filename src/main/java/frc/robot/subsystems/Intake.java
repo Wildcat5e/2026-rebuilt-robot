@@ -30,8 +30,7 @@ public class Intake extends SubsystemBase {
             // if this doesnt work, might have to put set voltage inside execute?
             () -> extenderMotor.setVoltage(3),
             // execute
-            () -> {
-            },
+            () -> {},
             // end
             interrupted -> extenderMotor.setVoltage(0),
             // is finished

@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -56,7 +57,7 @@ public interface RobotContainer {
     /** Dashboard field widget */
     Field2d field = new Field2d();
     /** A chooser for autonomous commands */
-    SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+    SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
     /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
     StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
@@ -114,5 +115,17 @@ public interface RobotContainer {
 
     static void runCommands() {
         CommandScheduler.getInstance().run();
+    }
+
+    static void runAuto() {
+        if (autoChooser.getSelected() != null) {
+            CommandScheduler.getInstance().schedule(autoChooser.getSelected());
+        }
+    }
+
+    static void cancelAuto() {
+        if (autoChooser.getSelected() != null) {
+            CommandScheduler.getInstance().cancel(autoChooser.getSelected());
+        }
     }
 }

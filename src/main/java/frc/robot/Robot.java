@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_AUTONOMOUS);
+        RobotContainer.runAuto();
     }
 
     @Override
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_TELEOP);
+        RobotContainer.cancelAuto();
     }
 
     @Override
