@@ -26,8 +26,8 @@ public class Simulation {
 
     private SimCameraProperties cameraSettings() {
         final SimCameraProperties settings = new SimCameraProperties();
-        settings.setCalibration(640, 480, Rotation2d.fromDegrees(100));
-        settings.setCalibError(0.25, 0.08); // approximate detection noise
+        settings.setCalibration(1280, 720, Rotation2d.fromDegrees(100));
+        settings.setCalibError(0.15, 0.05); // approximate detection noise
         settings.setFPS(30); // (Note: this is limited by robot loop rate).
         settings.setAvgLatencyMs(35); // image data latency
         settings.setLatencyStdDevMs(5); // image data latency
