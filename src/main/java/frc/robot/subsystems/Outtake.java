@@ -1,11 +1,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import static frc.robot.Utilities.*;
 
 public class Outtake extends SubsystemBase {
 
@@ -49,9 +52,15 @@ public class Outtake extends SubsystemBase {
         return startEnd(() -> flywheelMotor.setVoltage(3), () -> flywheelMotor.setVoltage(0));
     }
 
-    // activates flywheel, command ends after certain amount of motor ticks
-    // but does not set voltage of flywheel to 0
+    /**
+     * Starts flywheel and calculates speed based on distance, you need to set speed of flywheel to 0 with another
+     * command
+     */
     public Command startFlywheel() {
+        double distance = getHubDistance();
+        // all placeholder values and formula
+        double calculatedVoltage = 1 * distance + 1;
+        // PLACE CALCULATED VOLTAGE INTO SET VOLTAGE
         return runOnce(() -> flywheelMotor.setVoltage(3));
     }
 
@@ -62,6 +71,7 @@ public class Outtake extends SubsystemBase {
 
     // final implementation should be a while true
     public Command shootFuel() {
+
         return new SequentialCommandGroup(new ParallelRaceGroup(startFlywheel(),
             // could do something where you check the amount of motor ticks that have passed
             // to infer speed of flywheel instead of waiting time

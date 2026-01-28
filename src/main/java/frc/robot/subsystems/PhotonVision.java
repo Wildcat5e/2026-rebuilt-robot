@@ -22,6 +22,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import static frc.robot.Utilities.*;
 
 public class PhotonVision extends SubsystemBase {
     /** Standard deviations to weight vision pose updates. (Higher values weight vision less.) */
@@ -41,16 +43,13 @@ public class PhotonVision extends SubsystemBase {
     public PhotonVision(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
 
-        NetworkTable photon = NetworkTableInstance.getDefault().getTable("Photon");
-        distancePublisher = photon.getDoubleTopic("Distance").publish();
 
     }
 
 
     @Override
     public void periodic() {
-
-        distancePublisher.set(getHubDistance());
+        SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle());
         SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance());
         // get all vision updates and loop through them
         for (PhotonPipelineResult change : CAMERA.getAllUnreadResults()) {
@@ -66,19 +65,4 @@ public class PhotonVision extends SubsystemBase {
     }
 
 
-    public boolean withinShootingDistance() {
-        if (1 < getHubDistance() && getHubDistance() < 3) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public double getHubDistance() {
-        // translation2d is just pose2d without rotation factor
-        Translation2d hubTranslation = new Translation2d(4.625, 4.025);
-        Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
-        double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
-        return distanceRobotHub;
-    }
 }
