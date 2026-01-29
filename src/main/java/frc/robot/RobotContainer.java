@@ -111,6 +111,8 @@ public interface RobotContainer {
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
+        SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle());
+        SmartDashboard.putBoolean("Within Shooting Distance", Utilities.withinShootingDistance());
     }
 
     static void runCommands() {

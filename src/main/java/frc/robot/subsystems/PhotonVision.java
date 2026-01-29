@@ -1,11 +1,9 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Utilities.*;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -17,7 +15,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase {
@@ -30,28 +27,23 @@ public class PhotonVision extends SubsystemBase {
     public static final AprilTagFieldLayout FIELD_LAYOUT =
         AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded); // change depending on field specs
 
-    private static final PhotonPoseEstimator ESTIMATOR =
-        new PhotonPoseEstimator(FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_CAMERA); // Deprecated without any replacement so we keep using it.
+    private static final PhotonPoseEstimator ESTIMATOR = new PhotonPoseEstimator(FIELD_LAYOUT, ROBOT_TO_CAMERA);
     private final Drivetrain drivetrain;
     DoublePublisher distancePublisher;
 
     public PhotonVision(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-
-
     }
-
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle());
-        SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance());
+        Optional<EstimatedRobotPose> optionalVisionEst = Optional.empty();
         // get all vision updates and loop through them
         for (PhotonPipelineResult change : CAMERA.getAllUnreadResults()) {
             // takes camera image and passes into photon estimator, returning pose data object
-            Optional<EstimatedRobotPose> optionalVisionEst = ESTIMATOR.update(change);
+            optionalVisionEst = ESTIMATOR.estimateCoprocMultiTagPose(change);
             if (optionalVisionEst.isEmpty()) {
-                continue;
+                optionalVisionEst = ESTIMATOR.estimateLowestAmbiguityPose(change);
             }
             EstimatedRobotPose visionEst = optionalVisionEst.get();
             Pose2d estimatedPose2d = visionEst.estimatedPose.toPose2d(); // turns the estimate into a pose
