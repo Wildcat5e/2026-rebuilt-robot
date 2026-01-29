@@ -19,6 +19,7 @@ This is a great repo.
     - Before competition, make sure to actually set the correct values for settings that are used in pathplanner (like robot weight) or else we cooked.
 
 - RotateToHub
+    - Make RotateToHub compatible with red hub and not just blue.
     - Will need to go back and check the PID values and max speed.
     - Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
     - The center hub pose in RotateToHub is off by an insignificant amount.
