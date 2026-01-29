@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Controller;
 
@@ -9,6 +11,7 @@ import frc.robot.subsystems.Controller;
  * import static frc.robot.Utilities.*;
  */
 public interface Utilities {
+
     static double getHubDistance() {
         // translation2d is just pose2d without rotation factor
         Translation2d hubTranslation = new Translation2d(4.625, 4.025);
@@ -24,8 +27,18 @@ public interface Utilities {
 
     /** Returns in radians. */
     static double getRobotToHubAngle() {
-        double hubXPose = 4.625;
-        double hubYPose = 4.025;
+
+        double hubXPose;
+        double hubYPose;
+
+        if (Robot.alliance == Alliance.Blue) {
+            hubXPose = 4.625;
+            hubYPose = 4.03;
+        } else {
+            hubXPose = 11.915;
+            hubYPose = 4.03;
+        }
+
 
         Pose2d currentPose = Controller.drivetrain.getState().Pose;
         double angleOfRobotToHub = Math.atan2((hubYPose - currentPose.getY()), (hubXPose - currentPose.getX()));

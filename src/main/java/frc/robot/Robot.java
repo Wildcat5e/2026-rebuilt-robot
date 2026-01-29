@@ -44,6 +44,8 @@ public class Robot extends TimedRobot {
     public final StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     public final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
 
+    static public Alliance alliance;
+
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         NamedCommands.registerCommand("Rotate To Hub", RobotCommands.rotateToHub);
@@ -79,6 +81,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        // ADD TO AUTONOMOUS INIT, MAKE SURE AT COMP AUTO ISNT STARTING MODE WHEN ROBOT IS DISABLED
+        DriverStation.getAlliance().ifPresent(fms_alliance -> alliance = fms_alliance);
         elasticTabPublisher.set("Teleoperated");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
