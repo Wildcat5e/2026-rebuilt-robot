@@ -74,8 +74,12 @@ public interface RobotContainer {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Config.allowControllerTranslation) {
-                drive.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * MAX_LINEAR_SPEED);
+                // Moving the y axis joystick of the xbox controller actually moves the robot on the
+                // x axis field, meaning that when you do "translation.getX()", you're grabbing the y axis
+                // of the controller. Ultimately, withVelocityX needs to use the y axis of controller, and withVelocityY
+                // needs to use the x axis of controller because of how the axises of the field are.
+                drive.withVelocityX(-1 * translation.getX() * MAX_LINEAR_SPEED)
+                    .withVelocityY(-1 * translation.getY() * MAX_LINEAR_SPEED);
             }
             if (Config.allowControllerRotation) {
                 drive.withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
@@ -137,7 +141,7 @@ public interface RobotContainer {
     public static Command getAutonomousCommand() {
         try {
             // Load the path you want to follow using its name in the GUI
-            PathPlannerPath path = PathPlannerPath.fromPathFile("Test Path");
+            PathPlannerPath path = PathPlannerPath.fromPathFile("Pass Bottom Bump");
 
             // Create a path following command using AutoBuilder. This will also trigger event markers.
             return AutoBuilder.followPath(path);
