@@ -45,7 +45,7 @@ public interface RobotContainer {
     /** The only instance of Drivetrain. */
     Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Setting up bindings for necessary control of the swerve drive platform */
-    SwerveRequest.FieldCentric drive =
+    SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
     PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
@@ -71,13 +71,13 @@ public interface RobotContainer {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Config.allowControllerTranslation) {
-                drive.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
+                swerveRequest.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
                     .withVelocityY(translation.getY() * MAX_LINEAR_SPEED);
             }
             if (Config.allowControllerRotation) {
-                drive.withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
+                swerveRequest.withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
             }
-            return drive;
+            return swerveRequest;
         }));
 
         // reset the field-centric heading on left trigger

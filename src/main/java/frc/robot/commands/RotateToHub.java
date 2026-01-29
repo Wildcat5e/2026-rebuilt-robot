@@ -33,7 +33,7 @@ public class RotateToHub extends Command {
         double velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
-        RobotContainer.drivetrain.setControl(RobotContainer.drive.withRotationalRate(velocity));
+        RobotContainer.drivetrain.setControl(RobotContainer.swerveRequest.withRotationalRate(velocity));
     }
 
     @Override
