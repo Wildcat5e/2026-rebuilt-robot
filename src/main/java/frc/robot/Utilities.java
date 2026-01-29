@@ -1,17 +1,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /**
  * import static frc.robot.Utilities.*;
  */
 public interface Utilities {
-
-    static public double getHubDistance() {
+    static double getHubDistance() {
         // translation2d is just pose2d without rotation factor
         Translation2d hubTranslation = new Translation2d(4.625, 4.025);
         Translation2d robotTranslation = RobotContainer.drivetrain.getState().Pose.getTranslation();
@@ -19,16 +16,13 @@ public interface Utilities {
         return distanceRobotHub;
     }
 
-    static public boolean withinShootingDistance() {
-        if (1 < getHubDistance() && getHubDistance() < 3) {
-            return true;
-        } else {
-            return false;
-        }
+    static boolean withinShootingDistance() {
+        double distance = getHubDistance();
+        return (1 < distance && distance < 3);
     }
 
     /** Returns in radians. */
-    static public double getRobotToHubAngle() {
+    static double getRobotToHubAngle() {
         double hubXPose = 4.625;
         double hubYPose = 4.025;
 
@@ -37,16 +31,12 @@ public interface Utilities {
         return angleOfRobotToHub;
     }
 
-    static public boolean withinShootingAngle() {
-        // in degrees
-        double robotRotation = RobotContainer.drivetrain.getState().Pose.getRotation().getDegrees();
+    static boolean withinShootingAngle() {
+        double robotRotation = RobotContainer.drivetrain.getState().Pose.getRotation().getRadians();
         // NEED TO TEST DEGREE VALUE
-        SmartDashboard.putNumber("robot angle", robotRotation);
+        // debug
+        SmartDashboard.putNumber("robot angle", Math.toDegrees(robotRotation));
         SmartDashboard.putNumber("correct angle", Math.toDegrees(getRobotToHubAngle()));
-        if (Math.abs(Math.toDegrees(getRobotToHubAngle()) - robotRotation) < 4) {
-            return true;
-        } else {
-            return false;
-        }
+        return Math.abs(getRobotToHubAngle() - robotRotation) < 4;
     }
 }

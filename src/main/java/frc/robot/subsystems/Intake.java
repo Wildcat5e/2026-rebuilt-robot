@@ -6,23 +6,18 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-
-    // place holder
+    /** place holder */
     double GEAR_RATIO = 4;
-    // CHANGE MOTOR ID OBVIOUSLY
-    // conveyor is motor that connects to actual wheels to intake fuel into storage
+    /** CHANGE MOTOR ID OBVIOUSLY, conveyor is motor that connects to actual wheels to intake fuel into storage */
     private final TalonFX conveyorMotor = new TalonFX(0);
-    // extender motor is motor that extends intake system outside of bumper
+    /** extender motor is motor that extends intake system outside of bumper */
     private final TalonFX extenderMotor = new TalonFX(0);
-
 
     /** Creates a new Intake. */
     public Intake() {}
 
     @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-    }
+    public void periodic() {}
 
     public Command dropArm() {
         return new FunctionalCommand(
@@ -46,9 +41,11 @@ public class Intake extends SubsystemBase {
             this);
     }
 
-    // TURN ON INTAKE TO TAKE IN FUEL COMMAND
-    // currently plan to bind to a while true button, but may be easier to have it on a
-    // toggle or have it to run the entire match,
+    /**
+     * TURN ON INTAKE TO TAKE IN FUEL COMMAND <br>
+     * currently plan to bind to a while true button, but may be easier to have it on a toggle or have it to run the
+     * entire match
+     */
     public Command testFuelIntake() {
         return startEnd(
             // start
@@ -68,6 +65,4 @@ public class Intake extends SubsystemBase {
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
     }
-
-
 }
