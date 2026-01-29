@@ -18,10 +18,10 @@ This is a great repo.
     - Before competition, make sure to actually set the correct values for settings that are used in pathplanner (like robot weight) or else we cooked.
 
 - RotateToHub
-    - FIX SPEED OF ROTATION IN DIFFERENT DIRECTIONS !!!
     - Will need to go back and check the PID values and max speed.
-    - The center hub pose in RotateToHub is off by an insignificant amount.
     - Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
+    - The center hub pose in RotateToHub is off by an insignificant amount.
+    - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
 - Check if height of robot to camera offset matters for Photon Vision.
 
