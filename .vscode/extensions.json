@@ -2,5 +2,7 @@
     "recommendations": [
         "vscjava.vscode-java-pack",
         "redhat.java",
+        "davidanson.vscode-markdownlint",
+        "darkriszty.markdown-table-prettify",
     ],
 }

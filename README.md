@@ -29,16 +29,15 @@ This is a great repo.
 
 ## POTENTIAL BUTTON BINDINGS
 
-Left Joystick - Translation
-Right Joystick - Rotation
-
-Left Trigger - Intake (activate intake)
-Right Trigger - Shoot (activate flywheel, kicker, hopper)
-
-A - Automatic Rotate to Hub
-
-Right Bumper - Bring Intake Down
-Left Bumper - Raise Intake Up
+| Button         | Action                                    |
+|----------------|-------------------------------------------|
+| Left Joystick  | Translation                               |
+| Right Joystick | Rotation                                  |
+| Left Trigger   | Intake (activate intake)                  |
+| Right Trigger  | Shoot (activate flywheel, kicker, hopper) |
+| A              | Automatic Rotate to Hub                   |
+| Right Bumper   | Bring Intake Down                         |
+| Left Bumper    | Raise Intake Up                           |
 
 ## Team Documentation
 
