@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.Commands;
 import frc.robot.commands.RotateToHub;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ControllerWrapper;
+import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
 
@@ -52,7 +52,7 @@ public interface RobotContainer {
     /** The only instance of the Xbox Controller. */
     CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */
-    ControllerWrapper controller = new ControllerWrapper.Xbox(0);
+    Controller controller = new Controller.Xbox(0);
 
     /** Dashboard field widget */
     Field2d field = new Field2d();
@@ -68,17 +68,7 @@ public interface RobotContainer {
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     static void bindingsSetup() {
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            Translation2d translation = controller.getTranslation();
-            if (Config.allowControllerTranslation) {
-                swerveRequest.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * MAX_LINEAR_SPEED);
-            }
-            if (Config.allowControllerRotation) {
-                swerveRequest.withRotationalRate(controller.getRotation() * MAX_ANGULAR_SPEED);
-            }
-            return swerveRequest;
-        }));
+        controller.bindingsSetup();
 
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
