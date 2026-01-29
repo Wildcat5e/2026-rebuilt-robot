@@ -75,4 +75,14 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "java.format.settings.url": ".vscode/eclipse-java-google-style.xml",
+  "markdownlint.config": {
+    "MD007": {
+      "indent": 4,
+    },
+    "MD033": {
+      "allowed_elements": [
+        "br",
+      ]
+    },
+  },
 }
