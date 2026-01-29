@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Utilities.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,12 +16,26 @@ public class Outtake extends SubsystemBase {
     private final TalonFX rightHopperMotor = new TalonFX(0);
     private final TalonFX kickerMotor = new TalonFX(0);
     private final TalonFX flywheelMotor = new TalonFX(0);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
+    double GEAR_RATIO = 0;
+    double previousRotation = 0;
+    double currentRotation = 0;
+    double rotationDifference = 0;
+    double deltaTime = 0;
+    double speed = 0;
 
     /** Creates a new Outtake. */
-    public Outtake() {}
+    public Outtake() {
+        feedforward.calculateWithVelocities(0, 0);
+    }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+        // need to make sure rotation of motor starts at 0
+        currentRotation = flywheelMotor.getPosition().getValueAsDouble();
+        rotationDifference = Math.abs(currentRotation - previousRotation);
+
+    }
 
     public Command testLeftHopper() {
         // might have to change voltage signs, left and right
@@ -56,12 +71,16 @@ public class Outtake extends SubsystemBase {
      */
     public Command startFlywheel() {
         return runEnd(() -> {
+            // NEED TO MAKE A FUNCTION TO CALCULATE CURRENT FLYWHEEL SPEED
+            double currentFlywheelSpeed = 0;
             double distance = getHubDistance();
             // all placeholder values and formula
-            double calculatedVoltage = 0 * distance + 1;
+            double calculatedVelocity = 0 * distance + 1;
+            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedVelocity);
             flywheelMotor.setVoltage(calculatedVoltage);
         }, () -> flywheelMotor.setVoltage(0));
     }
+
 
     // final implementation should be a while true
     public Command shootFuel() {

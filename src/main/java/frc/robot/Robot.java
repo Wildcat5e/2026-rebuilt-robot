@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 /**
@@ -8,6 +10,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+    static public Alliance alliance;
+
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         RobotContainer.generalSetup();
@@ -31,6 +35,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        // ADD TO AUTONOMOUS INIT, MAKE SURE AT COMP AUTO ISNT STARTING MODE WHEN ROBOT IS DISABLED
+        DriverStation.getAlliance().ifPresent(fms_alliance -> alliance = fms_alliance);
         RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_TELEOP);
         RobotContainer.cancelAuto();
     }
