@@ -6,11 +6,13 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringTopic;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
+
 
 /** Used for Robot Setup. Lots of static methods and variables */
 public interface RobotContainer {
@@ -83,6 +86,8 @@ public interface RobotContainer {
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         joystick.a().whileTrue(Commands.rotateToHub);
+        joystick.b().whileTrue(getAutonomousCommand());
+
 
         // cancel auto align command
         // joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
@@ -126,6 +131,19 @@ public interface RobotContainer {
     static void cancelAuto() {
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
+        }
+    }
+
+    public static Command getAutonomousCommand() {
+        try {
+            // Load the path you want to follow using its name in the GUI
+            PathPlannerPath path = PathPlannerPath.fromPathFile("Test Path");
+
+            // Create a path following command using AutoBuilder. This will also trigger event markers.
+            return AutoBuilder.followPath(path);
+        } catch (Exception e) {
+            DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+            return Commands.rotateToHub;
         }
     }
 }
