@@ -27,28 +27,14 @@ import frc.robot.subsystems.PhotonVision;
 
 /** Used for Robot Setup. Lots of static methods and variables */
 public interface RobotContainer {
-    static final class Config {
-        private Config() {}
-
-        /** Change whether or not controller can control translation. */
-        public static boolean allowControllerTranslation = true;
-        /** Change whether or not controller can control rotation. */
-        public static boolean allowControllerRotation = true;
-    }
-
     /** kSpeedAt12Volts desired top speed */
-    double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    static final double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /** 3/4 revs per sec max angular velocity in radians per second */
-    double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
-    double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
+    static final double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+    static final double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
 
-    /** The only instance of Drivetrain. */
-    Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    /** Setting up bindings for necessary control of the swerve drive platform */
-    SwerveRequest.FieldCentric swerveRequest =
-        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
-    PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
+    PhotonVision photonVision = new PhotonVision(Controller.drivetrain::addVisionMeasurement);
     /** The only instance of the Xbox Controller. */
     CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */
@@ -65,36 +51,12 @@ public interface RobotContainer {
     String ELASTIC_TELEOP = "Teleoperated";
     String ELASTIC_AUTONOMOUS = "Autonomous";
 
-
-    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
-    static void bindingsSetup() {
-        controller.bindingsSetup();
-
-        // reset the field-centric heading on left trigger
-        joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.a().whileTrue(Commands.rotateToHub);
-
-        // cancel auto align command
-        // joystick.rightBumper().onTrue(new InstantCommand(Commands.autoAlign::cancel));
-
-        /*
-         * Tests for motor identification:
-         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
-         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
-         */
-        // Quasistatic test for motor identification
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        // Dynamic test for motor identification
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    }
-
     static void dashboardUpdate() {
-        field.setRobotPose(drivetrain.getState().Pose);
+        field.setRobotPose(Controller.drivetrain.getState().Pose);
     }
 
     static void generalSetup() {
+        controller.bindingsSetup();
         SmartDashboard.putData("Field", field);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);

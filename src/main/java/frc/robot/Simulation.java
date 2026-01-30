@@ -5,6 +5,7 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.PhotonVision;
 
 public class Simulation {
@@ -21,7 +22,7 @@ public class Simulation {
     }
 
     public void poseUpdate() {
-        visionSim.update(RobotContainer.drivetrain.getState().Pose);
+        visionSim.update(Controller.drivetrain.getState().Pose);
     }
 
     private SimCameraProperties cameraSettings() {

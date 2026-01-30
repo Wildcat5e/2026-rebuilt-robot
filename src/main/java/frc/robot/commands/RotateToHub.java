@@ -7,6 +7,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Controller;
 
 public class RotateToHub extends Command {
     private static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // rad/s
@@ -19,12 +20,12 @@ public class RotateToHub extends Command {
 
     @Override
     public void initialize() {
-        RobotContainer.Config.allowControllerRotation = false;
+        Controller.allowControllerRotation = false;
     }
 
     @Override
     public void execute() {
-        Pose2d currentPose = RobotContainer.drivetrain.getState().Pose;
+        Pose2d currentPose = Controller.drivetrain.getState().Pose;
         double robotToHubAngle = getRobotToHubAngle();
         // debug
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
@@ -33,11 +34,11 @@ public class RotateToHub extends Command {
         double velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
-        RobotContainer.drivetrain.setControl(RobotContainer.swerveRequest.withRotationalRate(velocity));
+        Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.Config.allowControllerRotation = true;
+        Controller.allowControllerRotation = true;
     }
 }

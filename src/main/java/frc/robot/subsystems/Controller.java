@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
+import static frc.robot.RobotContainer.joystick;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import static frc.robot.RobotContainer.*;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.RobotContainer;
+import frc.robot.commands.Commands;
+import frc.robot.generated.TunerConstants;
 
 /**
  * Interface for standardized Controller use.
@@ -15,9 +21,67 @@ import static frc.robot.RobotContainer.*;
  */
 public abstract class Controller {
     /** Deadzone to apply to joysticks as a proportion out of 1. */
-    static double DEADZONE = .15;
+    static final double DEADZONE = .15;
     /** Exponent to raise inputs to the power of to create a curved response. */
-    static double SCALE_EXPONENT = 1;
+    static final double SCALE_EXPONENT = 1;
+    /** The only instance of Drivetrain. */
+    public static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
+    /** Setting up bindings for necessary control of the swerve drive platform */
+    public static final SwerveRequest.FieldCentric swerveRequest =
+        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+
+    /** Change whether or not controller can control translation. */
+    public static boolean allowControllerTranslation = true;
+    /** Change whether or not controller can control rotation. */
+    public static boolean allowControllerRotation = true;
+
+    /**
+     * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
+     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
+     * 
+     * @param xAxis raw value from controller
+     * @param yAxis raw value from controller
+     * @param deadzone proportion to eliminate
+     * @return axis values in Translation2d
+     */
+    static Translation2d applyRadialDeadzone(double xAxis, double yAxis, double deadzone) {
+        double magnitude = Math.hypot(xAxis, yAxis);
+        if (magnitude < deadzone) {
+            return new Translation2d(0, 0);
+        }
+        double scaledMagnitude = Math.pow(MathUtil.applyDeadband(magnitude, deadzone), SCALE_EXPONENT);
+        return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
+    }
+
+    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
+    public void bindingsSetup() {
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
+            Translation2d translation = getTranslation();
+            if (allowControllerTranslation) {
+                swerveRequest.withVelocityX(translation.getX() * RobotContainer.MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * RobotContainer.MAX_LINEAR_SPEED);
+            }
+            if (allowControllerRotation) {
+                swerveRequest.withRotationalRate(getRotation() * RobotContainer.MAX_ANGULAR_SPEED);
+            }
+            return swerveRequest;
+        }));
+        // reset the field-centric heading on left trigger
+        joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.a().whileTrue(Commands.rotateToHub);
+
+        /*
+         * Tests for motor identification:
+         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
+         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
+         */
+        // Quasistatic test for motor identification
+        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // Dynamic test for motor identification
+        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    }
 
     /** Call to update values before calling getX() or getY(). */
     public abstract Translation2d getTranslation();
@@ -25,25 +89,12 @@ public abstract class Controller {
     /** Get the rotation axis value. @return The axis value. */
     public abstract double getRotation();
 
-    public void bindingsSetup() {
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            Translation2d translation = getTranslation();
-            if (Config.allowControllerTranslation) {
-                swerveRequest.withVelocityX(translation.getX() * MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * MAX_LINEAR_SPEED);
-            }
-            if (Config.allowControllerRotation) {
-                swerveRequest.withRotationalRate(getRotation() * MAX_ANGULAR_SPEED);
-            }
-            return swerveRequest;
-        }));
-    }
-
     public static class Xbox extends Controller {
         private final CommandXboxController controller;
 
         /** Uses {@link CommandXboxController}. @param port index on Driver Station */
         public Xbox(int port) {
+            super();
             controller = new CommandXboxController(port);
         }
 
@@ -64,6 +115,7 @@ public abstract class Controller {
 
         /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
         public LogitechFlightStick(int port) {
+            super();
             controller = new CommandJoystick(port);
         }
 
@@ -78,23 +130,4 @@ public abstract class Controller {
         }
     }
 
-
-    /**
-     * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
-     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
-     * 
-     * @param xAxis raw value from controller
-     * @param yAxis raw value from controller
-     * @param deadzone proportion to eliminate
-     * @return axis values in Translation2d
-     */
-    static Translation2d applyRadialDeadzone(double xAxis, double yAxis, double deadzone) {
-        double magnitude = Math.hypot(xAxis, yAxis);
-        if (magnitude < deadzone) {
-            return new Translation2d(0, 0);
-        }
-        double scaledMagnitude = Math.pow(MathUtil.applyDeadband(magnitude, deadzone), SCALE_EXPONENT);
-        return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
-
-    }
 }
