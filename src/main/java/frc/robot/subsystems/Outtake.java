@@ -17,12 +17,13 @@ public class Outtake extends SubsystemBase {
     private final TalonFX kickerMotor = new TalonFX(0);
     private final TalonFX flywheelMotor = new TalonFX(0);
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
-    double GEAR_RATIO = 0;
+    // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
+    double GEAR_RATIO = 4;
     double previousRotation = 0;
     double currentRotation = 0;
     double rotationDifference = 0;
-    double deltaTime = 0;
-    double speed = 0;
+    double deltaTime = 0.02;
+    double currentFlywheelSpeed = 0;
 
     /** Creates a new Outtake. */
     public Outtake() {
@@ -31,10 +32,7 @@ public class Outtake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // need to make sure rotation of motor starts at 0
-        currentRotation = flywheelMotor.getPosition().getValueAsDouble();
-        rotationDifference = Math.abs(currentRotation - previousRotation);
-
+        currentFlywheelSpeed = getFlywheelSpeed();
     }
 
     public Command testLeftHopper() {
@@ -71,8 +69,6 @@ public class Outtake extends SubsystemBase {
      */
     public Command startFlywheel() {
         return runEnd(() -> {
-            // NEED TO MAKE A FUNCTION TO CALCULATE CURRENT FLYWHEEL SPEED
-            double currentFlywheelSpeed = 0;
             double distance = getHubDistance();
             // all placeholder values and formula
             double calculatedVelocity = 0 * distance + 1;
@@ -90,4 +86,17 @@ public class Outtake extends SubsystemBase {
             new SequentialCommandGroup(Commands.waitSeconds(1),
                 new ParallelRaceGroup(testBothHoppers(), spinKicker())));
     }
+
+    /** Speed is in revolutions (of flywheel) per second */
+    double getFlywheelSpeed() {
+        // need to make sure rotation of motor starts at 0
+        currentRotation = flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
+        rotationDifference = Math.abs(currentRotation - previousRotation);
+        // revolutions per second of flywheel
+        currentFlywheelSpeed = rotationDifference / deltaTime;
+
+        previousRotation = currentRotation;
+        return currentFlywheelSpeed;
+    }
+
 }

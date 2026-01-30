@@ -6,26 +6,27 @@ This is a great repo.
 
 ## To-Do
 
-- Field Orientation
-    - Fix field orientation controls which are based on alliance.Sometimes driving is inverted.
-
 - PID For Flywheel Motors
     - We need to add some kind of PID for flywheel motors as the speed of the motors are inconsistent when fuel goes through flywheel.
 
 - PathPlanner
+    - Figure out how to disable rotation on pathplanner auto for rotate to hub command to work.
     - Test and experiment with paths on the fly and running paths in teleop
     - Make and test with autonomous paths
     - Configure max velocity and acceleration
     - Before competition, make sure to actually set the correct values for settings that are used in pathplanner (like robot weight) or else we cooked.
 
 - RotateToHub
-    - Make RotateToHub compatible with red hub and not just blue.
     - Will need to go back and check the PID values and max speed.
     - Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
     - The center hub pose in RotateToHub is off by an insignificant amount.
     - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
+- Field Orientation
+    - Field orientation fixed, fix controller axis to robot axis speed setup.
+
 - Photon Vision
+    - Add standard deviation calculation for vision.
     - Replace deprecated things.
     - Check if height of robot to camera offset matters for Photon Vision.
 

@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.Commands;
+import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RotateToHub;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ControllerWrapper;
@@ -89,8 +89,8 @@ public interface RobotContainer {
 
         // reset the field-centric heading on left trigger
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.a().whileTrue(Commands.rotateToHub);
-        joystick.b().whileTrue(getAutonomousCommand());
+        joystick.a().whileTrue(RobotCommands.rotateToHub);
+        joystick.b().whileTrue(RobotCommands.paths);
 
 
         // cancel auto align command
@@ -147,7 +147,7 @@ public interface RobotContainer {
             return AutoBuilder.followPath(path);
         } catch (Exception e) {
             DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-            return Commands.rotateToHub;
+            return RobotCommands.rotateToHub;
         }
     }
 }
