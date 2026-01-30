@@ -25,6 +25,8 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.commands.Paths;
+import frc.robot.commands.RobotCommands;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
         SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle());
         SmartDashboard.putBoolean("Within Shooting Distance", Utilities.withinShootingDistance());
+        NamedCommands.registerCommand("Rotate To Hub", RobotCommands.rotateToHub);
     }
 
     @Override

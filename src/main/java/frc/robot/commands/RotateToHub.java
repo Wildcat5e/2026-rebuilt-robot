@@ -23,6 +23,7 @@ public class RotateToHub extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("initialized !!");
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset(getRobotRotationState());
     }
@@ -38,13 +39,12 @@ public class RotateToHub extends Command {
         velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
-        if (DriverStation.isTeleop()) {
-            Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
-        } else if (DriverStation.isAutonomous()) {
-            PPHolonomicDriveController.overrideRotationFeedback(() -> {
-                return velocity;
-            });
-        }
+        Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
+        PPHolonomicDriveController.overrideRotationFeedback(() -> {
+            // Calculate feedback from your custom PID controller
+            System.out.println("ITS WORKING !!!!");
+            return velocity;
+        });
     }
 
     @Override
