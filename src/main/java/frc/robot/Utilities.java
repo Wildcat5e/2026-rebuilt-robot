@@ -14,7 +14,7 @@ public interface Utilities {
 
     static double getHubDistance() {
         // translation2d is just pose2d without rotation factor
-        Translation2d hubTranslation = new Translation2d(4.625, 4.025);
+        Translation2d hubTranslation = new Translation2d(4.625, 4.03);
         Translation2d robotTranslation = Controller.drivetrain.getState().Pose.getTranslation();
         double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
         return distanceRobotHub;
