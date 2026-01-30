@@ -24,7 +24,7 @@ import frc.robot.RobotContainer;
  */
 public class Paths extends Command {
 
-    ArrayList<Translation2d> translationsList = new ArrayList<>(4);
+    List<Translation2d> translationsList;
     boolean error = false;
     ArrayList<Command> commandPathList = new ArrayList<>(4);
     Translation2d currentTranslation;
@@ -57,18 +57,18 @@ public class Paths extends Command {
     @Override
     public void initialize() {
         if (!error) {
-
-
-            if (Robot.alliance == Alliance.Blue) {
-                translationsList.add(new Translation2d(6.395, 7.32));
-                translationsList.add(new Translation2d(2.404, 7.320));
-                translationsList.add(new Translation2d(6.395, 0.756));
-                translationsList.add(new Translation2d(2.342, 0.731));
+            if (Robot.alliance == Alliance.Blue) { // @formatter:off
+                translationsList = List.of(
+                    new Translation2d(6.395, 7.32),
+                    new Translation2d(2.404, 7.320),
+                    new Translation2d(6.395, 0.756),
+                    new Translation2d(2.342, 0.731)); 
             } else {
-                translationsList.add(new Translation2d(10.145, 0.75));
-                translationsList.add(new Translation2d(14.198, 0.75));
-                translationsList.add(new Translation2d(10.145, 7.314));
-                translationsList.add(new Translation2d(14.198, 7.339));
+                translationsList = List.of(
+                    new Translation2d(10.145, 0.75), 
+                    new Translation2d(14.198, 0.75),
+                    new Translation2d(10.145, 7.314), 
+                    new Translation2d(14.198, 7.339)); // @formatter:on
             }
 
             closestIndex = findclosestIndex(commandPathList, translationsList);
@@ -99,7 +99,7 @@ public class Paths extends Command {
         return false;
     }
 
-    int findclosestIndex(ArrayList<Command> commandPathList, ArrayList<Translation2d> translationList) {
+    int findclosestIndex(List<Command> commandPathList, List<Translation2d> translationList) {
         double closestDistance = Double.POSITIVE_INFINITY;
         int closestIndex = -1;
         currentTranslation = RobotContainer.drivetrain.getState().Pose.getTranslation();
