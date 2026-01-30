@@ -1,8 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.commands.Paths;
+import frc.robot.commands.RobotCommands;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -16,6 +19,7 @@ public class Robot extends TimedRobot {
     public Robot() {
         RobotContainer.generalSetup();
         RobotContainer.bindingsSetup();
+        NamedCommands.registerCommand("Rotate To Hub", RobotCommands.rotateToHub);
     }
 
     @Override
