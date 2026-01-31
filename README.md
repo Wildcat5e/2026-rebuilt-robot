@@ -16,9 +16,10 @@ This is a great repo.
     - Configure max velocity and acceleration
     - Before competition, make sure to actually set the correct values for settings that are used in pathplanner (like robot weight) or else we cooked.
 
-- RotateToHub
+- RotateToHub/Shooting While Moving
     - Will need to go back and check the PID values and max speed.
-    - Take into account ball trajectory while robot is moving because robot will give ball the same velocity as the direction the robot is moving.
+    - Check math in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) (can we test in the WPILib 3D simulator?).
+    - Convert the custom `Vector2d` objects in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) to `Translation2d` objects.
     - The center hub pose in RotateToHub is off by an insignificant amount.
     - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
