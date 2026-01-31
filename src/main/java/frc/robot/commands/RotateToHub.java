@@ -6,13 +6,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Controller;
 
 public class RotateToHub extends Command {
-    private static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // rad/s
-    public static final ProfiledPIDController PID_CONTROLLER = new ProfiledPIDController(20, 0, 0,
-        new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, RobotContainer.MAX_ANGULAR_ACCEL - Math.PI));
+    private static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // Constants.MAX_ANGULAR_SPEED - Math.PI
+    private static final double MAX_ANGULAR_ACCEL = 3 * Math.PI; // Constants.MAX_ANGULAR_ACCEL - Math.PI
+    public static final ProfiledPIDController PID_CONTROLLER =
+        new ProfiledPIDController(50, 0, 0, new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCEL));
 
     public RotateToHub() {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);

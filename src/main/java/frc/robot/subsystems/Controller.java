@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.RobotContainer.joystick;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
@@ -8,7 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.RobotContainer;
+import frc.robot.Constants;
 import frc.robot.commands.Commands;
 import frc.robot.generated.TunerConstants;
 
@@ -24,6 +23,8 @@ public abstract class Controller {
     static final double DEADZONE = .15;
     /** Exponent to raise inputs to the power of to create a curved response. */
     static final double SCALE_EXPONENT = 1;
+    static final double MAX_ANGULAR_SPEED = 1.5 * Math.PI;
+    static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
     /** The only instance of Drivetrain. */
     public static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Setting up bindings for necessary control of the swerve drive platform */
@@ -53,22 +54,25 @@ public abstract class Controller {
         return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
     }
 
+    /** The only instance of the Xbox Controller. */
+    public static final CommandXboxController joystick = new CommandXboxController(0);
+
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     public void bindingsSetup() {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = getTranslation();
             if (allowControllerTranslation) {
-                swerveRequest.withVelocityX(translation.getX() * RobotContainer.MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * RobotContainer.MAX_LINEAR_SPEED);
+                swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
             }
             if (allowControllerRotation) {
-                swerveRequest.withRotationalRate(getRotation() * RobotContainer.MAX_ANGULAR_SPEED);
+                swerveRequest.withRotationalRate(getRotation() * MAX_ANGULAR_SPEED);
             }
             return swerveRequest;
         }));
         // reset the field-centric heading on left trigger
-        joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.a().whileTrue(Commands.rotateToHub);
+        Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        Controller.joystick.a().whileTrue(Commands.rotateToHub);
 
         /*
          * Tests for motor identification:
@@ -76,11 +80,13 @@ public abstract class Controller {
          * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
          */
         // Quasistatic test for motor identification
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        Controller.joystick.start().and(Controller.joystick.y())
+            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        Controller.joystick.start().and(Controller.joystick.x())
+            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         // Dynamic test for motor identification
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        Controller.joystick.back().and(Controller.joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
     /** Call to update values before calling getX() or getY(). */

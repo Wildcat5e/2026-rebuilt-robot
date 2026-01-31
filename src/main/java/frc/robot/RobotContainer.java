@@ -1,12 +1,8 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StringPublisher;
@@ -16,27 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.Commands;
 import frc.robot.commands.RotateToHub;
-import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Controller;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
 
 /** Used for Robot Setup. Lots of static methods and variables */
 public interface RobotContainer {
-    /** kSpeedAt12Volts desired top speed */
-    static final double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
-    /** 3/4 revs per sec max angular velocity in radians per second */
-    static final double MAX_ANGULAR_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
-    static final double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
-
     /** The only instance of PhotonVision. */
     PhotonVision photonVision = new PhotonVision(Controller.drivetrain::addVisionMeasurement);
-    /** The only instance of the Xbox Controller. */
-    CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */
     Controller controller = new Controller.Xbox(0);
 
