@@ -48,7 +48,7 @@ public interface RobotContainer {
     SwerveRequest.FieldCentric drive =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     /** The only instance of PhotonVision. */
-    PhotonVision photonVision = new PhotonVision(drivetrain);
+    PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
     /** The only instance of the Xbox Controller. */
     CommandXboxController joystick = new CommandXboxController(0);
     /** The only instance of the Controller. */

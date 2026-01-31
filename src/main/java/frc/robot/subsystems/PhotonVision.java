@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -28,28 +31,28 @@ public class PhotonVision extends SubsystemBase {
         AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded); // change depending on field specs
 
     private static final PhotonPoseEstimator ESTIMATOR = new PhotonPoseEstimator(FIELD_LAYOUT, ROBOT_TO_CAMERA);
-    private final Drivetrain drivetrain;
-    DoublePublisher distancePublisher;
+    private final EstimateConsumer estConsumer;
 
-    public PhotonVision(Drivetrain drivetrain) {
-        this.drivetrain = drivetrain;
+    public PhotonVision(EstimateConsumer estimateConsumer) {
+        this.estConsumer = estimateConsumer;
     }
 
     @Override
     public void periodic() {
-        Optional<EstimatedRobotPose> optionalVisionEst = Optional.empty();
-        // get all vision updates and loop through them
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
         for (PhotonPipelineResult change : CAMERA.getAllUnreadResults()) {
-            // takes camera image and passes into photon estimator, returning pose data object
-            optionalVisionEst = ESTIMATOR.estimateCoprocMultiTagPose(change);
-            if (optionalVisionEst.isEmpty()) {
-                optionalVisionEst = ESTIMATOR.estimateLowestAmbiguityPose(change);
+            visionEst = ESTIMATOR.estimateCoprocMultiTagPose(change);
+            if (visionEst.isEmpty()) {
+                visionEst = ESTIMATOR.estimateLowestAmbiguityPose(change);
             }
-            EstimatedRobotPose visionEst = optionalVisionEst.get();
-            Pose2d estimatedPose2d = visionEst.estimatedPose.toPose2d(); // turns the estimate into a pose
-            drivetrain.addVisionMeasurement(estimatedPose2d, visionEst.timestampSeconds, stddev);
+            visionEst.ifPresent(est -> {
+                estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, stddev);
+            });
         }
     }
 
-
+    @FunctionalInterface
+    public static interface EstimateConsumer {
+        public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
+    }
 }
