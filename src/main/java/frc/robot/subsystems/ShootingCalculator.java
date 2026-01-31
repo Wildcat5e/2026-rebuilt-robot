@@ -12,11 +12,12 @@ public class ShootingCalculator {
 
     public static class ShotSolution {
         /**
-         * The flywheel speed can be in RPM or m/s depending on how the flywheel controller is set up. It all comes down
-         * to what units the lookup table provides.
+         * The flywheel speed will be in m/s, but can be converted to RPM using the formula:<br>
+         * <br>
+         * RPM = (flywheelSpeed * 60) / (2 * π * radius)
          */
         public double flywheelSpeed;
-        public double robotHeading; // The field-centric angle (degrees) the robot should face
+        public double robotHeading; // The field-centric angle (radians) the robot should face
         public double distanceToTarget;
 
         public ShotSolution(double speed, double heading, double dist) {
@@ -41,10 +42,27 @@ public class ShootingCalculator {
     private final double FIXED_HOOD_ANGLE_RADIANS;
 
     /**
+     * Constructs a ShootingCalculator with a fixed hood angle in degrees.
+     *
+     * This constructor defaults to assuming the input is in degrees.<br>
+     * 
      * @param fixedHoodAngleDegrees The constant angle of the shooter in degrees.
      */
-    public ShootingCalculator(double fixedHoodAngleDegrees) {
-        this.FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(fixedHoodAngleDegrees);
+    public ShootingCalculator(double hoodAngleDegrees) {
+        // Calls the main constructor with 'false' for inputInRadians
+        this(hoodAngleDegrees, false);
+    }
+
+    /**
+     * Constructs a ShootingCalculator with a fixed hood angle, specifying the unit.<br>
+     * 
+     * @param angle The constant angle of the shooter.
+     * 
+     * @param inputInRadians Set to true if the input angle is in Radians; set to false if the input angle is in
+     *        Degrees.
+     */
+    public ShootingCalculator(double hoodAngle, boolean inputInRadians) {
+        this.FIXED_HOOD_ANGLE_RADIANS = inputInRadians ? hoodAngle : Math.toRadians(hoodAngle);
     }
 
     /**
