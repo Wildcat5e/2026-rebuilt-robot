@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_AUTONOMOUS);
+        // RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_AUTONOMOUS);
         RobotContainer.runAuto();
     }
 
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         // ADD TO AUTONOMOUS INIT, MAKE SURE AT COMP AUTO ISNT STARTING MODE WHEN ROBOT IS DISABLED
         DriverStation.getAlliance().ifPresent(fms_alliance -> alliance = fms_alliance);
-        RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_TELEOP);
+        // RobotContainer.elasticTabPublisher.set(RobotContainer.ELASTIC_TELEOP);
         RobotContainer.cancelAuto();
     }
 
