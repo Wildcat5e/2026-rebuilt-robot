@@ -25,7 +25,7 @@ This is a great repo.
     - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
 - Photon Vision
-    - Replace deprecated things.
+    - Check if std dev numbers make sense, especially for new adaptive setup.
     - Check if height of robot to camera offset matters for Photon Vision.
 
 - We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/TunerConstants.java) with generated code once the robot is built.
