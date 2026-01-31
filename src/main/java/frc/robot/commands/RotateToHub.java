@@ -21,6 +21,7 @@ public class RotateToHub extends Command {
     @Override
     public void initialize() {
         Controller.allowControllerRotation = false;
+        PID_CONTROLLER.reset(getRobotRotationState());
     }
 
     @Override
@@ -40,5 +41,11 @@ public class RotateToHub extends Command {
     @Override
     public void end(boolean interrupted) {
         Controller.allowControllerRotation = true;
+    }
+
+    public static TrapezoidProfile.State getRobotRotationState() {
+        var currentState = Controller.drivetrain.getState();
+        return new TrapezoidProfile.State(currentState.Pose.getRotation().getRadians(),
+            currentState.Speeds.omegaRadiansPerSecond);
     }
 }
