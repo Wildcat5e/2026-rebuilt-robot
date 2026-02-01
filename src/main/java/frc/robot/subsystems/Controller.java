@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants;
-import frc.robot.commands.Commands;
+import frc.robot.commands.RobotCommands;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -72,7 +72,7 @@ public abstract class Controller {
         }));
         // reset the field-centric heading on left trigger
         Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        Controller.joystick.a().whileTrue(Commands.rotateToHub);
+        Controller.joystick.a().whileTrue(RobotCommands.rotateToHub);
 
         /*
          * Tests for motor identification:

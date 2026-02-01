@@ -9,13 +9,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Controller;
 
-
-// might need to schedule this command !!
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAlign extends Command {
-    private final Drivetrain drivetrain;
     private static final double POSITION_TOLERANCE = 0.025;
     private static final double ROTATION_TOLERANCE = 0.025; // @formatter:off
     private static final PPHolonomicDriveController HOLONOMIC_DRIVE_CONTROLLER = new PPHolonomicDriveController(
@@ -31,15 +27,14 @@ public class AutoAlign extends Command {
     public static final List<Pose2d> TAG_POSE_LIST = List.of(CENTER_HUB);
 
 
-    public AutoAlign(Drivetrain drivetrain) {
-        this.drivetrain = drivetrain;
-        addRequirements(drivetrain);
+    public AutoAlign() {
+        addRequirements(Controller.drivetrain);
     }
 
     @Override
     public void initialize() {
         startTime = System.currentTimeMillis();
-        Pose2d currentPose = drivetrain.getState().Pose;
+        Pose2d currentPose = Controller.drivetrain.getState().Pose;
         Pose2d nearestTagPose = currentPose.nearest(TAG_POSE_LIST);
         double distance = currentPose.getTranslation().getDistance(nearestTagPose.getTranslation());
         goalState.pose = nearestTagPose;
@@ -53,10 +48,10 @@ public class AutoAlign extends Command {
 
     @Override
     public void execute() {
-        Pose2d currentPose = drivetrain.getState().Pose;
+        Pose2d currentPose = Controller.drivetrain.getState().Pose;
         ChassisSpeeds outputSpeeds = HOLONOMIC_DRIVE_CONTROLLER.calculateRobotRelativeSpeeds(currentPose, goalState);
-        // this uses a private var in drivetrain that was made public to work with this, maybe alt impl needed?
-        drivetrain.setControl(drivetrain.m_pathApplyRobotSpeeds.withSpeeds(outputSpeeds));
+        Controller.drivetrain.setControl(Controller.swerveRequest.withVelocityX(outputSpeeds.vxMetersPerSecond)
+            .withVelocityY(outputSpeeds.vyMetersPerSecond).withRotationalRate(outputSpeeds.omegaRadiansPerSecond));
     }
 
     @Override
@@ -82,7 +77,7 @@ public class AutoAlign extends Command {
     }
 
     private boolean isWithinTolerance() {
-        Pose2d currentPose = drivetrain.getState().Pose;
+        Pose2d currentPose = Controller.drivetrain.getState().Pose;
         double positionDistance = currentPose.getTranslation().getDistance(goalState.pose.getTranslation());
         double rotationDistance = Math.abs(currentPose.getRotation().minus(goalState.pose.getRotation()).getRadians());
         return (positionDistance < POSITION_TOLERANCE && rotationDistance < ROTATION_TOLERANCE);
