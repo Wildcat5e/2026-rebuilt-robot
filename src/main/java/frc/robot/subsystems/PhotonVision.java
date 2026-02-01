@@ -63,9 +63,8 @@ public class PhotonVision extends SubsystemBase {
     private Matrix<N3, N1> getEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose,
         List<PhotonTrackedTarget> targets) {
         Matrix<N3, N1> estStdDevs = SINGLE_TAG_STD_DEV;
-        if (estimatedPose.isEmpty()) {
-            return estStdDevs;
-        }
+        if (estimatedPose.isEmpty()) return estStdDevs;
+
         // Pose present. Start running Heuristic
         int numTags = 0;
         double avgDist = 0;
@@ -73,22 +72,17 @@ public class PhotonVision extends SubsystemBase {
         // Precalculation - see how many tags we found, and calculate an average-distance metric
         for (var tgt : targets) {
             var tagPose = ESTIMATOR.getFieldTags().getTagPose(tgt.getFiducialId());
-            if (tagPose.isEmpty())
-                continue;
+            if (tagPose.isEmpty()) continue;
             numTags++;
             avgDist += tagPose.get().toPose2d().getTranslation()
                 .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
         }
-
-        if (numTags == 0) { // No tags visible.
-            return estStdDevs;
-        }
+        // No tags visible.
+        if (numTags == 0) return estStdDevs;
         // One or more tags visible, run the full heuristic.
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) {
-            estStdDevs = MULTI_TAG_STD_DEV;
-        }
+        if (numTags > 1) estStdDevs = MULTI_TAG_STD_DEV;
         // Increase std devs based on (average) distance
         if (numTags == 1 && avgDist > 4) {
             estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
