@@ -12,7 +12,7 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.generated.TunerConstants;
 
 /**
- * Interface for standardized Controller use.
+ * Controller management.
  * 
  * @apiNote Each axis uses the
  *          <a href="https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html">WPILib
@@ -27,7 +27,7 @@ public abstract class Controller {
     static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
     /** The only instance of Drivetrain. */
     public static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    /** Setting up bindings for necessary control of the swerve drive platform */
+    /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
@@ -89,7 +89,7 @@ public abstract class Controller {
         Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
-    /** Call to update values before calling getX() or getY(). */
+    /** Get Translation2d of controller axes. */
     public abstract Translation2d getTranslation();
 
     /** Get the rotation axis value. @return The axis value. */
@@ -100,7 +100,6 @@ public abstract class Controller {
 
         /** Uses {@link CommandXboxController}. @param port index on Driver Station */
         public Xbox(int port) {
-            super();
             controller = new CommandXboxController(port);
         }
 
@@ -121,7 +120,6 @@ public abstract class Controller {
 
         /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
         public LogitechFlightStick(int port) {
-            super();
             controller = new CommandJoystick(port);
         }
 
