@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
 import static frc.robot.Utilities.*;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Controller;
@@ -12,7 +14,8 @@ public class RotateToHub extends Command {
     private static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // Constants.MAX_ANGULAR_SPEED - Math.PI
     private static final double MAX_ANGULAR_ACCEL = 3 * Math.PI; // Constants.MAX_ANGULAR_ACCEL - Math.PI
     public static final ProfiledPIDController PID_CONTROLLER =
-        new ProfiledPIDController(50, 0, 0, new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCEL));
+        new ProfiledPIDController(20, 0, 0, new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCEL));
+    double velocity;
 
     public RotateToHub() {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
@@ -32,15 +35,22 @@ public class RotateToHub extends Command {
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
         SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(robotToHubAngle));
 
-        double velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
+        velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
-        Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
+        if (DriverStation.isTeleop()) {
+            Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
+        } else if (DriverStation.isAutonomous()) {
+            PPHolonomicDriveController.overrideRotationFeedback(() -> {
+                return velocity;
+            });
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
         Controller.allowControllerRotation = true;
+        PPHolonomicDriveController.clearRotationFeedbackOverride();
     }
 
     public static TrapezoidProfile.State getRobotRotationState() {
