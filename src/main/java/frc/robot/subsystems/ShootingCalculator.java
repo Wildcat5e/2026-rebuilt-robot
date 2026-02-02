@@ -1,5 +1,11 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Utilities.getHubDistance;
+import static frc.robot.Utilities.getRobotToHubAngle;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.RobotContainer;
+
 /**
  * A helper class to calculate shooting parameters while moving.<br>
  * <br>
@@ -20,10 +26,9 @@ public class ShootingCalculator {
         public double robotHeading; // The field-centric angle (radians) the robot should face
         public double distanceToTarget;
 
-        public ShotSolution(double speed, double heading, double dist) {
+        public ShotSolution(double speed, double heading) {
             this.flywheelSpeed = speed;
             this.robotHeading = heading;
-            this.distanceToTarget = dist;
         }
     }
 
@@ -68,18 +73,20 @@ public class ShootingCalculator {
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
      *
-     * @param robotPos Field-centric robot position (x, y)
-     * @param robotVel Field-centric robot velocity (vx, vy)
-     * @param targetPos Field-centric target position (x, y) - Z is handled by lookup table logic
+     * @param robotVel Robot-centric robot velocity (vx, vy) (use "drivetrain.getState().Speeds" for robot-centric
+     *        speed)
      * @return ShotSolution containing new heading and speed
      */
-    public ShotSolution calculate(Vector2d robotPos, Vector2d robotVel, Vector2d targetPos) {
+    public ShotSolution calculate(ChassisSpeeds robotVel) {
+        // Convert robot centric speeds to field centric speeds
+        robotVel =
+            ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, RobotContainer.drivetrain.getState().Pose.getRotation());
+        double robotVelX = robotVel.vxMetersPerSecond;
+        double robotVelY = robotVel.vyMetersPerSecond;
 
         // 1. Calculate Vector to Target (Distance and Angle)
-        double dx = targetPos.x - robotPos.x;
-        double dy = targetPos.y - robotPos.y;
-        double distanceToTarget = Math.hypot(dx, dy);
-        double angleToTarget = Math.atan2(dy, dx);
+        double distanceToTarget = getHubDistance();
+        double angleToTarget = getRobotToHubAngle();
 
         // 2. Look up the Ideal "Static" Shot Speed This is the speed you would shoot if standing perfectly still at
         // this distance.
@@ -97,8 +104,8 @@ public class ShootingCalculator {
 
         // 5. Calculate the Shot Vector (Vector Subtraction)
         // V_shot = V_static - V_robot
-        double shotVx = staticVx - robotVel.x;
-        double shotVy = staticVy - robotVel.y;
+        double shotVx = staticVx - robotVelX;
+        double shotVy = staticVy - robotVelY;
 
         // 6. Extract Outputs
 
@@ -113,7 +120,7 @@ public class ShootingCalculator {
         // S_total = V_horizontal / cos(theta)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(FIXED_HOOD_ANGLE_RADIANS);
 
-        return new ShotSolution(newFlywheelSpeed, newHeadingRadians, distanceToTarget);
+        return new ShotSolution(newFlywheelSpeed, newHeadingRadians);
     }
 
     /**

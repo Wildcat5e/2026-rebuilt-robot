@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
+import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -43,6 +43,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.004; // 4 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    int counter;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -243,6 +244,12 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
                 );
                 m_hasAppliedOperatorPerspective = true;
             });
+        }
+        counter++;
+        if (counter % 20 == 0){
+        System.out.println("speeds from chassis" + ChassisSpeeds.fromRobotRelativeSpeeds(RobotContainer.drivetrain.getState().Speeds, RobotContainer.drivetrain.getState().Pose.getRotation()));
+        System.out.println(RobotContainer.drivetrain.getState().Speeds);
+
         }
     }
 
