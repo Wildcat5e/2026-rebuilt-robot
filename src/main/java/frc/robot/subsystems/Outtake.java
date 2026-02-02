@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Outtake extends SubsystemBase {
 
@@ -18,6 +19,7 @@ public class Outtake extends SubsystemBase {
     private final TalonFX flywheelMotor = new TalonFX(0);
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
     // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
+    double currentVelocity;
     double GEAR_RATIO = 4;
     double previousRotation = 0;
     double currentRotation = 0;
@@ -68,15 +70,18 @@ public class Outtake extends SubsystemBase {
      * command
      */
     public Command startFlywheel() {
-        return runEnd(() -> {
-            double distance = getHubDistance();
-            // all placeholder values and formula
-            double calculatedVelocity = 0 * distance + 1;
-            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedVelocity);
-            flywheelMotor.setVoltage(calculatedVoltage);
-        }, () -> flywheelMotor.setVoltage(0));
+        double distance = getHubDistance();
+        // all placeholder values and formula
+        ShotSolution shotSolution = ShootingCalculator.calculate();
+        double calculatedVelocity = shotSolution.flywheelSpeed;
+        double calculatedVoltage = feedforward.calculateWithVelocities(currentVelocity, calculatedVelocity);
+        // PLACE CALCULATED VOLTAGE INTO SET VOLTAGE
+        return run(() -> flywheelMotor.setVoltage(calculatedVoltage));
     }
 
+    public Command endFlywheel() {
+        return startEnd(() -> flywheelMotor.setVoltage(3), () -> flywheelMotor.setVoltage(0));
+    }
 
     // final implementation should be a while true
     public Command shootFuel() {
