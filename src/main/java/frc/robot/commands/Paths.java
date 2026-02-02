@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Controller;
 
 /*
  * You should consider using the more terse Command factories API instead
@@ -102,7 +102,7 @@ public class Paths extends Command {
     int findclosestIndex(List<Command> commandPathList, List<Translation2d> translationList) {
         double closestDistance = Double.POSITIVE_INFINITY;
         int closestIndex = -1;
-        currentTranslation = RobotContainer.drivetrain.getState().Pose.getTranslation();
+        currentTranslation = Controller.drivetrain.getState().Pose.getTranslation();
         for (int index = 0; index < 4; index++) {
             double distance = currentTranslation.getDistance(translationList.get(index));
             if (distance < closestDistance) {
