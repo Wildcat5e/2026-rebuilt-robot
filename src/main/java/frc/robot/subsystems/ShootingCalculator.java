@@ -15,6 +15,8 @@ import frc.robot.RobotContainer;
  * 3) A lookup table exists for static shooting.<br>
  */
 public class ShootingCalculator {
+    // PLACE HOLDER VALUE !!
+    static final double FIXED_HOOD_ANGLE_RADIANS = 10;
 
     public static class ShotSolution {
         /**
@@ -44,7 +46,6 @@ public class ShootingCalculator {
     }
 
     // Constant
-    private final double FIXED_HOOD_ANGLE_RADIANS;
 
     /**
      * Constructs a ShootingCalculator with a fixed hood angle in degrees.
@@ -53,10 +54,10 @@ public class ShootingCalculator {
      * 
      * @param fixedHoodAngleDegrees The constant angle of the shooter in degrees.
      */
-    public ShootingCalculator(double hoodAngleDegrees) {
-        // Calls the main constructor with 'false' for inputInRadians
-        this(hoodAngleDegrees, false);
-    }
+    // public ShootingCalculator(double hoodAngleDegrees) {
+    //     // Calls the main constructor with 'false' for inputInRadians
+    //     this(hoodAngleDegrees, false);
+    // }
 
     /**
      * Constructs a ShootingCalculator with a fixed hood angle, specifying the unit.<br>
@@ -66,9 +67,9 @@ public class ShootingCalculator {
      * @param inputInRadians Set to true if the input angle is in Radians; set to false if the input angle is in
      *        Degrees.
      */
-    public ShootingCalculator(double hoodAngle, boolean inputInRadians) {
-        this.FIXED_HOOD_ANGLE_RADIANS = inputInRadians ? hoodAngle : Math.toRadians(hoodAngle);
-    }
+    // public ShootingCalculator(double hoodAngle, boolean inputInRadians) {
+    //     this.FIXED_HOOD_ANGLE_RADIANS = inputInRadians ? hoodAngle : Math.toRadians(hoodAngle);
+    // }
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
@@ -77,7 +78,8 @@ public class ShootingCalculator {
      *        speed)
      * @return ShotSolution containing new heading and speed
      */
-    public ShotSolution calculate(ChassisSpeeds robotVel) {
+    static public ShotSolution calculate() {
+        ChassisSpeeds robotVel = RobotContainer.drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel =
             ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, RobotContainer.drivetrain.getState().Pose.getRotation());
@@ -126,7 +128,7 @@ public class ShootingCalculator {
     /**
      * Mock Lookup Table
      */
-    private double getStaticSpeedFromTable(double distance) {
+    static private double getStaticSpeedFromTable(double distance) {
         // Probably going to use InterpolatingDoubleTreeMap or similar.
 
         // Dummy formula: Speed increases with distance
