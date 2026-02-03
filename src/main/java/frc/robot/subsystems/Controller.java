@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.commands.RobotCommands;
 import frc.robot.generated.TunerConstants;
 
@@ -23,7 +24,7 @@ public abstract class Controller {
     static final double DEADZONE = .15;
     /** Exponent to raise inputs to the power of to create a curved response. */
     static final double SCALE_EXPONENT = 1;
-    static final double MAX_ANGULAR_SPEED = 1.5 * Math.PI;
+    public static final double MAX_ANGULAR_SPEED = 1.5 * Math.PI;
     static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
     /** The only instance of Drivetrain. */
     public static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -57,37 +58,6 @@ public abstract class Controller {
     /** The only instance of the Xbox Controller. */
     public static final CommandXboxController joystick = new CommandXboxController(0);
 
-    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
-    public void bindingsSetup() {
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            Translation2d translation = getTranslation();
-            if (allowControllerTranslation) {
-                swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
-            }
-            if (allowControllerRotation) {
-                swerveRequest.withRotationalRate(getRotation() * MAX_ANGULAR_SPEED);
-            }
-            return swerveRequest;
-        }));
-        // reset the field-centric heading on left trigger
-        Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        Controller.joystick.a().whileTrue(RobotCommands.rotateToHub);
-
-        /*
-         * Tests for motor identification:
-         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
-         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
-         */
-        // Quasistatic test for motor identification
-        Controller.joystick.start().and(Controller.joystick.y())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        Controller.joystick.start().and(Controller.joystick.x())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        // Dynamic test for motor identification
-        Controller.joystick.back().and(Controller.joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    }
 
     /** Get Translation2d of controller axes. */
     public abstract Translation2d getTranslation();

@@ -8,6 +8,7 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
@@ -21,9 +22,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.Controller;
+import frc.robot.subsystems.Outtake;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.commands.Paths;
 import frc.robot.commands.RobotCommands;
@@ -34,9 +37,7 @@ import frc.robot.commands.RobotCommands;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    /** The only instance of the Controller. */
     final Controller controller = new Controller.Xbox(0);
-    /** The only instance of PhotonVision. */
     final PhotonVision photonVision = new PhotonVision(Controller.drivetrain::addVisionMeasurement);
     /** Dashboard field widget */
     final Field2d field = new Field2d();
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot {
     public final StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     public final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
 
+    final public Outtake outtake = new Outtake();
     static public Alliance alliance;
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
         autoChooser = AutoBuilder.buildAutoChooser();
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
-        controller.bindingsSetup();
+        bindingsSetup();
         SmartDashboard.putData("Field", field);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
@@ -118,6 +120,42 @@ public class Robot extends TimedRobot {
     public void simulationPeriodic() {
         simulation.poseUpdate();
     }
+
+    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
+    public void bindingsSetup() {
+        Controller.drivetrain.setDefaultCommand(Controller.drivetrain.applyRequest(() -> {
+            Translation2d translation = controller.getTranslation();
+            if (Controller.allowControllerTranslation) {
+                Controller.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
+            }
+            if (Controller.allowControllerRotation) {
+                Controller.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
+            }
+            return Controller.swerveRequest;
+        }));
+        // reset the field-centric heading on left trigger
+        Controller.joystick.leftTrigger()
+            .onTrue(Controller.drivetrain.runOnce(Controller.drivetrain::seedFieldCentric));
+        Controller.joystick.a().whileTrue(RobotCommands.rotateToHub);
+
+        /*
+         * Tests for motor identification:
+         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
+         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
+         */
+        // Quasistatic test for motor identification
+        Controller.joystick.start().and(Controller.joystick.y())
+            .whileTrue(Controller.drivetrain.sysIdQuasistatic(Direction.kForward));
+        Controller.joystick.start().and(Controller.joystick.x())
+            .whileTrue(Controller.drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // Dynamic test for motor identification
+        Controller.joystick.back().and(Controller.joystick.y())
+            .whileTrue(Controller.drivetrain.sysIdDynamic(Direction.kForward));
+        Controller.joystick.back().and(Controller.joystick.x())
+            .whileTrue(Controller.drivetrain.sysIdDynamic(Direction.kReverse));
+    }
+
 
     public void configureAutoBuilder() {// @formatter:off
         try {

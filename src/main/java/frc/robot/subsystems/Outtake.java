@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Utilities;
 import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
@@ -29,9 +30,7 @@ public class Outtake extends SubsystemBase {
     double currentFlywheelSpeed = 0;
 
     /** Creates a new Outtake. */
-    public Outtake() {
-        feedforward.calculateWithVelocities(0, 0);
-    }
+    public Outtake() {}
 
     @Override
     public void periodic() {
@@ -70,19 +69,32 @@ public class Outtake extends SubsystemBase {
      * Starts flywheel and calculates speed based on distance, you need to set speed of flywheel to 0 with another
      * command
      */
-    public Command startFlywheel() {
-        // all placeholder values and formula
-        ShotSolution shotSolution = ShootingCalculator.calculate();
-        double calculatedFlywheelSpeed = shotSolution.flywheelSpeed;
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
-        // PLACE CALCULATED VOLTAGE INTO SET VOLTAGE
-        return runEnd(() -> flywheelMotor.setVoltage(calculatedVoltage), () -> flywheelMotor.setVoltage(0));
+    public Command dynamicStartFlywheel() {
+        return runEnd(() -> {
+            // all this code is ran every 20 ms
+            ShotSolution shotSolution = ShootingCalculator.calculate();
+            double calculatedFlywheelSpeed = shotSolution.flywheelSpeed;
+            double calculatedVoltage =
+                feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
+            flywheelMotor.setVoltage(calculatedVoltage);
+        },
+            // on end
+            () -> flywheelMotor.setVoltage(0));
     }
 
+    //** Starts flywheel with static speed, for when the robot is in the middle or opposing alliance zone and shooting fuel NOT in the hub */
+    public Command staticStartFlywheel() {
+        return runEnd(() -> {
+            double targetFlywheelSpeed = 3;
+            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            flywheelMotor.setVoltage(calculatedVoltage);
+        }, () -> flywheelMotor.setVoltage(0));
+    }
 
     // final implementation should be a while true
     public Command shootFuel() {
-        return new ParallelCommandGroup(startFlywheel(), RobotCommands.rotateToHub,
+        return new ParallelCommandGroup(Utilities.inHome() ? dynamicStartFlywheel() : staticStartFlywheel(),
+            Utilities.inHome() ? RobotCommands.rotateToHub : Commands.none(),
             // could do something where you check the amount of motor ticks that have passed
             // to infer speed of flywheel instead of waiting time
             new SequentialCommandGroup(Commands.waitSeconds(1),
@@ -100,5 +112,4 @@ public class Outtake extends SubsystemBase {
         previousRotation = currentRotation;
         return currentFlywheelSpeed;
     }
-
 }

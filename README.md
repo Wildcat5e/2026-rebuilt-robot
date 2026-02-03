@@ -30,6 +30,9 @@ This is a great repo.
     - Check if std dev numbers make sense, especially for new adaptive setup.
     - Check if height of robot to camera offset matters for Photon Vision.
 
+- Check if there's any automatic limit on voltage being passed in, worried about code breaking and being far away from hub, so voltage > 12 is passed in which is bad
+- Remember to remove/use the sys id motor tests in controller, uses back + x
+- Double check where alliance needs to be set (in robot) before competition
 - We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/TunerConstants.java) with generated code once the robot is built.
 
 ## POTENTIAL BUTTON BINDINGS

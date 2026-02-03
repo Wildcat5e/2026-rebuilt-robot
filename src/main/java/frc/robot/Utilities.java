@@ -53,4 +53,29 @@ public interface Utilities {
         SmartDashboard.putNumber("correct angle", Math.toDegrees(getRobotToHubAngle()));
         return Math.abs(getRobotToHubAngle() - robotRotation) < 4;
     }
+
+    static boolean inHome() {
+        double BLUE_X_AXIS_BARRIER = 4.0;
+        double RED_X_AXIS_BARRIER = 12.54;
+        double robotXPose = Controller.drivetrain.getState().Pose.getX();
+
+        // ON BLUE SIDE, IF THE X COORDINATE OF ROBOT IS LESS THAN 4.0,
+        // THEN THE ROBOT IS IN HOME (BLUE ALLIANCE ZONE)
+        if (Robot.alliance == Alliance.Blue) {
+            if (robotXPose < BLUE_X_AXIS_BARRIER) {
+                return true;
+            } else {
+                return false;
+            }
+            // RED SIDE, IF X COORDINATE OF ROBOT IS GREATER THAN 12.54,
+            // THEN THE ROBOT IS IN HOME (RED ALLIANCE ZONE)
+        } else {
+            if (robotXPose > RED_X_AXIS_BARRIER) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
 }
