@@ -4,7 +4,7 @@ import static frc.robot.Utilities.getHubDistance;
 import static frc.robot.Utilities.getRobotToHubAngle;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.RobotContainer;
+
 
 /**
  * A helper class to calculate shooting parameters while moving.<br>
@@ -79,10 +79,10 @@ public class ShootingCalculator {
      * @return ShotSolution containing new heading and speed
      */
     static public ShotSolution calculate() {
-        ChassisSpeeds robotVel = RobotContainer.drivetrain.getState().Speeds;
+        ChassisSpeeds robotVel = Controller.drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel =
-            ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, RobotContainer.drivetrain.getState().Pose.getRotation());
+            ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, Controller.drivetrain.getState().Pose.getRotation());
         double robotVelX = robotVel.vxMetersPerSecond;
         double robotVelY = robotVel.vyMetersPerSecond;
 

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Controller;
+import frc.robot.subsystems.ShootingCalculator;
 
 public class RotateToHub extends Command {
     private static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // Constants.MAX_ANGULAR_SPEED - Math.PI
@@ -23,7 +24,6 @@ public class RotateToHub extends Command {
 
     @Override
     public void initialize() {
-        System.out.println("initialized !!");
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset(getRobotRotationState());
     }
@@ -31,18 +31,17 @@ public class RotateToHub extends Command {
     @Override
     public void execute() {
         Pose2d currentPose = Controller.drivetrain.getState().Pose;
-        double robotToHubAngle = getRobotToHubAngle();
+        double targetAngle = ShootingCalculator.calculate().robotHeading;
         // debug
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
-        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(robotToHubAngle));
+        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetAngle));
 
-        velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), robotToHubAngle);
+        velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetAngle);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
         Controller.drivetrain.setControl(Controller.swerveRequest.withRotationalRate(velocity));
         PPHolonomicDriveController.overrideRotationFeedback(() -> {
             // Calculate feedback from your custom PID controller
-            System.out.println("ITS WORKING !!!!");
             return velocity;
         });
     }

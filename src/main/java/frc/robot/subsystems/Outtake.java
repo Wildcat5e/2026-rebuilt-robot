@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Outtake extends SubsystemBase {
@@ -20,7 +21,7 @@ public class Outtake extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
     // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
     double currentVelocity;
-    double GEAR_RATIO = 4;
+    double GEAR_RATIO = 0.5;
     double previousRotation = 0;
     double currentRotation = 0;
     double rotationDifference = 0;
@@ -70,22 +71,18 @@ public class Outtake extends SubsystemBase {
      * command
      */
     public Command startFlywheel() {
-        double distance = getHubDistance();
         // all placeholder values and formula
         ShotSolution shotSolution = ShootingCalculator.calculate();
-        double calculatedVelocity = shotSolution.flywheelSpeed;
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentVelocity, calculatedVelocity);
+        double calculatedFlywheelSpeed = shotSolution.flywheelSpeed;
+        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
         // PLACE CALCULATED VOLTAGE INTO SET VOLTAGE
-        return run(() -> flywheelMotor.setVoltage(calculatedVoltage));
+        return runEnd(() -> flywheelMotor.setVoltage(calculatedVoltage), () -> flywheelMotor.setVoltage(0));
     }
 
-    public Command endFlywheel() {
-        return startEnd(() -> flywheelMotor.setVoltage(3), () -> flywheelMotor.setVoltage(0));
-    }
 
     // final implementation should be a while true
     public Command shootFuel() {
-        return new ParallelCommandGroup(startFlywheel(),
+        return new ParallelCommandGroup(startFlywheel(), RobotCommands.rotateToHub,
             // could do something where you check the amount of motor ticks that have passed
             // to infer speed of flywheel instead of waiting time
             new SequentialCommandGroup(Commands.waitSeconds(1),
