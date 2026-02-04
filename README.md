@@ -18,8 +18,7 @@ This is a great repo.
 
 - RotateToHub/Shooting While Moving
     - Will need to go back and check the PID values and max speed.
-    - Check math in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) (can we test in the WPILib 3D simulator?).
-    - Convert the custom `Vector2d` objects in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) to `Translation2d` objects.
+    - Check math in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) (math can be found in documentation repo) (can we test in the WPILib 3D simulator?).
     - The center hub pose in RotateToHub is off by an insignificant amount.
     - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
