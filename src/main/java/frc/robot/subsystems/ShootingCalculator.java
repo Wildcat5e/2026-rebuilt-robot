@@ -40,7 +40,7 @@ public interface ShootingCalculator {
      *        speed)
      * @return ShotSolution containing new heading and speed
      */
-    static public ShotSolution calculate() {
+    static ShotSolution calculate() {
         ChassisSpeeds robotVel = Controller.drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, Controller.drivetrain.getState().Pose.getRotation());
@@ -89,7 +89,7 @@ public interface ShootingCalculator {
     /**
      * Mock Lookup Table
      */
-    static private double getStaticSpeedFromTable(double distance) {
+    private static double getStaticSpeedFromTable(double distance) {
         // Probably going to use InterpolatingDoubleTreeMap or similar.
 
         // Dummy formula: Speed increases with distance

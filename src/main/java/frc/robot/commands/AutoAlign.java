@@ -80,7 +80,7 @@ public class AutoAlign extends Command {
         Pose2d currentPose = Controller.drivetrain.getState().Pose;
         double positionDistance = currentPose.getTranslation().getDistance(goalState.pose.getTranslation());
         double rotationDistance = Math.abs(currentPose.getRotation().minus(goalState.pose.getRotation()).getRadians());
-        return (positionDistance < POSITION_TOLERANCE && rotationDistance < ROTATION_TOLERANCE);
+        return positionDistance < POSITION_TOLERANCE && rotationDistance < ROTATION_TOLERANCE;
     }
 
 }
