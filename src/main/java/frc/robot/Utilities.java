@@ -11,7 +11,8 @@ import frc.robot.subsystems.Drivetrain;
  */
 public interface Utilities {
     static double getHubDistance(Drivetrain drivetrain) {
-        // translation2d is just pose2d without rotation factor
+        // Translation2d is just Pose2d without rotation factor
+        // ADD RED
         Translation2d hubTranslation = new Translation2d(4.625, 4.03);
         Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
         double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
