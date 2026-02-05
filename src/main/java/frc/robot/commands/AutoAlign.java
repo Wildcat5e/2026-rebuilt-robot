@@ -9,7 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Controller;
+import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain;
 
 public class AutoAlign extends Command {
     private static final double POSITION_TOLERANCE = 0.025;
@@ -21,20 +22,22 @@ public class AutoAlign extends Command {
     private static final double MAX_DISTANCE = 3;
     private static final double TIME_LIMIT_MILLIS = 3000;
     private long startTime;
+    private final Drivetrain drivetrain;
     private static final PathPlannerTrajectoryState goalState = new PathPlannerTrajectoryState();
 
     private static final Pose2d CENTER_HUB = new Pose2d(3.0, 4.0, new Rotation2d(0));
     public static final List<Pose2d> TAG_POSE_LIST = List.of(CENTER_HUB);
 
 
-    public AutoAlign() {
-        addRequirements(Controller.drivetrain);
+    public AutoAlign(Drivetrain drivetrain) {
+        this.drivetrain = drivetrain;
+        addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
         startTime = System.currentTimeMillis();
-        Pose2d currentPose = Controller.drivetrain.getState().Pose;
+        Pose2d currentPose = drivetrain.getState().Pose;
         Pose2d nearestTagPose = currentPose.nearest(TAG_POSE_LIST);
         double distance = currentPose.getTranslation().getDistance(nearestTagPose.getTranslation());
         goalState.pose = nearestTagPose;
@@ -48,9 +51,9 @@ public class AutoAlign extends Command {
 
     @Override
     public void execute() {
-        Pose2d currentPose = Controller.drivetrain.getState().Pose;
+        Pose2d currentPose = drivetrain.getState().Pose;
         ChassisSpeeds outputSpeeds = HOLONOMIC_DRIVE_CONTROLLER.calculateRobotRelativeSpeeds(currentPose, goalState);
-        Controller.drivetrain.setControl(Controller.swerveRequest.withVelocityX(outputSpeeds.vxMetersPerSecond)
+        drivetrain.setControl(Robot.swerveRequest.withVelocityX(outputSpeeds.vxMetersPerSecond)
             .withVelocityY(outputSpeeds.vyMetersPerSecond).withRotationalRate(outputSpeeds.omegaRadiansPerSecond));
     }
 
@@ -77,7 +80,7 @@ public class AutoAlign extends Command {
     }
 
     private boolean isWithinTolerance() {
-        Pose2d currentPose = Controller.drivetrain.getState().Pose;
+        Pose2d currentPose = drivetrain.getState().Pose;
         double positionDistance = currentPose.getTranslation().getDistance(goalState.pose.getTranslation());
         double rotationDistance = Math.abs(currentPose.getRotation().minus(goalState.pose.getRotation()).getRadians());
         return positionDistance < POSITION_TOLERANCE && rotationDistance < ROTATION_TOLERANCE;

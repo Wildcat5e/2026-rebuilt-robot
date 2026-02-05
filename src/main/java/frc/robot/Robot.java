@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -23,13 +24,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.RobotCommands;
-import frc.robot.commands.RotateToHub;
-import frc.robot.subsystems.Controller;
-import frc.robot.subsystems.Outtake;
-import frc.robot.subsystems.PhotonVision;
-import frc.robot.commands.Paths;
-import frc.robot.commands.RobotCommands;
+import frc.robot.commands.*;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.*;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -37,8 +34,13 @@ import frc.robot.commands.RobotCommands;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+    /** The only instance of Drivetrain. */
+    private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
+    /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
+    public static final SwerveRequest.FieldCentric swerveRequest =
+        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     final Controller controller = new Controller.Xbox(0);
-    final PhotonVision photonVision = new PhotonVision(Controller.drivetrain::addVisionMeasurement);
+    final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
     /** Dashboard field widget */
     final Field2d field = new Field2d();
     /** A chooser for autonomous commands */
@@ -47,12 +49,16 @@ public class Robot extends TimedRobot {
     public final StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     public final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
 
-    final public Outtake outtake = new Outtake();
     static public Alliance alliance;
+
+    AutoAlign autoAlign = new AutoAlign(drivetrain);
+    RotateToHub rotateToHub = new RotateToHub(drivetrain);
+    Paths paths = new Paths(drivetrain);
+    final public Outtake outtake = new Outtake(drivetrain, rotateToHub);
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
-        NamedCommands.registerCommand("Rotate To Hub", RobotCommands.rotateToHub);
+        NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
@@ -62,15 +68,14 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
-        SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle());
-        SmartDashboard.putBoolean("Within Shooting Distance", Utilities.withinShootingDistance());
-        NamedCommands.registerCommand("Rotate To Hub", RobotCommands.rotateToHub);
+        SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle(drivetrain));
+        SmartDashboard.putBoolean("Within Shooting Distance", Utilities.withinShootingDistance(drivetrain));
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        field.setRobotPose(Controller.drivetrain.getState().Pose);
+        field.setRobotPose(drivetrain.getState().Pose);
     }
 
     @Override
@@ -113,7 +118,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void simulationInit() {
-        simulation = new Simulation();
+        simulation = new Simulation(drivetrain);
     }
 
     @Override
@@ -123,21 +128,20 @@ public class Robot extends TimedRobot {
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     public void bindingsSetup() {
-        Controller.drivetrain.setDefaultCommand(Controller.drivetrain.applyRequest(() -> {
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Controller.allowControllerTranslation) {
-                Controller.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                Robot.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
                     .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
             }
             if (Controller.allowControllerRotation) {
-                Controller.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
+                Robot.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
             }
-            return Controller.swerveRequest;
+            return Robot.swerveRequest;
         }));
         // reset the field-centric heading on left trigger
-        Controller.joystick.leftTrigger()
-            .onTrue(Controller.drivetrain.runOnce(Controller.drivetrain::seedFieldCentric));
-        Controller.joystick.a().whileTrue(RobotCommands.rotateToHub);
+        Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        Controller.joystick.a().whileTrue(rotateToHub);
 
         /*
          * Tests for motor identification:
@@ -146,14 +150,12 @@ public class Robot extends TimedRobot {
          */
         // Quasistatic test for motor identification
         Controller.joystick.start().and(Controller.joystick.y())
-            .whileTrue(Controller.drivetrain.sysIdQuasistatic(Direction.kForward));
+            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         Controller.joystick.start().and(Controller.joystick.x())
-            .whileTrue(Controller.drivetrain.sysIdQuasistatic(Direction.kReverse));
+            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         // Dynamic test for motor identification
-        Controller.joystick.back().and(Controller.joystick.y())
-            .whileTrue(Controller.drivetrain.sysIdDynamic(Direction.kForward));
-        Controller.joystick.back().and(Controller.joystick.x())
-            .whileTrue(Controller.drivetrain.sysIdDynamic(Direction.kReverse));
+        Controller.joystick.back().and(Controller.joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
 
@@ -162,11 +164,11 @@ public class Robot extends TimedRobot {
             var applyRobotSpeedsRequest = new SwerveRequest.ApplyRobotSpeeds();
             var config = RobotConfig.fromGUISettings();
             AutoBuilder.configure(
-                () -> Controller.drivetrain.getState().Pose,   // Supplier of current robot pose
-                Controller.drivetrain::resetPose,         // Consumer for seeding pose against auto
-                () -> Controller.drivetrain.getState().Speeds, // Supplier of current robot speeds
+                () -> drivetrain.getState().Pose,   // Supplier of current robot pose
+                drivetrain::resetPose,         // Consumer for seeding pose against auto
+                () -> drivetrain.getState().Speeds, // Supplier of current robot speeds
                 // Consumer of ChassisSpeeds and feedforwards to drive the robot
-                (speeds, feedforwards) -> Controller.drivetrain.setControl(
+                (speeds, feedforwards) -> drivetrain.setControl(
                     applyRobotSpeedsRequest.withSpeeds(ChassisSpeeds.discretize(speeds, 0.020))
                         .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
                         .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
@@ -180,7 +182,7 @@ public class Robot extends TimedRobot {
                 config,
                 // Assume the path needs to be flipped for Red vs Blue, this is normally the case
                 () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-                Controller.drivetrain // Subsystem for requirements
+                drivetrain // Subsystem for requirements
             );
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());

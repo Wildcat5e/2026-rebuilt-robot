@@ -9,12 +9,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Utilities;
-import frc.robot.commands.RobotCommands;
+import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Outtake extends SubsystemBase {
 
+    private final Drivetrain drivetrain;
+    private final RotateToHub rotateToHub;
     private final TalonFX leftHopperMotor = new TalonFX(0);
     private final TalonFX rightHopperMotor = new TalonFX(0);
     private final TalonFX kickerMotor = new TalonFX(0);
@@ -30,7 +31,10 @@ public class Outtake extends SubsystemBase {
     double currentFlywheelSpeed = 0;
 
     /** Creates a new Outtake. */
-    public Outtake() {}
+    public Outtake(Drivetrain drivetrain, RotateToHub rotateToHub) {
+        this.drivetrain = drivetrain;
+        this.rotateToHub = rotateToHub;
+    }
 
     @Override
     public void periodic() {
@@ -72,7 +76,7 @@ public class Outtake extends SubsystemBase {
     public Command dynamicStartFlywheel() {
         return runEnd(() -> {
             // all this code is ran every 20 ms
-            ShotSolution shotSolution = ShootingCalculator.calculate();
+            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             double calculatedFlywheelSpeed = shotSolution.flywheelSpeed;
             double calculatedVoltage =
                 feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
@@ -93,8 +97,8 @@ public class Outtake extends SubsystemBase {
 
     // final implementation should be a while true
     public Command shootFuel() {
-        return new ParallelCommandGroup(Utilities.inHome() ? dynamicStartFlywheel() : staticStartFlywheel(),
-            Utilities.inHome() ? RobotCommands.rotateToHub : Commands.none(),
+        return new ParallelCommandGroup(inHome(drivetrain) ? dynamicStartFlywheel() : staticStartFlywheel(),
+            inHome(drivetrain) ? rotateToHub : Commands.none(),
             // could do something where you check the amount of motor ticks that have passed
             // to infer speed of flywheel instead of waiting time
             new SequentialCommandGroup(Commands.waitSeconds(1),
