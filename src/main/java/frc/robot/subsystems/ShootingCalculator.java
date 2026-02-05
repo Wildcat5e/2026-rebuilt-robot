@@ -14,7 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 public interface ShootingCalculator {
     double FIXED_HOOD_ANGLE_RADIANS = 10; // PLACE HOLDER VALUE !!
 
-    public static class ShotSolution {
+    static class ShotSolution {
         public double flywheelSpeed;
         public double robotHeading;
 
@@ -35,21 +35,20 @@ public interface ShootingCalculator {
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
-     *
-     * @param robotVel Robot-centric robot velocity (vx, vy) (use "drivetrain.getState().Speeds" for robot-centric
-     *        speed)
+     * 
+     * @param drivetrain
      * @return ShotSolution containing new heading and speed
      */
-    static ShotSolution calculate() {
-        ChassisSpeeds robotVel = Controller.drivetrain.getState().Speeds;
+    static ShotSolution calculate(Drivetrain drivetrain) {
+        ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
-        robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, Controller.drivetrain.getState().Pose.getRotation());
+        robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
         double robotVelX = robotVel.vxMetersPerSecond;
         double robotVelY = robotVel.vyMetersPerSecond;
 
         // 1. Calculate Vector to Target (Distance and Angle)
-        double distanceToTarget = getHubDistance();
-        double angleToTarget = getRobotToHubAngle();
+        double distanceToTarget = getHubDistance(drivetrain);
+        double angleToTarget = getRobotToHubAngle(drivetrain);
 
         // 2. Look up the Ideal "Static" Shot Speed This is the speed you would shoot if standing perfectly still at
         // this distance.

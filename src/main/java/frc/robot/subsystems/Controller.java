@@ -1,16 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.commands.RobotCommands;
-import frc.robot.generated.TunerConstants;
 
 /**
  * Controller management.
@@ -25,13 +19,7 @@ public abstract class Controller {
     /** Exponent to raise inputs to the power of to create a curved response. */
     static final double SCALE_EXPONENT = 1;
     public static final double MAX_ANGULAR_SPEED = 1.5 * Math.PI;
-    static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
-    /** The only instance of Drivetrain. */
-    public static final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
-    public static final SwerveRequest.FieldCentric swerveRequest =
-        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-
+    public static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
     /** Change whether or not controller can control translation. */
     public static boolean allowControllerTranslation = true;
     /** Change whether or not controller can control rotation. */
@@ -57,7 +45,6 @@ public abstract class Controller {
 
     /** The only instance of the Xbox Controller. */
     public static final CommandXboxController joystick = new CommandXboxController(0);
-
 
     /** Get Translation2d of controller axes. */
     public abstract Translation2d getTranslation();

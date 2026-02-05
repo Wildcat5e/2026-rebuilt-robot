@@ -1,12 +1,7 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.sampled.SourceDataLine;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,16 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
-import frc.robot.subsystems.Controller;
+import frc.robot.subsystems.Drivetrain;
 
-/*
- * You should consider using the more terse Command factories API instead
- * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
- */
 public class Paths extends Command {
-
+    private final Drivetrain drivetrain;
     List<Translation2d> translationsList;
     boolean error = false;
     ArrayList<Command> commandPathList = new ArrayList<>(4);
@@ -33,8 +23,8 @@ public class Paths extends Command {
 
 
     /** Creates a new Paths. */
-    public Paths() {
-
+    public Paths(Drivetrain drivetrain) {
+        this.drivetrain = drivetrain;
         try {
             PathPlannerPath Mid_Top_Bump_DS_Path = PathPlannerPath.fromPathFile("Mid Top Bump DS");
             PathPlannerPath DS_Top_Bump_Mid_Path = PathPlannerPath.fromPathFile("DS Top Bump Mid");
@@ -102,7 +92,7 @@ public class Paths extends Command {
     int findclosestIndex(List<Command> commandPathList, List<Translation2d> translationList) {
         double closestDistance = Double.POSITIVE_INFINITY;
         int closestIndex = -1;
-        currentTranslation = Controller.drivetrain.getState().Pose.getTranslation();
+        currentTranslation = drivetrain.getState().Pose.getTranslation();
         for (int index = 0; index < 4; index++) {
             double distance = currentTranslation.getDistance(translationList.get(index));
             if (distance < closestDistance) {
