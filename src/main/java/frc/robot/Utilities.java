@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Controller;
@@ -11,7 +10,6 @@ import frc.robot.subsystems.Controller;
  * import static frc.robot.Utilities.*;
  */
 public interface Utilities {
-
     static double getHubDistance() {
         // translation2d is just pose2d without rotation factor
         Translation2d hubTranslation = new Translation2d(4.625, 4.03);
@@ -22,7 +20,7 @@ public interface Utilities {
 
     static boolean withinShootingDistance() {
         double distance = getHubDistance();
-        return (1 < distance && distance < 3);
+        return 1 < distance && distance < 3;
     }
 
     /** Returns in radians. */
@@ -62,19 +60,12 @@ public interface Utilities {
         // ON BLUE SIDE, IF THE X COORDINATE OF ROBOT IS LESS THAN 4.0,
         // THEN THE ROBOT IS IN HOME (BLUE ALLIANCE ZONE)
         if (Robot.alliance == Alliance.Blue) {
-            if (robotXPose < BLUE_X_AXIS_BARRIER) {
-                return true;
-            } else {
-                return false;
-            }
-            // RED SIDE, IF X COORDINATE OF ROBOT IS GREATER THAN 12.54,
-            // THEN THE ROBOT IS IN HOME (RED ALLIANCE ZONE)
-        } else {
-            if (robotXPose > RED_X_AXIS_BARRIER) {
-                return true;
-            } else {
-                return false;
-            }
+            return robotXPose < BLUE_X_AXIS_BARRIER;
+        }
+        // RED SIDE, IF X COORDINATE OF ROBOT IS GREATER THAN 12.54,
+        // THEN THE ROBOT IS IN HOME (RED ALLIANCE ZONE)
+        else {
+            return robotXPose > RED_X_AXIS_BARRIER;
         }
     }
 
