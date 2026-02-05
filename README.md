@@ -29,6 +29,9 @@ This is a great repo.
     - Check if std dev numbers make sense, especially for new adaptive setup.
     - Check if height of robot to camera offset matters for Photon Vision.
 
+- Utilities
+    - Add Red Hub's coordinates to `getHubDistance()`.
+
 - Change Controller to whatever one we use rather than MultiController before competition.
 - Check if there's any automatic limit on voltage being passed in, worried about code breaking and being far away from hub, so voltage > 12 is passed in which is bad
 - Remember to remove/use the sys id motor tests in controller, uses back + x
