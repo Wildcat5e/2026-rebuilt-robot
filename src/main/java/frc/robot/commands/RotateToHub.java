@@ -34,7 +34,7 @@ public class RotateToHub extends Command {
     @Override
     public void execute() {
         Pose2d currentPose = drivetrain.getState().Pose;
-        double targetAngle = ShootingCalculator.calculate(drivetrain).robotHeading;
+        double targetAngle = ShootingCalculator.calculate(drivetrain).robotHeading();
         // debug
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
         SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetAngle));
