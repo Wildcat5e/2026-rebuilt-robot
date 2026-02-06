@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -90,5 +91,34 @@ public abstract class Controller {
             return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
         }
     }
+    public static class Keyboard extends Controller {
 
+        private final CommandJoystick controller;
+        /** Deadzone specific to flight stick. */
+        // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
+
+        /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
+        public Keyboard(int port) {
+            controller = new CommandJoystick(port);
+        }
+
+        @Override
+        public Translation2d getTranslation() {
+            return applyRadialDeadzone(controller.getRawAxis(1), controller.getRawAxis(0), DEADZONE);
+        }
+
+        @Override
+        public double getRotation() {
+            return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
+        }
+    }
+    public static class MultiController {
+        SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
+
+        public MultiController() {
+            controllerChooser.addOption("Xbox Controller", new Controller.Xbox(0));
+            controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
+            controllerChooser.addOption("Keyboard", new Controller.Keyboard(2));
+        }
+    }
 }
