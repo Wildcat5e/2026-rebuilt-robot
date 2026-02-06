@@ -1,13 +1,12 @@
+// @formatter:off
 package frc.robot.util;
-
-import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.subsystems.Controller;
 
 import java.util.Map;
 import java.util.function.Supplier;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * Estimate Shot Solution while moving.
@@ -37,8 +36,8 @@ public class ShotEstimator {
      * Creates a default ShotEstimator using the drivetrain state, a sampled
      * lookup table, and the hub for the current alliance.
      */
-    public ShotEstimator() {
-        this(Controller.drivetrain::getState, Hub.home(), FLYWHEEL_SPEEDS_BY_HUB_DISTANCE);
+    public ShotEstimator(Drivetrain drivetrain) {
+        this(drivetrain::getState, Hub.home(), FLYWHEEL_SPEEDS_BY_HUB_DISTANCE);
     }
 
     ShotEstimator(
