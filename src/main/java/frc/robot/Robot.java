@@ -39,22 +39,22 @@ public class Robot extends TimedRobot {
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    final Controller controller = new Controller.Xbox(0);
-    final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
+    private final Controller controller = new Controller.Xbox(0);
+    private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
     /** Dashboard field widget */
-    final Field2d field = new Field2d();
+    private final Field2d field = new Field2d();
     /** A chooser for autonomous commands */
-    final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
     /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
-    public final StringTopic elasticTabTopic = NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
-    public final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
+    private final StringTopic elasticTabTopic =
+        NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
+    private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
+    private final AutoAlign autoAlign = new AutoAlign(drivetrain);
+    private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
+    private final Paths paths = new Paths(drivetrain);
+    private final Outtake outtake = new Outtake(drivetrain, rotateToHub);
 
-    static public Alliance alliance;
-
-    AutoAlign autoAlign = new AutoAlign(drivetrain);
-    RotateToHub rotateToHub = new RotateToHub(drivetrain);
-    Paths paths = new Paths(drivetrain);
-    final public Outtake outtake = new Outtake(drivetrain, rotateToHub);
+    public static Alliance alliance;
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
