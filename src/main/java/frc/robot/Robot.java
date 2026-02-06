@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
     private final AutoAlign autoAlign = new AutoAlign(drivetrain);
     private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
     private final Paths paths = new Paths(drivetrain);
-    private final Outtake outtake = new Outtake(drivetrain, rotateToHub);
+    private final Flywheel outtake = new Flywheel(drivetrain, rotateToHub);
 
     public static Alliance alliance;
 
