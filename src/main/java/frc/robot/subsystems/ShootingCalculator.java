@@ -14,24 +14,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 public interface ShootingCalculator {
     double FIXED_HOOD_ANGLE_RADIANS = 10; // PLACE HOLDER VALUE !!
 
-    static class ShotSolution {
-        public double flywheelSpeed;
-        public double robotHeading;
-
-        /**
-         * @param speed The flywheel speed will be in m/s, but can be converted to RPM using the formula:
-         * 
-         *        <pre>
-         *        RPM = (flywheelSpeed * 60) / (2 * π * radius)
-         *        </pre>
-         * 
-         * @param heading The field-centric angle (radians) the robot should face.
-         */
-        public ShotSolution(double speed, double heading) {
-            this.flywheelSpeed = speed;
-            this.robotHeading = heading;
-        }
-    }
+    // Returned by calculate()
+    public static record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
@@ -72,7 +56,7 @@ public interface ShootingCalculator {
         // 6. Extract Outputs
 
         // Calculate the new Heading (Lead Angle)
-        double newHeadingRadians = Math.atan2(shotVy, shotVx);
+        double newHeadingRadians = Math.atan2(shotVy, shotVx) + Math.PI;
 
         // Calculate the new Shot Speed
         // First get the horizontal magnitude
