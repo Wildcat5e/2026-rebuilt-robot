@@ -56,7 +56,7 @@ public interface ShootingCalculator {
         // 6. Extract Outputs
 
         // Calculate the new Heading (Lead Angle)
-        double newHeadingRadians = Math.atan2(shotVy, shotVx) + Math.PI;
+        double newHeadingRadians = Math.atan2(-shotVy, -shotVx);
 
         // Calculate the new Shot Speed
         // First get the horizontal magnitude
