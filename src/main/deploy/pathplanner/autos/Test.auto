@@ -7,7 +7,7 @@
         {
           "type": "parallel",
           "data": {
-            "pathName": "Left Start to Depot"
+            "commands": []
           }
         },
         {
