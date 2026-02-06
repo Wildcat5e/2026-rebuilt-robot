@@ -13,7 +13,12 @@ public interface Utilities {
     static double getHubDistance(Drivetrain drivetrain) {
         // Translation2d is just Pose2d without rotation factor
         // ADD RED
-        Translation2d hubTranslation = new Translation2d(4.625, 4.03);
+        Translation2d hubTranslation;
+        if (Robot.alliance == Alliance.Blue) {
+            hubTranslation = new Translation2d(4.625, 4.03);
+        } else {
+            hubTranslation = new Translation2d(11.915, 4.03);
+        }
         Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
         double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
         return distanceRobotHub;
