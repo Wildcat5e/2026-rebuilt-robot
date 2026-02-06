@@ -77,7 +77,7 @@ public class Outtake extends SubsystemBase {
         return runEnd(() -> {
             // all this code is ran every 20 ms
             ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
-            double calculatedFlywheelSpeed = shotSolution.flywheelSpeed;
+            double calculatedFlywheelSpeed = shotSolution.flywheelSpeed();
             double calculatedVoltage =
                 feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
             flywheelMotor.setVoltage(calculatedVoltage);
