@@ -62,7 +62,7 @@ public abstract class Controller {
 
         @Override
         public Translation2d getTranslation() {
-            return applyRadialDeadzone(controller.getLeftY(), controller.getLeftX(), DEADZONE);
+            return applyRadialDeadzone(-controller.getLeftY(), -controller.getLeftX(), DEADZONE);
         }
 
         @Override
