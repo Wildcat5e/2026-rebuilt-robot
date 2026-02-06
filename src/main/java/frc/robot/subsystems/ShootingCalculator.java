@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = 10; // PLACE HOLDER VALUE !!
+    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // PLACEHOLDER VALUE !!
 
     // Returned by calculate()
     public static record ShotSolution(double flywheelSpeed, double robotHeading) {}
@@ -56,7 +56,7 @@ public interface ShootingCalculator {
         // 6. Extract Outputs
 
         // Calculate the new Heading (Lead Angle)
-        double newHeadingRadians = Math.atan2(-shotVy, -shotVx);
+        double newHeadingRadians = Math.atan2(shotVy, shotVx);
 
         // Calculate the new Shot Speed
         // First get the horizontal magnitude
