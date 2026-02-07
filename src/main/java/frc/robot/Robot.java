@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller = new Controller.Xbox(0);
+    private final Controller controller = new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
     /** Dashboard field widget */
     private final Field2d field = new Field2d();
