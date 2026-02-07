@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static frc.robot.Utilities.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -116,13 +118,29 @@ public class Flywheel extends SubsystemBase {
         return currentFlywheelSpeed;
     }
 
-    SysIdRoutine.Mechanism mechanism = new SysIdRoutine.Mechanism(voltage -> flywheelMotor.setVoltage(0), log -> {
-        log.motor("flywheel-motor").voltage((Voltage) flywheelMotor.getMotorVoltage(false))
-            .angularPosition((Angle) flywheelMotor.getVelocity());
-    }, this);
+    // UNTESTED
+    SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
+        new SysIdRoutine.Mechanism(voltage -> flywheelMotor.setVoltage(voltage.magnitude()), log -> {
+            log.motor("flywheel-motor").voltage(flywheelMotor.getMotorVoltage().getValue())
+                .angularPosition(
+                    Angle.ofRelativeUnits(flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO, Rotations))
+                .angularVelocity(flywheelMotor.getVelocity().getValue());
+        }, this));
 
-    // SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
-    //     new SysIdRoutine.Mechanism((double voltage) -> flywheelMotor.setVoltage(voltage), log -> {
-    //         log.motor("flywheel-motor").voltage(8).angularPosition(3).angularVelocity(3);
-    //     }, this));
+
+    public Command sysIdQuasistaticForward() {
+        return routine.quasistatic(SysIdRoutine.Direction.kForward);
+    }
+
+    public Command sysIdQuasistaticReverse() {
+        return routine.quasistatic(SysIdRoutine.Direction.kReverse);
+    }
+
+    public Command sysIdDynamicForward() {
+        return routine.dynamic(SysIdRoutine.Direction.kForward);
+    }
+
+    public Command sysIdDynamicReverse() {
+        return routine.dynamic(SysIdRoutine.Direction.kReverse);
+    }
 }
