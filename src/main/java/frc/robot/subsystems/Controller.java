@@ -84,7 +84,7 @@ public abstract class Controller {
 
         @Override
         public Translation2d getTranslation() {
-            return applyRadialDeadzone(controller.getRawAxis(1), controller.getRawAxis(0), DEADZONE);
+            return applyRadialDeadzone(-controller.getRawAxis(1), -controller.getRawAxis(0), DEADZONE);
         }
 
         @Override
@@ -92,25 +92,13 @@ public abstract class Controller {
             return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
         }
     }
-    public static class Keyboard extends Controller {
-
+    public static class SimulationKeyboard extends LogitechFlightStick {
         private final CommandJoystick controller;
-        /** Deadzone specific to flight stick. */
-        // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
 
-        /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
-        public Keyboard(int port) {
-            controller = new CommandJoystick(port);
-        }
-
-        @Override
-        public Translation2d getTranslation() {
-            return applyRadialDeadzone(controller.getRawAxis(1), controller.getRawAxis(0), DEADZONE);
-        }
-
-        @Override
-        public double getRotation() {
-            return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
+        /** Uses {@link CommandJoystick} for Simulation Keyboard. @param port index on Driver Station */
+        public SimulationKeyboard(int port) {
+            super(port);
+            controller = super.controller;
         }
     }
     public static class MultiController extends Controller {
@@ -119,7 +107,7 @@ public abstract class Controller {
         public MultiController() {
             controllerChooser.setDefaultOption("Xbox Controller", new Controller.Xbox(0));
             controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
-            controllerChooser.addOption("Keyboard", new Controller.Keyboard(2));
+            controllerChooser.addOption("Simulation Keyboard", new Controller.SimulationKeyboard(2));
             SmartDashboard.putData("Controller Chooser", controllerChooser);
         }
 
