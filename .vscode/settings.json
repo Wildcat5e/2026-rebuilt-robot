@@ -85,4 +85,6 @@
       ]
     },
   },
+  "scm.graph.badges": "all",
+  "scm.showActionButton": false,
 }
