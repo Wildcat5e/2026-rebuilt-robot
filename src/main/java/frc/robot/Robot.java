@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     private final Paths paths = new Paths(drivetrain);
     private final Flywheel outtake = new Flywheel(drivetrain, rotateToHub);
 
-    public static Alliance alliance;
+    public static Alliance alliance = Alliance.Blue; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
