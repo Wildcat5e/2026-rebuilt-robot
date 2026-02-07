@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -101,10 +102,16 @@ public abstract class Controller {
             controller = super.controller;
         }
     }
+    /**
+     * Controller that will use the {@link Controller} selected by the dashboard widget. For example, you can select the
+     * {@link Xbox} controller. Also, this silences unplugged controller warnings. You should probably directly us your
+     * controller before competition instead of using this.
+     */
     public static class MultiController extends Controller {
         final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
         public MultiController() {
+            DriverStation.silenceJoystickConnectionWarning(true);
             controllerChooser.setDefaultOption("Xbox Controller", new Controller.Xbox(0));
             controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
             controllerChooser.addOption("Simulation Keyboard", new Controller.SimulationKeyboard(2));
