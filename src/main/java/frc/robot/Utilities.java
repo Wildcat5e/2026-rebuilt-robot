@@ -10,15 +10,13 @@ import frc.robot.subsystems.Drivetrain;
  * import static frc.robot.Utilities.*;
  */
 public interface Utilities {
+    /** @return Translation2d of the Hub for the current alliance. */
+    static Translation2d getHubTranslation() {
+        return Robot.alliance == Alliance.Blue ? Constants.BLUE_HUB_TRANSLATION : Constants.RED_HUB_TRANSLATION;
+    }
+
     static double getHubDistance(Drivetrain drivetrain) {
-        // Translation2d is just Pose2d without rotation factor
-        // ADD RED
-        Translation2d hubTranslation;
-        if (Robot.alliance == Alliance.Blue) {
-            hubTranslation = new Translation2d(4.625, 4.03);
-        } else {
-            hubTranslation = new Translation2d(11.915, 4.03);
-        }
+        Translation2d hubTranslation = getHubTranslation();
         Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
         double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
         return distanceRobotHub;
@@ -31,28 +29,17 @@ public interface Utilities {
 
     /** Returns in radians. */
     static double getRobotToHubAngle(Drivetrain drivetrain) {
-
-        double hubXPose;
-        double hubYPose;
-
-        if (Robot.alliance == Alliance.Blue) {
-            hubXPose = 4.625;
-            hubYPose = 4.03;
-        } else {
-            hubXPose = 11.915;
-            hubYPose = 4.03;
-        }
-
-
+        Translation2d hubTranslation = getHubTranslation();
         Pose2d currentPose = drivetrain.getState().Pose;
-        double angleOfRobotToHub = Math.atan2((hubYPose - currentPose.getY()), (hubXPose - currentPose.getX()));
+        double angleOfRobotToHub =
+            Math.atan2((hubTranslation.getY() - currentPose.getY()), (hubTranslation.getX() - currentPose.getX()));
         return angleOfRobotToHub;
     }
 
     static boolean withinShootingAngle(Drivetrain drivetrain) {
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
-        // NEED TO TEST DEGREE VALUE
-        // debug
+
+        // Debugging
         SmartDashboard.putNumber("robot angle", Math.toDegrees(robotRotation));
         SmartDashboard.putNumber("correct angle", Math.toDegrees(getRobotToHubAngle(drivetrain)));
         return Math.abs(getRobotToHubAngle(drivetrain) - robotRotation) < 4;

@@ -17,8 +17,8 @@ This is a great repo.
     - Before competition, make sure to actually set the correct values for settings that are used in pathplanner (like robot weight) or else we cooked.
 
 - RotateToHub/Shooting While Moving
+    - Find a way to simulate shooting the fuel to test the math in [ShootingCalculator.java](/src/main/java/frc/robot/subsystems/ShootingCalculator.java). Preferably in a 3D sim, if possible.
     - Will need to go back and check the PID values and max speed.
-    - Check math in [ShootingCalculator](/src/main/java/frc/robot/subsystems/ShootingCalculator.java) (math can be found in documentation repo) (can we test in the WPILib 3D simulator?).
     - The center hub pose in RotateToHub is off by an insignificant amount.
     - Remove `SmartDashboard.putNumber()` debug info once no longer needed and before competition.
 
