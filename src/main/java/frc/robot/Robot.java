@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Controller.MultiController;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -62,7 +61,6 @@ public class Robot extends TimedRobot {
         NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
-        MultiController.putChooserOnDashboard((MultiController) controller);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
         bindingsSetup();
