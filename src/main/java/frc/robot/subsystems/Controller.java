@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -112,13 +113,27 @@ public abstract class Controller {
             return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
         }
     }
-    public static class MultiController {
-        SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
+    public static class MultiController extends Controller {
+        final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
         public MultiController() {
-            controllerChooser.addOption("Xbox Controller", new Controller.Xbox(0));
+            controllerChooser.setDefaultOption("Xbox Controller", new Controller.Xbox(0));
             controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
             controllerChooser.addOption("Keyboard", new Controller.Keyboard(2));
+        }
+
+        @Override
+        public double getRotation() {
+            return controllerChooser.getSelected().getRotation();
+        }
+
+        @Override
+        public Translation2d getTranslation() {
+            return controllerChooser.getSelected().getTranslation();
+        }
+
+        public static void putChooserOnDashboard(MultiController controller) {
+            SmartDashboard.putData("Controller Chooser", controller.controllerChooser);
         }
     }
 }
