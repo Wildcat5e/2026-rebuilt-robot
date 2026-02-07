@@ -120,6 +120,7 @@ public abstract class Controller {
             controllerChooser.setDefaultOption("Xbox Controller", new Controller.Xbox(0));
             controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
             controllerChooser.addOption("Keyboard", new Controller.Keyboard(2));
+            SmartDashboard.putData("Controller Chooser", controllerChooser);
         }
 
         @Override
@@ -130,10 +131,6 @@ public abstract class Controller {
         @Override
         public Translation2d getTranslation() {
             return controllerChooser.getSelected().getTranslation();
-        }
-
-        public static void putChooserOnDashboard(MultiController controller) {
-            SmartDashboard.putData("Controller Chooser", controller.controllerChooser);
         }
     }
 }
