@@ -21,7 +21,7 @@ This is a great repo.
     - Check if height of robot to camera offset matters for Photon Vision.
 
 - Controller
-    - Figure out why x axis controller binds to y axis robot movement and y binds to x
+    - Nicholas needs to add documentation about axis being flipped in controller
 
 - Change Controller to whatever one we use rather than MultiController before competition.
 - Check if there's any automatic limit on voltage being passed in, worried about code breaking and being far away from hub, so voltage > 12 is passed in which is bad
@@ -30,15 +30,15 @@ This is a great repo.
 - We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/TunerConstants.java) with generated code once the robot is built.
 
 ## ROBOT TESTING LIST
--Test intake arm drop (voltage)
--Find voltages for intake, hopper, kicker to all function together for moving fuel to flywheel
--Test shooter voltages, map out distances and flywheel speed where fuel can be shot into hub
--Test final shooting command implementation (dynamic vs static)
--Run SysID and test feedforward on flywheel and how it impacts shooting a lot of fuel
--Test shooting on the move and make any changes necessary
--Test on the fly paths in teleop
--Test/develop autos
 
+- Test intake arm drop (voltage)
+- Find voltages for intake, hopper, kicker to all function together for moving fuel to flywheel
+- Test shooter voltages, map out distances and flywheel speed where fuel can be shot into hub
+- Test final shooting command implementation (dynamic vs static)
+- Run SysID and test feedforward on flywheel and how it impacts shooting a lot of fuel
+- Test shooting on the move and make any changes necessary
+- Test on the fly paths in teleop
+- Test/develop autos
 
 ## POTENTIAL BUTTON BINDINGS
 

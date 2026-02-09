@@ -132,8 +132,8 @@ public class Robot extends TimedRobot {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Controller.allowControllerTranslation) {
-                Robot.swerveRequest.withVelocityX(-translation.getX() * Constants.MAX_LINEAR_SPEED)
-                    .withVelocityY(-translation.getY() * Constants.MAX_LINEAR_SPEED);
+                Robot.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
             }
             if (Controller.allowControllerRotation) {
                 Robot.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
