@@ -1,43 +1,40 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static frc.robot.Utilities.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.MutAngle;
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Flywheel extends SubsystemBase {
 
     private final Drivetrain drivetrain;
-    private final RotateToHub rotateToHub;
 
     private final TalonFX flywheelMotor = new TalonFX(0);
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
     // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
+    // FLYWHEEL RADIUS PLACEHOLDER, NEEDS TO BE IN METERS
+    double FLYWHEEL_RADIUS = 3;
+    double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
     double currentVelocity;
     double GEAR_RATIO = 0.5;
     double previousRotation = 0;
     double currentRotation = 0;
     double rotationDifference = 0;
     double deltaTime = 0.02;
-    public double currentFlywheelSpeed = 0;
+    double currentFlywheelSpeed = 0;
     double targetFlywheelSpeed;
 
     /** Creates a new Outtake. */
-    public Flywheel(Drivetrain drivetrain, RotateToHub rotateToHub) {
+    public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        this.rotateToHub = rotateToHub;
     }
 
     @Override
@@ -106,13 +103,13 @@ public class Flywheel extends SubsystemBase {
     //             new ParallelRaceGroup(testBothHoppers(), spinKicker())));
     // }
 
-    /** Speed is in revolutions (of flywheel) per second */
+    /** Speed is in meters (of flywheel) per second */
     public double getFlywheelSpeed() {
         // need to make sure rotation of motor starts at 0
         currentRotation = flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
         rotationDifference = Math.abs(currentRotation - previousRotation);
-        // revolutions per second of flywheel
-        currentFlywheelSpeed = rotationDifference / deltaTime;
+        // meters per second of flywheel (linear)
+        currentFlywheelSpeed = (rotationDifference / deltaTime) * FLYWHEEL_CIRCUMFERENCE;
 
         previousRotation = currentRotation;
         return currentFlywheelSpeed;
@@ -122,11 +119,10 @@ public class Flywheel extends SubsystemBase {
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
         new SysIdRoutine.Mechanism(voltage -> flywheelMotor.setVoltage(voltage.magnitude()), log -> {
             log.motor("flywheel-motor").voltage(flywheelMotor.getMotorVoltage().getValue())
-                .angularPosition(
-                    Angle.ofRelativeUnits(flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO, Rotations))
-                .angularVelocity(flywheelMotor.getVelocity().getValue());
+                .linearPosition(Distance.ofRelativeUnits(
+                    flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE, Meters))
+                .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
         }, this));
-
 
     public Command sysIdQuasistaticForward() {
         return routine.quasistatic(SysIdRoutine.Direction.kForward);

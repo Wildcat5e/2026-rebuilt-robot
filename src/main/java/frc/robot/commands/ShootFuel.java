@@ -37,7 +37,6 @@ public class ShootFuel extends Command {
         } else {
             flywheel.staticRunFlywheel();
         }
-
         if (flywheel.flywheelUpToSpeed()) {
             hopper.runFeeder();
         }

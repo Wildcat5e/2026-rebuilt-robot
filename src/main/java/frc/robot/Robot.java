@@ -49,10 +49,11 @@ public class Robot extends TimedRobot {
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
-    private final AutoAlign autoAlign = new AutoAlign(drivetrain);
     private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
     private final Paths paths = new Paths(drivetrain);
-    private final Flywheel outtake = new Flywheel(drivetrain, rotateToHub);
+    private final Flywheel flywheel = new Flywheel(drivetrain);
+    private final Hopper hopper = new Hopper();
+    private final ShootFuel shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
 
     public static Alliance alliance = Alliance.Blue; // Default to Blue
 
@@ -131,8 +132,8 @@ public class Robot extends TimedRobot {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Controller.allowControllerTranslation) {
-                Robot.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
+                Robot.swerveRequest.withVelocityX(-translation.getX() * Constants.MAX_LINEAR_SPEED)
+                    .withVelocityY(-translation.getY() * Constants.MAX_LINEAR_SPEED);
             }
             if (Controller.allowControllerRotation) {
                 Robot.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
@@ -142,6 +143,7 @@ public class Robot extends TimedRobot {
         // reset the field-centric heading on left trigger
         Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.a().whileTrue(rotateToHub);
+        Controller.joystick.b().whileTrue(shootFuel);
 
         /*
          * Tests for motor identification:

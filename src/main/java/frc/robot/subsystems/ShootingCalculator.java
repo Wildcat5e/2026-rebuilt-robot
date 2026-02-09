@@ -76,6 +76,6 @@ public interface ShootingCalculator {
         // Probably going to use InterpolatingDoubleTreeMap or similar.
 
         // Dummy formula: Speed increases with distance
-        return 10.0 + (distance * 2.0);
+        return 5.0 + (distance * 2.0);
     }
 }
