@@ -21,7 +21,7 @@ public class Flywheel extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
     // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
     // FLYWHEEL RADIUS PLACEHOLDER, NEEDS TO BE IN METERS
-    double FLYWHEEL_RADIUS = 3;
+    double FLYWHEEL_RADIUS = .3;
     double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
     double currentVelocity;
     double GEAR_RATIO = 0.5;
