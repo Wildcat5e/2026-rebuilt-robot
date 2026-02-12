@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
     /** place holder */
-    double GEAR_RATIO = 4;
+    double GEAR_RATIO = 0.5;
     /** CHANGE MOTOR ID OBVIOUSLY, conveyor is motor that connects to actual wheels to intake fuel into storage */
     private final TalonFX conveyorMotor = new TalonFX(0);
     /** extender motor is motor that extends intake system outside of bumper */
@@ -31,11 +31,7 @@ public class Intake extends SubsystemBase {
             // is finished
             () -> {
                 // check sign
-                if (getExtenderPosition() >= .3) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return getExtenderPosition() >= .3;
             },
             // requirements (what is this)
             this);
@@ -54,7 +50,8 @@ public class Intake extends SubsystemBase {
             () -> conveyorMotor.setVoltage(0));
     }
 
-    public Command turnArmTest() {
+    // untested clockwise/ccw
+    public Command turnArmClockwise() {
         return startEnd(
             // start, runs once
             () -> extenderMotor.setVoltage(3),
@@ -62,6 +59,15 @@ public class Intake extends SubsystemBase {
             () -> extenderMotor.setVoltage(0));
     }
 
+    public Command turnArmCounterClockwise() {
+        return startEnd(
+            // start, runs once
+            () -> extenderMotor.setVoltage(-3),
+            // end, runs once
+            () -> extenderMotor.setVoltage(0));
+    }
+
+    /** In rotations of arm */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
     }

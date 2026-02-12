@@ -49,12 +49,13 @@ public class Robot extends TimedRobot {
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
-    private final AutoAlign autoAlign = new AutoAlign(drivetrain);
     private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
     private final Paths paths = new Paths(drivetrain);
-    private final Outtake outtake = new Outtake(drivetrain, rotateToHub);
+    private final Flywheel flywheel = new Flywheel(drivetrain);
+    private final Hopper hopper = new Hopper();
+    private final ShootFuel shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
 
-    public static Alliance alliance;
+    public static Alliance alliance = Alliance.Blue; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
@@ -142,6 +143,7 @@ public class Robot extends TimedRobot {
         // reset the field-centric heading on left trigger
         Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.a().whileTrue(rotateToHub);
+        Controller.joystick.b().whileTrue(shootFuel);
 
         /*
          * Tests for motor identification:

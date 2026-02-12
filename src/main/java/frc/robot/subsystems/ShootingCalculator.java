@@ -12,26 +12,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = 10; // PLACE HOLDER VALUE !!
+    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // PLACEHOLDER VALUE !!
 
-    static class ShotSolution {
-        public double flywheelSpeed;
-        public double robotHeading;
-
-        /**
-         * @param speed The flywheel speed will be in m/s, but can be converted to RPM using the formula:
-         * 
-         *        <pre>
-         *        RPM = (flywheelSpeed * 60) / (2 * π * radius)
-         *        </pre>
-         * 
-         * @param heading The field-centric angle (radians) the robot should face.
-         */
-        public ShotSolution(double speed, double heading) {
-            this.flywheelSpeed = speed;
-            this.robotHeading = heading;
-        }
-    }
+    // Returned by calculate()
+    public static record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
@@ -92,6 +76,6 @@ public interface ShootingCalculator {
         // Probably going to use InterpolatingDoubleTreeMap or similar.
 
         // Dummy formula: Speed increases with distance
-        return 10.0 + (distance * 2.0);
+        return 5.0 + (distance * 2.0);
     }
 }
