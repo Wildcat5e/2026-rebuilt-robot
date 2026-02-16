@@ -11,14 +11,14 @@ import frc.robot.subsystems.Drivetrain;
  */
 public interface Utilities {
     /** @return Translation2d of the Hub for the current alliance. */
-    static Translation2d getHubTranslation() {
-        return Robot.alliance == Alliance.Blue ? Constants.BLUE_HUB_TRANSLATION : Constants.RED_HUB_TRANSLATION;
+    static Translation2d getHubPosition() {
+        return Robot.alliance == Alliance.Blue ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;
     }
 
     static double getHubDistance(Drivetrain drivetrain) {
-        Translation2d hubTranslation = getHubTranslation();
-        Translation2d robotTranslation = drivetrain.getState().Pose.getTranslation();
-        double distanceRobotHub = hubTranslation.getDistance(robotTranslation);
+        Translation2d hubPosition = getHubPosition();
+        Translation2d robotPosition = drivetrain.getState().Pose.getTranslation();
+        double distanceRobotHub = hubPosition.getDistance(robotPosition);
         return distanceRobotHub;
     }
 
@@ -29,10 +29,10 @@ public interface Utilities {
 
     /** Returns in radians. */
     static double getRobotToHubAngle(Drivetrain drivetrain) {
-        Translation2d hubTranslation = getHubTranslation();
+        Translation2d hubPosition = getHubPosition();
         Pose2d currentPose = drivetrain.getState().Pose;
         double angleOfRobotToHub =
-            Math.atan2((hubTranslation.getY() - currentPose.getY()), (hubTranslation.getX() - currentPose.getX()));
+            Math.atan2((hubPosition.getY() - currentPose.getY()), (hubPosition.getX() - currentPose.getX()));
         return angleOfRobotToHub;
     }
 
@@ -46,19 +46,19 @@ public interface Utilities {
     }
 
     static boolean inHome(Drivetrain drivetrain) {
-        double BLUE_X_AXIS_BARRIER = 4.0;
-        double RED_X_AXIS_BARRIER = 12.54;
-        double robotXPose = drivetrain.getState().Pose.getX();
+        double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
+        double RED_X_AXIS_HOME_THRESHOLD = 12.54;
+        double robotXPosition = drivetrain.getState().Pose.getX();
 
         // ON BLUE SIDE, IF THE X COORDINATE OF ROBOT IS LESS THAN 4.0,
         // THEN THE ROBOT IS IN HOME (BLUE ALLIANCE ZONE)
         if (Robot.alliance == Alliance.Blue) {
-            return robotXPose < BLUE_X_AXIS_BARRIER;
+            return robotXPosition < BLUE_X_AXIS_HOME_THRESHOLD;
         }
         // RED SIDE, IF X COORDINATE OF ROBOT IS GREATER THAN 12.54,
         // THEN THE ROBOT IS IN HOME (RED ALLIANCE ZONE)
         else {
-            return robotXPose > RED_X_AXIS_BARRIER;
+            return robotXPosition > RED_X_AXIS_HOME_THRESHOLD;
         }
     }
 
