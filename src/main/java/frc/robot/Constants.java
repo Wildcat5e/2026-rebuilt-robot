@@ -12,8 +12,8 @@ public interface Constants {
     double MAX_ANGULAR_SPEED = DegreesPerSecond.of(540).in(RadiansPerSecond);
     double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
 
-    /** Blue Hub Translation2d Object */
-    Translation2d BLUE_HUB_TRANSLATION = new Translation2d(4.625, 4.03);
-    /** Red Hub Translation2d Object */
-    Translation2d RED_HUB_TRANSLATION = new Translation2d(11.915, 4.03);
+    /** Blue Hub's Position as a Translation2d */
+    Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
+    /** Red Hub's Position as a Translation2d */
+    Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
 }
