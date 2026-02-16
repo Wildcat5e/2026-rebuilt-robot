@@ -48,16 +48,9 @@ public interface Utilities {
     static boolean inHome(Drivetrain drivetrain) {
         double robotXPosition = drivetrain.getState().Pose.getX();
 
-        // ON BLUE SIDE, IF THE X COORDINATE OF ROBOT IS LESS THAN 4.0,
-        // THEN THE ROBOT IS IN HOME (BLUE ALLIANCE ZONE)
-        if (Robot.alliance == Alliance.Blue) {
-            return robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD;
-        }
-        // RED SIDE, IF X COORDINATE OF ROBOT IS GREATER THAN 12.54,
-        // THEN THE ROBOT IS IN HOME (RED ALLIANCE ZONE)
-        else {
-            return robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
-        }
+        // If the Robot is on the Blue Alliance, check if it's to the left of the Blue Home Zone threshold.
+        // If the Robot is on the Red Alliance, check if it's to the right of the Red Home Zone threshold.
+        return Robot.alliance == Alliance.Blue ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
+            : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
-
 }
