@@ -12,8 +12,12 @@ public interface Constants {
     double MAX_ANGULAR_SPEED = DegreesPerSecond.of(540).in(RadiansPerSecond);
     double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
 
-    /** Blue Hub's Position as a Translation2d */
+    /** Blue Hub Position as a Translation2d */
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
-    /** Red Hub's Position as a Translation2d */
+    /** Red Hub Position as a Translation2d */
     Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
+    /** x-coordinate Threshold for Blue Alliance Home Zone */
+    double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
+    /** x-coordinate Threshold for Red Alliance Home Zone */
+    double RED_X_AXIS_HOME_THRESHOLD = 12.54;
 }
