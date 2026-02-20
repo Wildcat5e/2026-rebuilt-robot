@@ -34,7 +34,7 @@ This is a great repo.
 - Remember to remove/use the sys id motor tests in controller, uses back + x
 - Double check where alliance needs to be set (in robot) before competition
 - We need to replace [TunerConstants.java](/src/main/java/frc/robot/generated/TunerConstants.java) with generated code once the robot is built.
-- Update CAD with straight cut instead of diagonal corners on fram rail that attaches to swerve module.
+- Update CAD with straight cut instead of diagonal corners on frame rail that attaches to swerve module.
 
 ## POTENTIAL BUTTON BINDINGS
 
