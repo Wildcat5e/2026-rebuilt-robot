@@ -15,7 +15,7 @@ public interface ShootingCalculator {
     double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // PLACEHOLDER VALUE !!
 
     // Returned by calculate()
-    public static record ShotSolution(double flywheelSpeed, double robotHeading) {}
+    static record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
@@ -27,16 +27,10 @@ public interface ShootingCalculator {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
-        double robotVelX = robotVel.vxMetersPerSecond;
-        double robotVelY = robotVel.vyMetersPerSecond;
-
-        // 1. Calculate Vector to Target (Distance and Angle)
-        double distanceToTarget = getHubDistance(drivetrain);
-        double angleToTarget = getRobotToHubAngle(drivetrain);
 
         // 2. Look up the Ideal "Static" Shot Speed This is the speed you would shoot if standing perfectly still at
         // this distance.
-        double staticSpeed = getStaticSpeedFromTable(distanceToTarget);
+        double staticSpeed = getStaticSpeedFromTable(getHubDistance(drivetrain));
 
         // 3. Decompose Static Shot into Horizontal Component
         // We only care about the horizontal plane for vector subtraction.
@@ -45,13 +39,14 @@ public interface ShootingCalculator {
 
         // 4. Create the Static Vector
         // This vector points directly at the hub with the magnitude calculated above.
+        double angleToTarget = getRobotToHubAngle(drivetrain);
         double staticVx = staticSpeedHorizontal * Math.cos(angleToTarget);
         double staticVy = staticSpeedHorizontal * Math.sin(angleToTarget);
 
         // 5. Calculate the Shot Vector (Vector Subtraction)
         // V_shot = V_static - V_robot
-        double shotVx = staticVx - robotVelX;
-        double shotVy = staticVy - robotVelY;
+        double shotVx = staticVx - robotVel.vxMetersPerSecond;
+        double shotVy = staticVy - robotVel.vyMetersPerSecond;
 
         // 6. Extract Outputs
 
