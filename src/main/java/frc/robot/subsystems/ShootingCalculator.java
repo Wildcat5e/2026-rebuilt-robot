@@ -50,8 +50,8 @@ public interface ShootingCalculator {
 
         // 6. Extract Outputs
 
-        // Calculate the new Heading (Lead Angle)
-        double newHeadingRadians = Math.atan2(shotVy, shotVx);
+        // Calculate the target heading (Lead Angle)
+        double targetHeading = Math.atan2(shotVy, shotVx);
 
         // Calculate the new Shot Speed
         // First get the horizontal magnitude
@@ -61,7 +61,7 @@ public interface ShootingCalculator {
         // S_total = V_horizontal / cos(theta)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(FIXED_HOOD_ANGLE_RADIANS);
 
-        return new ShotSolution(newFlywheelSpeed, newHeadingRadians);
+        return new ShotSolution(newFlywheelSpeed, targetHeading);
     }
 
     /**
