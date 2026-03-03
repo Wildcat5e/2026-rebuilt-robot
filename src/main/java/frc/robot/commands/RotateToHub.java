@@ -18,7 +18,7 @@ public class RotateToHub extends Command {
     public static final ProfiledPIDController PID_CONTROLLER =
         new ProfiledPIDController(20, 0, 0, new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCEL));
     private final Drivetrain drivetrain;
-    double velocity;
+    private boolean useShootingCalculator = false; // debug var
 
     public RotateToHub(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -29,24 +29,27 @@ public class RotateToHub extends Command {
     public void initialize() {
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset(getRobotRotationState(drivetrain));
+        SmartDashboard.putBoolean("Enable Schooting Calculator", useShootingCalculator); // debug
     }
 
     @Override
     public void execute() {
         Pose2d currentPose = drivetrain.getState().Pose;
-        double targetAngle = ShootingCalculator.calculate(drivetrain).robotHeading();
+        // ternary is for debug
+        double targetHeading = useShootingCalculator ? ShootingCalculator.calculate(drivetrain).robotHeading()
+            : getRobotToHubAngle(drivetrain);
         // debug
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
-        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetAngle));
+        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetHeading));
 
-        velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetAngle);
+        // Calculate rotational velocity to apply to get to the correct heading. This is the bad old way.
+        double velocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetHeading);
         velocity = Math.max(Math.min(velocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED); // cap output speed
 
         drivetrain.setControl(Robot.swerveRequest.withRotationalRate(velocity));
-        PPHolonomicDriveController.overrideRotationFeedback(() -> {
-            // Calculate feedback from your custom PID controller
-            return velocity;
-        });
+        // PPHolonomicDriveController.overrideRotationFeedback(() -> 
+        //     return somethingToDoFeedforwardOrSomething;
+        // );
     }
 
     @Override
