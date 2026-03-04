@@ -46,6 +46,12 @@ public class RotateToHub extends Command {
         double targetHeading = useShootingCalculator ? ShootingCalculator.calculate(drivetrain).robotHeading()
             : getRobotToHubAngle(drivetrain);
 
+        // Debug
+        SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
+        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetHeading));
+        SmartDashboard.putNumber("Angle Difference",
+            Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()));
+
         // --- 1. Calculate Feedforward (Predictive) ---
         // Get field-centric speeds
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
@@ -58,7 +64,7 @@ public class RotateToHub extends Command {
 
         double feedforwardOmega = 0;
         if (distanceSq > 0.01) { // Prevent division by zero if we are exactly on the hub
-            feedforwardOmega = (fieldVel.vyMetersPerSecond * dx - fieldVel.vxMetersPerSecond * dy) / distanceSq;
+            feedforwardOmega = (fieldVel.vxMetersPerSecond * dy - fieldVel.vyMetersPerSecond * dx) / distanceSq;
         }
 
         // --- 2. Calculate PID (Reactive) ---
