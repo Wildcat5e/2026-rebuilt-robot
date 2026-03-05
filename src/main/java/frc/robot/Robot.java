@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
     private final Controller controller = new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
     /** Dashboard field widget */
-    private final Field2d field = new Field2d();
+    private final Field2d fieldWidget = new Field2d();
     /** A chooser for autonomous commands */
     private final SendableChooser<Command> autoChooser;
     /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
         SignalLogger.enableAutoLogging(false);
         bindingsSetup();
-        SmartDashboard.putData("Field", field);
+        SmartDashboard.putData("Field", fieldWidget);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        field.setRobotPose(drivetrain.getState().Pose);
+        fieldWidget.setRobotPose(drivetrain.getState().Pose);
     }
 
     @Override
