@@ -60,6 +60,8 @@ public class Robot extends TimedRobot {
     public final Intake intake = new Intake();
     private final RobotCommands commands = new RobotCommands(drivetrain, swerveRequest, flywheel, hopper);
 
+    private final ProximitySensor proximitySensor = new ProximitySensor();
+
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
