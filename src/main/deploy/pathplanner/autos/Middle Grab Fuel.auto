@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Start to Middle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Middle Fuel Grab"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle to Left Start"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
