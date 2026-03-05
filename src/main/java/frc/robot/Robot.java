@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
     private final Flywheel flywheel = new Flywheel(drivetrain);
     private final Hopper hopper = new Hopper();
     private final ShootFuel shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
+    private final ProximitySensor proximitySensor = new ProximitySensor();
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
