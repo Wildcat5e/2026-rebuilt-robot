@@ -12,6 +12,9 @@ public interface Constants {
     double MAX_ANGULAR_SPEED = DegreesPerSecond.of(540).in(RadiansPerSecond);
     double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
 
+    double MINIMUM_SHOOTING_DISTANCE = 1.0; // meters
+    double MAXIMUM_SHOOTING_DISTANCE = 3.0; // meters
+
     /** Blue Hub Position as a Translation2d */
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
     /** Red Hub Position as a Translation2d */

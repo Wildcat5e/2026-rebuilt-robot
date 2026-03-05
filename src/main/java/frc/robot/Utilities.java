@@ -22,9 +22,10 @@ public interface Utilities {
         return distanceRobotHub;
     }
 
+    /** These values will need to be adjusted based on the actual robot's shooting distance capabilities. */
     static boolean withinShootingDistance(Drivetrain drivetrain) {
         double distance = getHubDistance(drivetrain);
-        return 1 < distance && distance < 3;
+        return Constants.MINIMUM_SHOOTING_DISTANCE < distance && distance < Constants.MAXIMUM_SHOOTING_DISTANCE;
     }
 
     /** Returns in radians. */
