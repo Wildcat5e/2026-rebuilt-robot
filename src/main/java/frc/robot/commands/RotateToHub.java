@@ -2,11 +2,10 @@ package frc.robot.commands;
 
 import static frc.robot.Utilities.*;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -16,9 +15,7 @@ import frc.robot.subsystems.ShootingCalculator;
 
 public class RotateToHub extends Command {
     private static final double MAX_ANGULAR_SPEED = 2 * Math.PI;
-    private static final double MAX_ANGULAR_ACCEL = 3 * Math.PI;
-    public static final ProfiledPIDController PID_CONTROLLER =
-        new ProfiledPIDController(20, 0, 0, new TrapezoidProfile.Constraints(MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCEL));
+    public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
 
     private final Drivetrain drivetrain;
     private final boolean useShootingCalculator;
@@ -36,7 +33,7 @@ public class RotateToHub extends Command {
     @Override
     public void initialize() {
         Controller.allowControllerRotation = false;
-        PID_CONTROLLER.reset(getRobotRotationState(drivetrain));
+        PID_CONTROLLER.reset();
         SmartDashboard.putBoolean("Enable Shooting Calculator", useShootingCalculator);
     }
 
@@ -91,13 +88,7 @@ public class RotateToHub extends Command {
     @Override
     public void end(boolean interrupted) {
         Controller.allowControllerRotation = true;
-        // Important: Clear the override when the command ends
+        // This is pretty important: Clear the override when the command ends
         PPHolonomicDriveController.clearRotationFeedbackOverride();
-    }
-
-    public static TrapezoidProfile.State getRobotRotationState(Drivetrain drivetrain) {
-        var currentState = drivetrain.getState();
-        return new TrapezoidProfile.State(currentState.Pose.getRotation().getRadians(),
-            currentState.Speeds.omegaRadiansPerSecond);
     }
 }
