@@ -54,14 +54,14 @@ public class RotateToHub extends Command {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         ChassisSpeeds fieldVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, currentPose.getRotation());
 
-        Translation2d hubPos = getHubPosition();
-        double dx = hubPos.getX() - currentPose.getX();
-        double dy = hubPos.getY() - currentPose.getY();
-        double distanceSq = (dx * dx) + (dy * dy);
+        // Get the vector pointing from the robot to the hub
+        Translation2d delta = getHubPosition().minus(currentPose.getTranslation());
+        double distanceSq = Math.pow(getHubDistance(drivetrain), 2);
 
         double feedforwardOmega = 0;
-        if (distanceSq > 0.01) { // Prevent division by zero if we are exactly on the hub
-            feedforwardOmega = (fieldVel.vxMetersPerSecond * dy - fieldVel.vyMetersPerSecond * dx) / distanceSq;
+        if (distanceSq > 0.01) { // Avoid division by zero when very close to the hub
+            feedforwardOmega =
+                (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq;
         }
 
         // --- 2. Calculate PID (Reactive) ---
