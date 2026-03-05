@@ -38,10 +38,6 @@ public interface Utilities {
 
     static boolean withinShootingAngle(Drivetrain drivetrain) {
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
-
-        // Debugging
-        SmartDashboard.putNumber("robot angle", Math.toDegrees(robotRotation));
-        SmartDashboard.putNumber("correct angle", Math.toDegrees(getRobotToHubAngle(drivetrain)));
         return Math.abs(getRobotToHubAngle(drivetrain) - robotRotation) < 4;
     }
 
