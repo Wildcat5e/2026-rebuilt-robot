@@ -109,8 +109,6 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        // REMEMBER TO UNCOMMENT THE LINE BELOW BEFORE COMPETITION!
-        // elasticTabPublisher.set("Disabled");
     }
 
     @Override
