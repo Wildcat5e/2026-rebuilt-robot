@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.generated.TunerConstants;
 
 public interface Constants {
-    /** kSpeedAt12Volts desired top speed */
+    /** kSpeedAt12Volts desired top speed in m/s */
     double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
 
     /** 540 deg/sec max angular velocity in rad/sec */
@@ -20,12 +20,9 @@ public interface Constants {
 
     /** Field layout. Change depending on whether field uses AndyMark or Welded specs */
     AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    /** Blue Hub Position as a Translation2d */
+
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
-    /** Red Hub Position as a Translation2d */
     Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
-    /** x-coordinate Threshold for Blue Alliance Home Zone */
     double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
-    /** x-coordinate Threshold for Red Alliance Home Zone */
     double RED_X_AXIS_HOME_THRESHOLD = 12.54;
 }
