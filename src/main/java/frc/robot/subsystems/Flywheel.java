@@ -17,21 +17,14 @@ public class Flywheel extends SubsystemBase {
 
     private final Drivetrain drivetrain;
     private final TalonFX flywheelMotor = new TalonFX(0);
+    private final double FLYWHEEL_RADIUS = 0.3; // Placeholder, in meters
+    private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
+    private final double GEAR_RATIO = 0.5; // Placeholder. We should not need a gear ratio if we use in-built methods and set TalonFXConfiguration.Feedback.SensorToMechanismRatio
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
-    // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
-    // FLYWHEEL RADIUS PLACEHOLDER, NEEDS TO BE IN METERS
-    double FLYWHEEL_RADIUS = .3;
-    double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    double currentVelocity;
-    double GEAR_RATIO = 0.5;
-    double previousRotation = 0;
-    double currentRotation = 0;
-    double rotationDifference = 0;
-    double deltaTime = 0.02;
-    double currentFlywheelSpeed = 0;
-    double targetFlywheelSpeed;
 
-    /** Creates a new Outtake. */
+    private double currentFlywheelSpeed = 0;
+    private double targetFlywheelSpeed;
+
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
     }
@@ -106,13 +99,11 @@ public class Flywheel extends SubsystemBase {
 
     /** Speed is in meters (of flywheel) per second */
     public double getFlywheelSpeed() {
-        // need to make sure rotation of motor starts at 0
-        currentRotation = flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
-        rotationDifference = Math.abs(currentRotation - previousRotation);
-        // meters per second of flywheel (linear)
-        currentFlywheelSpeed = (rotationDifference / deltaTime) * FLYWHEEL_CIRCUMFERENCE;
+        // Rotations Per Second (RPS) of motor rotor
+        double motorRps = flywheelMotor.getVelocity().getValueAsDouble();
 
-        previousRotation = currentRotation;
+        // Convert RPS to linear meters per second
+        currentFlywheelSpeed = motorRps * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE;
         return currentFlywheelSpeed;
     }
 
