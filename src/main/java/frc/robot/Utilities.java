@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Drivetrain;
@@ -16,35 +17,32 @@ public interface Utilities {
     static double getHubDistance(Drivetrain drivetrain) {
         Translation2d hubPosition = getHubPosition();
         Translation2d robotPosition = drivetrain.getState().Pose.getTranslation();
-        double distanceRobotHub = hubPosition.getDistance(robotPosition);
-        return distanceRobotHub;
+        return hubPosition.getDistance(robotPosition);
     }
 
-    /** These values will need to be adjusted based on the actual robot's shooting distance capabilities. */
     static boolean withinShootingDistance(Drivetrain drivetrain) {
         double distance = getHubDistance(drivetrain);
         return Constants.MINIMUM_SHOOTING_DISTANCE < distance && distance < Constants.MAXIMUM_SHOOTING_DISTANCE;
     }
 
-    /** Returns in radians. */
+    /** @return Angle in radians from robot to hub. */
     static double getRobotToHubAngle(Drivetrain drivetrain) {
         Translation2d hubPosition = getHubPosition();
         Pose2d currentPose = drivetrain.getState().Pose;
-        double angleOfRobotToHub =
-            Math.atan2((hubPosition.getY() - currentPose.getY()), (hubPosition.getX() - currentPose.getX()));
-        return angleOfRobotToHub;
+        return Math.atan2((hubPosition.getY() - currentPose.getY()), (hubPosition.getX() - currentPose.getX()));
     }
 
     static boolean withinShootingAngle(Drivetrain drivetrain) {
+        double angleTolerance = Math.toRadians(30); // Placeholder
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
-        return Math.abs(getRobotToHubAngle(drivetrain) - robotRotation) < 4;
+        return Math.abs(MathUtil.angleModulus(getRobotToHubAngle(drivetrain) - robotRotation)) < angleTolerance;
     }
 
     static boolean inHome(Drivetrain drivetrain) {
         double robotXPosition = drivetrain.getState().Pose.getX();
 
-        // If the Robot is on the Blue Alliance, check if it's to the left of the Blue Home Zone threshold.
-        // If the Robot is on the Red Alliance, check if it's to the right of the Red Home Zone threshold.
+        // If the Robot is on the Blue Alliance, return whether it's to the left of the Blue Home Zone threshold.
+        // If the Robot is on the Red Alliance, return whether it's to the right of the Red Home Zone threshold.
         return Robot.isBlueAlliance ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
             : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
