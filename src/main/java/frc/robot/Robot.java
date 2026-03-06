@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
         NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
-        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand()); // replaces: PathfindingCommand.warmupCommand().schedule();
+        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
         SignalLogger.enableAutoLogging(false);
         bindingsSetup();
         SmartDashboard.putData("Field", fieldWidget);
