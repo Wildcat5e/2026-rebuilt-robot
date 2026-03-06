@@ -8,9 +8,10 @@ public interface Constants {
     /** kSpeedAt12Volts desired top speed */
     double MAX_LINEAR_SPEED = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
 
-    /** 3/4 revs per sec max angular velocity in radians per second */
+    /** 540 deg/sec max angular velocity in rad/sec */
     double MAX_ANGULAR_SPEED = DegreesPerSecond.of(540).in(RadiansPerSecond);
-    double MAX_ANGULAR_ACCEL = DegreesPerSecond.of(720).in(RadiansPerSecond);
+    /** 720 deg/sec^2 max angular acceleration in rad/sec^2 */
+    double MAX_ANGULAR_ACCEL = DegreesPerSecondPerSecond.of(720).in(RadiansPerSecondPerSecond);
 
     double MINIMUM_SHOOTING_DISTANCE = 1.0; // meters
     double MAXIMUM_SHOOTING_DISTANCE = 3.0; // meters
