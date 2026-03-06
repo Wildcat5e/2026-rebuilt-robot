@@ -41,14 +41,14 @@ public class Robot extends TimedRobot {
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
-    /** Dashboard field widget */
+
     private final Field2d fieldWidget = new Field2d();
-    /** A chooser for autonomous commands */
     private final SendableChooser<Command> autoChooser;
     /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
+
     private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
     private final Paths paths = new Paths(drivetrain);
     private final Flywheel flywheel = new Flywheel(drivetrain);

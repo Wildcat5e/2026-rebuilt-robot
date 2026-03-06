@@ -6,14 +6,12 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-    /** place holder */
-    double GEAR_RATIO = 0.5;
-    /** CHANGE MOTOR ID OBVIOUSLY, conveyor is motor that connects to actual wheels to intake fuel into storage */
+    private final double GEAR_RATIO = 0.5; // Placeholder
+    /** Motor that connects to actual wheels to intake fuel into storage. */
     private final TalonFX conveyorMotor = new TalonFX(0);
-    /** extender motor is motor that extends intake system outside of bumper */
+    /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(0);
 
-    /** Creates a new Intake. */
     public Intake() {}
 
     @Override
@@ -21,53 +19,55 @@ public class Intake extends SubsystemBase {
 
     public Command dropArm() {
         return new FunctionalCommand(
-            // initialize
-            // if this doesnt work, might have to put set voltage inside execute?
-            () -> extenderMotor.setVoltage(3),
-            // execute
+            // --onInit--
+            () -> extenderMotor.setVoltage(3), // If this doesn't work, might have to put setVoltage() inside execute
+
+            // --onExecute--
             () -> {},
-            // end
+
+            // --onEnd--
             interrupted -> extenderMotor.setVoltage(0),
-            // is finished
+
+            // --isFinished--
             () -> {
-                // check sign
-                return getExtenderPosition() >= .3;
+                return getExtenderPosition() >= .3; // Check sign
             },
-            // requirements (what is this)
-            this);
+
+            // --requirements--
+            this); // Pass in Intake
     }
 
     /**
      * TURN ON INTAKE TO TAKE IN FUEL COMMAND <br>
-     * currently plan to bind to a while true button, but may be easier to have it on a toggle or have it to run the
-     * entire match
+     * Currently plan to bind to a while true button, but may be easier to have it run on toggle or for the entire match
      */
     public Command testFuelIntake() {
         return startEnd(
-            // start
+            // --onStart--
             () -> conveyorMotor.setVoltage(4),
-            // end
+            // --onEnd--
             () -> conveyorMotor.setVoltage(0));
     }
 
-    // untested clockwise/ccw
+    // Untested
     public Command turnArmClockwise() {
         return startEnd(
-            // start, runs once
+            // --onStart--
             () -> extenderMotor.setVoltage(3),
-            // end, runs once
+            // --onEnd--
             () -> extenderMotor.setVoltage(0));
     }
 
+    // Untested
     public Command turnArmCounterClockwise() {
         return startEnd(
-            // start, runs once
+            // --onStart--
             () -> extenderMotor.setVoltage(-3),
-            // end, runs once
+            // --onEnd--
             () -> extenderMotor.setVoltage(0));
     }
 
-    /** In rotations of arm */
+    /** @return Extender motor's position in rotations */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
     }

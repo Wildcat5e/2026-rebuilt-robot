@@ -22,7 +22,6 @@ public class Paths extends Command {
     int closestIndex;
 
 
-    /** Creates a new Paths. */
     public Paths(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         try {
@@ -62,20 +61,17 @@ public class Paths extends Command {
             }
 
             closestIndex = findclosestIndex(commandPathList, translationsList);
-            // closestIndex being -1 means distance too far, so only run when it is not -1
+            // A closestIndex of -1 means the distance is too large
             if (closestIndex != -1) {
                 closestCommand = commandPathList.get(closestIndex);
                 CommandScheduler.getInstance().schedule(closestCommand);
             }
         }
-
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {}
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         if (closestIndex != -1) {
@@ -83,7 +79,6 @@ public class Paths extends Command {
         }
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return false;
