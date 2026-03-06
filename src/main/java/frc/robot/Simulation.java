@@ -16,7 +16,7 @@ public class Simulation {
 
     public Simulation(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        visionSim.addAprilTags(PhotonVision.FIELD_LAYOUT);
+        visionSim.addAprilTags(Constants.FIELD_LAYOUT);
         final PhotonCameraSim cameraSim = new PhotonCameraSim(PhotonVision.CAMERA, cameraSettings());
         visionSim.addCamera(cameraSim, PhotonVision.ROBOT_TO_CAMERA);
         cameraSim.enableDrawWireframe(ENABLE_WIREFRAME);

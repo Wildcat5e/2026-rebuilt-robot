@@ -1,6 +1,8 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.generated.TunerConstants;
 
@@ -16,6 +18,8 @@ public interface Constants {
     double MINIMUM_SHOOTING_DISTANCE = 1.0; // meters
     double MAXIMUM_SHOOTING_DISTANCE = 3.0; // meters
 
+    /** Field layout. Change depending on whether field uses AndyMark or Welded specs */
+    AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
     /** Blue Hub Position as a Translation2d */
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
     /** Red Hub Position as a Translation2d */
