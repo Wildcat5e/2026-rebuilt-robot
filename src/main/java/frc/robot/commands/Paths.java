@@ -8,7 +8,6 @@ import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
@@ -108,5 +107,5 @@ public class Paths extends Command {
 
         // Return correct index if within safe distance of 1 meter, otherwise return -1
         return closestDistance < 1 ? closestIndex : -1;
-        }
+    }
 }
