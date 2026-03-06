@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-    private final double GEAR_RATIO = 0.5; // Placeholder
+    private static final double GEAR_RATIO = 0.5; // Placeholder
     /** Motor that connects to actual wheels to intake fuel into storage. */
     private final TalonFX conveyorMotor = new TalonFX(0);
     /** Motor that extends intake system outside of bumper. */
