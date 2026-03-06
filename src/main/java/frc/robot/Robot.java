@@ -82,6 +82,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
         // elasticTabPublisher.set("Autonomous");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
@@ -93,7 +94,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // ADD TO AUTONOMOUS INIT, MAKE SURE AT COMP AUTO ISNT STARTING MODE WHEN ROBOT IS DISABLED
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
 
         // elasticTabPublisher.set("Teleoperated");
