@@ -16,7 +16,6 @@ import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 public class Flywheel extends SubsystemBase {
 
     private final Drivetrain drivetrain;
-
     private final TalonFX flywheelMotor = new TalonFX(0);
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
     // UPDATE GEAR RATIO, CURRENTLY A PLACEHOLDER
@@ -48,7 +47,7 @@ public class Flywheel extends SubsystemBase {
 
     public Command testDynamicStartFlywheel() {
         return runEnd(() -> {
-            // all this code is ran every 20 ms
+            // This code is run every 20 ms
             ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             double calculatedFlywheelSpeed = shotSolution.flywheelSpeed();
             double calculatedVoltage =
@@ -68,8 +67,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     /**
-     * Starts flywheel and calculates speed based on distance, you need to set speed of flywheel to 0 with another
-     * command
+     * Spins flywheel and calculates speed based on distance. Flywheel speed can be set to zero using another command
      */
     public void dynamicRunFlywheel() {
         ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
@@ -78,7 +76,10 @@ public class Flywheel extends SubsystemBase {
         flywheelMotor.setVoltage(calculatedVoltage);
     }
 
-    //** Starts flywheel with static speed, for when the robot is in the middle or opposing alliance zone and shooting fuel NOT in the hub */
+    /**
+     * Starts flywheel with static speed for when the robot is in the middle or opposing alliance zone and shooting fuel
+     * NOT in the hub
+     */
     public void staticRunFlywheel() {
         targetFlywheelSpeed = 3;
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -90,9 +91,9 @@ public class Flywheel extends SubsystemBase {
     }
 
     public boolean flywheelUpToSpeed() {
-        // PLACE HOLDER VALUE
-        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
+        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9; // Placeholder
     }
+
     // final implementation should be a while true
     // public Command shootFuel() {
     //     return new ParallelCommandGroup(inHome(drivetrain) ? dynamicStartFlywheel() : staticStartFlywheel(),
