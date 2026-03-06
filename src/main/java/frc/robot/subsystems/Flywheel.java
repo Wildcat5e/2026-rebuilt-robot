@@ -101,8 +101,7 @@ public class Flywheel extends SubsystemBase {
         double motorRps = flywheelMotor.getVelocity().getValueAsDouble();
 
         // Convert RPS to linear meters per second
-        currentFlywheelSpeed = motorRps * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE;
-        return currentFlywheelSpeed;
+        return motorRps * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE;
     }
 
     // UNTESTED
