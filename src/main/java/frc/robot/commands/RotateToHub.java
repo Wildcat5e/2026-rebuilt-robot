@@ -18,7 +18,7 @@ public class RotateToHub extends Command {
     public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
 
     private final Drivetrain drivetrain;
-    private final boolean useShootingCalculator;
+    private boolean useShootingCalculator;
 
     public RotateToHub(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -26,9 +26,10 @@ public class RotateToHub extends Command {
     }
 
     public RotateToHub(Drivetrain drivetrain, boolean useShootingCalculator) {
-        this(drivetrain)
+        this(drivetrain);
         this.useShootingCalculator = useShootingCalculator;
     }
+
     @Override
     public void initialize() {
         Controller.allowControllerRotation = false;
@@ -57,11 +58,9 @@ public class RotateToHub extends Command {
         Translation2d delta = getHubPosition().minus(currentPose.getTranslation());
         double distanceSq = Math.pow(getHubDistance(drivetrain), 2);
 
-        double feedforwardOmega = 0;
-        if (distanceSq > 0.01) { // Avoid division by zero when very close to the hub
-            feedforwardOmega =
-                (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq;
-        }
+        double feedforwardOmega = distanceSq > 0.01
+            ? fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX() / distanceSq
+            : 0;
 
         // --- 2. Calculate PID (Reactive) ---
         double pidOmega = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetHeading);
