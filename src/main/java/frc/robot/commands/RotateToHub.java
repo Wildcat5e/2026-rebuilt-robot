@@ -12,9 +12,11 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
+import frc.robot.Constants;
 
 public class RotateToHub extends Command {
-    private static final double MAX_ANGULAR_SPEED = 2 * Math.PI;
+    // Limit RotateToHub's max speed to less than main controller just for safety
+    private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
     public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
 
     private final Drivetrain drivetrain;
