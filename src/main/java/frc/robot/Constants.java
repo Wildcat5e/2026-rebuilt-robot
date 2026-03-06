@@ -24,6 +24,9 @@ public interface Constants {
 
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
     Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
+
+    /** x-coordinate Threshold for Blue Alliance Home Zone */
     double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
+    /** x-coordinate Threshold for Red Alliance Home Zone */
     double RED_X_AXIS_HOME_THRESHOLD = 12.54;
 }
