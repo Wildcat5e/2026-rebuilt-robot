@@ -47,7 +47,7 @@ public class Paths extends Command {
     @Override
     public void initialize() {
         if (!error) {
-            if (Robot.alliance == Alliance.Blue) { // @formatter:off
+            if (Robot.isBlueAlliance) { // @formatter:off
                 translationsList = List.of(
                     new Translation2d(6.395, 7.32),
                     new Translation2d(2.404, 7.320),

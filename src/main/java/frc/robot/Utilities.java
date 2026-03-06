@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 public interface Utilities {
     /** @return Translation2d of the Hub for the current alliance. */
     static Translation2d getHubPosition() {
-        return Robot.alliance == Alliance.Blue ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;
+        return Robot.isBlueAlliance ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;
     }
 
     static double getHubDistance(Drivetrain drivetrain) {
@@ -47,7 +47,7 @@ public interface Utilities {
 
         // If the Robot is on the Blue Alliance, check if it's to the left of the Blue Home Zone threshold.
         // If the Robot is on the Red Alliance, check if it's to the right of the Red Home Zone threshold.
-        return Robot.alliance == Alliance.Blue ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
+        return Robot.isBlueAlliance ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
             : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
 }
