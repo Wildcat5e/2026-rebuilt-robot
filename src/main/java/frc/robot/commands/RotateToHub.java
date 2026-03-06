@@ -20,16 +20,15 @@ public class RotateToHub extends Command {
     private final Drivetrain drivetrain;
     private final boolean useShootingCalculator;
 
-    public RotateToHub(Drivetrain drivetrain, boolean useShootingCalculator) {
+    public RotateToHub(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        this.useShootingCalculator = useShootingCalculator;
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     }
 
-    public RotateToHub(Drivetrain drivetrain) {
-        this(drivetrain, false);
+    public RotateToHub(Drivetrain drivetrain, boolean useShootingCalculator) {
+        this(drivetrain)
+        this.useShootingCalculator = useShootingCalculator;
     }
-
     @Override
     public void initialize() {
         Controller.allowControllerRotation = false;
