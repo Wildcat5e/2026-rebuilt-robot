@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FlippingUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -15,12 +17,12 @@ import frc.robot.subsystems.Drivetrain;
 public class Paths extends Command {
     private final Drivetrain drivetrain;
     List<Translation2d> translationsList;
-    boolean error = false;
-    ArrayList<Command> commandPathList = new ArrayList<>(4);
+    List<PathPlannerPath> pathList = new ArrayList<>(4);
+    List<Command> commandPathList = new ArrayList<>(4);
     Translation2d currentTranslation;
     Command closestCommand;
     int closestIndex;
-
+    boolean error = false;
 
     public Paths(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -29,12 +31,17 @@ public class Paths extends Command {
             PathPlannerPath DS_Top_Bump_Mid_Path = PathPlannerPath.fromPathFile("DS Top Bump Mid");
             PathPlannerPath Mid_Bottom_Bump_DS_Path = PathPlannerPath.fromPathFile("Mid Bottom Bump DS");
             PathPlannerPath DS_Bottom_Bump_Mid_Path = PathPlannerPath.fromPathFile("DS Bottom Bump Mid");
-            // add warmup command 
+
+            // Store the paths so we can access their translations in initialize()
+            pathList.add(Mid_Top_Bump_DS_Path);
+            pathList.add(DS_Top_Bump_Mid_Path);
+            pathList.add(Mid_Bottom_Bump_DS_Path);
+            pathList.add(DS_Bottom_Bump_Mid_Path);
+
             commandPathList.add(AutoBuilder.followPath(Mid_Top_Bump_DS_Path));
             commandPathList.add(AutoBuilder.followPath(DS_Top_Bump_Mid_Path));
             commandPathList.add(AutoBuilder.followPath(Mid_Bottom_Bump_DS_Path));
             commandPathList.add(AutoBuilder.followPath(DS_Bottom_Bump_Mid_Path));
-            error = false;
         } catch (Exception e) {
             DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
             error = true;
@@ -42,22 +49,24 @@ public class Paths extends Command {
         // Use addRequirements() here to declare subsystem dependencies.
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
         if (!error) {
-            if (Robot.isBlueAlliance) { // @formatter:off
-                translationsList = List.of(
-                    new Translation2d(6.395, 7.32),
-                    new Translation2d(2.404, 7.320),
-                    new Translation2d(6.395, 0.756),
-                    new Translation2d(2.342, 0.731)); 
-            } else {
-                translationsList = List.of(
-                    new Translation2d(10.145, 0.75), 
-                    new Translation2d(14.198, 0.75),
-                    new Translation2d(10.145, 7.314), 
-                    new Translation2d(14.198, 7.339)); // @formatter:on
+            translationsList = new ArrayList<>();
+
+            // Loop through the paths to extract coordinates
+            for (PathPlannerPath path : pathList) {
+
+                // Get the starting pose (this always returns Blue Alliance coordinate)
+                Pose2d bluePose = path.getStartingHolonomicPose().orElse(new Pose2d());
+                Translation2d translation = bluePose.getTranslation();
+
+                // If we're on the Red Alliance, make PathPlanner flip the coordinate dynamically
+                if (!Robot.isBlueAlliance) {
+                    translation = FlippingUtil.flipFieldPosition(translation);
+                }
+
+                translationsList.add(translation);
             }
 
             closestIndex = findclosestIndex(commandPathList, translationsList);
@@ -65,7 +74,7 @@ public class Paths extends Command {
             if (closestIndex != -1) {
                 closestCommand = commandPathList.get(closestIndex);
                 CommandScheduler.getInstance().schedule(closestCommand);
-            }
+            } else DriverStation.reportWarning("Distance to closest path is greater than 1 meter.", false);
         }
     }
 
@@ -88,21 +97,16 @@ public class Paths extends Command {
         double closestDistance = Double.POSITIVE_INFINITY;
         int closestIndex = -1;
         currentTranslation = drivetrain.getState().Pose.getTranslation();
-        for (int index = 0; index < 4; index++) {
+
+        for (int index = 0; index < translationList.size(); index++) {
             double distance = currentTranslation.getDistance(translationList.get(index));
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closestIndex = index;
             }
         }
-        // only return correct index when within 1 meter, more than 1 meter distance could be too far
-        // return -1 if too far
-        if (closestDistance < 1) {
-            return closestIndex;
-        } else {
-            System.out.println("TOO FAR, GREATER THAN 1 METER");
-            return -1;
-        }
-    }
 
+        // Return correct index if within safe distance of 1 meter, otherwise return -1
+        return closestDistance < 1 ? closestIndex : -1;
+        }
 }
