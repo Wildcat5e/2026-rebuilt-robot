@@ -4,15 +4,18 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Utilities.*;
 
 public class Intake extends SubsystemBase {
-    private static final double GEAR_RATIO = 0.5; // Placeholder
     /** Motor that connects to actual wheels to intake fuel into storage. */
     private final TalonFX conveyorMotor = new TalonFX(0);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(0);
 
-    public Intake() {}
+    public Intake() {
+        applyGearRatio(conveyorMotor, 0.5);
+        applyGearRatio(extenderMotor, 0.5);
+    }
 
     @Override
     public void periodic() {}
@@ -69,6 +72,6 @@ public class Intake extends SubsystemBase {
 
     /** @return Extender motor's position in rotations */
     public double getExtenderPosition() {
-        return extenderMotor.getPosition().getValueAsDouble() * GEAR_RATIO;
+        return extenderMotor.getPosition().getValueAsDouble();
     }
 }

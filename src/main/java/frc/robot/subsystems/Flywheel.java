@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
+import static frc.robot.Utilities.*;
 
 public class Flywheel extends SubsystemBase {
 
@@ -17,7 +18,6 @@ public class Flywheel extends SubsystemBase {
     private final TalonFX flywheelMotor = new TalonFX(0);
     private final double FLYWHEEL_RADIUS = 0.3; // Placeholder, in meters
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    private final double GEAR_RATIO = 0.5; // Placeholder. We should not need a gear ratio if we use in-built methods and set TalonFXConfiguration.Feedback.SensorToMechanismRatio
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     private double currentFlywheelSpeed = 0;
@@ -25,6 +25,7 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
+        applyGearRatio(flywheelMotor, 0.5);
     }
 
     @Override
@@ -97,19 +98,17 @@ public class Flywheel extends SubsystemBase {
 
     /** Speed is in meters (of flywheel) per second */
     public double getFlywheelSpeed() {
-        // Rotations Per Second (RPS) of motor rotor
-        double motorRps = flywheelMotor.getVelocity().getValueAsDouble();
-
-        // Convert RPS to linear meters per second
-        return motorRps * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE;
+        // Rotations Per Second (RPS) of flywheel
+        double flywheelRps = flywheelMotor.getVelocity().getValueAsDouble();
+        return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
     }
 
     // UNTESTED
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
         new SysIdRoutine.Mechanism(voltage -> flywheelMotor.setVoltage(voltage.magnitude()), log -> {
             log.motor("flywheel-motor").voltage(flywheelMotor.getMotorVoltage().getValue())
-                .linearPosition(Distance.ofRelativeUnits(
-                    flywheelMotor.getPosition().getValueAsDouble() * GEAR_RATIO * FLYWHEEL_CIRCUMFERENCE, Meters))
+                .linearPosition(Distance
+                    .ofRelativeUnits(flywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
                 .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
         }, this));
 
