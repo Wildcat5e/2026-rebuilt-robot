@@ -12,6 +12,7 @@ import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
 import frc.robot.Constants;
+import static frc.robot.Utilities.*;
 
 public class RotateToHub extends Command {
     // Limit RotateToHub's max speed to less than main controller just for safety
