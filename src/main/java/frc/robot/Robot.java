@@ -69,11 +69,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
-        SmartDashboard.putNumber("Distance to Hub", Utilities.getHubDistance(drivetrain));
     }
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putNumber("Distance to Hub", Utilities.getHubDistance(drivetrain));
         CommandScheduler.getInstance().run();
         fieldWidget.setRobotPose(drivetrain.getState().Pose);
         SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle(drivetrain));
