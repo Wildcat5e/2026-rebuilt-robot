@@ -54,22 +54,12 @@ public interface Utilities {
      * rotations instead of motor rotor rotations.
      * 
      * @param motor The TalonFX motor to configure.
-     * @param gearRatio The gear ratio.<br>
-     *        NOTE ON THE RATIO VALUE:<br>
-     *        If the motor spins 10 times to spin the mechanism 1 time (a standard 10:1 reduction), the gear ratio is
-     *        10.0. A gear ratio of 0.5 would be an overdrive where the motor spins half a turn to spin the mechanism a
-     *        full turn.
+     * @param gearRatio
      */
     static void applyGearRatio(TalonFX motor, double gearRatio) {
         TalonFXConfiguration config = new TalonFXConfiguration();
-
-        // Fetch the motor's current configuration so we don't overwrite other settings
         motor.getConfigurator().refresh(config);
-
-        // Modify the SensorToMechanismRatio
         config.Feedback.SensorToMechanismRatio = gearRatio;
-
-        // Apply the updated configuration back to the motor
         motor.getConfigurator().apply(config);
     }
 }
