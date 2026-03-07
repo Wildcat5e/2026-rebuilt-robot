@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
+        SmartDashboard.putNumber("Distance to Hub", Utilities.getHubDistance(drivetrain));
     }
 
     @Override
