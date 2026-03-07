@@ -15,8 +15,9 @@ import static frc.robot.Utilities.*;
 public class Flywheel extends SubsystemBase {
 
     private final Drivetrain drivetrain;
-    private final TalonFX flywheelMotor = new TalonFX(0);
-    private final double FLYWHEEL_RADIUS = 0.3; // Placeholder, in meters
+    private final TalonFX leftFlywheelMotor = new TalonFX(21);
+    private final TalonFX rightFlywheelMotor = new TalonFX(20);
+    private final double FLYWHEEL_RADIUS = 0.1; // Placeholder, in meters
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
 
@@ -25,7 +26,13 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        applyGearRatio(flywheelMotor, 1);
+        applyGearRatio(leftFlywheelMotor, 1);
+        applyGearRatio(rightFlywheelMotor, 1);
+    }
+
+    private void setFlywheelMotorVoltages(double voltage) {
+        leftFlywheelMotor.setVoltage(voltage);
+        rightFlywheelMotor.setVoltage(-voltage);
     }
 
     @Override
@@ -34,7 +41,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public Command testSpinFlywheel() {
-        return startEnd(() -> flywheelMotor.setVoltage(3), () -> flywheelMotor.setVoltage(0));
+        return startEnd(() -> setFlywheelMotorVoltages(3), () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testDynamicStartFlywheel() {
@@ -43,18 +50,18 @@ public class Flywheel extends SubsystemBase {
             ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-            flywheelMotor.setVoltage(calculatedVoltage);
+            setFlywheelMotorVoltages(calculatedVoltage);
         },
             // on end
-            () -> flywheelMotor.setVoltage(0));
+            () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testStaticStartFlywheel() {
         return runEnd(() -> {
             double targetFlywheelSpeed = 3;
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-            flywheelMotor.setVoltage(calculatedVoltage);
-        }, () -> flywheelMotor.setVoltage(0));
+            setFlywheelMotorVoltages(calculatedVoltage);
+        }, () -> setFlywheelMotorVoltages(0));
     }
 
     /**
@@ -64,7 +71,7 @@ public class Flywheel extends SubsystemBase {
         ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        flywheelMotor.setVoltage(calculatedVoltage);
+        setFlywheelMotorVoltages(calculatedVoltage);
     }
 
     /**
@@ -74,11 +81,11 @@ public class Flywheel extends SubsystemBase {
     public void staticRunFlywheel() {
         targetFlywheelSpeed = 3;
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        flywheelMotor.setVoltage(calculatedVoltage);
+        setFlywheelMotorVoltages(calculatedVoltage);
     }
 
     public void stopFlywheel() {
-        flywheelMotor.setVoltage(0);
+        setFlywheelMotorVoltages(0);
     }
 
     public boolean flywheelUpToSpeed() {
@@ -98,16 +105,16 @@ public class Flywheel extends SubsystemBase {
     /** Speed is in meters (of flywheel) per second */
     public double getFlywheelSpeed() {
         // Rotations Per Second (RPS) of flywheel
-        double flywheelRps = flywheelMotor.getVelocity().getValueAsDouble();
+        double flywheelRps = leftFlywheelMotor.getVelocity().getValueAsDouble();
         return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
     }
 
     // UNTESTED
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
-        new SysIdRoutine.Mechanism(voltage -> flywheelMotor.setVoltage(voltage.magnitude()), log -> {
-            log.motor("flywheel-motor").voltage(flywheelMotor.getMotorVoltage().getValue())
-                .linearPosition(Distance
-                    .ofRelativeUnits(flywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
+        new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()), log -> {
+            log.motor("flywheel-motor").voltage(leftFlywheelMotor.getMotorVoltage().getValue())
+                .linearPosition(Distance.ofRelativeUnits(
+                    leftFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
                 .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
         }, this));
 
