@@ -41,9 +41,8 @@ public class Flywheel extends SubsystemBase {
         return runEnd(() -> {
             // This code is run every 20 ms
             ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
-            double calculatedFlywheelSpeed = shotSolution.flywheelSpeed();
-            double calculatedVoltage =
-                feedforward.calculateWithVelocities(currentFlywheelSpeed, calculatedFlywheelSpeed);
+            targetFlywheelSpeed = shotSolution.flywheelSpeed();
+            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             flywheelMotor.setVoltage(calculatedVoltage);
         },
             // on end
