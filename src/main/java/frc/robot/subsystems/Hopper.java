@@ -8,7 +8,7 @@ import static frc.robot.Utilities.*;
 public class Hopper extends SubsystemBase {
     private final TalonFX leftHopperMotor = new TalonFX(0);
     private final TalonFX rightHopperMotor = new TalonFX(0);
-    private final TalonFX kickerMotor = new TalonFX(0);
+    private final TalonFX kickerMotor = new TalonFX(14);
 
     public Hopper() {
         applyGearRatio(leftHopperMotor, 0.5);
@@ -39,7 +39,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public Command testSpinKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(3), () -> kickerMotor.setVoltage(0));
+        return startEnd(() -> kickerMotor.setVoltage(-6), () -> kickerMotor.setVoltage(0));
     }
 
     public void runFeeder() {
