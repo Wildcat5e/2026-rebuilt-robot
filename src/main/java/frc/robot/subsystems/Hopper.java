@@ -40,7 +40,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public Command testSpinKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(-10), () -> kickerMotor.setVoltage(0));
+        return startEnd(() -> kickerMotor.setVoltage(-8), () -> kickerMotor.setVoltage(0));
     }
 
     /**
