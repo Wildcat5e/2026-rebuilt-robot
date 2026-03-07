@@ -14,6 +14,8 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 public class Paths extends Command {
+    /** Maximum allowable distance (meters) from the robot's current pose to a path's starting pose. */
+    private static final double MAX_DIST_FROM_PATH = 1.0;
     private final Drivetrain drivetrain;
     List<Translation2d> translationsList;
     List<PathPlannerPath> pathList = new ArrayList<>(4);
@@ -73,7 +75,8 @@ public class Paths extends Command {
             if (closestIndex != -1) {
                 closestCommand = commandPathList.get(closestIndex);
                 CommandScheduler.getInstance().schedule(closestCommand);
-            } else DriverStation.reportWarning("Distance to closest path is greater than 1 meter.", false);
+            } else DriverStation
+                .reportWarning("Distance to closest path is greater than " + MAX_DIST_FROM_PATH + " meters.", false);
         }
     }
 
