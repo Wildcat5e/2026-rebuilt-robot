@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
 
         Controller.joystick.b().whileTrue(flywheel.testTunableFlywheel());
 
-        Controller.joystick.x().whileTrue(hopper.testTunableKicker());
+        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
         /*
          * Tests for motor identification:
