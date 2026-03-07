@@ -31,8 +31,8 @@ public class Flywheel extends SubsystemBase {
     }
 
     private void setFlywheelMotorVoltages(double voltage) {
-        leftFlywheelMotor.setVoltage(voltage);
-        rightFlywheelMotor.setVoltage(-voltage);
+        leftFlywheelMotor.setVoltage(-voltage);
+        rightFlywheelMotor.setVoltage(voltage);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public Command testSpinFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(3), () -> setFlywheelMotorVoltages(0));
+        return startEnd(() -> setFlywheelMotorVoltages(6), () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testDynamicStartFlywheel() {

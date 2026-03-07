@@ -151,7 +151,9 @@ public class Robot extends TimedRobot {
         Controller.joystick.a().whileTrue(new RotateToHub(drivetrain, true)); // PID + Shooting Calculator testing
         Controller.joystick.rightBumper().whileTrue(new RotateToHub(drivetrain, false)); // Pure Feedforward + PID testing
 
-        Controller.joystick.b().whileTrue(shootFuel);
+        Controller.joystick.b().whileTrue(flywheel.testSpinFlywheel());
+
+        Controller.joystick.x().whileTrue(hopper.testSpinKicker());
 
         /*
          * Tests for motor identification:
