@@ -10,7 +10,9 @@ public class Hopper extends SubsystemBase {
     private final TalonFX rightHopperMotor = new TalonFX(0);
     private final TalonFX kickerMotor = new TalonFX(14);
 
-    public Hopper() {}
+    public Hopper() {
+        SmartDashboard.putNumber("Kicker Test Voltage", 0.0);
+    }
 
     @Override
     public void periodic() {}
