@@ -3,13 +3,18 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Utilities.*;
 
 public class Hopper extends SubsystemBase {
     private final TalonFX leftHopperMotor = new TalonFX(0);
     private final TalonFX rightHopperMotor = new TalonFX(0);
     private final TalonFX kickerMotor = new TalonFX(0);
 
-    public Hopper() {}
+    public Hopper() {
+        applyGearRatio(leftHopperMotor, 0.5);
+        applyGearRatio(rightHopperMotor, 0.5);
+        applyGearRatio(kickerMotor, 0.5);
+    }
 
     @Override
     public void periodic() {}
