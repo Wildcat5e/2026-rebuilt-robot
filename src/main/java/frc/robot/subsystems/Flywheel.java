@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -28,6 +29,7 @@ public class Flywheel extends SubsystemBase {
         this.drivetrain = drivetrain;
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
+        SmartDashboard.putNumber("Flywheel Test Voltage", 0.0);
     }
 
     private void setFlywheelMotorVoltages(double voltage) {
@@ -42,6 +44,19 @@ public class Flywheel extends SubsystemBase {
 
     public Command testSpinFlywheel() {
         return startEnd(() -> setFlywheelMotorVoltages(6), () -> setFlywheelMotorVoltages(0));
+    }
+
+    /**
+     * Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously.
+     */
+    public Command testTunableFlywheel() {
+        return runEnd(() -> {
+            // Fetch the current number from the dashboard (defaults to 0.0 if not found)
+            double targetVoltage = SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
+            setFlywheelMotorVoltages(targetVoltage);
+        },
+            // Safely stop the motors when the command ends or is interrupted
+            () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testDynamicStartFlywheel() {
