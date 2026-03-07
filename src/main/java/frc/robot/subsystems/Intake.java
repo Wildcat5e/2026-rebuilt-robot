@@ -19,13 +19,13 @@ public class Intake extends SubsystemBase {
 
     public Command dropArm() {
         return new FunctionalCommand(
-            // --onInit--
+            // --initialize--
             () -> extenderMotor.setVoltage(3), // If this doesn't work, might have to put setVoltage() inside execute
 
-            // --onExecute--
+            // --execute--
             () -> {},
 
-            // --onEnd--
+            // --end--
             interrupted -> extenderMotor.setVoltage(0),
 
             // --isFinished--
@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
                 return getExtenderPosition() >= .3; // Check sign
             },
 
-            // --requirements--
+            // --addRequirements--
             this); // Pass in Intake
     }
 
