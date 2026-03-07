@@ -20,6 +20,7 @@ This is a great repo.
 
 - **Controller**
     - Nicholas needs to add documentation about axis being flipped in controller.
+    - Nicholas needs to refactor `Controller` to incorporate keybinds and setting drivetrain control instead of in `Robot`
 
 - **Paths.java**
     - See if we want to use `end()` in the `Paths()` constructor (see [Nicholas's comment](https://github.com/Wildcat5e/2026-rebuilt-robot/pull/11/changes#r2895846586)).
