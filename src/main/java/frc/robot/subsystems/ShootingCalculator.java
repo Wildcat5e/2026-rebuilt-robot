@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Utilities.*;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 /**
@@ -12,7 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // PLACEHOLDER VALUE !!
+    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // Placeholder
 
     // Returned by calculate()
     static record ShotSolution(double flywheelSpeed, double robotHeading) {}
@@ -27,6 +29,7 @@ public interface ShootingCalculator {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
+        Translation2d robotVector = new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond);
 
         // 2. Look up the Ideal "Static" Shot Speed This is the speed you would shoot if standing perfectly still at
         // this distance.
@@ -40,22 +43,20 @@ public interface ShootingCalculator {
         // 4. Create the Static Vector
         // This vector points directly at the hub with the magnitude calculated above.
         double angleToTarget = getRobotToHubAngle(drivetrain);
-        double staticVx = staticSpeedHorizontal * Math.cos(angleToTarget);
-        double staticVy = staticSpeedHorizontal * Math.sin(angleToTarget);
+        Translation2d staticVector = new Translation2d(staticSpeedHorizontal, new Rotation2d(angleToTarget));
 
         // 5. Calculate the Shot Vector (Vector Subtraction)
         // V_shot = V_static - V_robot
-        double shotVx = staticVx - robotVel.vxMetersPerSecond;
-        double shotVy = staticVy - robotVel.vyMetersPerSecond;
+        Translation2d shotVector = staticVector.minus(robotVector);
 
         // 6. Extract Outputs
 
         // Calculate the target heading (Lead Angle)
-        double targetHeading = Math.atan2(shotVy, shotVx);
+        double targetHeading = shotVector.getAngle().getRadians();
 
         // Calculate the new Shot Speed
         // First get the horizontal magnitude
-        double newShotHorizontalSpeed = Math.hypot(shotVx, shotVy);
+        double newShotHorizontalSpeed = shotVector.getNorm();
 
         // Then convert back to full flywheel speed (divide by cos(hood))
         // S_total = V_horizontal / cos(theta)
