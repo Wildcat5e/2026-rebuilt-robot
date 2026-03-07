@@ -23,8 +23,11 @@ public class PhotonVision extends SubsystemBase {
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
     public static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
-    /** The Pose offset of the robot from the camera's position */
-    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.114, 0, .1, new Rotation3d(0, 0, 0));
+    /**
+     * Transform3d from the center of the robot to the camera mount position (ie, robot ➔ camera) in the Robot
+     * Coordinate System.
+     */
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0));
 
     private static final PhotonPoseEstimator ESTIMATOR =
         new PhotonPoseEstimator(Constants.FIELD_LAYOUT, ROBOT_TO_CAMERA);
