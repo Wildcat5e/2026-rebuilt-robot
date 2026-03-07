@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Utilities.*;
@@ -40,6 +41,20 @@ public class Hopper extends SubsystemBase {
 
     public Command testSpinKicker() {
         return startEnd(() -> kickerMotor.setVoltage(-10), () -> kickerMotor.setVoltage(0));
+    }
+
+    /**
+     * Reads the "Kicker Test Voltage" from SmartDashboard and applies it to the kicker motor.
+     */
+    public Command testTunableKicker() {
+        return runEnd(
+            // --execute-- (runs continuously)
+            () -> {
+                double targetVoltage = SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
+                kickerMotor.setVoltage(targetVoltage);
+            },
+            // --onEnd-- (runs when interrupted or finished)
+            () -> kickerMotor.setVoltage(0));
     }
 
     public void runFeeder() {
