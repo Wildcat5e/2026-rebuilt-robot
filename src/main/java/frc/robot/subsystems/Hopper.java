@@ -15,6 +15,7 @@ public class Hopper extends SubsystemBase {
         applyGearRatio(leftHopperMotor, 0.5);
         applyGearRatio(rightHopperMotor, 0.5);
         applyGearRatio(kickerMotor, 0.5);
+        SmartDashboard.putNumber("Kicker Test Voltage", 0.0);
     }
 
     @Override
