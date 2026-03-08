@@ -269,6 +269,8 @@ public abstract class Controller {
             controllerChooser.addOption("Simulation Keyboard", new Controller.SimulationKeyboard(2));
             SmartDashboard.putData("Controller Chooser", controllerChooser);
             controllerChooser.onChange(controller -> bindingsSetup(drivetrain, commands));
+            // Extra unneeded call just for good measure in case the sim GUI updates the chooser but Elastic with the actual robot doesn't.
+            bindingsSetup(drivetrain, commands);
         }
 
         @Override
