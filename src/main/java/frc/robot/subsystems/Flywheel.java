@@ -30,11 +30,17 @@ public class Flywheel extends SubsystemBase {
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
+
+        SmartDashboard.putData("Flywheel Telemetry", builder -> {
+            // null makes it read-only.
+            builder.addDoubleProperty("Current Speed (m/s)", () -> currentFlywheelSpeed, null);
+            builder.addDoubleProperty("Target Speed (m/s)", () -> targetFlywheelSpeed, null);
+        });
     }
 
-    private void setFlywheelMotorVoltages(double voltage) {
-        leftFlywheelMotor.setVoltage(-voltage);
-        rightFlywheelMotor.setVoltage(voltage);
+    private void setFlywheelMotorVoltages(double volts) {
+        leftFlywheelMotor.setVoltage(-volts);
+        rightFlywheelMotor.setVoltage(volts);
     }
 
     @Override
@@ -46,9 +52,7 @@ public class Flywheel extends SubsystemBase {
         return startEnd(() -> setFlywheelMotorVoltages(6), () -> setFlywheelMotorVoltages(0));
     }
 
-    /**
-     * Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously.
-     */
+    /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableFlywheel() {
         return runEnd(() -> {
             // Fetch the current number from the dashboard (defaults to 0.0 if not found)
