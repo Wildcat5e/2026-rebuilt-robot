@@ -16,60 +16,60 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
-    public Translation2d getTranslation() {
+    Translation2d getTranslation() {
         return applyRadialDeadzone(-controller.getRawAxis(1), -controller.getRawAxis(0), DEADZONE);
     }
 
     @Override
-    public double getRotation() {
+    double getRotation() {
         return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
     }
 
     @Override
-    public Trigger activateIntake() {
+    Trigger activateIntake() {
         /* change this */ return controller.button(0);
     }
 
     @Override
-    public Trigger shootFuel() {
+    Trigger shootFuel() {
         return controller.trigger();
     }
 
     @Override
-    public Trigger rotateToHub() {
+    Trigger rotateToHub() {
         /* change this */ return controller.button(1);
     }
 
     @Override
-    public Trigger lowerIntake() {
+    Trigger lowerIntake() {
         /* change this */ return controller.button(2);
     }
 
     @Override
-    public Trigger raiseIntake() {
+    Trigger raiseIntake() {
         /* change this */ return controller.button(0);
     }
 
     @Override
-    public Trigger forwardSysIdQuasi() {
+    Trigger forwardSysIdQuasi() {
         /* change this */ return controller.button(0);
         // return Controller.joystick.start().and(Controller.joystick.y());
     }
 
     @Override
-    public Trigger backwardSysIdQuasi() {
+    Trigger backwardSysIdQuasi() {
         /* change this */ return controller.button(0);
         // return Controller.joystick.start().and(Controller.joystick.x());
     }
 
     @Override
-    public Trigger forwardSysIdDynamic() {
+    Trigger forwardSysIdDynamic() {
         /* change this */ return controller.button(0);
         // return Controller.joystick.back().and(Controller.joystick.y());
     }
 
     @Override
-    public Trigger backwardSysIdDynamic() {
+    Trigger backwardSysIdDynamic() {
         /* change this */ return controller.button(0);
         // return Controller.joystick.back().and(Controller.joystick.x());
     }

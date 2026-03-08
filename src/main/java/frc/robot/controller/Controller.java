@@ -35,37 +35,37 @@ public abstract class Controller {
     public static boolean allowControllerRotation = true;
 
     /** Get Translation2d of controller axes. */
-    public abstract Translation2d getTranslation();
+    abstract Translation2d getTranslation();
 
     /** Get the rotation axis value. @return The axis value. */
-    public abstract double getRotation();
+    abstract double getRotation();
 
     /** Xbox left trigger to activate the intake. */
-    public abstract Trigger activateIntake();
+    abstract Trigger activateIntake();
 
     /** Xbox right trigger to shoot fuel. Flight Stick trigger. */
-    public abstract Trigger shootFuel();
+    abstract Trigger shootFuel();
 
     /** Xbox button A to rotate to hub. */
-    public abstract Trigger rotateToHub();
+    abstract Trigger rotateToHub();
 
     /** Xbox right bumper to lower the intake. */
-    public abstract Trigger lowerIntake();
+    abstract Trigger lowerIntake();
 
     /** Xbox left bumper to raise the intake. */
-    public abstract Trigger raiseIntake();
+    abstract Trigger raiseIntake();
 
     /** Xbox buttons Start and Y to forwardSysIdQuasi. */
-    public abstract Trigger forwardSysIdQuasi();
+    abstract Trigger forwardSysIdQuasi();
 
     /** Xbox buttons Start and X to backwardSysIdQuasi. */
-    public abstract Trigger backwardSysIdQuasi();
+    abstract Trigger backwardSysIdQuasi();
 
     /** Xbox buttons Back and Y to forwardSysIdDynamic. */
-    public abstract Trigger forwardSysIdDynamic();
+    abstract Trigger forwardSysIdDynamic();
 
     /** Xbox buttons Back and X to backwardSysIdDynamic. */
-    public abstract Trigger backwardSysIdDynamic();
+    abstract Trigger backwardSysIdDynamic();
 
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */

@@ -14,58 +14,58 @@ public class Xbox extends Controller {
     }
 
     @Override
-    public Translation2d getTranslation() {
+    Translation2d getTranslation() {
         return applyRadialDeadzone(-controller.getLeftY(), -controller.getLeftX(), DEADZONE);
     }
 
     @Override
-    public double getRotation() {
+    double getRotation() {
         return MathUtil.applyDeadband(-controller.getRightX(), DEADZONE);
     }
 
     @Override
-    public Trigger activateIntake() {
+    Trigger activateIntake() {
         return controller.leftTrigger();
     }
 
     @Override
-    public Trigger shootFuel() {
+    Trigger shootFuel() {
         return controller.b(); // change to right trigger
     }
 
     @Override
-    public Trigger rotateToHub() {
+    Trigger rotateToHub() {
         return controller.a();
     }
 
     @Override
-    public Trigger lowerIntake() {
+    Trigger lowerIntake() {
         return controller.rightBumper();
     }
 
     @Override
-    public Trigger raiseIntake() {
+    Trigger raiseIntake() {
 
         return controller.leftBumper();
     }
 
     @Override
-    public Trigger forwardSysIdQuasi() {
+    Trigger forwardSysIdQuasi() {
         return controller.start().and(controller.y());
     }
 
     @Override
-    public Trigger backwardSysIdQuasi() {
+    Trigger backwardSysIdQuasi() {
         return controller.start().and(controller.x());
     }
 
     @Override
-    public Trigger forwardSysIdDynamic() {
+    Trigger forwardSysIdDynamic() {
         return controller.back().and(controller.y());
     }
 
     @Override
-    public Trigger backwardSysIdDynamic() {
+    Trigger backwardSysIdDynamic() {
         return controller.back().and(controller.x());
     }
 }

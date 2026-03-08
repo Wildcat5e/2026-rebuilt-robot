@@ -28,57 +28,57 @@ public class MultiController extends Controller {
     }
 
     @Override
-    public double getRotation() {
+    double getRotation() {
         return controllerChooser.getSelected().getRotation();
     }
 
     @Override
-    public Translation2d getTranslation() {
+    Translation2d getTranslation() {
         return controllerChooser.getSelected().getTranslation();
     }
 
     @Override
-    public Trigger activateIntake() {
+    Trigger activateIntake() {
         return controllerChooser.getSelected().activateIntake();
     }
 
     @Override
-    public Trigger shootFuel() {
+    Trigger shootFuel() {
         return controllerChooser.getSelected().shootFuel();
     }
 
     @Override
-    public Trigger rotateToHub() {
+    Trigger rotateToHub() {
         return controllerChooser.getSelected().rotateToHub();
     }
 
     @Override
-    public Trigger lowerIntake() {
+    Trigger lowerIntake() {
         return controllerChooser.getSelected().lowerIntake();
     }
 
     @Override
-    public Trigger raiseIntake() {
+    Trigger raiseIntake() {
         return controllerChooser.getSelected().raiseIntake();
     }
 
     @Override
-    public Trigger forwardSysIdQuasi() {
+    Trigger forwardSysIdQuasi() {
         return controllerChooser.getSelected().forwardSysIdQuasi();
     }
 
     @Override
-    public Trigger backwardSysIdQuasi() {
+    Trigger backwardSysIdQuasi() {
         return controllerChooser.getSelected().backwardSysIdQuasi();
     }
 
     @Override
-    public Trigger forwardSysIdDynamic() {
+    Trigger forwardSysIdDynamic() {
         return controllerChooser.getSelected().forwardSysIdDynamic();
     }
 
     @Override
-    public Trigger backwardSysIdDynamic() {
+    Trigger backwardSysIdDynamic() {
         return controllerChooser.getSelected().backwardSysIdDynamic();
     }
 }
