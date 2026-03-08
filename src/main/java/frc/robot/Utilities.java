@@ -49,6 +49,12 @@ public interface Utilities {
             : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
 
+    /** Rounds a double to a specified number of decimal places */
+    static double round(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
+
     /**
      * Applies a gear ratio to a TalonFX motor so that getPosition() and getVelocity() automatically return mechanism
      * rotations instead of motor rotor rotations.

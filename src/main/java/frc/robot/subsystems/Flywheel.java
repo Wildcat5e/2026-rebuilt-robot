@@ -32,9 +32,8 @@ public class Flywheel extends SubsystemBase {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
 
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
-            // null makes it read-only.
-            builder.addDoubleProperty("Current Speed (m/s)", () -> currentFlywheelSpeed, null);
-            builder.addDoubleProperty("Target Speed (m/s)", () -> targetFlywheelSpeed, null);
+            builder.addDoubleProperty("Current Speed (m/s)", () -> round(currentFlywheelSpeed, 3), null);
+            builder.addDoubleProperty("Target Speed (m/s)", () -> round(targetFlywheelSpeed, 3), null);
         });
     }
 
