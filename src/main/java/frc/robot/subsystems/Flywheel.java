@@ -29,7 +29,7 @@ public class Flywheel extends SubsystemBase {
         this.drivetrain = drivetrain;
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
-        SmartDashboard.putNumber("Flywheel Test Voltage", 0.0);
+        SmartDashboard.putNumber("Flywheel Test Voltage", 5);
     }
 
     private void setFlywheelMotorVoltages(double voltage) {
@@ -54,9 +54,7 @@ public class Flywheel extends SubsystemBase {
             // Fetch the current number from the dashboard (defaults to 0.0 if not found)
             double targetVoltage = SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
             setFlywheelMotorVoltages(targetVoltage);
-        },
-            // Safely stop the motors when the command ends or is interrupted
-            () -> setFlywheelMotorVoltages(0));
+        }, () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testDynamicStartFlywheel() {
@@ -66,9 +64,7 @@ public class Flywheel extends SubsystemBase {
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
-        },
-            // on end
-            () -> setFlywheelMotorVoltages(0));
+        }, () -> setFlywheelMotorVoltages(0));
     }
 
     public Command testStaticStartFlywheel() {
