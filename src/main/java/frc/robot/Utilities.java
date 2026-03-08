@@ -55,11 +55,13 @@ public interface Utilities {
      * 
      * @param motor The TalonFX motor to configure.
      * @param gearRatio
+     * @return The TalonFX motor that was configured so this can be chained.
      */
-    static void applyGearRatio(TalonFX motor, double gearRatio) {
+    static TalonFX applyGearRatio(TalonFX motor, double gearRatio) {
         TalonFXConfiguration config = new TalonFXConfiguration();
         motor.getConfigurator().refresh(config);
         config.Feedback.SensorToMechanismRatio = gearRatio;
         motor.getConfigurator().apply(config);
+        return motor;
     }
 }
