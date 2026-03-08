@@ -45,6 +45,18 @@ This is a great repo.
 | Right Bumper   | Bring Intake Down                         |
 | Left Bumper    | Raise Intake Up                           |
 
+### Flight Stick
+
+| Button            | Action                                    |
+|-------------------|-------------------------------------------|
+| Joystick          | Translation                               |
+| Joystick Rotation | Rotation                                  |
+| Left Trigger      | Activate intake                           |
+| Trigger           | Shoot (activate flywheel, kicker, hopper) |
+| A                 | Automatic Rotate to Hub                   |
+| Right Bumper      | Bring Intake Down                         |
+| Left Bumper       | Raise Intake Up                           |
+
 ## DOCUMENTATION
 
 <https://github.com/Wildcat5e/documentation>

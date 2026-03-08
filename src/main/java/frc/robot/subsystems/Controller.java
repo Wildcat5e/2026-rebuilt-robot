@@ -31,8 +31,6 @@ public abstract class Controller {
     /** Use this to create requests for driving the robot and use the drivetrain to apply them. */
     private static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    static CommandXboxController joystick = new CommandXboxController(0);
-
 
     /** Change whether or not controller can control translation. */
     public static boolean allowControllerTranslation = true;
@@ -45,22 +43,31 @@ public abstract class Controller {
     /** Get the rotation axis value. @return The axis value. */
     public abstract double getRotation();
 
+    /** Xbox left trigger to activate the intake. */
     public abstract Trigger activateIntake();
 
+    /** Xbox right trigger to shoot fuel. Flight Stick trigger. */
     public abstract Trigger shootFuel();
 
+    /** Xbox button A to rotate to hub. */
     public abstract Trigger rotateToHub();
 
+    /** Xbox right bumper to lower the intake. */
     public abstract Trigger lowerIntake();
 
+    /** Xbox left bumper to raise the intake. */
     public abstract Trigger raiseIntake();
 
+    /** Xbox buttons Start and Y to forwardSysIdQuasi. */
     public abstract Trigger forwardSysIdQuasi();
 
+    /** Xbox buttons Start and X to backwardSysIdQuasi. */
     public abstract Trigger backwardSysIdQuasi();
 
+    /** Xbox buttons Back and Y to forwardSysIdDynamic. */
     public abstract Trigger forwardSysIdDynamic();
 
+    /** Xbox buttons Back and X to backwardSysIdDynamic. */
     public abstract Trigger backwardSysIdDynamic();
 
 
@@ -151,22 +158,22 @@ public abstract class Controller {
 
         @Override
         public Trigger forwardSysIdQuasi() {
-            return Controller.joystick.start().and(Controller.joystick.y());
+            return controller.start().and(controller.y());
         }
 
         @Override
         public Trigger backwardSysIdQuasi() {
-            return Controller.joystick.start().and(Controller.joystick.x());
+            return controller.start().and(controller.x());
         }
 
         @Override
         public Trigger forwardSysIdDynamic() {
-            return Controller.joystick.back().and(Controller.joystick.y());
+            return controller.back().and(controller.y());
         }
 
         @Override
         public Trigger backwardSysIdDynamic() {
-            return Controller.joystick.back().and(Controller.joystick.x());
+            return controller.back().and(controller.x());
         }
     }
     public static class LogitechFlightStick extends Controller {
@@ -201,12 +208,12 @@ public abstract class Controller {
 
         @Override
         public Trigger rotateToHub() {
-            /* change this */ return controller.button(0);
+            /* change this */ return controller.button(1);
         }
 
         @Override
         public Trigger lowerIntake() {
-            /* change this */ return controller.button(0);
+            /* change this */ return controller.button(2);
         }
 
         @Override
@@ -216,22 +223,26 @@ public abstract class Controller {
 
         @Override
         public Trigger forwardSysIdQuasi() {
-            return Controller.joystick.start().and(Controller.joystick.y());
+            /* change this */ return null;
+            // return Controller.joystick.start().and(Controller.joystick.y());
         }
 
         @Override
         public Trigger backwardSysIdQuasi() {
-            return Controller.joystick.start().and(Controller.joystick.x());
+            /* change this */ return null;
+            // return Controller.joystick.start().and(Controller.joystick.x());
         }
 
         @Override
         public Trigger forwardSysIdDynamic() {
-            return Controller.joystick.back().and(Controller.joystick.y());
+            /* change this */ return null;
+            // return Controller.joystick.back().and(Controller.joystick.y());
         }
 
         @Override
         public Trigger backwardSysIdDynamic() {
-            return Controller.joystick.back().and(Controller.joystick.x());
+            /* change this */ return null;
+            // return Controller.joystick.back().and(Controller.joystick.x());
         }
     }
     public static class SimulationKeyboard extends LogitechFlightStick {
