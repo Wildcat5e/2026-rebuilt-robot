@@ -42,27 +42,32 @@ public class Robot extends TimedRobot {
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
-    private final Commands commands = new Commands(drivetrain);
+    /** Contains all the commands we use and needs to be instantiated after running {@link #configureAutoBuilder()}. */
+    private final Commands commands;
 
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
+        configureAutoBuilder();
+        commands = new Commands(drivetrain);
+
         controller.bindingsSetup(drivetrain, commands);
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
-        configureAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
-        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
         SignalLogger.enableAutoLogging(false);
         SmartDashboard.putData("Field", fieldWidget);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
-        SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
         SmartDashboard.putData("Robot Telemetry", builder -> {
             builder.addDoubleProperty("Distance to Hub (m)",
                 () -> Utilities.round(Utilities.getHubDistance(drivetrain), 3), null);
         });
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Command Chooser", autoChooser);
+
+        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
     @Override
@@ -126,6 +131,7 @@ public class Robot extends TimedRobot {
         simulation.poseUpdate();
     }
 
+    /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
     public void configureAutoBuilder() {// @formatter:off
         try {
             var applyRobotSpeedsRequest = new SwerveRequest.ApplyRobotSpeeds();
