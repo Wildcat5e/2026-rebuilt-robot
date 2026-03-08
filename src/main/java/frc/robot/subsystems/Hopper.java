@@ -15,7 +15,7 @@ public class Hopper extends SubsystemBase {
         applyGearRatio(leftHopperMotor, 0.5);
         applyGearRatio(rightHopperMotor, 0.5);
         applyGearRatio(kickerMotor, 0.5);
-        SmartDashboard.putNumber("Kicker Test Voltage", 0.0);
+        SmartDashboard.putNumber("Kicker Test Voltage", 8);
     }
 
     @Override
@@ -44,18 +44,11 @@ public class Hopper extends SubsystemBase {
         return startEnd(() -> kickerMotor.setVoltage(-8), () -> kickerMotor.setVoltage(0));
     }
 
-    /**
-     * Reads the "Kicker Test Voltage" from SmartDashboard and applies it to the kicker motor.
-     */
     public Command testTunableKicker() {
-        return runEnd(
-            // --execute-- (runs continuously)
-            () -> {
-                double targetVoltage = SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
-                kickerMotor.setVoltage(targetVoltage);
-            },
-            // --onEnd-- (runs when interrupted or finished)
-            () -> kickerMotor.setVoltage(0));
+        return runEnd(() -> {
+            double targetVoltage = SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
+            kickerMotor.setVoltage(-targetVoltage);
+        }, () -> kickerMotor.setVoltage(0));
     }
 
     public void runFeeder() {
