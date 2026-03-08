@@ -25,7 +25,7 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        applyGearRatio(flywheelMotor, 0.5);
+        applyGearRatio(flywheelMotor, 1);
     }
 
     @Override
