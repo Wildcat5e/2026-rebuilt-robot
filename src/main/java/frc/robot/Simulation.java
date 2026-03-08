@@ -3,7 +3,10 @@ package frc.robot;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
@@ -13,6 +16,7 @@ public class Simulation {
     /** Enable drawing a wireframe visualization of the field to the camera streams. Extremely resource-intensive! */
     private final boolean ENABLE_WIREFRAME = true;
     private final Drivetrain drivetrain;
+    private boolean defaultAllianceNotSet = true;
 
     public Simulation(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -25,6 +29,22 @@ public class Simulation {
 
     public void poseUpdate() {
         visionSim.update(drivetrain.getState().Pose);
+    }
+
+    public void checkAndSetDefaultAlliance() {
+        if (defaultAllianceNotSet) {
+            // Set (default) alliance color on sim start. 
+            DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
+            var fmsTable = NetworkTableInstance.getDefault().getTable("FMSInfo");
+            fmsTable.getEntry("IsRedAlliance").setBoolean(false);
+            fmsTable.getEntry("StationNumber").setDouble(1);
+            System.out.println("attempting set blue");
+            if (!fmsTable.getEntry("IsRedAlliance").getBoolean(true)
+                && DriverStationSim.getAllianceStationId() == AllianceStationID.Blue1) {
+                System.out.println("success");
+                //defaultAllianceNotSet = false;
+            } else System.out.println("failed");
+        }
     }
 
     private SimCameraProperties cameraSettings() {

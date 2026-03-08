@@ -131,6 +131,7 @@ public class Robot extends TimedRobot {
     @Override
     public void simulationPeriodic() {
         simulation.poseUpdate();
+        simulation.checkAndSetDefaultAlliance();
     }
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
