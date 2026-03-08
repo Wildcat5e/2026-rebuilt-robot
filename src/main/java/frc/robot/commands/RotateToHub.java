@@ -77,12 +77,6 @@ public class RotateToHub extends Command {
 
         // Feed the calculated tracking velocity to PathPlanner
         PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
-
-        // Debugging
-        SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
-        SmartDashboard.putNumber("Target Heading", Math.toDegrees(targetHeading));
-        SmartDashboard.putNumber("FF Omega", feedforwardOmega);
-        SmartDashboard.putNumber("PID Omega", pidOmega);
     }
 
     @Override
