@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -73,10 +74,12 @@ public class RotateToHub extends Command {
         final double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         // --- 4. Apply to Drivetrain & PathPlanner ---
-        drivetrain.setControl(Robot.swerveRequest.withRotationalRate(cappedVelocity));
-
-        // Feed the calculated tracking velocity to PathPlanner
-        PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
+        if (DriverStation.isAutonomous()) {
+            // Feed the calculated tracking velocity to PathPlanner
+            PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
+        } else {
+            drivetrain.setControl(Robot.swerveRequest.withRotationalRate(cappedVelocity));
+        }
 
         // Debugging
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
