@@ -74,7 +74,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         SmartDashboard.putData("Robot Telemetry", builder -> {
-            builder.addDoubleProperty("Distance to Hub (m)", () -> Utilities.getHubDistance(drivetrain), null);
+            builder.addDoubleProperty("Distance to Hub (m)",
+                () -> Utilities.round(Utilities.getHubDistance(drivetrain), 3), null);
         });
         CommandScheduler.getInstance().run();
         fieldWidget.setRobotPose(drivetrain.getState().Pose);
