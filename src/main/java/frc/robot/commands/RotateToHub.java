@@ -74,12 +74,11 @@ public class RotateToHub extends Command {
         final double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         // --- 4. Apply to Drivetrain & PathPlanner ---
-        if (DriverStation.isAutonomous()) {
-            // Feed the calculated tracking velocity to PathPlanner
-            PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
-        } else {
+        if (!DriverStation.isAutonomous()) { // Need to confirm that this works when using a path during teleop.
             drivetrain.setControl(Robot.swerveRequest.withRotationalRate(cappedVelocity));
         }
+        // Feed the calculated tracking velocity to PathPlanner
+        PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
 
         // Debugging
         SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
