@@ -22,7 +22,6 @@ public class Hopper extends SubsystemBase {
     public void periodic() {}
 
     public Command testLeftHopper() {
-        // Voltage can be negated to swap direction
         return startEnd(() -> leftHopperMotor.setVoltage(3), () -> leftHopperMotor.setVoltage(0));
     }
 
@@ -32,18 +31,21 @@ public class Hopper extends SubsystemBase {
 
     public Command testBothHoppers() {
         return startEnd(() -> {
-            leftHopperMotor.setVoltage(3);
-            rightHopperMotor.setVoltage(-3);
+            setHopperMotorVoltages(3);
         }, () -> {
-            leftHopperMotor.setVoltage(0);
-            rightHopperMotor.setVoltage(0);
+            setHopperMotorVoltages(0);
         });
     }
 
-    public Command testSpinKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(-8), () -> kickerMotor.setVoltage(0));
+    /**
+     * Sets both hopper motors to the specified voltage (right voltage negated).
+     */
+    private void setHopperMotorVoltages(double volts) {
+        leftHopperMotor.setVoltage(volts);
+        rightHopperMotor.setVoltage(-volts);
     }
 
+    /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableKicker() {
         return runEnd(() -> {
             double targetVoltage = SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
@@ -52,14 +54,12 @@ public class Hopper extends SubsystemBase {
     }
 
     public void runFeeder() {
-        leftHopperMotor.setVoltage(3);
-        rightHopperMotor.setVoltage(-3);
+        setHopperMotorVoltages(3);
         kickerMotor.setVoltage(3);
     }
 
     public void stopFeeder() {
-        leftHopperMotor.setVoltage(0);
-        rightHopperMotor.setVoltage(0);
+        setHopperMotorVoltages(0);
         kickerMotor.setVoltage(0);
     }
 }
