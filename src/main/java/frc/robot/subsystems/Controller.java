@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -7,6 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands;
 import frc.robot.Constants;
 
 /**
@@ -18,42 +23,87 @@ import frc.robot.Constants;
  */
 public abstract class Controller {
     /** Deadzone to apply to joysticks as a proportion out of 1. */
-    static final double DEADZONE = .15;
+    private static final double DEADZONE = .15;
     /** Exponent to raise inputs to the power of to create a curved response. */
-    static final double SCALE_EXPONENT = 1;
-    public static final double MAX_ANGULAR_SPEED = 1.5 * Math.PI;
-    public static final double MAX_ANGULAR_ACCEL = Constants.MAX_ANGULAR_ACCEL;
+    private static final double SCALE_EXPONENT = 1;
+    /** Limit max controller angular speed to prevent flicking robot around too fast and spilling balls. */
+    private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI; // Check if this is even needed or reasonable.
+    /** Use this to create requests for driving the robot and use the drivetrain to apply them. */
+    private static final SwerveRequest.FieldCentric swerveRequest =
+        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    static CommandXboxController joystick = new CommandXboxController(0);
+
+
     /** Change whether or not controller can control translation. */
     public static boolean allowControllerTranslation = true;
     /** Change whether or not controller can control rotation. */
     public static boolean allowControllerRotation = true;
-
-    /**
-     * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
-     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
-     * 
-     * @param xAxis raw value from controller
-     * @param yAxis raw value from controller
-     * @param deadzone proportion to eliminate
-     * @return axis values in Translation2d
-     */
-    static Translation2d applyRadialDeadzone(double xAxis, double yAxis, double deadzone) {
-        double magnitude = Math.hypot(xAxis, yAxis);
-        if (magnitude < deadzone) {
-            return new Translation2d(0, 0);
-        }
-        double scaledMagnitude = Math.pow(MathUtil.applyDeadband(magnitude, deadzone), SCALE_EXPONENT);
-        return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
-    }
-
-    /** The only instance of the Xbox Controller. */
-    public static final CommandXboxController joystick = new CommandXboxController(0);
 
     /** Get Translation2d of controller axes. */
     public abstract Translation2d getTranslation();
 
     /** Get the rotation axis value. @return The axis value. */
     public abstract double getRotation();
+
+    public abstract Trigger activateIntake();
+
+    public abstract Trigger shootFuel();
+
+    public abstract Trigger rotateToHub();
+
+    public abstract Trigger lowerIntake();
+
+    public abstract Trigger raiseIntake();
+
+    public abstract Trigger forwardSysIdQuasi();
+
+    public abstract Trigger backwardSysIdQuasi();
+
+    public abstract Trigger forwardSysIdDynamic();
+
+    public abstract Trigger backwardSysIdDynamic();
+
+
+    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
+    public void bindingsSetup(Drivetrain drivetrain, Commands commands) {
+        // reset the field-centric heading on left trigger
+        activateIntake().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+        // a and right bumper
+        // rotateToHub().whileTrue(new RotateToHub(drivetrain, true)); // PID + Shooting Calculator testing
+        // lowerIntake().whileTrue(new RotateToHub(drivetrain, false)); // Pure Feedforward + PID testing
+
+        // shootFuel().whileTrue(commands.flywheel.testTunableFlywheel()); // b, change to right trigger
+        // shootFuel().whileTrue(commands.hopper.testTunableKicker()); // b, change to right trigger
+
+        Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
+        Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
+        Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
+        Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
+        /*
+         * Tests for motor identification:
+         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
+         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
+         */
+        // Quasistatic test for motor identification
+        forwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        backwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // Dynamic test for motor identification
+        forwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        backwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
+            var translation = getTranslation();
+            if (allowControllerTranslation) {
+                swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
+            }
+            if (allowControllerRotation) {
+                swerveRequest.withRotationalRate(getRotation() * MAX_ANGULAR_SPEED);
+            }
+            return swerveRequest;
+        }));
+    }
 
     public static class Xbox extends Controller {
         private final CommandXboxController controller;
@@ -71,6 +121,52 @@ public abstract class Controller {
         @Override
         public double getRotation() {
             return MathUtil.applyDeadband(-controller.getRightX(), DEADZONE);
+        }
+
+        @Override
+        public Trigger activateIntake() {
+            return controller.leftTrigger();
+        }
+
+        @Override
+        public Trigger shootFuel() {
+            return controller.b(); // change to right trigger
+        }
+
+        @Override
+        public Trigger rotateToHub() {
+            return controller.a();
+        }
+
+        @Override
+        public Trigger lowerIntake() {
+            return controller.rightBumper();
+        }
+
+        @Override
+        public Trigger raiseIntake() {
+
+            return controller.leftBumper();
+        }
+
+        @Override
+        public Trigger forwardSysIdQuasi() {
+            return Controller.joystick.start().and(Controller.joystick.y());
+        }
+
+        @Override
+        public Trigger backwardSysIdQuasi() {
+            return Controller.joystick.start().and(Controller.joystick.x());
+        }
+
+        @Override
+        public Trigger forwardSysIdDynamic() {
+            return Controller.joystick.back().and(Controller.joystick.y());
+        }
+
+        @Override
+        public Trigger backwardSysIdDynamic() {
+            return Controller.joystick.back().and(Controller.joystick.x());
         }
     }
     public static class LogitechFlightStick extends Controller {
@@ -91,6 +187,51 @@ public abstract class Controller {
         @Override
         public double getRotation() {
             return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
+        }
+
+        @Override
+        public Trigger activateIntake() {
+            /* change this */ return controller.button(0);
+        }
+
+        @Override
+        public Trigger shootFuel() {
+            return controller.trigger();
+        }
+
+        @Override
+        public Trigger rotateToHub() {
+            /* change this */ return controller.button(0);
+        }
+
+        @Override
+        public Trigger lowerIntake() {
+            /* change this */ return controller.button(0);
+        }
+
+        @Override
+        public Trigger raiseIntake() {
+            /* change this */ return controller.button(0);
+        }
+
+        @Override
+        public Trigger forwardSysIdQuasi() {
+            return Controller.joystick.start().and(Controller.joystick.y());
+        }
+
+        @Override
+        public Trigger backwardSysIdQuasi() {
+            return Controller.joystick.start().and(Controller.joystick.x());
+        }
+
+        @Override
+        public Trigger forwardSysIdDynamic() {
+            return Controller.joystick.back().and(Controller.joystick.y());
+        }
+
+        @Override
+        public Trigger backwardSysIdDynamic() {
+            return Controller.joystick.back().and(Controller.joystick.x());
         }
     }
     public static class SimulationKeyboard extends LogitechFlightStick {
@@ -127,5 +268,68 @@ public abstract class Controller {
         public Translation2d getTranslation() {
             return controllerChooser.getSelected().getTranslation();
         }
+
+        @Override
+        public Trigger activateIntake() {
+            return controllerChooser.getSelected().activateIntake();
+        }
+
+        @Override
+        public Trigger shootFuel() {
+            return controllerChooser.getSelected().shootFuel();
+        }
+
+        @Override
+        public Trigger rotateToHub() {
+            return controllerChooser.getSelected().rotateToHub();
+        }
+
+        @Override
+        public Trigger lowerIntake() {
+            return controllerChooser.getSelected().lowerIntake();
+        }
+
+        @Override
+        public Trigger raiseIntake() {
+            return controllerChooser.getSelected().raiseIntake();
+        }
+
+        @Override
+        public Trigger forwardSysIdQuasi() {
+            return controllerChooser.getSelected().forwardSysIdQuasi();
+        }
+
+        @Override
+        public Trigger backwardSysIdQuasi() {
+            return controllerChooser.getSelected().backwardSysIdQuasi();
+        }
+
+        @Override
+        public Trigger forwardSysIdDynamic() {
+            return controllerChooser.getSelected().forwardSysIdDynamic();
+        }
+
+        @Override
+        public Trigger backwardSysIdDynamic() {
+            return controllerChooser.getSelected().backwardSysIdDynamic();
+        }
+    }
+
+    /**
+     * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
+     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
+     * 
+     * @param xAxis raw value from controller
+     * @param yAxis raw value from controller
+     * @param deadzone proportion to eliminate
+     * @return axis values in Translation2d
+     */
+    static Translation2d applyRadialDeadzone(double xAxis, double yAxis, double deadzone) {
+        double magnitude = Math.hypot(xAxis, yAxis);
+        if (magnitude < deadzone) {
+            return new Translation2d(0, 0);
+        }
+        double scaledMagnitude = Math.pow(MathUtil.applyDeadband(magnitude, deadzone), SCALE_EXPONENT);
+        return new Translation2d(xAxis, yAxis).div(magnitude).times(scaledMagnitude);
     }
 }

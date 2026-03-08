@@ -9,7 +9,6 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
@@ -23,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
@@ -35,11 +33,8 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
     /** The only instance of Drivetrain. */
-    private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
-    public static final SwerveRequest.FieldCentric swerveRequest =
-        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller = new Controller.MultiController();
+    public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Controller controller = new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
@@ -48,23 +43,19 @@ public class Robot extends TimedRobot {
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
+    private final Commands commands = new Commands(drivetrain);
 
-    private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
-    private final Paths paths = new Paths(drivetrain);
-    private final Flywheel flywheel = new Flywheel(drivetrain);
-    private final Hopper hopper = new Hopper();
-    private final ShootFuel shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
-        NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
+        controller.bindingsSetup(drivetrain, commands);
+        NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
         SignalLogger.enableAutoLogging(false);
-        bindingsSetup();
         SmartDashboard.putData("Field", fieldWidget);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
@@ -135,51 +126,6 @@ public class Robot extends TimedRobot {
     public void simulationPeriodic() {
         simulation.poseUpdate();
     }
-
-    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
-    public void bindingsSetup() {
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            Translation2d translation = controller.getTranslation();
-            if (Controller.allowControllerTranslation) {
-                Robot.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
-            }
-            if (Controller.allowControllerRotation) {
-                Robot.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
-            }
-            return Robot.swerveRequest;
-        }));
-        // reset the field-centric heading on left trigger
-        Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
-        // Controller.joystick.a().whileTrue(new RotateToHub(drivetrain, true)); // PID + Shooting Calculator testing
-        // Controller.joystick.rightBumper().whileTrue(new RotateToHub(drivetrain, false)); // Pure Feedforward + PID testing
-
-        // Controller.joystick.b().whileTrue(flywheel.testTunableFlywheel());
-
-        // Controller.joystick.b().whileTrue(hopper.testTunableKicker());
-
-        Controller.joystick.povUp().whileTrue(flywheel.sysIdDynamicForward());
-        Controller.joystick.povRight().whileTrue(flywheel.sysIdDynamicReverse());
-        Controller.joystick.povDown().whileTrue(flywheel.sysIdQuasistaticForward());
-        Controller.joystick.povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
-
-
-        /*
-         * Tests for motor identification:
-         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
-         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
-         */
-        // Quasistatic test for motor identification
-        Controller.joystick.start().and(Controller.joystick.y())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        Controller.joystick.start().and(Controller.joystick.x())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        // Dynamic test for motor identification
-        Controller.joystick.back().and(Controller.joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    }
-
 
     public void configureAutoBuilder() {// @formatter:off
         try {
