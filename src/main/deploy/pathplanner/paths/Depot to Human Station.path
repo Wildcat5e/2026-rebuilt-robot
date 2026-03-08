@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9587916666671805,
-        "y": 4.44126041666761
+        "x": 2.327171052631578,
+        "y": 4.660054824561403
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.544562500000514,
-        "y": 3.685427083334277
+        "x": 1.8271271929824562,
+        "y": 3.698432017543859
       },
       "prevControl": {
-        "x": 2.544562500000514,
-        "y": 3.935427083334277
+        "x": 1.8363801081099262,
+        "y": 3.948260725985551
       },
       "nextControl": {
-        "x": 2.544562500000514,
-        "y": 3.435427083334279
+        "x": 1.8175109649122807,
+        "y": 3.438793859649122
       },
       "isLocked": false,
       "linkedName": null
@@ -36,25 +36,32 @@
         "y": 0.6526458333342771
       },
       "prevControl": {
-        "x": 2.062718750000514,
-        "y": 2.778427083334277
+        "x": 2.3656359649122805,
+        "y": 2.746425438596491
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Rotate To Hub",
+      "waypointRelativePos": 0.05745062836624773,
+      "endWaypointRelativePos": 1.85278276481149,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Rotate To Hub"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2000.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 200.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -71,5 +78,5 @@
     "velocity": 0,
     "rotation": -179.13061951052575
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

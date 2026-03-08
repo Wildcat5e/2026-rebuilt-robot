@@ -5,21 +5,41 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Left Start to Middle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Middle Fuel Grab"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle to Left Start"
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Left Start to Middle"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Left Middle Fuel Grab"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Middle to Left Start"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Rotate To Hub"
+                }
+              }
+            ]
           }
         }
       ]
