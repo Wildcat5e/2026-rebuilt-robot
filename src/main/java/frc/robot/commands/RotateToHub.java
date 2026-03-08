@@ -9,10 +9,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
 import frc.robot.Constants;
+import frc.robot.controller.Controller;
 import static frc.robot.Utilities.*;
 
 public class RotateToHub extends Command {

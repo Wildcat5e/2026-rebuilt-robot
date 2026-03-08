@@ -22,6 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
+import frc.robot.controller.Controller;
+import frc.robot.controller.MultiController;
+import frc.robot.controller.Xbox;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 
@@ -33,7 +36,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
     /** The only instance of Drivetrain. */
     public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Controller controller = new Controller.Xbox(0);
+    public final Controller controller = new Xbox(0);
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
@@ -54,7 +57,7 @@ public class Robot extends TimedRobot {
         commands = new Commands(drivetrain);
         // controller.bindingsSetup(drivetrain, commands);
         // remove line below and uncomment above before competition
-        new Controller.MultiController(drivetrain, commands).bindingsSetup(drivetrain, commands);
+        new MultiController(drivetrain, commands).bindingsSetup(drivetrain, commands);
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
         SignalLogger.enableAutoLogging(false);
         SmartDashboard.putData("Field", fieldWidget);
