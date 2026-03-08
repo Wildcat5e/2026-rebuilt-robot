@@ -46,10 +46,10 @@ public class RotateToHub extends Command {
             : getRobotToHubAngle(drivetrain);
 
         // Debug
-        SmartDashboard.putNumber("Robot Rotation", currentPose.getRotation().getDegrees());
-        SmartDashboard.putNumber("Robot To Hub Angle", Math.toDegrees(targetHeading));
+        SmartDashboard.putNumber("Robot Rotation", round(currentPose.getRotation().getDegrees(), 2));
+        SmartDashboard.putNumber("Target Heading", round(Math.toDegrees(targetHeading), 2));
         SmartDashboard.putNumber("Angle Difference",
-            Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()));
+            round(Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()), 2));
 
         // --- 1. Calculate Feedforward (Predictive) ---
         // Get field-centric speeds

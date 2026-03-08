@@ -46,4 +46,10 @@ public interface Utilities {
         return Robot.isBlueAlliance ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
             : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
+
+    /** Rounds a double to a specified number of decimal places */
+    static double round(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
 }
