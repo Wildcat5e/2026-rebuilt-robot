@@ -223,25 +223,25 @@ public abstract class Controller {
 
         @Override
         public Trigger forwardSysIdQuasi() {
-            /* change this */ return null;
+            /* change this */ return controller.button(0);
             // return Controller.joystick.start().and(Controller.joystick.y());
         }
 
         @Override
         public Trigger backwardSysIdQuasi() {
-            /* change this */ return null;
+            /* change this */ return controller.button(0);
             // return Controller.joystick.start().and(Controller.joystick.x());
         }
 
         @Override
         public Trigger forwardSysIdDynamic() {
-            /* change this */ return null;
+            /* change this */ return controller.button(0);
             // return Controller.joystick.back().and(Controller.joystick.y());
         }
 
         @Override
         public Trigger backwardSysIdDynamic() {
-            /* change this */ return null;
+            /* change this */ return controller.button(0);
             // return Controller.joystick.back().and(Controller.joystick.x());
         }
     }
@@ -262,12 +262,13 @@ public abstract class Controller {
     public static class MultiController extends Controller {
         final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
-        public MultiController() {
+        public MultiController(Drivetrain drivetrain, Commands commands) {
             DriverStation.silenceJoystickConnectionWarning(true);
             controllerChooser.setDefaultOption("Xbox Controller", new Controller.Xbox(0));
             controllerChooser.addOption("Logitech Flight Stick", new Controller.LogitechFlightStick(1));
             controllerChooser.addOption("Simulation Keyboard", new Controller.SimulationKeyboard(2));
             SmartDashboard.putData("Controller Chooser", controllerChooser);
+            controllerChooser.onChange(controller -> bindingsSetup(drivetrain, commands));
         }
 
         @Override
