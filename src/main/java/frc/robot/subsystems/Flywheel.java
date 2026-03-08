@@ -21,7 +21,7 @@ public class Flywheel extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     private double currentFlywheelSpeed = 0;
-    private double targetFlywheelSpeed;
+    private double targetFlywheelSpeed = -1;
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
