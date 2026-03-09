@@ -19,7 +19,7 @@ public class Flywheel extends SubsystemBase {
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
     private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.039314, 0.34165, 0.038564);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
@@ -65,7 +65,7 @@ public class Flywheel extends SubsystemBase {
             // This code is run every 20 ms
             // ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-            targetFlywheelSpeed = 7.2;
+            targetFlywheelSpeed = 10;
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
@@ -125,9 +125,9 @@ public class Flywheel extends SubsystemBase {
     // Untested
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
         new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()), log -> {
-            log.motor("flywheel-motor").voltage(leftFlywheelMotor.getMotorVoltage().getValue())
+            log.motor("flywheel-motors").voltage(rightFlywheelMotor.getMotorVoltage().getValue())
                 .linearPosition(Distance.ofRelativeUnits(
-                    leftFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
+                    rightFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
                 .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
         }, this));
 

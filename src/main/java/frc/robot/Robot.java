@@ -157,9 +157,11 @@ public class Robot extends TimedRobot {
         // Controller.joystick.a().whileTrue(new RotateToHub(drivetrain, true)); // PID + Shooting Calculator testing
         // Controller.joystick.rightBumper().whileTrue(new RotateToHub(drivetrain, false)); // Pure Feedforward + PID testing
 
-        // Controller.joystick.b().whileTrue(flywheel.testTunableFlywheel());
+        Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
+        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
-        // Controller.joystick.b().whileTrue(hopper.testTunableKicker());
+        Controller.joystick.a().whileTrue(flywheel.testTunableFlywheel());
+        Controller.joystick.a().whileTrue(hopper.testTunableKicker());
 
         Controller.joystick.povUp().whileTrue(flywheel.sysIdDynamicForward());
         Controller.joystick.povRight().whileTrue(flywheel.sysIdDynamicReverse());
