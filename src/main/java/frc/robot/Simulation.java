@@ -4,7 +4,6 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
 
@@ -20,7 +19,7 @@ public class Simulation {
         final PhotonCameraSim cameraSim = new PhotonCameraSim(PhotonVision.CAMERA, cameraSettings());
         visionSim.addCamera(cameraSim, PhotonVision.ROBOT_TO_CAMERA);
         cameraSim.enableDrawWireframe(ENABLE_WIREFRAME);
-        SmartDashboard.putData("Simulated Debug Field", visionSim.getDebugField());
+        DashboardManager.setupSimulation(visionSim.getDebugField());
     }
 
     public void poseUpdate() {

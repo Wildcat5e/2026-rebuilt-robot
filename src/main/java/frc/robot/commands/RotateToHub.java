@@ -13,6 +13,7 @@ import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
 import frc.robot.Constants;
+import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
 public class RotateToHub extends Command {
@@ -37,7 +38,7 @@ public class RotateToHub extends Command {
     public void initialize() {
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset();
-        SmartDashboard.putBoolean("Enable Shooting Calculator", useShootingCalculator);
+        DashboardManager.updateRotateToHubInit(useShootingCalculator);
     }
 
     @Override
@@ -46,11 +47,7 @@ public class RotateToHub extends Command {
         double targetHeading = useShootingCalculator ? ShootingCalculator.calculate(drivetrain).robotHeading()
             : getRobotToHubAngle(drivetrain);
 
-        // Debug
-        SmartDashboard.putNumber("Robot Rotation", round(currentPose.getRotation().getDegrees(), 2));
-        SmartDashboard.putNumber("Target Heading", round(Math.toDegrees(targetHeading), 2));
-        SmartDashboard.putNumber("Angle Difference",
-            round(Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()), 2));
+        DashboardManager.updateRotateToHub(currentPose, targetHeading);
 
         // --- 1. Calculate Feedforward (Predictive) ---
         // Get field-centric speeds

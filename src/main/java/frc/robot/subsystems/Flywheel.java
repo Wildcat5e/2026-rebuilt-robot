@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.DashboardManager;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 import static frc.robot.Utilities.*;
 
@@ -28,12 +29,7 @@ public class Flywheel extends SubsystemBase {
         this.drivetrain = drivetrain;
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
-        SmartDashboard.putNumber("Flywheel Test Voltage", 5);
-
-        SmartDashboard.putData("Flywheel Telemetry", builder -> {
-            builder.addDoubleProperty("Current Speed (m∕s)", () -> round(currentFlywheelSpeed, 3), null);
-            builder.addDoubleProperty("Target Speed (m∕s)", () -> round(targetFlywheelSpeed, 3), null);
-        });
+        DashboardManager.setupFlywheel(() -> currentFlywheelSpeed, () -> targetFlywheelSpeed);
     }
 
     /** Sets both flywheel motors to the specified voltage (left voltage negated). */
@@ -54,7 +50,7 @@ public class Flywheel extends SubsystemBase {
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableFlywheel() {
         return runEnd(() -> {
-            double targetVoltage = SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
+            double targetVoltage = DashboardManager.getFlywheelTestVoltage();
             setFlywheelMotorVoltages(targetVoltage);
         }, () -> setFlywheelMotorVoltages(0));
     }
