@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -91,5 +92,31 @@ public class DashboardManager {
         SmartDashboard.putNumber("Target Heading", round(Math.toDegrees(targetHeading), 2));
         SmartDashboard.putNumber("Angle Difference",
             round(Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()), 2));
+    }
+
+
+    // =====================================
+
+    // Debugging
+
+    // =====================================
+    // Use these methods to quickly post debug values to Elastic.
+    // By prefixing the keys with "Debug/", NetworkTables and Elastic will
+    // automatically group them into a neat, collapsible "Debug" folder.
+
+    public static void putDebugNumber(String key, double value) {
+        SmartDashboard.putNumber("Debug/" + key, value);
+    }
+
+    public static void putDebugBoolean(String key, boolean value) {
+        SmartDashboard.putBoolean("Debug/" + key, value);
+    }
+
+    public static void putDebugString(String key, String value) {
+        SmartDashboard.putString("Debug/" + key, value);
+    }
+
+    public static void putDebugData(String key, Sendable data) {
+        SmartDashboard.putData("Debug/" + key, data);
     }
 }
