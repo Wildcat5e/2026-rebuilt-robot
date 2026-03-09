@@ -4,5 +4,6 @@
         "redhat.java",
         "davidanson.vscode-markdownlint",
         "darkriszty.markdown-table-prettify",
+        "nhoizey.gremlins",
     ],
 }
