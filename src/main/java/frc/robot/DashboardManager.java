@@ -102,42 +102,22 @@ public interface DashboardManager {
     // By prefixing the keys with "Debug/", NetworkTables and Elastic will
     // automatically group them into a collapsible "Debug" folder.
 
-    /**
-     * Posts a debug number to the SmartDashboard under the "Debug/" folder.
-     * 
-     * @param key The debug key name.
-     * @param value The numeric value to post.
-     */
+    /** Posts a debug number to the SmartDashboard under the "Debug/" folder. */
     static void putDebugNumber(String key, double value) {
         SmartDashboard.putNumber("Debug/" + key, value);
     }
 
-    /**
-     * Posts a debug boolean to the SmartDashboard under the "Debug/" folder.
-     * 
-     * @param key The debug key name.
-     * @param value The boolean value to post.
-     */
+    /** Posts a debug boolean to the SmartDashboard under the "Debug/" folder. */
     static void putDebugBoolean(String key, boolean value) {
         SmartDashboard.putBoolean("Debug/" + key, value);
     }
 
-    /**
-     * Posts a debug string to the SmartDashboard under the "Debug/" folder.
-     * 
-     * @param key The debug key name.
-     * @param value The string value to post.
-     */
+    /** Posts a debug string to the SmartDashboard under the "Debug/" folder. */
     static void putDebugString(String key, String value) {
         SmartDashboard.putString("Debug/" + key, value);
     }
 
-    /**
-     * Posts a debug Sendable object to the SmartDashboard under the "Debug/" folder.
-     * 
-     * @param key The debug key name.
-     * @param data The Sendable object to post.
-     */
+    /** Posts a debug Sendable object to the SmartDashboard under the "Debug/" folder. */
     static void putDebugData(String key, Sendable data) {
         SmartDashboard.putData("Debug/" + key, data);
     }
