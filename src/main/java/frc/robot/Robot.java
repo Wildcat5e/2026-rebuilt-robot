@@ -49,7 +49,8 @@ public class Robot extends TimedRobot {
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
 
-    private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
+    private final RotateToHub rotateToHub = new RotateToHub(drivetrain, false);
+    private final RotateToHub rotateToHubShootingCalc = new RotateToHub(drivetrain, true);
     private final Paths paths = new Paths(drivetrain);
     private final Flywheel flywheel = new Flywheel(drivetrain);
     private final Hopper hopper = new Hopper();
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
+        NamedCommands.registerCommand("Rotate To Hub Shooting Calc", rotateToHubShootingCalc);
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());

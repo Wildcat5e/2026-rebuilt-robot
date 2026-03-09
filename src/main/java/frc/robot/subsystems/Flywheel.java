@@ -22,13 +22,14 @@ public class Flywheel extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.039314, 0.34165, 0.038564);
 
     private double currentFlywheelSpeed = 0;
-    private double targetFlywheelSpeed = -1;
+    private double targetFlywheelSpeed = 0;
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
+        SmartDashboard.putNumber("Calculated Voltage", 0);
 
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
             builder.addDoubleProperty("Current Speed (m∕s)", () -> round(currentFlywheelSpeed, 3), null);
@@ -62,9 +63,11 @@ public class Flywheel extends SubsystemBase {
     public Command testDynamicStartFlywheel() {
         return runEnd(() -> {
             // This code is run every 20 ms
-            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
-            targetFlywheelSpeed = shotSolution.flywheelSpeed();
+            // ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
+            // targetFlywheelSpeed = shotSolution.flywheelSpeed();
+            targetFlywheelSpeed = 7.2;
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
     }
@@ -114,6 +117,7 @@ public class Flywheel extends SubsystemBase {
 
     /** @return meters per second */
     public double getFlywheelSpeed() {
+        // Rotations Per Second (RPS) of flywheel
         double flywheelRps = leftFlywheelMotor.getVelocity().getValueAsDouble();
         return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
     }

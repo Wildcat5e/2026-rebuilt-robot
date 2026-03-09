@@ -5,32 +5,31 @@
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "path",
+          "data": {
+            "pathName": "Left Start to Middle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Middle Fuel Grab"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle to Left Start"
+          }
+        },
+        {
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Left Start to Middle"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Left Middle Fuel Grab"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Middle to Left Start"
-                      }
-                    }
-                  ]
+                  "pathName": "Left Start to Shooting"
                 }
               },
               {
