@@ -15,15 +15,13 @@ import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Utilities.*;
 
-/**
- * Handles all telemetry and Elastic/SmartDashboard interactions.
- */
-public class DashboardManager {
+/** Handles all telemetry and Elastic/SmartDashboard interactions. */
+public interface DashboardManager {
 
     // =====================================
     // Simulation
     // =====================================
-    public static void setupSimulation(Field2d debugField) {
+    static void setupSimulation(Field2d debugField) {
         SmartDashboard.putData("Simulated Debug Field", debugField);
     }
 
@@ -41,7 +39,7 @@ public class DashboardManager {
         });
     }
 
-    public static void updateRobotPeriodic(Drivetrain drivetrain) {
+    static void updateRobotPeriodic(Drivetrain drivetrain) {
         SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain));
         SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
@@ -50,18 +48,18 @@ public class DashboardManager {
     // =====================================
     // Subsystem: Hopper
     // =====================================
-    public static void setupHopper() {
+    static void setupHopper() {
         SmartDashboard.putNumber("Kicker Test Voltage", 8);
     }
 
-    public static double getKickerTestVoltage() {
+    static double getKickerTestVoltage() {
         return SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
     }
 
     // =====================================
     // Subsystem: Flywheel
     // =====================================
-    public static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier) {
+    static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
             builder.addDoubleProperty("Current Speed (m∕s)", () -> round(currentSpeedSupplier.getAsDouble(), 3), null);
@@ -69,25 +67,25 @@ public class DashboardManager {
         });
     }
 
-    public static double getFlywheelTestVoltage() {
+    static double getFlywheelTestVoltage() {
         return SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
     }
 
     // =====================================
     // Controllers
     // =====================================
-    public static void setupController(SendableChooser<Controller> controllerChooser) {
+    static void setupController(SendableChooser<Controller> controllerChooser) {
         SmartDashboard.putData("Controller Chooser", controllerChooser);
     }
 
     // =====================================
     // Commands: RotateToHub
     // =====================================
-    public static void updateRotateToHubInit(boolean useShootingCalculator) {
+    static void updateRotateToHubInit(boolean useShootingCalculator) {
         SmartDashboard.putBoolean("Enable Shooting Calculator", useShootingCalculator);
     }
 
-    public static void updateRotateToHub(Pose2d currentPose, double targetHeading) {
+    static void updateRotateToHub(Pose2d currentPose, double targetHeading) {
         SmartDashboard.putNumber("Robot Rotation", round(currentPose.getRotation().getDegrees(), 2));
         SmartDashboard.putNumber("Target Heading", round(Math.toDegrees(targetHeading), 2));
         SmartDashboard.putNumber("Angle Difference",
@@ -104,19 +102,19 @@ public class DashboardManager {
     // By prefixing the keys with "Debug/", NetworkTables and Elastic will
     // automatically group them into a neat, collapsible "Debug" folder.
 
-    public static void putDebugNumber(String key, double value) {
+    static void putDebugNumber(String key, double value) {
         SmartDashboard.putNumber("Debug/" + key, value);
     }
 
-    public static void putDebugBoolean(String key, boolean value) {
+    static void putDebugBoolean(String key, boolean value) {
         SmartDashboard.putBoolean("Debug/" + key, value);
     }
 
-    public static void putDebugString(String key, String value) {
+    static void putDebugString(String key, String value) {
         SmartDashboard.putString("Debug/" + key, value);
     }
 
-    public static void putDebugData(String key, Sendable data) {
+    static void putDebugData(String key, Sendable data) {
         SmartDashboard.putData("Debug/" + key, data);
     }
 }
