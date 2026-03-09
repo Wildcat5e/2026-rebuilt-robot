@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,11 +26,19 @@ public class Flywheel extends SubsystemBase {
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
 
+    // 5 seconds * 50 loops per second = 250 samples
+    private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
+    private double averageFlywheelSpeed = 0;
+
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         applyGearRatio(leftFlywheelMotor, 1);
         applyGearRatio(rightFlywheelMotor, 1);
-        DashboardManager.setupFlywheel(() -> currentFlywheelSpeed, () -> targetFlywheelSpeed);
+        // @formatter:off
+        DashboardManager.setupFlywheel(
+            () -> currentFlywheelSpeed,
+            () -> targetFlywheelSpeed,
+            () -> averageFlywheelSpeed); // @formatter:on
     }
 
     /** Sets both flywheel motors to the specified voltage (left voltage negated). */
@@ -41,6 +50,7 @@ public class Flywheel extends SubsystemBase {
     @Override
     public void periodic() {
         currentFlywheelSpeed = getFlywheelSpeed();
+        averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
     }
 
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
