@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Distance;
@@ -32,8 +31,8 @@ public class Flywheel extends SubsystemBase {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
 
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
-            builder.addDoubleProperty("Current Speed (m/s)", () -> round(currentFlywheelSpeed, 3), null);
-            builder.addDoubleProperty("Target Speed (m/s)", () -> round(targetFlywheelSpeed, 3), null);
+            builder.addDoubleProperty("Current Speed (m∕s)", () -> round(currentFlywheelSpeed, 3), null);
+            builder.addDoubleProperty("Target Speed (m∕s)", () -> round(targetFlywheelSpeed, 3), null);
         });
     }
 
