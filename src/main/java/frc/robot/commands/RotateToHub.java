@@ -61,7 +61,7 @@ public class RotateToHub extends Command {
         double distanceSq = Math.pow(getHubDistance(drivetrain), 2);
 
         double feedforwardOmega = distanceSq > 0.01
-            ? fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX() / distanceSq
+            ? (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq
             : 0;
 
         // --- 2. Calculate PID (Reactive) ---
