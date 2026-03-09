@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import java.util.List;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
@@ -9,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 public class AutoAlign extends Command {
@@ -23,6 +23,7 @@ public class AutoAlign extends Command {
     private static final double TIME_LIMIT_MILLIS = 3000;
     private long startTime;
     private final Drivetrain drivetrain;
+    private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric();
     private static final PathPlannerTrajectoryState goalState = new PathPlannerTrajectoryState();
 
     private static final Pose2d CENTER_HUB = new Pose2d(3.0, 4.0, new Rotation2d(0));
@@ -53,7 +54,7 @@ public class AutoAlign extends Command {
     public void execute() {
         Pose2d currentPose = drivetrain.getState().Pose;
         ChassisSpeeds outputSpeeds = HOLONOMIC_DRIVE_CONTROLLER.calculateRobotRelativeSpeeds(currentPose, goalState);
-        drivetrain.setControl(Robot.swerveRequest.withVelocityX(outputSpeeds.vxMetersPerSecond)
+        drivetrain.setControl(swerveRequest.withVelocityX(outputSpeeds.vxMetersPerSecond)
             .withVelocityY(outputSpeeds.vyMetersPerSecond).withRotationalRate(outputSpeeds.omegaRadiansPerSecond));
     }
 

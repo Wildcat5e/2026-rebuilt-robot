@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
-    public static final SwerveRequest.FieldCentric swerveRequest =
+    private final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
@@ -47,24 +47,23 @@ public class Robot extends TimedRobot {
     private final StringTopic elasticTabTopic =
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
-
-    private final RotateToHub rotateToHub = new RotateToHub(drivetrain);
-    private final Paths paths = new Paths(drivetrain);
-    private final Flywheel flywheel = new Flywheel(drivetrain);
-    private final Hopper hopper = new Hopper();
-    private final ShootFuel shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
+    /** Contains all the commands we use and needs to be instantiated after running {@link #configureAutoBuilder()}. */
+    private final Commands commands;
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
-        NamedCommands.registerCommand("Rotate To Hub", rotateToHub);
         configureAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
-        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
-        SignalLogger.enableAutoLogging(false);
+        commands = new Commands(drivetrain);
+
         bindingsSetup();
+        NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
+        SignalLogger.enableAutoLogging(false);
+
+        autoChooser = AutoBuilder.buildAutoChooser();
         DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain);
+        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
     @Override
@@ -131,13 +130,13 @@ public class Robot extends TimedRobot {
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             Translation2d translation = controller.getTranslation();
             if (Controller.allowControllerTranslation) {
-                Robot.swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+                swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
                     .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
             }
             if (Controller.allowControllerRotation) {
-                Robot.swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
+                swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
             }
-            return Robot.swerveRequest;
+            return swerveRequest;
         }));
         // reset the field-centric heading on left trigger
         Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
@@ -149,10 +148,10 @@ public class Robot extends TimedRobot {
 
         // Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
-        Controller.joystick.povUp().whileTrue(flywheel.sysIdDynamicForward());
-        Controller.joystick.povRight().whileTrue(flywheel.sysIdDynamicReverse());
-        Controller.joystick.povDown().whileTrue(flywheel.sysIdQuasistaticForward());
-        Controller.joystick.povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
+        Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
+        Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
+        Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
+        Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
 
 
         /*
@@ -170,7 +169,7 @@ public class Robot extends TimedRobot {
         Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     }
 
-
+    /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
     public void configureAutoBuilder() {// @formatter:off
         try {
             var applyRobotSpeedsRequest = new SwerveRequest.ApplyRobotSpeeds();
