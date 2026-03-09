@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
-
+import java.util.Map;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import static frc.robot.Utilities.*;
 
@@ -15,7 +16,19 @@ import static frc.robot.Utilities.*;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45); // Placeholder
+    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45);
+
+    /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
+    // @formatter:off
+    InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_BY_HUB_DISTANCE =
+    InterpolatingDoubleTreeMap.ofEntries(
+        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
+        Map.entry(1.0, 5.0),
+        Map.entry(1.5, 6.5),
+        Map.entry(2.0, 8.0),
+        Map.entry(2.5, 9.5),
+        Map.entry(3.0, 11.0));
+    // @formatter:on
 
     // Returned by calculate()
     static record ShotSolution(double flywheelSpeed, double robotHeading) {}
@@ -32,47 +45,26 @@ public interface ShootingCalculator {
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
         Translation2d robotVector = new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond);
 
-        // 2. Look up the Ideal "Static" Shot Speed This is the speed you would shoot if standing perfectly still at
-        // this distance.
-        double staticSpeed = getStaticSpeedFromTable(getHubDistance(drivetrain));
+        // 1. Look up the Ideal "Static" Shot Speed based on current distance from Hub.
+        double staticSpeed = FLYWHEEL_SPEEDS_BY_HUB_DISTANCE.get(getHubDistance(drivetrain));
 
-        // 3. Decompose Static Shot into Horizontal Component
-        // We only care about the horizontal plane for vector subtraction.
-        // horizontal_speed = total_speed * cos(hood_angle)
+        // 2. Decompose Static Shot into Horizontal Component (3D -> 2D Plane).
         double staticSpeedHorizontal = staticSpeed * Math.cos(FIXED_HOOD_ANGLE_RADIANS);
 
-        // 4. Create the Static Vector
-        // This vector points directly at the hub with the magnitude calculated above.
+        // 3. Create the Static Vector pointing directly at the hub.
         double angleToTarget = getRobotToHubAngle(drivetrain);
         Translation2d staticVector = new Translation2d(staticSpeedHorizontal, new Rotation2d(angleToTarget));
 
-        // 5. Calculate the Shot Vector (Vector Subtraction)
-        // V_shot = V_static - V_robot
+        // 4. Calculate the Shot Vector (Vector Subtraction: V_shot = V_static - V_robot)
         Translation2d shotVector = staticVector.minus(robotVector);
 
-        // 6. Extract Outputs
-
-        // Calculate the target heading (Lead Angle)
+        // 5. Extract Outputs
         double targetHeading = shotVector.getAngle().getRadians();
-
-        // Calculate the new Shot Speed
-        // First get the horizontal magnitude
         double newShotHorizontalSpeed = shotVector.getNorm();
 
-        // Then convert back to full flywheel speed (divide by cos(hood))
-        // S_total = V_horizontal / cos(theta)
+        // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(FIXED_HOOD_ANGLE_RADIANS);
 
         return new ShotSolution(newFlywheelSpeed, targetHeading);
-    }
-
-    /**
-     * Mock Lookup Table
-     */
-    private static double getStaticSpeedFromTable(double distance) {
-        // Probably going to use InterpolatingDoubleTreeMap or similar.
-
-        // Dummy formula: Speed increases with distance
-        return 5.0 + (distance * 2.0);
     }
 }
