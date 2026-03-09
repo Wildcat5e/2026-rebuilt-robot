@@ -43,10 +43,6 @@ public class Flywheel extends SubsystemBase {
         currentFlywheelSpeed = getFlywheelSpeed();
     }
 
-    public Command testSpinFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(6), () -> setFlywheelMotorVoltages(0));
-    }
-
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableFlywheel() {
         return runEnd(() -> {
@@ -60,7 +56,7 @@ public class Flywheel extends SubsystemBase {
             // This code is run every 20 ms
             // ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-            targetFlywheelSpeed = 10;
+            targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
@@ -75,30 +71,27 @@ public class Flywheel extends SubsystemBase {
         }, () -> setFlywheelMotorVoltages(0));
     }
 
-    /**
-     * Spins flywheel and calculates speed based on distance.
-     */
-    public void dynamicRunFlywheel() {
-        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
-        targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        setFlywheelMotorVoltages(calculatedVoltage);
-    }
-
-    /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
-    public void staticRunFlywheel() {
-        targetFlywheelSpeed = 3;
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        setFlywheelMotorVoltages(calculatedVoltage);
-    }
-
-    public void stopFlywheel() {
-        setFlywheelMotorVoltages(0);
-    }
-
     public boolean flywheelUpToSpeed() {
         return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
+
+    /**
+     * Spins flywheel and calculates speed based on distance.
+     */
+    // public void dynamicRunFlywheel() {
+    //     ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
+    //     targetFlywheelSpeed = shotSolution.flywheelSpeed();
+    //     double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+    //     setFlywheelMotorVoltages(calculatedVoltage);
+    // }
+
+    /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
+    // public void staticRunFlywheel() {
+    //     targetFlywheelSpeed = 3;
+    //     double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+    //     setFlywheelMotorVoltages(calculatedVoltage);
+    // }
+
 
     // final implementation should be a while true
     // public Command shootFuel() {

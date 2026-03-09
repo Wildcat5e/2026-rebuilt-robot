@@ -62,6 +62,8 @@ public interface DashboardManager {
     static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Calculated Voltage", 0);
+        SmartDashboard.putNumber("Current Speed (m∕s)", 0);
+        SmartDashboard.putNumber("Target Speed (m∕s)", 0);
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
             builder.addDoubleProperty("Current Speed (m∕s)", () -> round(currentSpeedSupplier.getAsDouble(), 3), null);
             builder.addDoubleProperty("Target Speed (m∕s)", () -> round(targetSpeedSupplier.getAsDouble(), 3), null);
