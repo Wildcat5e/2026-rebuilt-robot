@@ -16,7 +16,7 @@ import static frc.robot.Utilities.*;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(45);
+    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(64);
 
     /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
     // @formatter:off
