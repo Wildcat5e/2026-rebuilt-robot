@@ -18,15 +18,11 @@ This is a great repo.
     - Check if standard deviation numbers make sense, especially for new adaptive setup.
     - Check if height-of-robot-to-camera offset matters for Photon Vision.
 
-- **[Controller](/src/main/java/frc/robot/subsystems/Controller.java)**
-    - Nicholas needs to add documentation about axis being flipped in `Controller`.
-    - Nicholas needs to refactor `Controller` to incorporate keybinds and setting drivetrain control instead of in `Robot`
-
 - **[Paths](/src/main/java/frc/robot/commands/Paths.java)**
     - See if we want to use `end()` in the `Paths()` constructor (see [Nicholas's comment](https://github.com/Wildcat5e/2026-rebuilt-robot/pull/11/changes#r2895846586)).
 
 - **General Stuff**
-    - Before competition, change `Controller` to whichever one we use, rather than `MultiController`.
+    - Before competition, comment out line with `MultiController` in `Robot` and uncomment `controller.bindingsSetup()`.
     - Verify voltage limiting is implemented to prevent exceeding 12V, for example when robot is far from target, or in similar edge cases.
     - Double check where the Alliance needs to be set (in `Robot`) before competition.
     - Update [Drivetrain.java](/src/main/java/frc/robot/subsystems/Drivetrain.java) with new generated code once the robot is built.
@@ -44,6 +40,18 @@ This is a great repo.
 | A              | Automatic Rotate to Hub                   |
 | Right Bumper   | Bring Intake Down                         |
 | Left Bumper    | Raise Intake Up                           |
+
+### Flight Stick
+
+| Button            | Action                                    |
+|-------------------|-------------------------------------------|
+| Joystick          | Translation                               |
+| Joystick Rotation | Rotation                                  |
+| Left Trigger      | Activate intake                           |
+| Trigger           | Shoot (activate flywheel, kicker, hopper) |
+| A                 | Automatic Rotate to Hub                   |
+| Right Bumper      | Bring Intake Down                         |
+| Left Bumper       | Raise Intake Up                           |
 
 ## DOCUMENTATION
 
