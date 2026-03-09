@@ -6,13 +6,15 @@ import frc.robot.subsystems.Hopper;
 
 public class Commands {
     public final RotateToHub rotateToHub;
+    public final RotateToHub rotateToHubShootingCalc;
     public final Paths paths;
     public final Flywheel flywheel;
     public final Hopper hopper;
     public final ShootFuel shootFuel;
 
     public Commands(Drivetrain drivetrain) {
-        rotateToHub = new RotateToHub(drivetrain);
+        rotateToHub = new RotateToHub(drivetrain, false);
+        rotateToHubShootingCalc = new RotateToHub(drivetrain, true);
         paths = new Paths(drivetrain);
         flywheel = new Flywheel(drivetrain);
         hopper = new Hopper();

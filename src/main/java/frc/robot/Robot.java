@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
 
         bindingsSetup();
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
+        NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.rotateToHubShootingCalc);
         SignalLogger.enableAutoLogging(false);
 
         autoChooser = AutoBuilder.buildAutoChooser();
