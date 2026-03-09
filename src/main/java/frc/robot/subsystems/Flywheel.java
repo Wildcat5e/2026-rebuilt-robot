@@ -18,9 +18,9 @@ public class Flywheel extends SubsystemBase {
     private final Drivetrain drivetrain;
     private final TalonFX leftFlywheelMotor = new TalonFX(21);
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
-    private final double FLYWHEEL_RADIUS = 0.1; // Placeholder, in meters
+    private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.039314, 0.34165, 0.038564);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = -1;
