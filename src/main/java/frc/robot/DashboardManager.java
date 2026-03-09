@@ -27,7 +27,7 @@ public class DashboardManager {
     }
 
     // =====================================
-    // Robot Overview (Init & Periodic)
+    // Robot (Init & Periodic)
     // =====================================
     public static void setupRobotInit(Field2d fieldWidget, SendableChooser<Command> autoChooser,
         Drivetrain drivetrain) {
