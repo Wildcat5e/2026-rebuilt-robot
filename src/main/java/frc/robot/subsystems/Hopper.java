@@ -30,16 +30,10 @@ public class Hopper extends SubsystemBase {
     }
 
     public Command testBothHoppers() {
-        return startEnd(() -> {
-            setHopperMotorVoltages(3);
-        }, () -> {
-            setHopperMotorVoltages(0);
-        });
+        return startEnd(() -> setHopperMotorVoltages(3), () -> setHopperMotorVoltages(0));
     }
 
-    /**
-     * Sets both hopper motors to the specified voltage (right voltage negated).
-     */
+    /** Sets both hopper motors to the specified voltage (right voltage negated). */
     private void setHopperMotorVoltages(double volts) {
         leftHopperMotor.setVoltage(volts);
         rightHopperMotor.setVoltage(-volts);

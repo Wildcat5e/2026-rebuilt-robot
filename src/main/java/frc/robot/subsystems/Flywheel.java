@@ -36,6 +36,7 @@ public class Flywheel extends SubsystemBase {
         });
     }
 
+    /** Sets both flywheel motors to the specified voltage (left voltage negated). */
     private void setFlywheelMotorVoltages(double volts) {
         leftFlywheelMotor.setVoltage(-volts);
         rightFlywheelMotor.setVoltage(volts);
@@ -53,7 +54,6 @@ public class Flywheel extends SubsystemBase {
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableFlywheel() {
         return runEnd(() -> {
-            // Fetch the current number from the dashboard (defaults to 0.0 if not found)
             double targetVoltage = SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
             setFlywheelMotorVoltages(targetVoltage);
         }, () -> setFlywheelMotorVoltages(0));
@@ -78,7 +78,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     /**
-     * Spins flywheel and calculates speed based on distance. Flywheel speed can be set to zero using another command
+     * Spins flywheel and calculates speed based on distance.
      */
     public void dynamicRunFlywheel() {
         ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
@@ -87,10 +87,7 @@ public class Flywheel extends SubsystemBase {
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
-    /**
-     * Starts flywheel with static speed for when the robot is in the middle or opposing alliance zone and shooting fuel
-     * NOT in the hub
-     */
+    /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void staticRunFlywheel() {
         targetFlywheelSpeed = 3;
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -102,7 +99,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public boolean flywheelUpToSpeed() {
-        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9; // Placeholder
+        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
     // final implementation should be a while true
@@ -115,14 +112,13 @@ public class Flywheel extends SubsystemBase {
     //             new ParallelRaceGroup(testBothHoppers(), spinKicker())));
     // }
 
-    /** Speed is in meters (of flywheel) per second */
+    /** @return meters per second */
     public double getFlywheelSpeed() {
-        // Rotations Per Second (RPS) of flywheel
         double flywheelRps = leftFlywheelMotor.getVelocity().getValueAsDouble();
         return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
     }
 
-    // UNTESTED
+    // Untested
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
         new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()), log -> {
             log.motor("flywheel-motor").voltage(leftFlywheelMotor.getMotorVoltage().getValue())
@@ -130,6 +126,8 @@ public class Flywheel extends SubsystemBase {
                     leftFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
                 .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
         }, this));
+
+    // --- sysId Flywheel FeedForward Calibration Tests ---
 
     public Command sysIdQuasistaticForward() {
         return routine.quasistatic(SysIdRoutine.Direction.kForward);
