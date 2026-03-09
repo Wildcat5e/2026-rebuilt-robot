@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -65,23 +64,14 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
         SignalLogger.enableAutoLogging(false);
         bindingsSetup();
-        SmartDashboard.putData("Field", fieldWidget);
-        SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
-        SmartDashboard.putData("Auto Command Chooser", autoChooser);
-        SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
-        SmartDashboard.putData("Robot Telemetry", builder -> {
-            builder.addDoubleProperty("Distance to Hub (m)",
-                () -> Utilities.round(Utilities.getHubDistance(drivetrain), 3), null);
-        });
+        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain);
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         fieldWidget.setRobotPose(drivetrain.getState().Pose);
-        SmartDashboard.putBoolean("Within Shooting Angle", Utilities.withinShootingAngle(drivetrain));
-        SmartDashboard.putBoolean("Within Shooting Distance", Utilities.withinShootingDistance(drivetrain));
-        SmartDashboard.putBoolean("In Home", Utilities.inHome(drivetrain));
+        DashboardManager.updateRobotPeriodic(drivetrain);
     }
 
     @Override
