@@ -113,7 +113,7 @@ public class Flywheel extends SubsystemBase {
     /** @return meters per second */
     public double getFlywheelSpeed() {
         // Rotations Per Second (RPS) of flywheel
-        double flywheelRps = leftFlywheelMotor.getVelocity().getValueAsDouble();
+        double flywheelRps = rightFlywheelMotor.getVelocity().getValueAsDouble();
         return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
     }
 
