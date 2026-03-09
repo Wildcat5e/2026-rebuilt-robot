@@ -55,6 +55,14 @@ public abstract class Controller {
     /** Xbox left bumper to raise the intake. */
     abstract Trigger raiseIntake();
 
+    abstract Trigger povUp();
+
+    abstract Trigger povDown();
+
+    abstract Trigger povLeft();
+
+    abstract Trigger povRight();
+
     /** Xbox buttons Start and Y to forwardSysIdQuasi. */
     abstract Trigger forwardSysIdQuasi();
 
@@ -80,10 +88,10 @@ public abstract class Controller {
         // shootFuel().whileTrue(commands.flywheel.testTunableFlywheel()); // b, change to right trigger
         // shootFuel().whileTrue(commands.hopper.testTunableKicker()); // b, change to right trigger
 
-        // Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
-        // Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
-        // Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
-        // Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
+        povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
+        povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
+        povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
+        povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
 
         /*
          * Tests for motor identification:

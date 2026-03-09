@@ -51,6 +51,26 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
+    Trigger povUp() {
+        return controller.povUp();
+    }
+
+    @Override
+    Trigger povDown() {
+        return controller.povDown();
+    }
+
+    @Override
+    Trigger povLeft() {
+        return controller.povLeft();
+    }
+
+    @Override
+    Trigger povRight() {
+        return controller.povRight();
+    }
+
+    @Override
     Trigger forwardSysIdQuasi() {
         /* change this */ return controller.button(0);
         // return Controller.joystick.start().and(Controller.joystick.y());

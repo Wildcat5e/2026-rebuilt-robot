@@ -45,8 +45,27 @@ public class Xbox extends Controller {
 
     @Override
     Trigger raiseIntake() {
-
         return controller.leftBumper();
+    }
+
+    @Override
+    Trigger povUp() {
+        return controller.povUp();
+    }
+
+    @Override
+    Trigger povDown() {
+        return controller.povDown();
+    }
+
+    @Override
+    Trigger povLeft() {
+        return controller.povLeft();
+    }
+
+    @Override
+    Trigger povRight() {
+        return controller.povRight();
     }
 
     @Override

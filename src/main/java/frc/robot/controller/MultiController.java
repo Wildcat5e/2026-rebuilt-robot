@@ -63,6 +63,26 @@ public class MultiController extends Controller {
     }
 
     @Override
+    Trigger povUp() {
+        return controllerChooser.getSelected().povUp();
+    }
+
+    @Override
+    Trigger povDown() {
+        return controllerChooser.getSelected().povDown();
+    }
+
+    @Override
+    Trigger povLeft() {
+        return controllerChooser.getSelected().povLeft();
+    }
+
+    @Override
+    Trigger povRight() {
+        return controllerChooser.getSelected().povRight();
+    }
+
+    @Override
     Trigger forwardSysIdQuasi() {
         return controllerChooser.getSelected().forwardSysIdQuasi();
     }
