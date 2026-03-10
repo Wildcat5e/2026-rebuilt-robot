@@ -24,7 +24,7 @@ public class Flywheel extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
 
     private double currentFlywheelSpeed = 0;
-    private double targetFlywheelSpeed = 0;
+    private double targetFlywheelSpeed = -1;
 
     // 5 seconds * 50 loops per second = 250 samples
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
