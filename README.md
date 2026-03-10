@@ -1,6 +1,6 @@
 # 2026-rebuilt-robot
 
-## [Root of Code](/src/main/java/frc/robot/)
+[Robot Source Code Directory](/src/main/java/frc/robot/)
 
 ## Documentation
 
