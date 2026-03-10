@@ -43,10 +43,6 @@ public class Flywheel extends SubsystemBase {
         currentFlywheelSpeed = getFlywheelSpeed();
     }
 
-    public Command testSpinFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(6), () -> setFlywheelMotorVoltages(0));
-    }
-
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableFlywheel() {
         return runEnd(() -> {
@@ -60,7 +56,7 @@ public class Flywheel extends SubsystemBase {
             // This code is run every 20 ms
             // ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-            targetFlywheelSpeed = 10;
+            targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
@@ -73,6 +69,10 @@ public class Flywheel extends SubsystemBase {
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
+    }
+
+    public boolean flywheelUpToSpeed() {
+        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
     /**
@@ -94,10 +94,6 @@ public class Flywheel extends SubsystemBase {
 
     public void stopFlywheel() {
         setFlywheelMotorVoltages(0);
-    }
-
-    public boolean flywheelUpToSpeed() {
-        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
     // final implementation should be a while true
