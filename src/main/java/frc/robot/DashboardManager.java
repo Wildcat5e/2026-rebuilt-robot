@@ -82,6 +82,10 @@ public interface DashboardManager {
         return SmartDashboard.getNumber("Flywheel Speed Multiplier", 1.0);
     }
 
+    static void incrementFlywheelSpeedMultiplier(double increment) {
+        SmartDashboard.putNumber("Flywheel Speed Multiplier", getFlywheelSpeedMultiplier() + increment);
+    }
+
     // =====================================
     // Subsystem: Intake 
     // =====================================

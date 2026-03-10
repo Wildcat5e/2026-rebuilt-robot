@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
@@ -151,10 +153,18 @@ public class Robot extends TimedRobot {
         Controller.joystick.b().whileTrue(commands.flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(commands.hopper.testTunableKicker());
 
-        Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
-        Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
-        Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
-        Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
+        // Bump the multiplier UP by 0.01 using D-Pad Up
+        Controller.joystick.povUp()
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
+
+        // Bump the multiplier DOWN by 0.01 using D-Pad Down
+        Controller.joystick.povDown()
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
+
+        // Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
+        // Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
+        // Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
+        // Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
 
 
         /*
