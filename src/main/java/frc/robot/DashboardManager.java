@@ -60,17 +60,16 @@ public interface DashboardManager {
     // Subsystem: Flywheel
     // =====================================
     static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier,
-        DoubleSupplier averageSpeedSupplier) {
+        DoubleSupplier averageSpeedSupplier, DoubleSupplier calculatedVoltageSupplier) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
-        SmartDashboard.putNumber("Calculated Voltage", 0);
-        SmartDashboard.putNumber("Current Speed (m\u2215s)", 0);
-        SmartDashboard.putNumber("Target Speed (m\u2215s)", 0); // unicode needs to be like this to not break
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
             builder.addDoubleProperty("Current Speed (m\u2215s)", () -> round(currentSpeedSupplier.getAsDouble(), 3),
                 null);
             builder.addDoubleProperty("5s Avg Speed (m\u2215s)", () -> round(averageSpeedSupplier.getAsDouble(), 3),
                 null);
             builder.addDoubleProperty("Target Speed (m\u2215s)", () -> round(targetSpeedSupplier.getAsDouble(), 3),
+                null);
+            builder.addDoubleProperty("Calculated Voltage", () -> round(calculatedVoltageSupplier.getAsDouble(), 3),
                 null);
         });
     }
