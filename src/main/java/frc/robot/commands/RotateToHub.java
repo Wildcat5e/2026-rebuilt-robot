@@ -40,7 +40,6 @@ public class RotateToHub extends Command {
 
     private void registerTelemetry() { // @formatter:off
         DashboardManager.setupRotateToHub(
-            () -> this.useShootingCalculator,
             () -> this.currentPose != null ? this.currentPose : new Pose2d(),
             () -> this.targetHeading,
             () -> this.currentPose != null ? this.targetHeading - this.currentPose.getRotation().getRadians() : 0.0

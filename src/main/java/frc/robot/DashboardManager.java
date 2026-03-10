@@ -134,11 +134,9 @@ public interface DashboardManager {
     // =====================================
     // Commands: RotateToHub
     // =====================================
-    static void setupRotateToHub(BooleanSupplier useShootingCalculatorSupplier, Supplier<Pose2d> currentPoseSupplier,
-        DoubleSupplier targetHeadingSupplier, DoubleSupplier angDiffSupplier) {
+    static void setupRotateToHub(Supplier<Pose2d> currentPoseSupplier, DoubleSupplier targetHeadingSupplier,
+        DoubleSupplier angDiffSupplier) {
         SmartDashboard.putData("RotateToHub Telemetry", builder -> { // @formatter:off
-            builder.addBooleanProperty("Enable Shooting Calculator",
-                useShootingCalculatorSupplier, null);
             builder.addDoubleProperty("Robot Rotation",
                 () -> round(currentPoseSupplier.get().getRotation().getDegrees(), 1), null);
             builder.addDoubleProperty("Target Heading",
