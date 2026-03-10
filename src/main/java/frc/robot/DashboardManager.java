@@ -78,6 +78,9 @@ public interface DashboardManager {
         return SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
     }
 
+    static double getFlywheelSpeedMultiplier() {
+        return SmartDashboard.getNumber("Flywheel Speed Multiplier", 1.0);
+    }
 
     // =====================================
     // Subsystem: Intake 

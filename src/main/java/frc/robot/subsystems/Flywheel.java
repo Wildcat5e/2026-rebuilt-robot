@@ -25,6 +25,7 @@ public class Flywheel extends SubsystemBase {
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = -1;
+    public double FLYWHEEL_SPEED_MULT = 1.0;
 
     // 5 seconds * 50 loops per second = 250 samples
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
@@ -53,6 +54,7 @@ public class Flywheel extends SubsystemBase {
     public void periodic() {
         currentFlywheelSpeed = getFlywheelSpeed();
         averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
+        FLYWHEEL_SPEED_MULT = DashboardManager.getFlywheelSpeedMultiplier();
     }
 
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
@@ -87,12 +89,10 @@ public class Flywheel extends SubsystemBase {
         return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
-    /**
-     * Spins flywheel and calculates speed based on distance.
-     */
+    /** Spins flywheel and calculates speed based on distance. */
     public void dynamicRunFlywheel() {
         ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
-        targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        targetFlywheelSpeed = FLYWHEEL_SPEED_MULT * shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
