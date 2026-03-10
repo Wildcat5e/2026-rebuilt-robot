@@ -29,6 +29,7 @@ public class Flywheel extends SubsystemBase {
     // 5 seconds * 50 loops per second = 250 samples
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
     private double averageFlywheelSpeed = 0;
+    private double calculatedVoltage = 0;
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -38,7 +39,8 @@ public class Flywheel extends SubsystemBase {
         DashboardManager.setupFlywheel(
             () -> currentFlywheelSpeed,
             () -> targetFlywheelSpeed,
-            () -> averageFlywheelSpeed); // @formatter:on
+            () -> averageFlywheelSpeed,
+            () -> calculatedVoltage); // @formatter:on
     }
 
     /** Sets both flywheel motors to the specified voltage (left voltage negated). */
@@ -67,7 +69,7 @@ public class Flywheel extends SubsystemBase {
             ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
-            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
