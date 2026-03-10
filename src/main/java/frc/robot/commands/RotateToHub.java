@@ -59,27 +59,35 @@ public class RotateToHub extends Command {
             ? ShootingCalculator.calculate(drivetrain, DashboardManager.getFlywheelSpeedMultiplier()).robotHeading()
             : getRobotToHubAngle(drivetrain);
 
+        double feedforwardVelocity = getFeedforwardVelocity(currentPose, getHubPosition());
+
+        // --- 2. Calculate PID (Reactive) ---
+        double pidVelocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetHeading);
+
+        // --- 3. Combine and Cap ---
+        // FF does the physics tracking, PID cleans up the physical errors
+        double totalVelocity = feedforwardVelocity + pidVelocity;
+        double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
+
+        applyRotation(cappedVelocity);
+    }
+
+    private double getFeedforwardVelocity(Pose2d currentPose, Translation2d target) {
         // --- 1. Calculate Feedforward (Predictive) ---
         // Get field-centric speeds
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         ChassisSpeeds fieldVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, currentPose.getRotation());
 
         // Get the vector pointing from the robot to the hub
-        Translation2d delta = getHubPosition().minus(currentPose.getTranslation());
+        Translation2d delta = target.minus(currentPose.getTranslation());
         double distanceSq = Math.pow(getHubDistance(drivetrain), 2);
 
-        double feedforwardOmega = distanceSq > 0.01
-            ? (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq
-            : 0;
+        if (distanceSq > 0.01) {
+            return (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq;
+        } else return 0;
+    }
 
-        // --- 2. Calculate PID (Reactive) ---
-        double pidOmega = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetHeading);
-
-        // --- 3. Combine and Cap ---
-        // FF does the physics tracking, PID cleans up the physical errors
-        double totalVelocity = feedforwardOmega + pidOmega;
-        final double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
-
+    private void applyRotation(double cappedVelocity) {
         // --- 4. Apply to Drivetrain & PathPlanner ---
         if (!DriverStation.isAutonomous()) { // Need to confirm that this works when using a path during teleop.
             drivetrain.setControl(Robot.swerveRequest.withRotationalRate(cappedVelocity));
