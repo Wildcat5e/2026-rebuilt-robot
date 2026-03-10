@@ -25,10 +25,21 @@ public class ShootFuel extends Command {
     }
 
     @Override
-    public void execute() {}
+    public void execute() {
+        if (Utilities.inHome(drivetrain)) {
+            flywheel.dynamicRunFlywheel();
+        } else {
+            flywheel.staticRunFlywheel();
+        }
+
+        if (flywheel.flywheelUpToSpeed()) {
+            hopper.runFeeder();
+        }
+    }
 
     @Override
     public void end(boolean interrupted) {
+        flywheel.stopFlywheel();
         hopper.stopFeeder();
     }
 
