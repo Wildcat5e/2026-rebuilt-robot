@@ -79,6 +79,33 @@ public interface DashboardManager {
         return SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
     }
 
+
+    // =====================================
+    // Subsystem: Intake 
+    // =====================================
+
+    static void setupIntake(DoubleSupplier extenderMotorRotationSupplier) {
+        SmartDashboard.putNumber("Extender Motor Test Voltage", 0);
+        SmartDashboard.putNumber("Scooper Motor Test Voltage", 0);
+        SmartDashboard.putNumber("Pusher Motor Test Voltage", 0);
+        SmartDashboard.putData("Intake Telemetry", builder -> {
+            builder.addDoubleProperty("Extender Motor Rotation Position",
+                () -> round(extenderMotorRotationSupplier.getAsDouble(), 3), null);
+        });
+    }
+
+    static double getExtenderMotorTestVoltage() {
+        return SmartDashboard.getNumber("Extender Motor Test Voltage", 0);
+    }
+
+    static double getScooperMotorTestVoltage() {
+        return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0);
+    }
+
+    static double getPusherMotorTestVoltage() {
+        return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0);
+    }
+
     // =====================================
     // Controllers
     // =====================================
