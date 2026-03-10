@@ -15,6 +15,9 @@ public interface Constants {
     /** 720 deg/sec^2 max angular acceleration in rad/sec^2 */
     double MAX_ANGULAR_ACCEL = DegreesPerSecondPerSecond.of(720).in(RadiansPerSecondPerSecond);
 
+    /** The angle of the shooter's hood, as measured from the horizontal at the point where the ball leaves the hood. */
+    double HOOD_ANGLE_RADIANS = Math.toRadians(64);
+
     // These values will need to be adjusted based on the actual robot's shooting distance capabilities
     double MINIMUM_SHOOTING_DISTANCE = 1.0; // meters
     double MAXIMUM_SHOOTING_DISTANCE = 3.0; // meters
