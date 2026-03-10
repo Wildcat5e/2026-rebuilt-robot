@@ -48,14 +48,14 @@ public class Robot extends TimedRobot {
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
     /** Contains all the commands we use and needs to be instantiated after running {@link #configureAutoBuilder()}. */
-    private final Commands commands;
+    private final RobotCommands commands;
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         configureAutoBuilder();
-        commands = new Commands(drivetrain);
+        commands = new RobotCommands(drivetrain);
 
         bindingsSetup();
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);

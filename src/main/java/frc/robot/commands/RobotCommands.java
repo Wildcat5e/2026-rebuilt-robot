@@ -4,7 +4,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 
-public class Commands {
+public class RobotCommands {
     public final RotateToHub rotateToHub;
     public final RotateToHub rotateToHubShootingCalc;
     public final Paths paths;
@@ -12,7 +12,7 @@ public class Commands {
     public final Hopper hopper;
     public final ShootFuel shootFuel;
 
-    public Commands(Drivetrain drivetrain) {
+    public RobotCommands(Drivetrain drivetrain) {
         rotateToHub = new RotateToHub(drivetrain, false);
         rotateToHubShootingCalc = new RotateToHub(drivetrain, true);
         paths = new Paths(drivetrain);
