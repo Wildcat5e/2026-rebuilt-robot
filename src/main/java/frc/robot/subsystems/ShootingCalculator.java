@@ -23,11 +23,10 @@ public interface ShootingCalculator {
     InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_BY_HUB_DISTANCE =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(1.0, 5.0),
-        Map.entry(1.5, 6.5),
-        Map.entry(2.0, 8.0),
-        Map.entry(2.5, 9.5),
-        Map.entry(3.0, 11.0));
+        Map.entry(2.28, 14.35),
+        Map.entry(3.09, 14.85),
+        Map.entry(4.14, 16.39),
+        Map.entry(4.9, 17.55));
     // @formatter:on
 
     // Returned by calculate()
