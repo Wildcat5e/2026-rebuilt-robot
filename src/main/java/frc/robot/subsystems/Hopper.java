@@ -50,7 +50,7 @@ public class Hopper extends SubsystemBase {
 
     public void runFeeder() {
         setHopperMotorVoltages(3);
-        kickerMotor.setVoltage(3);
+        kickerMotor.setVoltage(-8);
     }
 
     public void stopFeeder() {
