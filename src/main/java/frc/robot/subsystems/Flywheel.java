@@ -92,6 +92,9 @@ public class Flywheel extends SubsystemBase {
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
+    public void stopFlywheel() {
+        setFlywheelMotorVoltages(0);
+    }
 
     // final implementation should be a while true
     // public Command shootFuel() {
