@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.Constants;
 import static frc.robot.Utilities.*;
 
 /**
@@ -16,11 +17,9 @@ import static frc.robot.Utilities.*;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    double FIXED_HOOD_ANGLE_RADIANS = Math.toRadians(64);
-
     /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
     // @formatter:off
-    InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_BY_HUB_DISTANCE =
+    InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
         Map.entry(2.28, 14.35),
@@ -45,10 +44,10 @@ public interface ShootingCalculator {
         Translation2d robotVector = new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond);
 
         // 1. Look up the Ideal "Static" Shot Speed based on current distance from Hub.
-        double staticSpeed = FLYWHEEL_SPEEDS_BY_HUB_DISTANCE.get(getHubDistance(drivetrain));
+        double staticSpeed = FLYWHEEL_SPEEDS_MAP.get(getHubDistance(drivetrain));
 
         // 2. Decompose Static Shot into Horizontal Component (3D -> 2D Plane).
-        double staticSpeedHorizontal = staticSpeed * Math.cos(FIXED_HOOD_ANGLE_RADIANS);
+        double staticSpeedHorizontal = staticSpeed * Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
         // 3. Create the Static Vector pointing directly at the hub.
         double angleToTarget = getRobotToHubAngle(drivetrain);
@@ -62,7 +61,7 @@ public interface ShootingCalculator {
         double newShotHorizontalSpeed = shotVector.getNorm();
 
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
-        double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(FIXED_HOOD_ANGLE_RADIANS);
+        double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
         return new ShotSolution(newFlywheelSpeed, targetHeading);
     }
