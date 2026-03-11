@@ -84,9 +84,9 @@ public interface DashboardManager {
     // =====================================
 
     static void setupIntake(DoubleSupplier extenderMotorRotationSupplier) {
-        SmartDashboard.putNumber("Extender Motor Test Voltage", 0);
-        SmartDashboard.putNumber("Scooper Motor Test Voltage", 0);
-        SmartDashboard.putNumber("Pusher Motor Test Voltage", 0);
+        SmartDashboard.putNumber("Extender Motor Test Voltage", 3);
+        SmartDashboard.putNumber("Scooper Motor Test Voltage", 3);
+        SmartDashboard.putNumber("Pusher Motor Test Voltage", 3);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Rotation Position",
                 () -> round(extenderMotorRotationSupplier.getAsDouble(), 3), null);
