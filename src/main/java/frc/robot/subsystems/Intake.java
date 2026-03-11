@@ -8,19 +8,18 @@ import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
 public class Intake extends SubsystemBase {
-    /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
-    private final TalonFX scooperMotor = new TalonFX(0);
     /** Motor that shoots fuel into the robot */
-    private final TalonFX pusherMotor = new TalonFX(0);
+    private final TalonFX pusherMotor = new TalonFX(16);
     /** Motor that extends intake system outside of bumper. */
-    private final TalonFX extenderMotor = new TalonFX(0);
+    private final TalonFX extenderMotor = new TalonFX(17);
+    /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
+    private final TalonFX scooperMotor = new TalonFX(18);
     private double extenderMotorPosition = 0;
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
         applyGearRatio(pusherMotor, 1);
-        // GEAR RATIO IS 36, BUT MECHANICAL OUTPUT RATIO IS 48
-        applyGearRatio(extenderMotor, 48);
+        applyGearRatio(extenderMotor, 36);
         DashboardManager.setupIntake(() -> extenderMotorPosition);
     }
 
