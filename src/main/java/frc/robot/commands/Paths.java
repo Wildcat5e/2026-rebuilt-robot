@@ -104,9 +104,7 @@ public class Paths extends Command {
     }
 
     private int findClosestIndex(List<Translation2d> translationList) {
-        if (translationList.isEmpty()) {
-            return -1;
-        }
+        if (translationList.isEmpty()) return -1;
 
         Translation2d currentTranslation = drivetrain.getState().Pose.getTranslation();
 
