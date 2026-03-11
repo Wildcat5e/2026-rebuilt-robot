@@ -53,6 +53,7 @@ public interface DashboardManager {
     static void setupHopper() {
         if (!Robot.IS_COMPETITION) {
             SmartDashboard.putNumber("Kicker Test Voltage", 8);
+            SmartDashboard.putNumber("Hopper Test Voltage", 1.0);
         }
     }
 

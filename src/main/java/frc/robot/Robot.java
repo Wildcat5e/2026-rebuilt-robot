@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
         commands = new RobotCommands(drivetrain, flywheel, hopper);
 
         bindingsSetup();
+        NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
         NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.rotateToHubShootingCalc);
         SignalLogger.enableAutoLogging(false);
@@ -143,16 +144,27 @@ public class Robot extends TimedRobot {
             return swerveRequest;
         }));
         // reset the field-centric heading on left trigger
-        Controller.joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
+        Controller.joystick.rightTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.rightBumper().whileTrue(commands.rotateToHub); // Pure Feedforward + PID testing
+        Controller.joystick.leftBumper().whileTrue(commands.rotateToHubShootingCalc);
 
-        Controller.joystick.x().whileTrue(flywheel.testTunableFlywheel());
-        Controller.joystick.x().whileTrue(hopper.testTunableKicker());
+        Controller.joystick.y().whileTrue(intake.testExtender());
+        Controller.joystick.x().whileTrue(intake.testPusher());
+        Controller.joystick.a().whileTrue(intake.testScooper());
 
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
+
+        /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
+
+        // Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
+        // Controller.joystick.leftTrigger().whileTrue(commands.intake.spinIntakeMotors());
+        // Controller.joystick.rightBumper().whileTrue(commands.intake.dropArmFinalImplementation());
+        // Controller.joystick.leftBumper().whileTrue(commands.intake.raiseArmFinalImplementation());
+        // Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
+        // Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
 
         // Bump the multiplier UP by 0.01 using D-Pad Up
         Controller.joystick.povUp()
