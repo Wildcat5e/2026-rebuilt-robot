@@ -33,12 +33,13 @@ import frc.robot.subsystems.*;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+    public static final boolean IS_COMPETITION = false;
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller = new Controller.MultiController();
+    private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
@@ -77,8 +78,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        // REMEMBER TO UNCOMMENT THE LINE BELOW BEFORE COMPETITION!
-        // elasticTabPublisher.set("Autonomous");
+        if (IS_COMPETITION) {
+            elasticTabPublisher.set("Autonomous");
+        }
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
         }
@@ -90,8 +92,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        // REMEMBER TO UNCOMMENT THE LINE BELOW BEFORE COMPETITION!
-        // elasticTabPublisher.set("Teleoperated");
+        if (IS_COMPETITION) {
+            elasticTabPublisher.set("Teleoperated");
+        }
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
         }
