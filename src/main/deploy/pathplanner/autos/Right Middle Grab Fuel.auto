@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Start to Middle"
+            "pathName": "Right Start to Middle"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Middle Fuel Grab"
+            "pathName": "Right Middle Fuel Grab"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to Left Start"
+            "pathName": "Middle to Right Start"
           }
         },
         {
@@ -29,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Start to Shooting"
+                  "pathName": "Right Start to Shooting"
                 }
               },
               {
@@ -39,6 +39,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Fuel"
           }
         }
       ]
