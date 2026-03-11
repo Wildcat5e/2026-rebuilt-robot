@@ -78,9 +78,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        if (IS_COMPETITION) {
-            elasticTabPublisher.set("Autonomous");
-        }
+        if (IS_COMPETITION) elasticTabPublisher.set("Autonomous");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
         }
@@ -92,9 +90,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        if (IS_COMPETITION) {
-            elasticTabPublisher.set("Teleoperated");
-        }
+        if (IS_COMPETITION) elasticTabPublisher.set("Teleoperated");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
         }
