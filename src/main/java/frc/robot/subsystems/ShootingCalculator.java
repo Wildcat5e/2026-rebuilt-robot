@@ -34,9 +34,10 @@ public interface ShootingCalculator {
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
      * 
      * @param drivetrain
+     * @param flywheelSpeedMult
      * @return ShotSolution containing new heading and speed
      */
-    static ShotSolution calculate(Drivetrain drivetrain) {
+    static ShotSolution calculate(Drivetrain drivetrain, double flywheelSpeedMult) {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
@@ -61,6 +62,9 @@ public interface ShootingCalculator {
 
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(Constants.HOOD_ANGLE_RADIANS);
+
+        // 7. Multiply by flywheel speed multiplier from dashboard
+        newFlywheelSpeed *= flywheelSpeedMult;
 
         return new ShotSolution(newFlywheelSpeed, targetHeading);
     }
