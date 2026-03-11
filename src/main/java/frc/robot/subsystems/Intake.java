@@ -44,6 +44,25 @@ public class Intake extends SubsystemBase {
     public Command dropArmFinalImplementation() {
         return new FunctionalCommand(
             // --initialize--
+            () -> extenderMotor.setVoltage(-3),
+
+            // --execute--
+            () -> {},
+
+            // --end--
+            interrupted -> extenderMotor.setVoltage(0),
+
+            // --isFinished--
+            () -> {
+                return getExtenderPosition() <= -.3; // Check sign
+            },
+            // --addRequirements--
+            this); // Pass in Intake
+    }
+
+    public Command raiseArmFinalImplementation() {
+        return new FunctionalCommand(
+            // --initialize--
             () -> extenderMotor.setVoltage(3),
 
             // --execute--
@@ -54,7 +73,7 @@ public class Intake extends SubsystemBase {
 
             // --isFinished--
             () -> {
-                return getExtenderPosition() >= .3; // Check sign
+                return getExtenderPosition() >= 0; // Check sign
             },
             // --addRequirements--
             this); // Pass in Intake
