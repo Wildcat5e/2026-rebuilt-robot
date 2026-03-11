@@ -45,7 +45,8 @@ public class RotateToHub extends Command {
     @Override
     public void execute() {
         Pose2d currentPose = drivetrain.getState().Pose;
-        double targetHeading = useShootingCalculator ? ShootingCalculator.calculate(drivetrain).robotHeading()
+        double targetHeading = useShootingCalculator
+            ? ShootingCalculator.calculate(drivetrain, DashboardManager.getFlywheelSpeedMultiplier()).robotHeading()
             : getRobotToHubAngle(drivetrain);
 
         DashboardManager.updateRotateToHub(currentPose, targetHeading);
