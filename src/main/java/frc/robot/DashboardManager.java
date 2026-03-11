@@ -33,10 +33,12 @@ public interface DashboardManager {
         SmartDashboard.putData("Field", fieldWidget);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
-        SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
         SmartDashboard.putData("Robot Telemetry", builder -> {
             builder.addDoubleProperty("Distance to Hub (m)", () -> round(getHubDistance(drivetrain), 3), null);
         });
+        if (!Robot.IS_COMPETITION) {
+            SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
+        }
     }
 
     static void updateRobotPeriodic(Drivetrain drivetrain) {
@@ -49,7 +51,9 @@ public interface DashboardManager {
     // Subsystem: Hopper
     // =====================================
     static void setupHopper() {
-        SmartDashboard.putNumber("Kicker Test Voltage", 8);
+        if (!Robot.IS_COMPETITION) {
+            SmartDashboard.putNumber("Kicker Test Voltage", 8);
+        }
     }
 
     static double getKickerTestVoltage() {
@@ -116,7 +120,9 @@ public interface DashboardManager {
     // Controllers
     // =====================================
     static void setupController(SendableChooser<Controller> controllerChooser) {
-        SmartDashboard.putData("Controller Chooser", controllerChooser);
+        if (!Robot.IS_COMPETITION) {
+            SmartDashboard.putData("Controller Chooser", controllerChooser);
+        }
     }
 
     // =====================================
