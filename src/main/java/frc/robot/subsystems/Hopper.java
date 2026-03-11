@@ -7,36 +7,20 @@ import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
 public class Hopper extends SubsystemBase {
-    private final TalonFX leftHopperMotor = new TalonFX(0);
-    private final TalonFX rightHopperMotor = new TalonFX(0);
+    private final TalonFX hopperMotor = new TalonFX(15);
     private final TalonFX kickerMotor = new TalonFX(14);
 
     public Hopper() {
-        applyGearRatio(leftHopperMotor, 0.5);
-        applyGearRatio(rightHopperMotor, 0.5);
-        applyGearRatio(kickerMotor, 0.5);
+        applyGearRatio(hopperMotor, 4);
+        applyGearRatio(kickerMotor, 4);
         DashboardManager.setupHopper();
     }
 
     @Override
     public void periodic() {}
 
-    public Command testLeftHopper() {
-        return startEnd(() -> leftHopperMotor.setVoltage(3), () -> leftHopperMotor.setVoltage(0));
-    }
-
-    public Command testRightHopper() {
-        return startEnd(() -> rightHopperMotor.setVoltage(-3), () -> rightHopperMotor.setVoltage(0));
-    }
-
-    public Command testBothHoppers() {
-        return startEnd(() -> setHopperMotorVoltages(3), () -> setHopperMotorVoltages(0));
-    }
-
-    /** Sets both hopper motors to the specified voltage (right voltage negated). */
-    private void setHopperMotorVoltages(double volts) {
-        leftHopperMotor.setVoltage(volts);
-        rightHopperMotor.setVoltage(-volts);
+    public Command testHopper() {
+        return startEnd(() -> hopperMotor.setVoltage(3), () -> hopperMotor.setVoltage(0));
     }
 
     /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
@@ -48,12 +32,12 @@ public class Hopper extends SubsystemBase {
     }
 
     public void runFeeder() {
-        setHopperMotorVoltages(3);
+        hopperMotor.setVoltage(3);
         kickerMotor.setVoltage(-8);
     }
 
     public void stopFeeder() {
-        setHopperMotorVoltages(0);
+        hopperMotor.setVoltage(0);
         kickerMotor.setVoltage(0);
     }
 }
