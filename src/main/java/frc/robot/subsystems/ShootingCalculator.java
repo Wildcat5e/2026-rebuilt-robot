@@ -19,7 +19,7 @@ import static frc.robot.Utilities.*;
 public interface ShootingCalculator {
     /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
     // @formatter:off
-    InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
+    static final InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
         Map.entry(2.28, 14.35),
