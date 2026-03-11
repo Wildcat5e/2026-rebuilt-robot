@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
         // GEAR RATIO IS 36, BUT MECHANICAL RATIO IS 48
         applyGearRatio(scooperMotor, 1);
         applyGearRatio(pusherMotor, 1);
-        applyGearRatio(extenderMotor, 36);
+        applyGearRatio(extenderMotor, 48);
         DashboardManager.setupIntake(() -> extenderMotorPosition);
     }
 
