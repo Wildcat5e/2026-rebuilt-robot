@@ -25,8 +25,7 @@ public interface ShootingCalculator {
         Map.entry(2.28, 14.35),
         Map.entry(3.09, 14.85),
         Map.entry(4.14, 16.39),
-        Map.entry(4.9, 17.55));
-    // @formatter:on
+        Map.entry(4.9, 17.55)); // @formatter:on
 
     // Returned by calculate()
     static record ShotSolution(double flywheelSpeed, double robotHeading) {}
