@@ -104,11 +104,16 @@ public class Paths extends Command {
     }
 
     private int findClosestIndex(List<Translation2d> translationList) {
-        double closestDistance = Double.POSITIVE_INFINITY;
-        int closestIndex = -1;
+        if (translationList.isEmpty()) {
+            return -1;
+        }
+
         Translation2d currentTranslation = drivetrain.getState().Pose.getTranslation();
 
-        for (int index = 0; index < translationList.size(); index++) {
+        double closestDistance = currentTranslation.getDistance(translationList.get(0));
+        int closestIndex = 0;
+
+        for (int index = 1; index < translationList.size(); index++) {
             double distance = currentTranslation.getDistance(translationList.get(index));
             if (distance < closestDistance) {
                 closestDistance = distance;
