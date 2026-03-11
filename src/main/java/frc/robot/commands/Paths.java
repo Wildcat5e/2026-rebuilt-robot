@@ -65,21 +65,13 @@ public class Paths extends Command {
             if (!Robot.isBlueAlliance) {
                 translation = FlippingUtil.flipFieldPosition(translation);
             }
-
             translationsList.add(translation);
         }
 
-        int closestIndex = findClosestIndex(translationsList);
+        closestCommand = findClosestCommand(translationsList);
 
-        // A closestIndex of -1 means the distance is too large
-        if (closestIndex != -1) {
-            closestCommand = commandPathList.get(closestIndex);
+        if (closestCommand != null) {
             CommandScheduler.getInstance().schedule(closestCommand);
-        } else {
-            DriverStation.reportWarning(
-                "COMMAND NOT SCHEDULED: Distance to closest path is greater than " + MAX_SAFE_DIST_TO_PATH + " meters.",
-                false);
-            closestCommand = null;
         }
     }
 
@@ -103,8 +95,11 @@ public class Paths extends Command {
         return !CommandScheduler.getInstance().isScheduled(closestCommand);
     }
 
-    private int findClosestIndex(List<Translation2d> translationList) {
-        if (translationList.isEmpty()) return -1;
+    private Command findClosestCommand(List<Translation2d> translationList) {
+        if (translationList.isEmpty()) {
+            DriverStation.reportError("ERROR: List of path starting positions is empty.", false);
+            return null;
+        }
 
         Translation2d currentTranslation = drivetrain.getState().Pose.getTranslation();
 
@@ -119,6 +114,12 @@ public class Paths extends Command {
             }
         }
 
-        return closestDistance < MAX_SAFE_DIST_TO_PATH ? closestIndex : -1;
+        if (closestDistance < MAX_SAFE_DIST_TO_PATH) {
+            return commandPathList.get(closestIndex);
+        } else {
+            DriverStation.reportWarning(
+                "COMMAND NOT SCHEDULED: No paths found within " + MAX_SAFE_DIST_TO_PATH + " meters.", false);
+            return null;
+        }
     }
 }
