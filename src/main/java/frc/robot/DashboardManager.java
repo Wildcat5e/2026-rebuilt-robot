@@ -1,7 +1,8 @@
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-
+import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -133,15 +134,18 @@ public interface DashboardManager {
     // =====================================
     // Commands: RotateToHub
     // =====================================
-    static void updateRotateToHubInit(boolean useShootingCalculator) {
-        SmartDashboard.putBoolean("Enable Shooting Calculator", useShootingCalculator);
-    }
-
-    static void updateRotateToHub(Pose2d currentPose, double targetHeading) {
-        SmartDashboard.putNumber("Robot Rotation", round(currentPose.getRotation().getDegrees(), 2));
-        SmartDashboard.putNumber("Target Heading", round(Math.toDegrees(targetHeading), 2));
-        SmartDashboard.putNumber("Angle Difference",
-            round(Math.toDegrees(targetHeading - currentPose.getRotation().getRadians()), 2));
+    static void setupRotateToHub(BooleanSupplier useShootingCalculatorSupplier, Supplier<Pose2d> currentPoseSupplier,
+        DoubleSupplier targetHeadingSupplier, DoubleSupplier angDiffSupplier) {
+        SmartDashboard.putData("RotateToHub Telemetry", builder -> { // @formatter:off
+            builder.addBooleanProperty("Enable Shooting Calculator",
+                useShootingCalculatorSupplier, null);
+            builder.addDoubleProperty("Robot Rotation",
+                () -> round(currentPoseSupplier.get().getRotation().getDegrees(), 1), null);
+            builder.addDoubleProperty("Target Heading",
+                () -> round(Math.toDegrees(targetHeadingSupplier.getAsDouble()), 1), null);
+            builder.addDoubleProperty("Angle Difference",
+                () -> round(Math.toDegrees(angDiffSupplier.getAsDouble()), 1), null);
+        }); // @formatter:on
     }
 
 
