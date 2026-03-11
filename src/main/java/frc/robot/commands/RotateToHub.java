@@ -23,11 +23,14 @@ public class RotateToHub extends Command {
 
     private final Drivetrain drivetrain;
     private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric();
+    private Pose2d currentPose;
     private boolean useShootingCalculator;
+    private double targetHeading;
 
     public RotateToHub(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
+        registerTelemetry();
     }
 
     public RotateToHub(Drivetrain drivetrain, boolean useShootingCalculator) {
@@ -35,21 +38,27 @@ public class RotateToHub extends Command {
         this.useShootingCalculator = useShootingCalculator;
     }
 
+    private void registerTelemetry() { // @formatter:off
+        DashboardManager.setupRotateToHub(
+            () -> this.useShootingCalculator,
+            () -> this.currentPose != null ? this.currentPose : new Pose2d(),
+            () -> this.targetHeading,
+            () -> this.currentPose != null ? this.targetHeading - this.currentPose.getRotation().getRadians() : 0.0
+        ); // @formatter:on
+    }
+
     @Override
     public void initialize() {
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset();
-        DashboardManager.updateRotateToHubInit(useShootingCalculator);
     }
 
     @Override
     public void execute() {
-        Pose2d currentPose = drivetrain.getState().Pose;
-        double targetHeading = useShootingCalculator
+        currentPose = drivetrain.getState().Pose;
+        targetHeading = useShootingCalculator
             ? ShootingCalculator.calculate(drivetrain, DashboardManager.getFlywheelSpeedMultiplier()).robotHeading()
             : getRobotToHubAngle(drivetrain);
-
-        DashboardManager.updateRotateToHub(currentPose, targetHeading);
 
         // --- 1. Calculate Feedforward (Predictive) ---
         // Get field-centric speeds
