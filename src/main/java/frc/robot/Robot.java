@@ -51,13 +51,16 @@ public class Robot extends TimedRobot {
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
     /** Contains all the commands we use and needs to be instantiated after running {@link #configureAutoBuilder()}. */
     private final RobotCommands commands;
+    public final Flywheel flywheel = new Flywheel(drivetrain);
+    public final Hopper hopper = new Hopper();
+    public final Intake intake = new Intake();
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         configureAutoBuilder();
-        commands = new RobotCommands(drivetrain);
+        commands = new RobotCommands(drivetrain, flywheel, hopper);
 
         bindingsSetup();
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
@@ -145,11 +148,11 @@ public class Robot extends TimedRobot {
         Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
         Controller.joystick.rightBumper().whileTrue(commands.rotateToHub); // Pure Feedforward + PID testing
 
-        Controller.joystick.x().whileTrue(commands.flywheel.testTunableFlywheel());
-        Controller.joystick.x().whileTrue(commands.hopper.testTunableKicker());
+        Controller.joystick.x().whileTrue(flywheel.testTunableFlywheel());
+        Controller.joystick.x().whileTrue(hopper.testTunableKicker());
 
-        Controller.joystick.b().whileTrue(commands.flywheel.testDynamicStartFlywheel());
-        Controller.joystick.b().whileTrue(commands.hopper.testTunableKicker());
+        Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
+        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
         // Bump the multiplier UP by 0.01 using D-Pad Up
         Controller.joystick.povUp()
