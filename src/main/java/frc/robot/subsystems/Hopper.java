@@ -22,7 +22,7 @@ public class Hopper extends SubsystemBase {
 
     public Command testHopper() {
         return startEnd(() -> {
-            double targetHopperVoltage = SmartDashboard.getNumber("Hopper Test Voltage", 1.0);
+            double targetHopperVoltage = DashboardManager.getConveyorTestVoltage();
             conveyorMotor.setVoltage(targetHopperVoltage);
         }, () -> conveyorMotor.setVoltage(0));
     }

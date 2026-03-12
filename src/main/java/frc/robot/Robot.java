@@ -146,8 +146,11 @@ public class Robot extends TimedRobot {
         // reset the field-centric heading on left trigger
 
         Controller.joystick.rightTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        Controller.joystick.rightBumper().whileTrue(commands.rotateToHub); // Pure Feedforward + PID testing
-        Controller.joystick.leftBumper().whileTrue(commands.rotateToHubShootingCalc);
+        // Controller.joystick.rightBumper().whileTrue(commands.rotateToHub); // Pure Feedforward + PID testing
+        // Controller.joystick.leftBumper().whileTrue(commands.rotateToHubShootingCalc);
+        Controller.joystick.leftTrigger().whileTrue(flywheel.testTunableFlywheel());
+        Controller.joystick.leftTrigger().whileTrue(hopper.testTunableKicker());
+        Controller.joystick.rightBumper().whileTrue(hopper.testHopper());
 
         Controller.joystick.y().whileTrue(intake.testExtender());
         Controller.joystick.x().whileTrue(intake.testPusher());
@@ -155,6 +158,7 @@ public class Robot extends TimedRobot {
 
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
+        // Controller.joystick.b().whileTrue(commands.intake.spinIntakeMotors());
 
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
 
