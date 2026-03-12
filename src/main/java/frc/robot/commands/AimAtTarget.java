@@ -42,8 +42,7 @@ public class AimAtTarget extends Command {
     @Override
     public void execute() {
         currentPose = drivetrain.getState().Pose;
-        targetHeading = ShootingCalculator.calculate(drivetrain, target, DashboardManager.getFlywheelSpeedMultiplier())
-            .robotHeading();
+        targetHeading = ShootingCalculator.calculate(drivetrain, target).robotHeading();
         // --- 1. Feedforward ---
         double feedforwardVelocity = getFeedforwardVelocity(currentPose, target);
 
