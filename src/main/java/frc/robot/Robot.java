@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static frc.robot.Utilities.getHubPosition;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
-    public static final SwerveRequest.FieldCentric swerveRequest =
+    private final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
 
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
     public final Flywheel flywheel = new Flywheel(drivetrain);
     public final Hopper hopper = new Hopper();
     public final Intake intake = new Intake();
-    private final RobotCommands commands = new RobotCommands(drivetrain, flywheel, hopper);
+    private final RobotCommands commands = new RobotCommands(drivetrain, swerveRequest, flywheel, hopper);
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
@@ -69,12 +70,12 @@ public class Robot extends TimedRobot {
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
-        NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
-        NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.rotateToHubShootingCalc);
+        NamedCommands.registerCommand("Rotate To Hub", commands.aimAtHub);
+        NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.aimAtTarget);
         SignalLogger.enableAutoLogging(false);
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain);
+        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain, commands);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
@@ -82,7 +83,7 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         fieldWidget.setRobotPose(drivetrain.getState().Pose);
-        DashboardManager.updateRobotPeriodic(drivetrain);
+        DashboardManager.updateRobotPeriodic(drivetrain, getHubPosition());
     }
 
     @Override

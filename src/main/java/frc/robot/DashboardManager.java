@@ -4,13 +4,14 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.RotateToHub;
+import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
 
@@ -29,20 +30,23 @@ public interface DashboardManager {
     // =====================================
     // Robot (Init & Periodic)
     // =====================================
-    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain) {
+    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain,
+        RobotCommands commands) {
         SmartDashboard.putData("Field", field);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("Robot Telemetry", builder -> {
-            builder.addDoubleProperty("Distance to Hub (m)", () -> round(getHubDistance(drivetrain), 3), null);
+            builder.addDoubleProperty("Distance to Hub (m)",
+                () -> round(getTargetDistance(drivetrain, getHubPosition()), 3), null);
         });
 
-        if (!Robot.IS_COMPETITION) SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
+        if (!Robot.IS_COMPETITION)
+            SmartDashboard.putData("Aim At Hub PID Controller", commands.aimAtHub.PID_CONTROLLER);
     }
 
-    static void updateRobotPeriodic(Drivetrain drivetrain) {
-        SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain));
-        SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain));
+    static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
+        SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain, target));
+        SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain, target));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
     }
 
@@ -136,7 +140,7 @@ public interface DashboardManager {
     }
 
     // =====================================
-    // Commands: RotateToHub
+    // Commands: AimAtTarget
     // ===================================== // @formatter:off
     static void setupRotateToHub(Supplier<Pose2d> currPoseSupp, DoubleSupplier targetHeadingSupp, DoubleSupplier angDiffSupp) {
         SmartDashboard.putData("RotateToHub Telemetry", builder -> {

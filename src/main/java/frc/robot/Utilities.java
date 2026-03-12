@@ -16,28 +16,27 @@ public interface Utilities {
         return Robot.isBlueAlliance ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;
     }
 
-    static double getHubDistance(Drivetrain drivetrain) {
-        Translation2d hubPosition = getHubPosition();
+    static double getTargetDistance(Drivetrain drivetrain, Translation2d target) {
         Translation2d robotPosition = drivetrain.getState().Pose.getTranslation();
-        return hubPosition.getDistance(robotPosition);
+        return target.getDistance(robotPosition);
     }
 
-    static boolean withinShootingDistance(Drivetrain drivetrain) {
-        double distance = getHubDistance(drivetrain);
+    static boolean withinShootingDistance(Drivetrain drivetrain, Translation2d target) {
+        double distance = getTargetDistance(drivetrain, target);
         return Constants.MINIMUM_SHOOTING_DISTANCE < distance && distance < Constants.MAXIMUM_SHOOTING_DISTANCE;
     }
 
-    /** @return Angle in radians from robot to hub. */
-    static double getRobotToHubAngle(Drivetrain drivetrain) {
-        Translation2d hubPosition = getHubPosition();
+    /** @return Angle in radians from robot to target. */
+    static double getRobotToTargetAngle(Drivetrain drivetrain, Translation2d target) {
         Pose2d currentPose = drivetrain.getState().Pose;
-        return Math.atan2((hubPosition.getY() - currentPose.getY()), (hubPosition.getX() - currentPose.getX()));
+        return Math.atan2((target.getY() - currentPose.getY()), (target.getX() - currentPose.getX()));
     }
 
-    static boolean withinShootingAngle(Drivetrain drivetrain) {
-        double angleTolerance = Math.toRadians(30); // Placeholder
+    /** @deprecated This needs to be replaced/removed because of {@link frc.robot.subsystems.ShootingCalculator } */
+    static boolean withinShootingAngle(Drivetrain drivetrain, Translation2d target) {
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
-        return Math.abs(MathUtil.angleModulus(getRobotToHubAngle(drivetrain) - robotRotation)) < angleTolerance;
+        double angleDiff = MathUtil.angleModulus(getRobotToTargetAngle(drivetrain, target) - robotRotation);
+        return Math.abs(angleDiff) < Math.toRadians(30); // Split out to constant if we make a new one of this function.
     }
 
     static boolean inHome(Drivetrain drivetrain) {
