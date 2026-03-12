@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
         // Controller.joystick.leftBumper().whileTrue(commands.rotateToHubShootingCalc);
         Controller.joystick.leftTrigger().whileTrue(flywheel.testTunableFlywheel());
         Controller.joystick.leftTrigger().whileTrue(hopper.testTunableKicker());
-        Controller.joystick.rightBumper().whileTrue(hopper.testHopper());
+        Controller.joystick.rightBumper().whileTrue(hopper.testConveyor());
 
         Controller.joystick.y().whileTrue(intake.testExtender());
         Controller.joystick.x().whileTrue(intake.testPusher());

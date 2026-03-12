@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
-            scooperMotor.setVoltage(scooperMotorVoltage);
+            scooperMotor.setVoltage(-scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
             scooperMotor.setVoltage(0);
@@ -85,7 +85,7 @@ public class Intake extends SubsystemBase {
     public Command testScooper() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-            scooperMotor.setVoltage(scooperMotorVoltage);
+            scooperMotor.setVoltage(-scooperMotorVoltage);
         }, () -> scooperMotor.set(0));
     }
 
