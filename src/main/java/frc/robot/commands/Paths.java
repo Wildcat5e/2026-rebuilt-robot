@@ -15,15 +15,14 @@ import frc.robot.subsystems.Drivetrain;
 
 public class Paths extends Command {
     /** Maximum allowable distance (meters) from the robot's current pose to a path's starting pose. */
-    private static final double MAX_DIST_FROM_PATH = 1.0;
+    private static final double MAX_SAFE_DIST_TO_PATH = 1.0;
+
     private final Drivetrain drivetrain;
-    List<Translation2d> translationsList;
-    List<PathPlannerPath> pathList = new ArrayList<>(4);
-    List<Command> commandPathList = new ArrayList<>(4);
-    Translation2d currentTranslation;
-    Command closestCommand;
-    int closestIndex;
-    boolean error = false;
+    private final List<PathPlannerPath> pathList = new ArrayList<>(4);
+    private final List<Command> commandPathList = new ArrayList<>(4);
+
+    private Command closestCommand;
+    private boolean error = false;
 
     public Paths(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -52,31 +51,27 @@ public class Paths extends Command {
 
     @Override
     public void initialize() {
-        if (!error) {
-            translationsList = new ArrayList<>();
+        if (error) return; // Exit early if paths failed to load
 
-            // Loop through the paths to extract coordinates
-            for (PathPlannerPath path : pathList) {
+        List<Translation2d> translationsList = new ArrayList<>();
 
-                // Get the starting pose (this always returns Blue Alliance coordinate)
-                Pose2d bluePose = path.getStartingHolonomicPose().orElse(new Pose2d());
-                Translation2d translation = bluePose.getTranslation();
+        // Loop through the paths to extract coordinates
+        for (PathPlannerPath path : pathList) {
+            // Get the starting pose (this always returns Blue Alliance coordinate)
+            Pose2d bluePose = path.getStartingHolonomicPose().orElse(new Pose2d());
+            Translation2d translation = bluePose.getTranslation();
 
-                // If we're on the Red Alliance, make PathPlanner flip the coordinate dynamically
-                if (!Robot.isBlueAlliance) {
-                    translation = FlippingUtil.flipFieldPosition(translation);
-                }
-
-                translationsList.add(translation);
+            // If we're on the Red Alliance, make PathPlanner flip the coordinate dynamically
+            if (!Robot.isBlueAlliance) {
+                translation = FlippingUtil.flipFieldPosition(translation);
             }
+            translationsList.add(translation);
+        }
 
-            closestIndex = findclosestIndex(commandPathList, translationsList);
-            // A closestIndex of -1 means the distance is too large
-            if (closestIndex != -1) {
-                closestCommand = commandPathList.get(closestIndex);
-                CommandScheduler.getInstance().schedule(closestCommand);
-            } else DriverStation
-                .reportWarning("Distance to closest path is greater than " + MAX_DIST_FROM_PATH + " meters.", false);
+        closestCommand = findClosestCommand(translationsList);
+
+        if (closestCommand != null) {
+            CommandScheduler.getInstance().schedule(closestCommand);
         }
     }
 
@@ -85,22 +80,33 @@ public class Paths extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        if (closestIndex != -1) {
+        if (closestCommand != null) {
             CommandScheduler.getInstance().cancel(closestCommand);
         }
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        // Abort immediately if there was a load error or no valid path was found
+        if (error || closestCommand == null) {
+            return true;
+        }
+        // The command is finished when the scheduled path-following command is no longer running
+        return !CommandScheduler.getInstance().isScheduled(closestCommand);
     }
 
-    int findclosestIndex(List<Command> commandPathList, List<Translation2d> translationList) {
-        double closestDistance = Double.POSITIVE_INFINITY;
-        int closestIndex = -1;
-        currentTranslation = drivetrain.getState().Pose.getTranslation();
+    private Command findClosestCommand(List<Translation2d> translationList) {
+        if (translationList.isEmpty()) {
+            DriverStation.reportError("ERROR: List of path starting positions is empty.", false);
+            return null;
+        }
 
-        for (int index = 0; index < translationList.size(); index++) {
+        Translation2d currentTranslation = drivetrain.getState().Pose.getTranslation();
+
+        double closestDistance = currentTranslation.getDistance(translationList.get(0));
+        int closestIndex = 0;
+
+        for (int index = 1; index < translationList.size(); index++) {
             double distance = currentTranslation.getDistance(translationList.get(index));
             if (distance < closestDistance) {
                 closestDistance = distance;
@@ -108,7 +114,12 @@ public class Paths extends Command {
             }
         }
 
-        // Return correct index if within safe distance of 1 meter, otherwise return -1
-        return closestDistance < 1 ? closestIndex : -1;
+        if (closestDistance < MAX_SAFE_DIST_TO_PATH) {
+            return commandPathList.get(closestIndex);
+        } else {
+            DriverStation.reportWarning(
+                "COMMAND NOT SCHEDULED: No paths found within " + MAX_SAFE_DIST_TO_PATH + " meters.", false);
+            return null;
+        }
     }
 }
