@@ -68,7 +68,7 @@ public class Flywheel extends SubsystemBase {
     public Command testDynamicStartFlywheel() {
         return runEnd(() -> {
             // This code is run every 20 ms
-            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, flywheelSpeedMult);
+            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition(), flywheelSpeedMult);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -91,7 +91,7 @@ public class Flywheel extends SubsystemBase {
 
     /** Spins flywheel and calculates speed based on distance. */
     public void dynamicRunFlywheel() {
-        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, flywheelSpeedMult);
+        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition(), flywheelSpeedMult);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
