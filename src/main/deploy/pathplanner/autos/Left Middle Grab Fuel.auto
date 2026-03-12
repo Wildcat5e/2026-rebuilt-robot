@@ -67,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Rotate To Hub"
+                  "name": "Aim at Hub"
                 }
               }
             ]
