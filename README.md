@@ -8,12 +8,4 @@
 
 ## Button Bindings
 
-| Button         | Action                                    |
-|----------------|-------------------------------------------|
-| Left Joystick  | Translation                               |
-| Right Joystick | Rotation                                  |
-| Left Trigger   | Activate intake                           |
-| Right Trigger  | Shoot (activate flywheel, kicker, hopper) |
-| A              | Automatic Rotate to Hub                   |
-| Right Bumper   | Bring Intake Down                         |
-| Left Bumper    | Raise Intake Up                           |
+[Visualized Bindings (PadCrafter)](<https://www.padcrafter.com/?templates=Final+Competition+Bindings&rightTrigger=Shoot+Fuel&leftTrigger=Spin+Intake+Motors&leftBumper=Raise+Intake&rightBumper=Lower+Intake&aButton=RotateToHub+ShootingCalc&xButton=Seed+Field-Centric&leftStick=Robot+Movement&rightStick=Robot+Rotation&col=%23A82C28%2C%23322127%2C%23FFFFFF>)
