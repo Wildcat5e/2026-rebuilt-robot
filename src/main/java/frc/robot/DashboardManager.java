@@ -53,12 +53,16 @@ public interface DashboardManager {
     static void setupHopper() {
         if (!Robot.IS_COMPETITION) {
             SmartDashboard.putNumber("Kicker Test Voltage", 8);
-            SmartDashboard.putNumber("Hopper Test Voltage", 1.0);
+            SmartDashboard.putNumber("Conveyor Test Voltage", 1.0);
         }
     }
 
     static double getKickerTestVoltage() {
         return SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
+    }
+
+    static double getConveyorTestVoltage() {
+        return SmartDashboard.getNumber("Conveyor Test Voltage", 0.0);
     }
 
     // =====================================
