@@ -9,18 +9,12 @@ public class RobotCommands {
     public final RotateToHub rotateToHub;
     public final RotateToHub rotateToHubShootingCalc;
     public final Paths paths;
-    public final Flywheel flywheel;
-    public final Hopper hopper;
     public final ShootFuel shootFuel;
-    public final Intake intake;
 
-    public RobotCommands(Drivetrain drivetrain) {
+    public RobotCommands(Drivetrain drivetrain, Flywheel flywheel, Hopper hopper) {
         rotateToHub = new RotateToHub(drivetrain, false);
         rotateToHubShootingCalc = new RotateToHub(drivetrain, true);
         paths = new Paths(drivetrain);
-        flywheel = new Flywheel(drivetrain);
-        hopper = new Hopper();
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
-        intake = new Intake();
     }
 }
