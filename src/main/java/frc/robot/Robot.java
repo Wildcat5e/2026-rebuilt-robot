@@ -66,9 +66,8 @@ public class Robot extends TimedRobot {
         bindingsSetup();
         NamedCommands.registerCommand("Drop Intake", intake.dropArmFinalImplementation());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
+        NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
-        NamedCommands.registerCommand("Rotate To Hub", commands.aimAtHub);
-        NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.aimAtTarget);
         SignalLogger.enableAutoLogging(false);
 
         autoChooser = AutoBuilder.buildAutoChooser();
