@@ -20,10 +20,10 @@ public class Hopper extends SubsystemBase {
     @Override
     public void periodic() {}
 
-    public Command testHopper() {
+    public Command testConveyor() {
         return startEnd(() -> {
-            double targetHopperVoltage = DashboardManager.getConveyorTestVoltage();
-            conveyorMotor.setVoltage(targetHopperVoltage);
+            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
+            conveyorMotor.setVoltage(-targetConveyorVoltage);
         }, () -> conveyorMotor.setVoltage(0));
     }
 
