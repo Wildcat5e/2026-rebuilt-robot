@@ -110,6 +110,52 @@ public interface DashboardManager {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
         });
+
+        SmartDashboard.putNumber("Extender kP", 0);
+        SmartDashboard.putNumber("Extender kI", 0);
+        SmartDashboard.putNumber("Extender kD", 0);
+        SmartDashboard.putNumber("Extender kS", 0);
+        SmartDashboard.putNumber("Extender kV", 0);
+        SmartDashboard.putNumber("Extender kG", 0);
+        SmartDashboard.putNumber("Extender Motion Magic Cruise Velocity", 1);
+        SmartDashboard.putNumber("Extender Motion Magic Acceleration", 2);
+        SmartDashboard.putNumber("Extender Motion Magic Jerk", 0);
+    }
+
+    static double getExtenderkP() {
+        return SmartDashboard.getNumber("Extender kP", 0);
+    }
+
+    static double getExtenderkI() {
+        return SmartDashboard.getNumber("Extender kI", 0);
+    }
+
+    static double getExtenderkD() {
+        return SmartDashboard.getNumber("Extender kD", 0);
+    }
+
+    static double getExtenderkS() {
+        return SmartDashboard.getNumber("Extender kS", 0);
+    }
+
+    static double getExtenderkV() {
+        return SmartDashboard.getNumber("Extender kV", 0);
+    }
+
+    static double getExtenderkG() {
+        return SmartDashboard.getNumber("Extender kG", 0);
+    }
+
+    static double getExtenderMotionMagicCruiseVelocity() {
+        return SmartDashboard.getNumber("Extender Motion Magic Cruise Velocity", 1);
+    }
+
+    static double getExtenderMotionMagicAcceleration() {
+        return SmartDashboard.getNumber("Extender Motion Magic Acceleration", 2);
+    }
+
+    static double getExtenderMotionMagicJerk() {
+        return SmartDashboard.getNumber("Extender Motion Magic Jerk", 0);
     }
 
     static double getExtenderMotorTestVoltage() {

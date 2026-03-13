@@ -77,6 +77,24 @@ public class Intake extends SubsystemBase {
         extenderMotorPosition = getExtenderPosition();
     }
 
+    public Command configureMotor() {
+        return runOnce(() -> {
+            TalonFXConfiguration extenderConfig = new TalonFXConfiguration();
+            extenderMotor.getConfigurator().refresh(extenderConfig);
+            extenderConfig.Slot0.kP = DashboardManager.getExtenderkP();
+            extenderConfig.Slot0.kI = DashboardManager.getExtenderkI();
+            extenderConfig.Slot0.kD = DashboardManager.getExtenderkD();
+            extenderConfig.Slot0.kS = DashboardManager.getExtenderkS();
+            extenderConfig.Slot0.kV = DashboardManager.getExtenderkV();
+            extenderConfig.Slot0.kG = DashboardManager.getExtenderkG();
+            extenderConfig.MotionMagic.MotionMagicCruiseVelocity =
+                DashboardManager.getExtenderMotionMagicCruiseVelocity(); // rps
+            extenderConfig.MotionMagic.MotionMagicAcceleration = DashboardManager.getExtenderMotionMagicAcceleration(); // rps/s
+            extenderConfig.MotionMagic.MotionMagicJerk = DashboardManager.getExtenderMotionMagicJerk(); // Set to >0 for S-Curve smoothing
+            extenderMotor.getConfigurator().apply(extenderConfig);
+        });
+    }
+
     public Command spinIntakeMotors() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
