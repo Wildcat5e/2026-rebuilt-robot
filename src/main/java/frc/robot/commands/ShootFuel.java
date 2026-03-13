@@ -18,7 +18,7 @@ public class ShootFuel extends Command {
         this.hopper = hopper;
         this.intake = intake;
         this.drivetrain = drivetrain;
-        addRequirements(flywheel, hopper, intake);
+        addRequirements(flywheel, hopper);
     }
 
     @Override
@@ -37,7 +37,6 @@ public class ShootFuel extends Command {
         if (flywheel.flywheelUpToSpeed()) {
             System.out.println(" UP TO SPEED ");
             hopper.runHopper();
-            intake.spinPusher();
         }
     }
 
@@ -45,7 +44,6 @@ public class ShootFuel extends Command {
     public void end(boolean interrupted) {
         flywheel.stopFlywheel();
         hopper.stopHopper();
-        intake.stopPusher();
         System.out.println("DONE");
     }
 
