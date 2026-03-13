@@ -167,6 +167,7 @@ public class Robot extends TimedRobot {
         Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
         Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        Controller.joystick.y().whileTrue(intake.reverseScooper());
 
 
         // Bump the multiplier UP by 0.01 using D-Pad Up
