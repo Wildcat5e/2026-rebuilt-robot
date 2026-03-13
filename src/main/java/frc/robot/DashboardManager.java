@@ -72,6 +72,7 @@ public interface DashboardManager {
     static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier,
         DoubleSupplier averageSpeedSupplier, DoubleSupplier calculatedVoltageSupplier) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
+        SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.0);
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
             builder.addDoubleProperty("Current Speed (m\u2215s)", () -> round(currentSpeedSupplier.getAsDouble(), 3),
                 null);
