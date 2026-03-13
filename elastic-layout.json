@@ -345,7 +345,7 @@
             "title": "Current Speed (mâˆ•s)",
             "x": 1024.0,
             "y": 128.0,
-            "width": 640.0,
+            "width": 256.0,
             "height": 640.0,
             "type": "Graph",
             "properties": {
@@ -412,6 +412,18 @@
               "data_type": "double",
               "show_submit_button": false
             }
+          },
+          {
+            "title": "Aim At Target PID Controller",
+            "x": 1280.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "PIDController",
+            "properties": {
+              "topic": "/SmartDashboard/Aim At Target PID Controller",
+              "period": 0.06
+            }
           }
         ]
       }
@@ -435,6 +447,13 @@
             }
           }
         ]
+      }
+    },
+    {
+      "name": "Field",
+      "grid_layout": {
+        "layouts": [],
+        "containers": []
       }
     }
   ]
