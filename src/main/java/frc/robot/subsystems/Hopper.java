@@ -27,12 +27,21 @@ public class Hopper extends SubsystemBase {
         }, () -> conveyorMotor.setVoltage(0));
     }
 
+    public Command reverseConveyor() {
+        return startEnd(() -> conveyorMotor.setVoltage(3), () -> conveyorMotor.setVoltage(0))
+            .withName("Reverse Conveyor");
+    }
+
     /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
     public Command testTunableKicker() {
         return runEnd(() -> {
             double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
             kickerMotor.setVoltage(-targetKickerVoltage);
         }, () -> kickerMotor.setVoltage(0));
+    }
+
+    public Command reverseKicker() {
+        return startEnd(() -> kickerMotor.setVoltage(3), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
     }
 
     public void runHopper() {
