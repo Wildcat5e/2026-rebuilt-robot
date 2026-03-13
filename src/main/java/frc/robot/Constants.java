@@ -1,9 +1,12 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+import java.util.List;
+import java.util.Map;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.generated.TunerConstants;
 
 public interface Constants {
@@ -32,4 +35,26 @@ public interface Constants {
     double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
     /** x-coordinate Threshold for Red Alliance Home Zone */
     double RED_X_AXIS_HOME_THRESHOLD = 12.54;
+
+    /** index zero is blue */
+    List<Translation2d> LEFT_HOMES = List.of(new Translation2d(2, 6.25), new Translation2d(14.5, 6.25));
+    /** index zero is blue */
+    List<Translation2d> RIGHT_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
+
+    /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
+    // @formatter:off
+    InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
+    InterpolatingDoubleTreeMap.ofEntries(
+        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
+        Map.entry(2.28, 14.35),
+        Map.entry(3.09, 14.85),
+        Map.entry(4.14, 16.39),
+        Map.entry(4.9, 17.55)); // @formatter:on// @formatter:off
+    InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
+    InterpolatingDoubleTreeMap.ofEntries(
+        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
+        Map.entry(2.28, 14.35),
+        Map.entry(3.09, 14.85),
+        Map.entry(4.14, 16.39),
+        Map.entry(4.9, 17.55)); // @formatter:on
 }

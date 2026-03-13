@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
 
         Controller.joystick.y().whileTrue(intake.testExtender());
         Controller.joystick.x().whileTrue(intake.testPusher());
-        Controller.joystick.a().whileTrue(intake.testScooper());
+        // Controller.joystick.a().whileTrue(intake.testScooper());
 
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
         // Controller.joystick.leftTrigger().whileTrue(commands.intake.spinIntakeMotors());
         // Controller.joystick.rightBumper().whileTrue(commands.intake.dropArmFinalImplementation());
         // Controller.joystick.leftBumper().whileTrue(commands.intake.raiseArmFinalImplementation());
-        // Controller.joystick.a().whileTrue(commands.aimAtHub); // PID + Shooting Calculator testing
+        Controller.joystick.a().whileTrue(commands.aimAtHub); // PID + Shooting Calculator testing
         // Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
 

@@ -19,34 +19,23 @@ import static frc.robot.Utilities.*;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-    /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
-    // @formatter:off
-    static final InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
-    InterpolatingDoubleTreeMap.ofEntries(
-        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(2.28, 14.35),
-        Map.entry(3.09, 14.85),
-        Map.entry(4.14, 16.39),
-        Map.entry(4.9, 17.55)); // @formatter:on
-
     // Returned by calculate()
     static record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
      * 
-     * @param drivetrain
-     * @param flywheelSpeedMult
      * @return ShotSolution containing new heading and speed
      */
-    static ShotSolution calculate(Drivetrain drivetrain, Translation2d target) {
+    static ShotSolution calculate(Drivetrain drivetrain, Translation2d target,
+        InterpolatingDoubleTreeMap flywheelSpeedMap) {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
         Translation2d robotVector = new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond);
 
         // 1. Look up the Ideal "Static" Shot Speed based on current distance from Hub.
-        double staticSpeed = FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, target));
+        double staticSpeed = flywheelSpeedMap.get(getTargetDistance(drivetrain, target));
 
         // 2. Decompose Static Shot into Horizontal Component (3D -> 2D Plane).
         double staticSpeedHorizontal = staticSpeed * Math.cos(Constants.HOOD_ANGLE_RADIANS);
