@@ -11,37 +11,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Right Start to Middle"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Middle Fuel Grab"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Run Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle to Right Start"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -52,7 +21,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Right Start to Shooting"
+                        "pathName": "Middle Start to Shooting"
                       }
                     },
                     {

@@ -5,15 +5,34 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Drop Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Left Start to Middle"
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Left Middle Fuel Grab"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Middle Fuel Grab"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -27,9 +46,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "Left Start to Shooting"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Left Start to Shooting"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot Fuel"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -39,12 +71,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Fuel"
           }
         }
       ]

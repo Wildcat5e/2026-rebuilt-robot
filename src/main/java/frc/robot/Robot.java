@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
         commands = new RobotCommands(drivetrain, flywheel, hopper);
 
         bindingsSetup();
+        NamedCommands.registerCommand("Drop Intake", intake.dropArmFinalImplementation());
+        NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
         NamedCommands.registerCommand("Rotate To Hub Shooting Calc", commands.rotateToHubShootingCalc);
