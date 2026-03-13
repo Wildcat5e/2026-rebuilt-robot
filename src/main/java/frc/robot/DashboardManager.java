@@ -54,7 +54,7 @@ public interface DashboardManager {
     static void setupHopper() {
         if (!Robot.IS_COMPETITION) {
             SmartDashboard.putNumber("Kicker Test Voltage", 8);
-            SmartDashboard.putNumber("Conveyor Test Voltage", 4);
+            SmartDashboard.putNumber("Conveyor Test Voltage", 6);
         }
     }
 
@@ -104,7 +104,7 @@ public interface DashboardManager {
 
     static void setupIntake(DoubleSupplier extenderMotorPositionSupplier) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -3);
-        SmartDashboard.putNumber("Scooper Motor Test Voltage", 4);
+        SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
