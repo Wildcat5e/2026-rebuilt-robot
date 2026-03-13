@@ -4,17 +4,41 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
 public class Intake extends SubsystemBase {
+    /** Motor that is closer to the floor and scoops fuel into pusher. */
+    private final TalonFX scooperMotor = new TalonFX(18);
+    private final double SCOOPER_RADIUS = 0.06858 / 2;
+    private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
+
     /** Motor that shoots fuel into the robot */
     private final TalonFX pusherMotor = new TalonFX(16);
+    private final double PUSHER_RADIUS = 0.058 / 2;
+    private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
+
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
-    /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
-    private final TalonFX scooperMotor = new TalonFX(18);
     private double extenderMotorPosition = 0;
+
+    // --- SysId Configuration (Rollers Only) ---
+    // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
+    // MAKE SURE TO COMMENT OUT THE OTHER TWO BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
+
+    // --SCOOPER MOTOR--
+    private final SysIdRoutine routine =
+        createLinearRoutine(this, scooperMotor, scooperMotor::setVoltage, SCOOPER_CIRCUMFERENCE);
+
+    // --PUSHER MOTOR--
+    // private final SysIdRoutine routine =
+    //     createLinearRoutine(this, pusherMotor, pusherMotor::setVoltage, PUSHER_CIRCUMFERENCE);
+
+    /** @return The SysIdRoutine used to generate characterization commands. */
+    public SysIdRoutine getSysIdRoutine() {
+        return routine;
+    }
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
