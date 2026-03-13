@@ -23,9 +23,12 @@ public class RobotCommands {
 
     public RobotCommands(Drivetrain drivetrain, Flywheel flywheel, Hopper hopper,
         SwerveRequest.FieldCentric swerveRequest) {
-        aimAtHub = new AimAtTarget(drivetrain, swerveRequest, Utilities::getHubPosition, HUB_FLYWHEEL_SPEEDS_MAP); // @formatter:off
-        aimAtLeftHome = new AimAtTarget(drivetrain, swerveRequest, RobotCommands::getLeftHome, HOME_FLYWHEEL_SPEEDS_MAP);
-        aimAtRightHome = new AimAtTarget(drivetrain, swerveRequest, RobotCommands::getRightHome, HOME_FLYWHEEL_SPEEDS_MAP); // @formatter:on
+        aimAtHub =
+            new AimAtTarget(drivetrain, flywheel, swerveRequest, Utilities::getHubPosition, HUB_FLYWHEEL_SPEEDS_MAP);
+        aimAtLeftHome =
+            new AimAtTarget(drivetrain, flywheel, swerveRequest, RobotCommands::getLeftHome, HOME_FLYWHEEL_SPEEDS_MAP);
+        aimAtRightHome =
+            new AimAtTarget(drivetrain, flywheel, swerveRequest, RobotCommands::getRightHome, HOME_FLYWHEEL_SPEEDS_MAP);
         targetHubOrHome = new TargetHubOrHome(drivetrain, aimAtHub, aimAtLeftHome, aimAtRightHome);
         paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);

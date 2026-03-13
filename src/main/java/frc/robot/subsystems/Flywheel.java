@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.DashboardManager;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 import static frc.robot.Utilities.*;
@@ -67,7 +68,8 @@ public class Flywheel extends SubsystemBase {
     public Command testDynamicStartFlywheel() {
         return runEnd(() -> {
             // This code is run every 20 ms
-            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition());
+            ShotSolution shotSolution =
+                ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -90,8 +92,16 @@ public class Flywheel extends SubsystemBase {
 
     /** Spins flywheel and calculates speed based on distance. */
     public void dynamicRunFlywheel() {
-        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition());
+        ShotSolution shotSolution =
+            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+        setFlywheelMotorVoltages(calculatedVoltage);
+    }
+
+    /** Spins flywheel at specified speed. */
+    public void setFlywheelSpeed(double speed) {
+        targetFlywheelSpeed = speed;
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
