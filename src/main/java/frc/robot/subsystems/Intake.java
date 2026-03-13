@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements MotionMagicCapable {
     /** Motor that is closer to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     private final double SCOOPER_RADIUS = 0.06858 / 2;
@@ -28,6 +28,22 @@ public class Intake extends SubsystemBase {
     private final MotionMagicVoltage extenderMotionRequest = new MotionMagicVoltage(0);
     private final double ARM_STOWED_POSITION = 0.0;
     private final double ARM_DROPPED_POSITION = -0.3; // NEEDS TO BE CHECKED
+
+    // --- MotionMagicCapable Interface Requirements ---
+    @Override
+    public TalonFX getMotionMagicMotor() {
+        return extenderMotor;
+    }
+
+    @Override
+    public MotionMagicVoltage getMotionMagicRequest() {
+        return extenderMotionRequest;
+    }
+
+    @Override
+    public Subsystem getAssociatedSubsystem() {
+        return this;
+    }
 
     // --- SysId Configuration (Rollers Only) ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
@@ -52,22 +68,8 @@ public class Intake extends SubsystemBase {
         applyGearRatio(extenderMotor, 36);
 
         // --- Extender Motion Magic Setup ---
-        TalonFXConfiguration extenderConfig = new TalonFXConfiguration();
-
-        // PID and FeedForward Gains (To be tuned)
-        extenderConfig.Slot0.kP = 0.0;
-        extenderConfig.Slot0.kI = 0.0;
-        extenderConfig.Slot0.kD = 0.0;
-        extenderConfig.Slot0.kS = 0.0;
-        extenderConfig.Slot0.kV = 0.0;
-        extenderConfig.Slot0.kG = 0.0;
-
-        // Motion Constraints (Mechanism Rotations)
-        extenderConfig.MotionMagic.MotionMagicCruiseVelocity = 1.0; // rps
-        extenderConfig.MotionMagic.MotionMagicAcceleration = 2.0; // rps/s
-        extenderConfig.MotionMagic.MotionMagicJerk = 0.0; // Set to >0 for S-Curve smoothing
-
-        extenderMotor.getConfigurator().apply(extenderConfig);
+        // Initializing with zeros; actual values will be pushed via configureMotor()
+        configureMotionMagic(extenderMotor, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 2.0, 0.0);
 
         DashboardManager.setupIntake(() -> extenderMotorPosition);
     }
@@ -79,19 +81,10 @@ public class Intake extends SubsystemBase {
 
     public Command configureMotor() {
         return runOnce(() -> {
-            TalonFXConfiguration extenderConfig = new TalonFXConfiguration();
-            extenderMotor.getConfigurator().refresh(extenderConfig);
-            extenderConfig.Slot0.kP = DashboardManager.getExtenderkP();
-            extenderConfig.Slot0.kI = DashboardManager.getExtenderkI();
-            extenderConfig.Slot0.kD = DashboardManager.getExtenderkD();
-            extenderConfig.Slot0.kS = DashboardManager.getExtenderkS();
-            extenderConfig.Slot0.kV = DashboardManager.getExtenderkV();
-            extenderConfig.Slot0.kG = DashboardManager.getExtenderkG();
-            extenderConfig.MotionMagic.MotionMagicCruiseVelocity =
-                DashboardManager.getExtenderMotionMagicCruiseVelocity(); // rps
-            extenderConfig.MotionMagic.MotionMagicAcceleration = DashboardManager.getExtenderMotionMagicAcceleration(); // rps/s
-            extenderConfig.MotionMagic.MotionMagicJerk = DashboardManager.getExtenderMotionMagicJerk(); // Set to >0 for S-Curve smoothing
-            extenderMotor.getConfigurator().apply(extenderConfig);
+            configureMotionMagic(extenderMotor, DashboardManager.getExtenderkP(), DashboardManager.getExtenderkI(),
+                DashboardManager.getExtenderkD(), DashboardManager.getExtenderkS(), DashboardManager.getExtenderkV(),
+                DashboardManager.getExtenderkG(), DashboardManager.getExtenderMotionMagicCruiseVelocity(),
+                DashboardManager.getExtenderMotionMagicAcceleration(), DashboardManager.getExtenderMotionMagicJerk());
         });
     }
 
@@ -108,17 +101,11 @@ public class Intake extends SubsystemBase {
     }
 
     public Command dropArmFinalImplementation() {
-        return run(() -> {
-            extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_DROPPED_POSITION));
-        }).until(() -> getExtenderPosition() <= ARM_DROPPED_POSITION + 0.02)
-            .andThen(runOnce(() -> extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_DROPPED_POSITION))));
+        return moveToPosition(ARM_DROPPED_POSITION, 0.02);
     }
 
     public Command raiseArmFinalImplementation() {
-        return run(() -> {
-            extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_STOWED_POSITION));
-        }).until(() -> getExtenderPosition() >= ARM_STOWED_POSITION - 0.02)
-            .andThen(runOnce(() -> extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_STOWED_POSITION))));
+        return moveToPosition(ARM_STOWED_POSITION, 0.02);
     }
 
     public Command testScooper() {
