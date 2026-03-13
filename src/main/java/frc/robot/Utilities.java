@@ -79,6 +79,27 @@ public interface Utilities {
     }
 
     /**
+     * Applies Motion Magic configuration and PID/FeedForward gains to a TalonFX motor.
+     */
+    static void configureMotionMagic(TalonFX motor, double kP, double kI, double kD, double kS, double kV, double kG,
+        double cruiseVelocity, double acceleration, double jerk) {
+
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        motor.getConfigurator().refresh(config);
+
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        config.Slot0.kS = kS;
+        config.Slot0.kV = kV;
+        config.Slot0.kG = kG;
+
+        config.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity; // rps
+        config.MotionMagic.MotionMagicAcceleration = acceleration; // rps/s
+        config.MotionMagic.MotionMagicJerk = jerk; // Set to >0 for S-Curve smoothing
+    }
+
+    /**
      * Creates a SysIdRoutine for a linear mechanism using TalonFX motors.
      * 
      * @param subsystem The subsystem being characterized.
