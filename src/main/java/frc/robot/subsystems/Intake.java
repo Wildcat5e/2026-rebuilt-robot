@@ -23,9 +23,8 @@ public class Intake extends SubsystemBase {
     private final TalonFX extenderMotor = new TalonFX(17);
     private double extenderMotorPosition = 0;
 
-    // --- SysId Configuration ---
+    // --- SysId Configuration (Rollers Only) ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
-    // OTHERWISE, YOU RISK DAMAGING YOUR ROBOT.
     // MAKE SURE TO COMMENT OUT THE OTHER TWO BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
 
     // --SCOOPER MOTOR--
