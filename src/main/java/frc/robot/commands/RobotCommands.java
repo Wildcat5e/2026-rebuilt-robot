@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-import static frc.robot.Utilities.*;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
@@ -14,8 +14,8 @@ public class RobotCommands {
 
     public RobotCommands(Drivetrain drivetrain, Flywheel flywheel, Hopper hopper,
         SwerveRequest.FieldCentric swerveRequest) {
-        aimAtHub = new AimAtTarget(drivetrain, swerveRequest, getHubPosition());
-        aimAtTarget = new AimAtTarget(drivetrain, swerveRequest, getHubPosition());
+        aimAtHub = new AimAtTarget(drivetrain, swerveRequest, Utilities::getHubPosition);
+        aimAtTarget = new AimAtTarget(drivetrain, swerveRequest, Utilities::getHubPosition);
         paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
     }

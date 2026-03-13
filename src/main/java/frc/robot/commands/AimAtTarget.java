@@ -15,6 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
 
 import static frc.robot.Utilities.*;
+import java.util.function.Supplier;
 
 public class AimAtTarget extends Command {
     // Limit max speed to less than main controller just for safety
@@ -25,14 +26,16 @@ public class AimAtTarget extends Command {
     }
     private final Drivetrain drivetrain;
     private final SwerveRequest.FieldCentric swerveRequest;
-    private final Translation2d target;
+    private final Supplier<Translation2d> targetSupplier;
+    private Translation2d target;
     private Pose2d currentPose;
     private double targetHeading;
 
-    public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Translation2d target) {
+    public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest,
+        Supplier<Translation2d> targetSupplier) {
         this.drivetrain = drivetrain;
         this.swerveRequest = swerveRequest;
-        this.target = target;
+        this.targetSupplier = targetSupplier;
         registerTelemetry();
     }
 
@@ -40,6 +43,7 @@ public class AimAtTarget extends Command {
     public void initialize() {
         Controller.allowControllerRotation = false;
         PID_CONTROLLER.reset();
+        target = targetSupplier.get();
     }
 
     @Override
