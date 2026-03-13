@@ -5,7 +5,7 @@ import frc.robot.Robot;
 import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
 
-public class TargetHubOrHome extends Command {
+public class AimHandler extends Command {
     private final Drivetrain drivetrain;
     private final AimAtTarget aimAtHub;
     private final AimAtTarget aimAtLeftHome;
@@ -13,7 +13,7 @@ public class TargetHubOrHome extends Command {
 
     private Command activeCommand;
 
-    public TargetHubOrHome(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtLeftHome,
+    public AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtLeftHome,
         AimAtTarget aimAtRightHome) {
         this.drivetrain = drivetrain;
         this.aimAtHub = aimAtHub;
