@@ -17,7 +17,7 @@ public class RobotCommands {
     public final AimAtTarget aimAtHub;
     public final AimAtTarget aimAtLeftHome;
     public final AimAtTarget aimAtRightHome;
-    public final TargetHubOrHome targetHubOrHome;
+    public final AimHandler aimHandler;
     // public final Paths paths;
     public final ShootFuel shootFuel;
 
@@ -29,7 +29,7 @@ public class RobotCommands {
             new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getLeftHome, HOME_FLYWHEEL_SPEEDS_MAP);
         aimAtRightHome =
             new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getRightHome, HOME_FLYWHEEL_SPEEDS_MAP);
-        targetHubOrHome = new TargetHubOrHome(drivetrain, aimAtHub, aimAtLeftHome, aimAtRightHome);
+        aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtLeftHome, aimAtRightHome);
         // paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
     }
