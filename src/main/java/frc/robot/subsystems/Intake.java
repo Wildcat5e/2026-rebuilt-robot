@@ -89,6 +89,12 @@ public class Intake extends SubsystemBase {
         }, () -> scooperMotor.set(0));
     }
 
+    public Command reverseScooper() {
+        return startEnd(() -> {
+            scooperMotor.setVoltage(3);
+        }, () -> scooperMotor.set(0));
+    }
+
     public Command testPusher() {
         return startEnd(() -> {
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
