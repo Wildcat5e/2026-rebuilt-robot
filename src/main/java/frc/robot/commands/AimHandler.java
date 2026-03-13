@@ -23,21 +23,7 @@ public class AimHandler extends Command {
 
     @Override
     public void initialize() {
-        activeCommand = null;
-
-        if (Utilities.inHome(drivetrain)) {
-            activeCommand = aimAtHub;
-        } else {
-            double yPosition = drivetrain.getState().Pose.getY();
-
-            if (yPosition > 4.25) {
-                activeCommand = Robot.isBlueAlliance ? aimAtLeftHome : aimAtRightHome;
-            } else if (yPosition < 3.75) {
-                activeCommand = Robot.isBlueAlliance ? aimAtRightHome : aimAtLeftHome;
-            }
-        }
-
-        // Properly start the lifecycle of the chosen command
+        activeCommand = chooseCommand();
         if (activeCommand != null) {
             activeCommand.initialize();
         }
@@ -45,19 +31,22 @@ public class AimHandler extends Command {
 
     @Override
     public void execute() {
+        Command newCommand = chooseCommand();
+
+        if (newCommand != activeCommand) {
+            if (activeCommand != null) {
+                activeCommand.end(true);
+            }
+
+            activeCommand = newCommand;
+            if (activeCommand != null) {
+                activeCommand.initialize();
+            }
+        }
+
         if (activeCommand != null) {
             activeCommand.execute();
         }
-    }
-
-    @Override
-    public boolean isFinished() {
-        if (activeCommand != null) {
-            return activeCommand.isFinished();
-        }
-
-        // Return false so the command stays scheduled (but does nothing) if the button is held while in the deadzone.
-        return false;
     }
 
     @Override
@@ -65,5 +54,21 @@ public class AimHandler extends Command {
         if (activeCommand != null) {
             activeCommand.end(interrupted);
         }
+    }
+
+    /** @return The specific AimAtTarget command to run, or null if in the deadzone. */
+    private Command chooseCommand() {
+        if (Utilities.inHome(drivetrain)) {
+            return aimAtHub;
+        }
+
+        double yPosition = drivetrain.getState().Pose.getY();
+        if (yPosition > 4.25) {
+            return Robot.isBlueAlliance ? aimAtLeftHome : aimAtRightHome;
+        } else if (yPosition < 3.75) {
+            return Robot.isBlueAlliance ? aimAtRightHome : aimAtLeftHome;
+        }
+
+        return null;
     }
 }
