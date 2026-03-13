@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
@@ -22,6 +23,11 @@ public class Intake extends SubsystemBase {
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
     private double extenderMotorPosition = 0;
+
+    // --- Motion Magic Configuration ---
+    private final MotionMagicVoltage extenderMotionRequest = new MotionMagicVoltage(0);
+    private final double ARM_STOWED_POSITION = 0.0;
+    private final double ARM_DROPPED_POSITION = -0.3; // NEEDS TO BE CHECKED
 
     // --- SysId Configuration (Rollers Only) ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
@@ -44,6 +50,25 @@ public class Intake extends SubsystemBase {
         applyGearRatio(scooperMotor, 1);
         applyGearRatio(pusherMotor, 1);
         applyGearRatio(extenderMotor, 36);
+
+        // --- Extender Motion Magic Setup ---
+        TalonFXConfiguration extenderConfig = new TalonFXConfiguration();
+
+        // PID and FeedForward Gains (To be tuned)
+        extenderConfig.Slot0.kP = 0.0;
+        extenderConfig.Slot0.kI = 0.0;
+        extenderConfig.Slot0.kD = 0.0;
+        extenderConfig.Slot0.kS = 0.0;
+        extenderConfig.Slot0.kV = 0.0;
+        extenderConfig.Slot0.kG = 0.0;
+
+        // Motion Constraints (Mechanism Rotations)
+        extenderConfig.MotionMagic.MotionMagicCruiseVelocity = 1.0; // rps
+        extenderConfig.MotionMagic.MotionMagicAcceleration = 2.0; // rps/s
+        extenderConfig.MotionMagic.MotionMagicJerk = 0.0; // Set to >0 for S-Curve smoothing
+
+        extenderMotor.getConfigurator().apply(extenderConfig);
+
         DashboardManager.setupIntake(() -> extenderMotorPosition);
     }
 
@@ -65,47 +90,19 @@ public class Intake extends SubsystemBase {
     }
 
     public Command dropArmFinalImplementation() {
-        return new FunctionalCommand(
-            // --initialize--
-            () -> extenderMotor.setVoltage(-3),
-
-            // --execute--
-            () -> {},
-
-            // --end--
-            interrupted -> extenderMotor.setVoltage(0),
-
-            // --isFinished--
-            () -> {
-                return getExtenderPosition() <= -.3; // Check sign
-            },
-            // --addRequirements--
-            this); // Pass in Intake
+        return run(() -> {
+            extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_DROPPED_POSITION));
+        }).until(() -> getExtenderPosition() <= ARM_DROPPED_POSITION + 0.02)
+            .andThen(runOnce(() -> extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_DROPPED_POSITION))));
     }
 
     public Command raiseArmFinalImplementation() {
-        return new FunctionalCommand(
-            // --initialize--
-            () -> extenderMotor.setVoltage(3),
-
-            // --execute--
-            () -> {},
-
-            // --end--
-            interrupted -> extenderMotor.setVoltage(0),
-
-            // --isFinished--
-            () -> {
-                return getExtenderPosition() >= 0; // Check sign
-            },
-            // --addRequirements--
-            this); // Pass in Intake
+        return run(() -> {
+            extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_STOWED_POSITION));
+        }).until(() -> getExtenderPosition() >= ARM_STOWED_POSITION - 0.02)
+            .andThen(runOnce(() -> extenderMotor.setControl(extenderMotionRequest.withPosition(ARM_STOWED_POSITION))));
     }
 
-    /**
-     * TURN ON INTAKE TO TAKE IN FUEL COMMAND <br>
-     * Currently plan to bind to a while true button, but may be easier to have it run on toggle or for the entire match
-     */
     public Command testScooper() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
