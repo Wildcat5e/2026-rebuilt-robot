@@ -9,7 +9,7 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 0.0,
+            "x": 1024.0,
             "y": 0.0,
             "width": 384.0,
             "height": 128.0,
@@ -22,9 +22,9 @@
           {
             "title": "Field",
             "x": 0.0,
-            "y": 128.0,
-            "width": 768.0,
-            "height": 384.0,
+            "y": 0.0,
+            "width": 1024.0,
+            "height": 512.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -42,29 +42,15 @@
           },
           {
             "title": "Auto Command Chooser",
-            "x": 384.0,
-            "y": 0.0,
-            "width": 256.0,
+            "x": 1024.0,
+            "y": 128.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Auto Command Chooser",
               "period": 0.06,
               "sort_options": false
-            }
-          },
-          {
-            "title": "Distance",
-            "x": 640.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Photon/Distance",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
             }
           }
         ]
@@ -77,9 +63,9 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 0.0,
+            "x": 512.0,
             "y": 0.0,
-            "width": 384.0,
+            "width": 512.0,
             "height": 128.0,
             "type": "FMSInfo",
             "properties": {
@@ -90,9 +76,9 @@
           {
             "title": "Field",
             "x": 0.0,
-            "y": 128.0,
-            "width": 768.0,
-            "height": 384.0,
+            "y": 384.0,
+            "width": 512.0,
+            "height": 256.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -109,24 +95,10 @@
             }
           },
           {
-            "title": "Distance",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Photon/Distance",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Within Shooting Distance",
-            "x": 1024.0,
-            "y": 0.0,
-            "width": 128.0,
+            "x": 768.0,
+            "y": 128.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
@@ -141,9 +113,9 @@
           },
           {
             "title": "Within Shooting Angle",
-            "x": 896.0,
-            "y": 0.0,
-            "width": 128.0,
+            "x": 512.0,
+            "y": 128.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
@@ -158,9 +130,9 @@
           },
           {
             "title": "robot angle",
-            "x": 896.0,
-            "y": 128.0,
-            "width": 128.0,
+            "x": 512.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -172,9 +144,9 @@
           },
           {
             "title": "correct angle",
-            "x": 1024.0,
-            "y": 128.0,
-            "width": 128.0,
+            "x": 768.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -185,16 +157,44 @@
             }
           },
           {
-            "title": "Auto Command Chooser",
-            "x": 384.0,
-            "y": 0.0,
+            "title": "Distance to Hub (m)",
+            "x": 512.0,
+            "y": 384.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "ComboBox Chooser",
+            "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Auto Command Chooser",
+              "topic": "/SmartDashboard/Robot Telemetry/Distance to Hub (m)",
               "period": 0.06,
-              "sort_options": false
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Flywheel Speed Multiplier",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Flywheel Speed Multiplier",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "C922_Pro_Stream_Webcam-processed",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 384.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/C922_Pro_Stream_Webcam-processed",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
@@ -203,7 +203,35 @@
     {
       "name": "Debug",
       "grid_layout": {
-        "layouts": [],
+        "layouts": [
+          {
+            "title": "Robot Telemetry",
+            "x": 1024.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Distance to Hub (m)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Robot Telemetry/Distance to Hub (m)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
         "containers": [
           {
             "title": "FMSInfo",
@@ -222,7 +250,7 @@
             "x": 0.0,
             "y": 128.0,
             "width": 768.0,
-            "height": 384.0,
+            "height": 256.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -239,9 +267,48 @@
             }
           },
           {
-            "title": "Within Shooting Angle",
+            "title": "Auto Command Chooser",
             "x": 384.0,
             "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Command Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "RotateToHub PID Controller",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "ProfiledPIDController",
+            "properties": {
+              "topic": "/SmartDashboard/RotateToHub PID Controller",
+              "period": 0.06
+            }
+          },
+          {
+            "title": "Distance",
+            "x": 640.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/Photon/Distance",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Within Shooting Angle",
+            "x": 768.0,
+            "y": 384.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -257,8 +324,8 @@
           },
           {
             "title": "Within Shooting Distance",
-            "x": 640.0,
-            "y": 0.0,
+            "x": 1024.0,
+            "y": 384.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -274,7 +341,7 @@
           },
           {
             "title": "robot angle",
-            "x": 128.0,
+            "x": 768.0,
             "y": 512.0,
             "width": 128.0,
             "height": 128.0,
@@ -288,7 +355,7 @@
           },
           {
             "title": "correct angle",
-            "x": 256.0,
+            "x": 896.0,
             "y": 512.0,
             "width": 128.0,
             "height": 128.0,
@@ -301,8 +368,22 @@
             }
           },
           {
+            "title": "Distance",
+            "x": 1024.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/Photon/Distance",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
             "title": "Controller Chooser",
-            "x": 896.0,
+            "x": 1024.0,
             "y": 0.0,
             "width": 256.0,
             "height": 128.0,
@@ -314,14 +395,56 @@
             }
           },
           {
-            "title": "Flywheel Test Voltage",
-            "x": 768.0,
-            "y": 256.0,
-            "width": 256.0,
+            "title": "Conveyor Test Voltage",
+            "x": 128.0,
+            "y": 384.0,
+            "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel Test Voltage",
+              "topic": "/SmartDashboard/Conveyor Test Voltage",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Extender Motor Test Voltage",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Extender Motor Test Voltage",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Pusher Motor Test Voltage",
+            "x": 0.0,
+            "y": 640.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Pusher Motor Test Voltage",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Scooper Motor Test Voltage",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Scooper Motor Test Voltage",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
@@ -329,9 +452,9 @@
           },
           {
             "title": "Kicker Test Voltage",
-            "x": 768.0,
-            "y": 384.0,
-            "width": 256.0,
+            "x": 128.0,
+            "y": 512.0,
+            "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -342,72 +465,28 @@
             }
           },
           {
-            "title": "Current Speed (mâˆ•s)",
-            "x": 1024.0,
-            "y": 128.0,
-            "width": 640.0,
-            "height": 640.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Telemetry/Current Speed (mâˆ•s)",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 5.0,
-              "color": 4278238420,
-              "line_width": 2.0
-            }
-          },
-          {
-            "title": "Distance to Hub (m)",
-            "x": 768.0,
-            "y": 128.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Robot Telemetry/Distance to Hub (m)",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Calculated Voltage",
-            "x": 640.0,
-            "y": 640.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Calculated Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Target Speed (m∕s)",
-            "x": 768.0,
+            "title": "Flywheel Speed Multiplier",
+            "x": 256.0,
             "y": 512.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Target Speed (m∕s)",
+              "topic": "/SmartDashboard/Flywheel Speed Multiplier",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
             }
           },
           {
-            "title": "5s Avg Speed (m∕s)",
-            "x": 384.0,
-            "y": 512.0,
-            "width": 256.0,
+            "title": "Extender Motor Position (revs)",
+            "x": 512.0,
+            "y": 384.0,
+            "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel Telemetry/5s Avg Speed (m∕s)",
+              "topic": "/SmartDashboard/Intake Telemetry/Extender Motor Position (revs)",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
