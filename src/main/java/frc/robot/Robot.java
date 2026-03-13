@@ -163,7 +163,7 @@ public class Robot extends TimedRobot {
         Controller.joystick.rightTrigger().whileTrue(intake.spinIntakeMotors());
         Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
         Controller.joystick.rightBumper().whileTrue(intake.testExtender());
-        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
+        Controller.joystick.a().whileTrue(commands.aimAtHub);
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.y().whileTrue(intake.reverseScooper());
 
