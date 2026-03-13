@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
@@ -41,6 +42,9 @@ public class Robot extends TimedRobot {
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
+
+    private final CommandGenericHID macropad = new CommandGenericHID(4);
+
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
@@ -146,9 +150,10 @@ public class Robot extends TimedRobot {
             return swerveRequest;
         }));
 
+        // --- MAIN CONTROLLER BINDINGS ---
+
         // Controller.joystick.rightBumper().whileTrue(rotateToHub); // Pure Feedforward + PID testing
         // Controller.joystick.leftBumper().whileTrue(rotateToHubShootingCalc);
-
 
         Controller.joystick.povUp().whileTrue(intake.testExtender());
         Controller.joystick.povRight().whileTrue(intake.testPusher());
@@ -160,7 +165,6 @@ public class Robot extends TimedRobot {
         // Controller.joystick.b().whileTrue(commands.intake.spinIntakeMotors());
 
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
-
         Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
         Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
         Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
@@ -169,6 +173,13 @@ public class Robot extends TimedRobot {
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.y().whileTrue(intake.reverseScooper());
 
+        // --- MACROPAD BINDINGS ---
+        // Note: WPILib generic buttons are 1-indexed. These map to CircuitPython keys 0 through 4.
+        macropad.button(1).whileTrue(intake.reverseScooper());
+        macropad.button(2).whileTrue(intake.reversePusher());
+        macropad.button(3).whileTrue(hopper.reverseConveyor());
+        macropad.button(4).whileTrue(hopper.reverseKicker());
+        macropad.button(5).whileTrue(flywheel.reverseFlywheel());
 
         // Bump the multiplier UP by 0.01 using D-Pad Up
         // Controller.joystick.povUp()

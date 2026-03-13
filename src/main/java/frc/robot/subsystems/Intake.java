@@ -90,9 +90,7 @@ public class Intake extends SubsystemBase {
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> {
-            scooperMotor.setVoltage(3);
-        }, () -> scooperMotor.set(0));
+        return startEnd(() -> scooperMotor.setVoltage(3), () -> scooperMotor.setVoltage(0)).withName("Reverse Scooper");
     }
 
     public Command testPusher() {
@@ -100,6 +98,10 @@ public class Intake extends SubsystemBase {
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> pusherMotor.set(0));
+    }
+
+    public Command reversePusher() {
+        return startEnd(() -> pusherMotor.setVoltage(3), () -> pusherMotor.setVoltage(0)).withName("Reverse Pusher");
     }
 
     public Command testExtender() {

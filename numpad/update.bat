@@ -1,0 +1,1 @@
+copy d:\*.py numpad\
