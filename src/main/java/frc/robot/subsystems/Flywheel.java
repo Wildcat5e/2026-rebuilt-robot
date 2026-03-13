@@ -24,7 +24,7 @@ public class Flywheel extends SubsystemBase {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
 
     private double currentFlywheelSpeed = 0;
-    private double targetFlywheelSpeed = -1;
+    private double targetFlywheelSpeed = 0;
     public double flywheelSpeedMult = 1.0;
 
     // 5 seconds * 50 loops per second = 250 samples
@@ -99,7 +99,7 @@ public class Flywheel extends SubsystemBase {
 
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void staticRunFlywheel() {
-        targetFlywheelSpeed = 3;
+        targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }

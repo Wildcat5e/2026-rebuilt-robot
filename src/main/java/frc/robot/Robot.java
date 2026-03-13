@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         configureAutoBuilder();
-        commands = new RobotCommands(drivetrain, flywheel, hopper);
+        commands = new RobotCommands(drivetrain, flywheel, intake, hopper);
 
         bindingsSetup();
         NamedCommands.registerCommand("Drop Intake", intake.dropArmFinalImplementation());
@@ -145,18 +145,15 @@ public class Robot extends TimedRobot {
             }
             return swerveRequest;
         }));
-        // reset the field-centric heading on left trigger
 
-        Controller.joystick.rightTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        // Controller.joystick.rightBumper().whileTrue(commands.rotateToHub); // Pure Feedforward + PID testing
-        // Controller.joystick.leftBumper().whileTrue(commands.rotateToHubShootingCalc);
-        Controller.joystick.leftTrigger().whileTrue(flywheel.testTunableFlywheel());
-        Controller.joystick.leftTrigger().whileTrue(hopper.testTunableKicker());
-        Controller.joystick.rightBumper().whileTrue(hopper.testConveyor());
+        // Controller.joystick.rightBumper().whileTrue(rotateToHub); // Pure Feedforward + PID testing
+        // Controller.joystick.leftBumper().whileTrue(rotateToHubShootingCalc);
 
-        Controller.joystick.y().whileTrue(intake.testExtender());
-        Controller.joystick.x().whileTrue(intake.testPusher());
-        Controller.joystick.a().whileTrue(intake.testScooper());
+
+        Controller.joystick.povUp().whileTrue(intake.testExtender());
+        Controller.joystick.povRight().whileTrue(intake.testPusher());
+        Controller.joystick.povDown().whileTrue(intake.testScooper());
+        Controller.joystick.povLeft().whileTrue(hopper.testConveyor());
 
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
@@ -164,21 +161,21 @@ public class Robot extends TimedRobot {
 
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
 
-        // Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
-        // Controller.joystick.leftTrigger().whileTrue(commands.intake.spinIntakeMotors());
-        // Controller.joystick.rightBumper().whileTrue(commands.intake.dropArmFinalImplementation());
-        // Controller.joystick.leftBumper().whileTrue(commands.intake.raiseArmFinalImplementation());
-        // Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
-        // Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
+        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
+        Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
+        Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
+        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
+        Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
 
         // Bump the multiplier UP by 0.01 using D-Pad Up
-        Controller.joystick.povUp()
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
+        // Controller.joystick.povUp()
+        //     .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
 
         // Bump the multiplier DOWN by 0.01 using D-Pad Down
-        Controller.joystick.povDown()
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
+        // Controller.joystick.povDown()
+        //     .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
 
         // Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
         // Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());

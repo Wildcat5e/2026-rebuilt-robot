@@ -103,6 +103,15 @@ public class Intake extends SubsystemBase {
         }, () -> extenderMotor.setVoltage(0));
     }
 
+    public void spinPusher() {
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+        pusherMotor.setVoltage(pusherMotorVoltage);
+    }
+
+    public void stopPusher() {
+        pusherMotor.setVoltage(0);
+    }
+
     /** @return Extender motor's position in REVOLUTIONS */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble();
