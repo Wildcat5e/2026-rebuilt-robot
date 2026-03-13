@@ -14,6 +14,7 @@ import frc.robot.Constants;
 import frc.robot.DashboardManager;
 import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.ShootingCalculator;
 
 import static frc.robot.Utilities.*;
@@ -26,6 +27,7 @@ public class AimAtTarget extends Command {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     }
     private final Drivetrain drivetrain;
+    private final Flywheel flywheel;
     private final SwerveRequest.FieldCentric swerveRequest;
     private final Supplier<Translation2d> targetSupplier;
     private Translation2d target;
@@ -33,9 +35,10 @@ public class AimAtTarget extends Command {
     private Pose2d currentPose;
     private double targetHeading;
 
-    public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest,
+    public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
         Supplier<Translation2d> targetSupplier, InterpolatingDoubleTreeMap flywheelSpeedMap) {
         this.drivetrain = drivetrain;
+        this.flywheel = flywheel;
         this.swerveRequest = swerveRequest;
         this.targetSupplier = targetSupplier;
         this.flywheelSpeedMap = flywheelSpeedMap;
@@ -52,7 +55,8 @@ public class AimAtTarget extends Command {
     @Override
     public void execute() {
         currentPose = drivetrain.getState().Pose;
-        targetHeading = ShootingCalculator.calculate(drivetrain, target, flywheelSpeedMap).robotHeading();
+        var shotSolution = ShootingCalculator.calculate(drivetrain, target, flywheelSpeedMap);
+        targetHeading = shotSolution.robotHeading();
         // --- 1. Feedforward ---
         double feedforwardVelocity = getFeedforwardVelocity(currentPose, target);
 
@@ -65,6 +69,15 @@ public class AimAtTarget extends Command {
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         applyRotation(cappedVelocity);
+        flywheel.setFlywheelSpeed(shotSolution.flywheelSpeed());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        flywheel.stopFlywheel();
+        Controller.allowControllerRotation = true;
+        // This is pretty important: Clear the override when the command ends
+        PPHolonomicDriveController.clearRotationFeedbackOverride();
     }
 
     private double getFeedforwardVelocity(Pose2d currentPose, Translation2d target) {
@@ -89,13 +102,6 @@ public class AimAtTarget extends Command {
         }
         // Feed the calculated tracking velocity to PathPlanner
         PPHolonomicDriveController.overrideRotationFeedback(() -> cappedVelocity);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        Controller.allowControllerRotation = true;
-        // This is pretty important: Clear the override when the command ends
-        PPHolonomicDriveController.clearRotationFeedbackOverride();
     }
 
     private void registerTelemetry() { // @formatter:off

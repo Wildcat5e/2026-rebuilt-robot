@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.DashboardManager;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 import static frc.robot.Utilities.*;
@@ -67,7 +68,8 @@ public class Flywheel extends SubsystemBase {
     public Command hubRunFlywheelCommand() {
         return runEnd(() -> {
             // This code is run every 20 ms
-            ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition());
+            ShotSolution shotSolution =
+                ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -96,8 +98,16 @@ public class Flywheel extends SubsystemBase {
 
     /** Spins flywheel and calculates speed based on distance. */
     public void hubRunFlywheel() {
-        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition());
+        ShotSolution shotSolution =
+            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+        setFlywheelMotorVoltages(calculatedVoltage);
+    }
+
+    /** Spins flywheel at specified speed. */
+    public void setFlywheelSpeed(double speed) {
+        targetFlywheelSpeed = speed;
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
@@ -105,7 +115,8 @@ public class Flywheel extends SubsystemBase {
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void homeRunFlywheel() {
         // THIS NEEDS TO BE EDITED TO USE THE INTERPOLATION TABLE FOR SHOOTING FROM NEUTRAL ZONE
-        ShotSolution shotSolution = ShootingCalculator.calculate(drivetrain, getHubPosition()); // temp get hub
+        ShotSolution shotSolution =
+            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HOME_FLYWHEEL_SPEEDS_MAP); // temp get hub
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
@@ -126,7 +137,7 @@ public class Flywheel extends SubsystemBase {
     /** Base command helper for flywheel levels in case PhotonVision breaks */
     private Command backupFlywheelCommandHelper(double distance) {
         return runEnd(() -> {
-            targetFlywheelSpeed = ShootingCalculator.FLYWHEEL_SPEEDS_MAP.get(distance);
+            targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(distance);
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
