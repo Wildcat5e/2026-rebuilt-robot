@@ -43,7 +43,7 @@ public class ShootFuel extends Command {
     @Override
     public void end(boolean interrupted) {
         flywheel.stopFlywheel();
-        hopper.stopHopper();
+        hopper.stopConveyor();
         System.out.println("DONE");
     }
 
