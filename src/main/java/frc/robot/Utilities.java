@@ -1,10 +1,17 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.*;
+import java.util.function.DoubleConsumer;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -69,5 +76,45 @@ public interface Utilities {
         config.Feedback.SensorToMechanismRatio = gearRatio;
         motor.getConfigurator().apply(config);
         return motor;
+    }
+
+    /**
+     * Creates a SysIdRoutine for a linear mechanism using TalonFX motors.
+     * 
+     * @param subsystem The subsystem being characterized.
+     * @param primaryMotor The motor used for logging telemetry (if using >1 motors, pick one with +voltage).
+     * @param applyVoltage A consumer that applies the generated voltage to the motor(s).
+     * @param distancePerRotation The conversion factor from motor rotations to meters.
+     */
+    static SysIdRoutine createLinearRoutine(Subsystem subsystem, TalonFX primaryMotor, DoubleConsumer applyVoltage,
+        double distancePerRotation) {
+        return new SysIdRoutine(new SysIdRoutine.Config(),
+            new SysIdRoutine.Mechanism(voltage -> applyVoltage.accept(voltage.in(Volts)), log -> {
+                log.motor(subsystem.getName() + "-motor(s)").voltage(primaryMotor.getMotorVoltage().getValue())
+                    .linearPosition(Distance
+                        .ofRelativeUnits(primaryMotor.getPosition().getValueAsDouble() * distancePerRotation, Meters))
+                    .linearVelocity(LinearVelocity.ofRelativeUnits(
+                        primaryMotor.getVelocity().getValueAsDouble() * distancePerRotation, MetersPerSecond));
+            }, subsystem));
+    }
+
+    /** Returns a command to run a quasistatic forward test for the given routine. */
+    static Command sysIdQuasistaticForward(SysIdRoutine routine) {
+        return routine.quasistatic(SysIdRoutine.Direction.kForward);
+    }
+
+    /** Returns a command to run a quasistatic reverse test for the given routine. */
+    static Command sysIdQuasistaticReverse(SysIdRoutine routine) {
+        return routine.quasistatic(SysIdRoutine.Direction.kReverse);
+    }
+
+    /** Returns a command to run a dynamic forward test for the given routine. */
+    static Command sysIdDynamicForward(SysIdRoutine routine) {
+        return routine.dynamic(SysIdRoutine.Direction.kForward);
+    }
+
+    /** Returns a command to run a dynamic reverse test for the given routine. */
+    static Command sysIdDynamicReverse(SysIdRoutine routine) {
+        return routine.dynamic(SysIdRoutine.Direction.kReverse);
     }
 }
