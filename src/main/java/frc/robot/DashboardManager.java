@@ -46,6 +46,7 @@ public interface DashboardManager {
         SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain));
         SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
+        SmartDashboard.putBoolean("isBlueAlliance", Robot.isBlueAlliance);
     }
 
     // =====================================
