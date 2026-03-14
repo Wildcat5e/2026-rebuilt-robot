@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
         applyGearRatio(pusherMotor, 1);
         applyGearRatio(extenderMotor, 36);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
-        DashboardManager.setupIntake(() -> extenderMotorPosition);
+        DashboardManager.setupIntake(() -> extenderMotorPosition, () -> scooperMotor.getVelocity().getValueAsDouble());
     }
 
     @Override
