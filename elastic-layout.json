@@ -52,6 +52,19 @@
               "period": 0.06,
               "sort_options": false
             }
+          },
+          {
+            "title": "HD_Pro_Webcam_C920-processed",
+            "x": 1152.0,
+            "y": 384.0,
+            "width": 512.0,
+            "height": 384.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/HD_Pro_Webcam_C920-processed",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
           }
         ]
       }
@@ -185,14 +198,28 @@
             }
           },
           {
-            "title": "C922_Pro_Stream_Webcam-processed",
+            "title": "Flywheel Speed Multiplier",
+            "x": 1152.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Flywheel Speed Multiplier",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "HD_Pro_Webcam_C920-processed",
             "x": 0.0,
             "y": 0.0,
             "width": 512.0,
             "height": 384.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/C922_Pro_Stream_Webcam-processed",
+              "topic": "/CameraPublisher/HD_Pro_Webcam_C920-processed",
               "period": 0.06,
               "rotation_turns": 0
             }
@@ -224,6 +251,75 @@
                 "type": "Text Display",
                 "properties": {
                   "topic": "/SmartDashboard/Robot Telemetry/Distance to Hub (m)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Flywheel Telemetry",
+            "x": 1408.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "5s Avg Speed (m∕s)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel Telemetry/5s Avg Speed (m∕s)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Calculated Voltage",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel Telemetry/Calculated Voltage",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Current Speed (m∕s)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel Telemetry/Current Speed (m∕s)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Speed (m∕s)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel Telemetry/Target Speed (m∕s)",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -507,6 +603,20 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "Calculated Voltage",
+            "x": 896.0,
+            "y": 640.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Flywheel Telemetry/Calculated Voltage",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
