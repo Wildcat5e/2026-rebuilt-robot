@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
         Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
         Controller.joystick.rightTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
+        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotorsAutoReverse());
         Controller.joystick.rightBumper().whileTrue(intake.testExtender());
         Controller.joystick.a().whileTrue(commands.aimHandler);
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));

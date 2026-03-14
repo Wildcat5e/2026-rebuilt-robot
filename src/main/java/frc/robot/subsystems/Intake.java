@@ -16,6 +16,7 @@ public class Intake extends SubsystemBase {
     /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
     private final TalonFX scooperMotor = new TalonFX(18);
     private double extenderMotorPosition = 0;
+    int cycleCount = 0;
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
@@ -35,6 +36,23 @@ public class Intake extends SubsystemBase {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             scooperMotor.setVoltage(-scooperMotorVoltage);
+            pusherMotor.setVoltage(pusherMotorVoltage);
+        }, () -> {
+            scooperMotor.setVoltage(3);
+            pusherMotor.setVoltage(0);
+        });
+    }
+
+    public Command spinIntakeMotorsAutoReverse() {
+        return startEnd(() -> {
+            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+            scooperMotor.setVoltage(-scooperMotorVoltage);
+            cycleCount++;
+            double scooperSpeed = Math.abs(scooperMotor.getVelocity().getValueAsDouble());
+            if (cycleCount % 5 == 0 && scooperSpeed < 0.1) {
+                scooperMotor.setVoltage(3);
+            }
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
             scooperMotor.setVoltage(3);
