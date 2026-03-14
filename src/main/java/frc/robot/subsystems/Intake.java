@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,7 @@ public class Intake extends SubsystemBase {
         applyGearRatio(scooperMotor, 1);
         applyGearRatio(pusherMotor, 1);
         applyGearRatio(extenderMotor, 36);
+        extenderMotor.setNeutralMode(NeutralModeValue.Brake);
         DashboardManager.setupIntake(() -> extenderMotorPosition);
     }
 
