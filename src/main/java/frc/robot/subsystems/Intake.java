@@ -40,43 +40,6 @@ public class Intake extends SubsystemBase {
         });
     }
 
-    public Command dropArmFinalImplementation() {
-        return new FunctionalCommand(
-            // --initialize--
-            () -> extenderMotor.setVoltage(-3),
-
-            // --execute--
-            () -> {},
-
-            // --end--
-            interrupted -> extenderMotor.setVoltage(0),
-
-            // --isFinished--
-            () -> {
-                return getExtenderPosition() <= -.3; // Check sign
-            },
-            // --addRequirements--
-            this); // Pass in Intake
-    }
-
-    public Command raiseArmFinalImplementation() {
-        return new FunctionalCommand(
-            // --initialize--
-            () -> extenderMotor.setVoltage(3),
-
-            // --execute--
-            () -> {},
-
-            // --end--
-            interrupted -> extenderMotor.setVoltage(0),
-
-            // --isFinished--
-            () -> {
-                return getExtenderPosition() >= 0; // Check sign
-            },
-            // --addRequirements--
-            this); // Pass in Intake
-    }
 
     /**
      * TURN ON INTAKE TO TAKE IN FUEL COMMAND <br>
@@ -111,6 +74,10 @@ public class Intake extends SubsystemBase {
         }, () -> extenderMotor.setVoltage(0));
     }
 
+    public Command dropIntake() {
+        return startEnd(() -> extenderMotor.setVoltage(1), () -> extenderMotor.setVoltage(0));
+    }
+
     public void spinPusher() {
         double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
         pusherMotor.setVoltage(pusherMotorVoltage);
@@ -121,12 +88,12 @@ public class Intake extends SubsystemBase {
     }
 
     public Command bumpExtenderUp() {
-        return startEnd(() -> extenderMotor.setVoltage(6), () -> extenderMotor.setVoltage(0))
+        return startEnd(() -> extenderMotor.setVoltage(2), () -> extenderMotor.setVoltage(0))
             .withName("Bump Extender Up");
     }
 
     public Command bumpExtenderDown() {
-        return startEnd(() -> extenderMotor.setVoltage(1), () -> extenderMotor.setVoltage(0))
+        return startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
             .withName("Bump Extender Down");
     }
 
