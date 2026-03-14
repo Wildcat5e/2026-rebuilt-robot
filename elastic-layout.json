@@ -23,7 +23,7 @@
             "title": "Field",
             "x": 0.0,
             "y": 0.0,
-            "width": 1408.0,
+            "width": 1024.0,
             "height": 640.0,
             "type": "Field",
             "properties": {
@@ -55,15 +55,20 @@
           },
           {
             "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 1408.0,
-            "y": 256.0,
-            "width": 512.0,
+            "x": 1152.0,
+            "y": 384.0,
+            "width": 640.0,
             "height": 384.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
               "period": 0.06,
-              "rotation_turns": 0
+              "rotation_turns": 0,
+              "compression": 30,
+              "resolution": [
+                426.0,
+                240.0
+              ]
             }
           }
         ]
@@ -158,7 +163,12 @@
             "properties": {
               "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
               "period": 0.06,
-              "rotation_turns": 0
+              "rotation_turns": 0,
+              "compression": 30,
+              "resolution": [
+                426.0,
+                240.0
+              ]
             }
           },
           {
