@@ -29,8 +29,9 @@ BASE_LAYER = {
     4: (4, YELLOW, "Flywheel Mult -"),
     2: (15, PURPLE, "Stat Flywheel +"),
     5: (16, PURPLE, "Stat Flywheel -"),
+    6: (None, BLACK, "\x1b[2J\x1b[H"),
+    7: (18, BLUE, "Static Kicker"),
     8: (17, BLUE, "Static Flywheel"),
-    7: (None, BLACK, "\x1b[2J\x1b[H")
 }
 
 SHIFT_LAYER = {

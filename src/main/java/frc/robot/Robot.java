@@ -175,10 +175,11 @@ public class Robot extends TimedRobot {
         macropad.button(4).onTrue(
             Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
         macropad.button(15)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(0.01)).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(0.5)).ignoringDisable(true));
         macropad.button(16)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(-0.01)).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(-0.5)).ignoringDisable(true));
         macropad.button(17).whileTrue(flywheel.testStaticStartFlywheel());
+        macropad.button(18).whileTrue(hopper.testTunableKicker());
 
         // LAYER 1 (Shift Held)
         macropad.button(5).whileTrue(intake.reverseScooper());
