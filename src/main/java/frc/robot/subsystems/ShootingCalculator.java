@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants;
+import frc.robot.DashboardManager;
+import frc.robot.Robot;
 import static frc.robot.Utilities.*;
 
 /**
@@ -37,20 +39,20 @@ public interface ShootingCalculator {
      * @param flywheelSpeedMult
      * @return ShotSolution containing new heading and speed
      */
-    static ShotSolution calculate(Drivetrain drivetrain, double flywheelSpeedMult) {
+    static ShotSolution calculate(Drivetrain drivetrain, Translation2d target) {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
         Translation2d robotVector = new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond);
 
         // 1. Look up the Ideal "Static" Shot Speed based on current distance from Hub.
-        double staticSpeed = FLYWHEEL_SPEEDS_MAP.get(getHubDistance(drivetrain));
+        double staticSpeed = FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, target));
 
         // 2. Decompose Static Shot into Horizontal Component (3D -> 2D Plane).
         double staticSpeedHorizontal = staticSpeed * Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
         // 3. Create the Static Vector pointing directly at the hub.
-        double angleToTarget = getRobotToHubAngle(drivetrain);
+        double angleToTarget = getRobotToTargetAngle(drivetrain, target);
         Translation2d staticVector = new Translation2d(staticSpeedHorizontal, new Rotation2d(angleToTarget));
 
         // 4. Calculate the Shot Vector (Vector Subtraction: V_shot = V_static - V_robot)
@@ -63,8 +65,10 @@ public interface ShootingCalculator {
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
-        // 7. Multiply by flywheel speed multiplier from dashboard
-        newFlywheelSpeed *= flywheelSpeedMult;
+        if (!Robot.IS_COMPETITION) {
+            // 7. Multiply by flywheel speed multiplier from dashboard
+            newFlywheelSpeed *= DashboardManager.getFlywheelSpeedMultiplier();
+        }
 
         return new ShotSolution(newFlywheelSpeed, targetHeading);
     }
