@@ -151,10 +151,6 @@ public class Robot extends TimedRobot {
         }));
 
         // --- MAIN CONTROLLER BINDINGS ---
-
-        // Controller.joystick.rightBumper().whileTrue(rotateToHub); // Pure Feedforward + PID testing
-        // Controller.joystick.leftBumper().whileTrue(rotateToHubShootingCalc);
-
         Controller.joystick.povUp().whileTrue(intake.testExtender());
         Controller.joystick.povRight().whileTrue(intake.testPusher());
         Controller.joystick.povDown().whileTrue(intake.testScooper());
@@ -162,52 +158,39 @@ public class Robot extends TimedRobot {
 
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
-        // Controller.joystick.b().whileTrue(commands.intake.spinIntakeMotors());
 
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
         Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
         Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
         Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
         Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
-        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc); // PID + Shooting Calculator testing
+        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        Controller.joystick.y().whileTrue(intake.reverseScooper());
 
         // --- MACROPAD BINDINGS ---
-        // Note: WPILib generic buttons are 1-indexed. These map to CircuitPython keys 0 through 4.
-        macropad.button(1).whileTrue(intake.reverseScooper());
-        macropad.button(2).whileTrue(intake.reversePusher());
-        macropad.button(3).whileTrue(hopper.reverseConveyor());
-        macropad.button(4).whileTrue(hopper.reverseKicker());
-        macropad.button(5).whileTrue(flywheel.reverseFlywheel());
+        // LAYER 0 (No Modifiers)
+        macropad.button(1).whileTrue(intake.bumpExtenderUp());
+        macropad.button(2).whileTrue(intake.bumpExtenderDown());
+        macropad.button(3).onTrue(
+            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
+        macropad.button(4).onTrue(
+            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
 
-        // Bump the multiplier UP by 0.01 using D-Pad Up
-        // Controller.joystick.povUp()
-        //     .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
+        // LAYER 1 (Shift Held)
+        macropad.button(5).whileTrue(intake.reverseScooper());
+        macropad.button(6).whileTrue(intake.reversePusher());
+        macropad.button(7).whileTrue(hopper.reverseConveyor());
+        macropad.button(8).whileTrue(hopper.reverseKicker());
+        macropad.button(9).whileTrue(flywheel.reverseFlywheel());
+        // Emergency Stop
+        macropad.button(10)
+            .onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
 
-        // Bump the multiplier DOWN by 0.01 using D-Pad Down
-        // Controller.joystick.povDown()
-        //     .onTrue(Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
-
-        // Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
-        // Controller.joystick.povRight().whileTrue(commands.flywheel.sysIdDynamicReverse());
-        // Controller.joystick.povDown().whileTrue(commands.flywheel.sysIdQuasistaticForward());
-        // Controller.joystick.povLeft().whileTrue(commands.flywheel.sysIdQuasistaticReverse());
-
-
-        /*
-         * Tests for motor identification:
-         * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
-         * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
-         */
-        // Quasistatic test for motor identification
-        Controller.joystick.start().and(Controller.joystick.y())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        Controller.joystick.start().and(Controller.joystick.x())
-            .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        // Dynamic test for motor identification
-        Controller.joystick.back().and(Controller.joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        Controller.joystick.back().and(Controller.joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // LAYER 2 (Control Held)
+        macropad.button(11).whileTrue(hopper.testTunableKicker());
+        macropad.button(12).whileTrue(flywheel.backupFlywheelL1());
+        macropad.button(13).whileTrue(flywheel.backupFlywheelL2());
+        macropad.button(14).whileTrue(flywheel.backupFlywheelL3());
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */

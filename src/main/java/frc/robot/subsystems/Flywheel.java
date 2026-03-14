@@ -110,6 +110,27 @@ public class Flywheel extends SubsystemBase {
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
+    public Command backupFlywheelL1() {
+        return backupFlywheelCommandHelper(2.0);
+    }
+
+    public Command backupFlywheelL2() {
+        return backupFlywheelCommandHelper(3.5);
+    }
+
+    public Command backupFlywheelL3() {
+        return backupFlywheelCommandHelper(5.0);
+    }
+
+    /** Base command helper for flywheel levels in case PhotonVision breaks */
+    private Command backupFlywheelCommandHelper(double distance) {
+        return runEnd(() -> {
+            targetFlywheelSpeed = ShootingCalculator.FLYWHEEL_SPEEDS_MAP.get(distance);
+            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            setFlywheelMotorVoltages(calculatedVoltage);
+        }, () -> setFlywheelMotorVoltages(0));
+    }
+
     public void stopFlywheel() {
         setFlywheelMotorVoltages(0);
     }

@@ -120,6 +120,16 @@ public class Intake extends SubsystemBase {
         pusherMotor.setVoltage(0);
     }
 
+    public Command bumpExtenderUp() {
+        return startEnd(() -> extenderMotor.setVoltage(6), () -> extenderMotor.setVoltage(0))
+            .withName("Bump Extender Up");
+    }
+
+    public Command bumpExtenderDown() {
+        return startEnd(() -> extenderMotor.setVoltage(1), () -> extenderMotor.setVoltage(0))
+            .withName("Bump Extender Down");
+    }
+
     /** @return Extender motor's position in REVOLUTIONS */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble();
