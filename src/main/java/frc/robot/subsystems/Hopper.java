@@ -51,6 +51,18 @@ public class Hopper extends SubsystemBase {
         kickerMotor.setVoltage(-targetKickerVoltage);
     }
 
+    public Command runHopperCommand() {
+        return startEnd(() -> {
+            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
+            double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
+            conveyorMotor.setVoltage(-targetConveyorVoltage);
+            kickerMotor.setVoltage(-targetKickerVoltage);
+        }, () -> {
+            conveyorMotor.setVoltage(0);
+            kickerMotor.setVoltage(0);
+        });
+    }
+
     public void stopHopper() {
         conveyorMotor.setVoltage(0);
         kickerMotor.setVoltage(0);
