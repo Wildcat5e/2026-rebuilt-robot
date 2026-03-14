@@ -27,6 +27,9 @@ BASE_LAYER = {
     3: (2, GREEN, "Extender Down 1V"),
     1: (3, YELLOW, "Flywheel Mult +"),
     4: (4, YELLOW, "Flywheel Mult -"),
+    2: (15, PURPLE, "Stat Flywheel +"),
+    5: (16, PURPLE, "Stat Flywheel -"),
+    8: (17, BLUE, "Static Flywheel"),
     7: (None, BLACK, "\x1b[2J\x1b[H")
 }
 

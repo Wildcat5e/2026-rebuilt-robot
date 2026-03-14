@@ -79,7 +79,7 @@ public class Flywheel extends SubsystemBase {
 
     public Command testStaticStartFlywheel() {
         return runEnd(() -> {
-            targetFlywheelSpeed = SmartDashboard.getNumber("Target Flywheel Speed (m∕s)", 0);
+            targetFlywheelSpeed = SmartDashboard.getNumber("Static Flywheel Speed", 0);
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
@@ -105,7 +105,7 @@ public class Flywheel extends SubsystemBase {
 
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void staticRunFlywheel() {
-        targetFlywheelSpeed = SmartDashboard.getNumber("Target Flywheel Speed (m∕s)", 0);
+        targetFlywheelSpeed = SmartDashboard.getNumber("Static Flywheel Speed", 10);
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
