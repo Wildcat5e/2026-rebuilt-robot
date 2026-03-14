@@ -23,7 +23,7 @@ CTRL_KEY = 11
 
 # Maps physical key index to (HID Button Number, Color, Message)
 BASE_LAYER = {
-    0: (1, GREEN, "Extender Up 6V"),
+    0: (1, GREEN, "Extender Up 2V"),
     3: (2, GREEN, "Extender Down 1V"),
     1: (3, YELLOW, "Flywheel Mult +"),
     4: (4, YELLOW, "Flywheel Mult -"),
@@ -35,8 +35,8 @@ SHIFT_LAYER = {
     1: (6, RED, "Pusher Reverse"),
     2: (7, RED, "Conveyor Reverse"),
     3: (8, RED, "Kicker Reverse"),
-    4: (9, RED, "Flywheel Reverse"),
-    10: (10, RED, "E-STOP")
+    4: (9, RED, "Flywheel Reverse")
+    # 10: (10, RED, "E-STOP")
 }
 
 CTRL_LAYER = {
