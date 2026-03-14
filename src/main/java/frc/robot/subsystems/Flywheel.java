@@ -92,7 +92,7 @@ public class Flywheel extends SubsystemBase {
 
     public boolean flywheelUpToSpeed() {
         if (targetFlywheelSpeed == 0) return false;
-        return currentFlywheelSpeed > targetFlywheelSpeed * 0.95;
+        return currentFlywheelSpeed > targetFlywheelSpeed;
     }
 
     /** Spins flywheel and calculates speed based on distance. */

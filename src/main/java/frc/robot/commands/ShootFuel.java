@@ -12,6 +12,7 @@ public class ShootFuel extends Command {
     Hopper hopper;
     Intake intake;
     Drivetrain drivetrain;
+    boolean flywheelUpToSpeed;
 
     public ShootFuel(Flywheel flywheel, Hopper hopper, Intake intake, Drivetrain drivetrain) {
         this.flywheel = flywheel;
@@ -22,10 +23,16 @@ public class ShootFuel extends Command {
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        flywheelUpToSpeed = false;
+    }
 
     @Override
     public void execute() {
+        if (flywheel.flywheelUpToSpeed()) {
+            System.out.println(" UP TO SPEED ");
+            flywheelUpToSpeed = true;
+        }
         if (Utilities.inHome(drivetrain)) {
             flywheel.dynamicRunFlywheel();
             System.out.println("DYNAMIC !!!");
@@ -33,9 +40,7 @@ public class ShootFuel extends Command {
             flywheel.staticRunFlywheel();
             System.out.println("STATIC !!!!");
         }
-
-        if (flywheel.flywheelUpToSpeed()) {
-            System.out.println(" UP TO SPEED ");
+        if (flywheelUpToSpeed) {
             hopper.runHopper();
         }
     }
