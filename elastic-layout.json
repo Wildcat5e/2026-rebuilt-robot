@@ -54,14 +54,14 @@
             }
           },
           {
-            "title": "HD_Pro_Webcam_C920-processed",
-            "x": 1152.0,
-            "y": 384.0,
+            "title": "photonvision_Port_1181_Input_MJPEG_Server",
+            "x": 1024.0,
+            "y": 256.0,
             "width": 512.0,
             "height": 384.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/HD_Pro_Webcam_C920-processed",
+              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
               "period": 0.06,
               "rotation_turns": 0
             }
@@ -212,14 +212,14 @@
             }
           },
           {
-            "title": "HD_Pro_Webcam_C920-processed",
+            "title": "photonvision_Port_1181_Input_MJPEG_Server",
             "x": 0.0,
             "y": 0.0,
             "width": 512.0,
             "height": 384.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/HD_Pro_Webcam_C920-processed",
+              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
               "period": 0.06,
               "rotation_turns": 0
             }
