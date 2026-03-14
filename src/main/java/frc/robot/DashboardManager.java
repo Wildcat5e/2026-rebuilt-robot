@@ -70,7 +70,7 @@ public interface DashboardManager {
     // =====================================
     static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier,
         DoubleSupplier averageSpeedSupplier, DoubleSupplier calculatedVoltageSupplier) {
-        SmartDashboard.putNumber("Target Flywheel Speed (m∕s)", 10);
+        SmartDashboard.putNumber("Target Flywheel Speed (m∕s)", 20);
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putData("Flywheel Telemetry", builder -> {

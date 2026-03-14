@@ -39,7 +39,7 @@ public class PhotonVision extends SubsystemBase {
     public void periodic() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
         for (PhotonPipelineResult result : CAMERA_2.getAllUnreadResults()) {
-            visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
+            visionEst = ESTIMATOR.estimateCoprocMultiTagPose(result);
             if (visionEst.isEmpty()) {
                 visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
             }
