@@ -9,9 +9,9 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 1024.0,
+            "x": 1408.0,
             "y": 0.0,
-            "width": 384.0,
+            "width": 512.0,
             "height": 128.0,
             "type": "FMSInfo",
             "properties": {
@@ -23,8 +23,8 @@
             "title": "Field",
             "x": 0.0,
             "y": 0.0,
-            "width": 1024.0,
-            "height": 512.0,
+            "width": 1408.0,
+            "height": 640.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -42,9 +42,9 @@
           },
           {
             "title": "Auto Command Chooser",
-            "x": 1024.0,
+            "x": 1408.0,
             "y": 128.0,
-            "width": 384.0,
+            "width": 512.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
@@ -55,7 +55,7 @@
           },
           {
             "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 1024.0,
+            "x": 1408.0,
             "y": 256.0,
             "width": 512.0,
             "height": 384.0,
@@ -76,7 +76,7 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 512.0,
+            "x": 0.0,
             "y": 0.0,
             "width": 512.0,
             "height": 128.0,
@@ -87,29 +87,8 @@
             }
           },
           {
-            "title": "Field",
-            "x": 0.0,
-            "y": 384.0,
-            "width": 512.0,
-            "height": 256.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          },
-          {
             "title": "Within Shooting Distance",
-            "x": 768.0,
+            "x": 0.0,
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
@@ -126,7 +105,7 @@
           },
           {
             "title": "Within Shooting Angle",
-            "x": 512.0,
+            "x": 256.0,
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
@@ -142,36 +121,8 @@
             }
           },
           {
-            "title": "robot angle",
-            "x": 512.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/robot angle",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "correct angle",
-            "x": 768.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/correct angle",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Distance to Hub (m)",
-            "x": 512.0,
+            "x": 256.0,
             "y": 384.0,
             "width": 256.0,
             "height": 128.0,
@@ -185,8 +136,8 @@
           },
           {
             "title": "Flywheel Speed Multiplier",
-            "x": 768.0,
-            "y": 384.0,
+            "x": 256.0,
+            "y": 256.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
@@ -198,30 +149,47 @@
             }
           },
           {
-            "title": "Flywheel Speed Multiplier",
-            "x": 1152.0,
+            "title": "photonvision_Port_1181_Input_MJPEG_Server",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 1408.0,
+            "height": 896.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Static Flywheel Speed",
+            "x": 0.0,
             "y": 256.0,
-            "width": 128.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel Speed Multiplier",
+              "topic": "/SmartDashboard/Static Flywheel Speed",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
             }
           },
           {
-            "title": "photonvision_Port_1181_Input_MJPEG_Server",
+            "title": "Scooper Speed",
             "x": 0.0,
-            "y": 0.0,
-            "width": 512.0,
-            "height": 384.0,
-            "type": "Camera Stream",
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
+              "topic": "/SmartDashboard/Intake Telemetry/Scooper Speed",
               "period": 0.06,
-              "rotation_turns": 0
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]
