@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
         commands = new RobotCommands(drivetrain, flywheel, intake, hopper);
 
         bindingsSetup();
-        NamedCommands.registerCommand("Drop Intake", intake.dropArmFinalImplementation());
+        NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
         NamedCommands.registerCommand("Rotate To Hub", commands.rotateToHub);
@@ -151,19 +151,18 @@ public class Robot extends TimedRobot {
         }));
 
         // --- MAIN CONTROLLER BINDINGS ---
-        Controller.joystick.povUp().whileTrue(intake.testExtender());
-        Controller.joystick.povRight().whileTrue(intake.testPusher());
-        Controller.joystick.povDown().whileTrue(intake.testScooper());
-        Controller.joystick.povLeft().whileTrue(hopper.testConveyor());
+        // Controller.joystick.povUp().whileTrue(intake.testExtender());
+        // Controller.joystick.povRight().whileTrue(intake.testPusher());
+        // Controller.joystick.povDown().whileTrue(intake.testScooper());
+        // Controller.joystick.povLeft().whileTrue(hopper.testConveyor());
 
-        Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
-        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
+        // Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
+        // Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
         Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
         Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
-        Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
+        Controller.joystick.rightBumper().whileTrue(intake.testExtender());
         Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
