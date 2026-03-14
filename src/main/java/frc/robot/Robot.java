@@ -182,8 +182,7 @@ public class Robot extends TimedRobot {
         macropad.button(8).whileTrue(hopper.reverseKicker());
         macropad.button(9).whileTrue(flywheel.reverseFlywheel());
         // Emergency Stop
-        macropad.button(10)
-            .onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
+        // macropad.button(10).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
 
         // LAYER 2 (Control Held)
         macropad.button(11).whileTrue(hopper.testTunableKicker());
