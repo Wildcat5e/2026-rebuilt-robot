@@ -11,15 +11,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Drop Intake"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Drop Intake"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Shoot Fuel"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 7.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Fuel"
+                }
+              }
+            ]
           }
         }
       ]
