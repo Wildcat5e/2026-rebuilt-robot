@@ -110,14 +110,15 @@ public interface DashboardManager {
     // Subsystem: Intake 
     // =====================================
 
-    static void setupIntake(DoubleSupplier extenderMotorPositionSupplier, DoubleSupplier scooperMotorVoltageSupplier) {
+    static void setupIntake(DoubleSupplier extenderMotorPositionSupplier, DoubleSupplier scooperVelocitySupplier) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
-            builder.addBooleanProperty("Scooper Speed", () -> scooperMotorVoltageSupplier.getAsDouble() > 0, null);
+            builder.addBooleanProperty("Scooper Speed", () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1,
+                null);
         });
     }
 
