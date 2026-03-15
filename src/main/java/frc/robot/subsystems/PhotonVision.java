@@ -19,7 +19,7 @@ import frc.robot.Constants;
 
 public class PhotonVision extends SubsystemBase {
     // Standard deviations to weight vision pose updates. (Higher values weight vision less.)
-    public static final Matrix<N3, N1> TEMP_STD_DEV = VecBuilder.fill(1, 1, 2);
+    public static final Matrix<N3, N1> TEMP_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
