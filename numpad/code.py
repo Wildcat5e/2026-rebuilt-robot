@@ -1,16 +1,16 @@
 """
 Macropad with Shift and Control layers for FRC auxiliary commands.
 Supports 32 mapped buttons via a custom Gamepad32 class.
+Displays current layer and active command on the screen.
 """
 
 import board
 import usb_hid
 from adafruit_macropad import MacroPad
 
-# --- Custom Gamepad Class to support 32 buttons (8-byte report) ---
+# Custom Gamepad Class to support 32 buttons (8-byte report)
 class Gamepad32:
     def __init__(self, devices):
-        # Find the gamepad device defined in boot.py
         for device in devices:
             if device.usage_page == 0x01 and device.usage == 0x05:
                 self._gamepad_device = device
@@ -18,7 +18,6 @@ class Gamepad32:
         else:
             raise ValueError("Gamepad device not found")
         
-        # 8 bytes: 4 bytes for 32 buttons, 4 bytes for joysticks
         self._report = bytearray(8)
         self._buttons_state = 0
         self._send()
@@ -34,22 +33,20 @@ class Gamepad32:
         self._send()
 
     def _send(self):
-        # Pack the 32-bit integer into the first 4 bytes of the report
         self._report[0] = self._buttons_state & 0xFF
         self._report[1] = (self._buttons_state >> 8) & 0xFF
         self._report[2] = (self._buttons_state >> 16) & 0xFF
         self._report[3] = (self._buttons_state >> 24) & 0xFF
-        # Joysticks (indices 4-7) remain at 0
         self._gamepad_device.send_report(self._report)
 
 macropad = MacroPad()
-# Use our custom class instead of the imported one
 gamepad = Gamepad32(usb_hid.devices)
 
 # Set up the OLED screen
 text_lines = macropad.display_text(title="FRC Aux Pad")
 text_lines[0].text = "Layer: BASE"
-text_lines[1].text = ""
+text_lines[1].text = "" # Reserved for Modifier Status (e.g., Kicker Spinning)
+text_lines[2].text = "" # Reserved for Active Command
 text_lines.show()
 
 RED = 0xff0000
@@ -71,7 +68,6 @@ BASE_LAYER = {
     4: (4, YELLOW, "Flywheel Mult -"),
     2: (15, PURPLE, "Stat Flywheel +"),
     5: (16, PURPLE, "Stat Flywheel -"),
-    6: (None, BLACK, "\x1b[2J\x1b[H"),
     7: (18, BLUE, "Static Kicker"),
     8: (17, BLUE, "Static Flywheel"),
 }
@@ -82,7 +78,6 @@ SHIFT_LAYER = {
     2: (7, RED, "Conveyor Reverse"),
     3: (8, RED, "Kicker Reverse"),
     4: (9, RED, "Flywheel Reverse")
-    # 10: (10, RED, "E-STOP")
 }
 
 CTRL_LAYER = {
@@ -91,10 +86,9 @@ CTRL_LAYER = {
     2: (14, PURPLE, "Spin Flywheel L3")
 }
 
-# The HID Button dedicated to spinning the kicker when Control is held
 CTRL_KICKER_BUTTON = 11
 
-pressed_buttons = {} # Tracks which layer a button was pressed on to release it correctly
+pressed_buttons = {}
 shift_held = False
 ctrl_held = False
 
@@ -109,13 +103,12 @@ while True:
                     shift_held = True
                     macropad.pixels[SHIFT_KEY] = CYAN
                     text_lines[0].text = "Layer: SHIFT"
-                    text_lines[1].text = "Shift Held"
                     print("SHIFT")
                     continue
                 elif key == CTRL_KEY:
                     ctrl_held = True
                     macropad.pixels[CTRL_KEY] = CYAN
-                    gamepad.press_buttons(CTRL_KICKER_BUTTON) # Spin Kicker immediately
+                    gamepad.press_buttons(CTRL_KICKER_BUTTON) 
                     text_lines[0].text = "Layer: CONTROL"
                     text_lines[1].text = "Kicker Spinning!"
                     print("CONTROL (Kicker)")
@@ -134,17 +127,20 @@ while True:
 
                     if btn_num is not None:
                         gamepad.press_buttons(btn_num)
-                        pressed_buttons[key] = btn_num
+                        
+                    pressed_buttons[key] = btn_num 
 
                     macropad.pixels[key] = color
+                    text_lines[2].text = message
                     
                     if btn_num is None:
-                        print(message, end="")
+                        # ANSI escape code clears the console
+                        print("\x1b[2J\x1b[H", end="")
+                        print(f"--- {message} ---")
                     else:
                         print(message)
                     
             elif key_event.released:
-                # Modifier Keys
                 if key == SHIFT_KEY:
                     shift_held = False
                     macropad.pixels[SHIFT_KEY] = BLACK
@@ -154,16 +150,21 @@ while True:
                 elif key == CTRL_KEY:
                     ctrl_held = False
                     macropad.pixels[CTRL_KEY] = BLACK
-                    gamepad.release_buttons(CTRL_KICKER_BUTTON) # Stop Kicker
+                    gamepad.release_buttons(CTRL_KICKER_BUTTON) 
                     text_lines[0].text = "Layer: BASE"
                     text_lines[1].text = ""
                     continue
                 
-                # Release the exact HID button that was pressed
+                # Release the button that was pressed
                 if key in pressed_buttons:
-                    gamepad.release_buttons(pressed_buttons[key])
+                    btn_num = pressed_buttons[key]
+                    
+                    if btn_num is not None:
+                        gamepad.release_buttons(btn_num)
+                        
                     del pressed_buttons[key]
                     macropad.pixels[key] = BLACK
+                    text_lines[2].text = ""
                     
     except Exception as e:
         print(e)
