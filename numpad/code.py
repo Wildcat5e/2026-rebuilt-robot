@@ -42,12 +42,8 @@ class Gamepad32:
 macropad = MacroPad()
 gamepad = Gamepad32(usb_hid.devices)
 
-# Set up the OLED screen
+# Display Setup
 text_lines = macropad.display_text(title="Team 6705 Wildcat5e")
-text_lines[0].text = "Layer: BASE"
-text_lines[1].text = "" # Reserved for Modifier Status (e.g., Kicker Spinning)
-text_lines[2].text = "" # Reserved for Active Command
-text_lines.show()
 
 RED = 0xff0000
 GREEN = 0x00ff00
@@ -59,38 +55,45 @@ BLACK = 0x000000
 
 SHIFT_KEY = 9
 CTRL_KEY = 11
-
-# Maps physical key (0-indexed) to (HID Button Number (1-indexed), Color, Message)
-BASE_LAYER = {
-    0: (1, GREEN, "Extender Up 2V"),
-    3: (2, GREEN, "Extender Down 1V"),
-    1: (3, YELLOW, "Flywheel Mult +"),
-    4: (4, YELLOW, "Flywheel Mult -"),
-    2: (15, PURPLE, "Stat Flywheel +"),
-    5: (16, PURPLE, "Stat Flywheel -"),
-    7: (18, BLUE, "Static Kicker"),
-    8: (17, BLUE, "Static Flywheel"),
-}
-
-SHIFT_LAYER = {
-    0: (5, RED, "Scooper Reverse"),
-    1: (6, RED, "Pusher Reverse"),
-    2: (7, RED, "Conveyor Reverse"),
-    3: (8, RED, "Kicker Reverse"),
-    4: (9, RED, "Flywheel Reverse")
-}
-
-CTRL_LAYER = {
-    0: (12, PURPLE, "Spin Flywheel L1"),
-    1: (13, PURPLE, "Spin Flywheel L2"),
-    2: (14, PURPLE, "Spin Flywheel L3")
-}
-
 CTRL_KICKER_BUTTON = 11
 
+# Layer Dictionaries
+LAYERS = {
+    "BASE": {
+        0: (1, GREEN, "Extender Up 2V"),
+        3: (2, GREEN, "Extender Down 1V"),
+        1: (3, YELLOW, "Flywheel Mult +"),
+        4: (4, YELLOW, "Flywheel Mult -"),
+        2: (15, PURPLE, "Stat Flywheel +"),
+        5: (16, PURPLE, "Stat Flywheel -"),
+        7: (18, BLUE, "Static Kicker"),
+        8: (17, BLUE, "Static Flywheel"),
+    },
+    "SHIFT": {
+        0: (5, RED, "Scooper Reverse"),
+        1: (6, RED, "Pusher Reverse"),
+        2: (7, RED, "Conveyor Reverse"),
+        3: (8, RED, "Kicker Reverse"),
+        4: (9, RED, "Flywheel Reverse")
+    },
+    "CONTROL": {
+        0: (12, PURPLE, "Spin Flywheel L1"),
+        1: (13, PURPLE, "Spin Flywheel L2"),
+        2: (14, PURPLE, "Spin Flywheel L3")
+    }
+}
+
 pressed_buttons = {}
-shift_held = False
-ctrl_held = False
+current_layer_name = "BASE"
+
+def update_display(layer, modifier_msg="", command_msg=""):
+    text_lines[0].text = f"Layer: {layer}"
+    text_lines[1].text = modifier_msg
+    text_lines[2].text = command_msg
+    text_lines.show()
+
+# Initial display state
+update_display(current_layer_name)
 
 while True:
     try:
@@ -98,73 +101,56 @@ while True:
             key = key_event.key_number
             
             if key_event.pressed:
-                # Modifier Keys
+                # Handle Modifiers
                 if key == SHIFT_KEY:
-                    shift_held = True
-                    macropad.pixels[SHIFT_KEY] = CYAN
-                    text_lines[0].text = "Layer: SHIFT"
-                    print("SHIFT")
-                    continue
-                elif key == CTRL_KEY:
-                    ctrl_held = True
-                    macropad.pixels[CTRL_KEY] = CYAN
-                    gamepad.press_buttons(CTRL_KICKER_BUTTON) 
-                    text_lines[0].text = "Layer: CONTROL"
-                    text_lines[1].text = "Kicker Spinning!"
-                    print("CONTROL (Kicker)")
-                    continue
+                    current_layer_name = "SHIFT"
+                    macropad.pixels[key] = CYAN
+                    update_display(current_layer_name)
                 
-                # Determine which layer dictionary to use
-                active_layer = BASE_LAYER
-                if ctrl_held:
-                    active_layer = CTRL_LAYER
-                elif shift_held:
-                    active_layer = SHIFT_LAYER
-                    
-                # Execute mapped command if key exists in the current layer
-                if key in active_layer:
-                    btn_num, color, message = active_layer[key]
+                elif key == CTRL_KEY:
+                    current_layer_name = "CONTROL"
+                    macropad.pixels[key] = CYAN
+                    gamepad.press_buttons(CTRL_KICKER_BUTTON) 
+                    update_display(current_layer_name, modifier_msg="Kicker Spinning!")
+                
+                # Handle Standard Keys
+                else:
+                    active_layer = LAYERS[current_layer_name]
+                    if key in active_layer:
+                        btn_num, color, message = active_layer[key]
 
-                    if btn_num is not None:
-                        gamepad.press_buttons(btn_num)
+                        if btn_num is not None:
+                            gamepad.press_buttons(btn_num)
+                            
+                        pressed_buttons[key] = btn_num 
+                        macropad.pixels[key] = color
+                        update_display(current_layer_name, text_lines[1].text, message)
                         
-                    pressed_buttons[key] = btn_num 
-
-                    macropad.pixels[key] = color
-                    text_lines[2].text = message
-                    
-                    if btn_num is None:
-                        # ANSI escape code clears the console
-                        print("\x1b[2J\x1b[H", end="")
-                        print(f"--- {message} ---")
-                    else:
-                        print(message)
+                        if btn_num is None:
+                            print(f"\x1b[2J\x1b[H--- {message} ---")
+                        else:
+                            print(message)
                     
             elif key_event.released:
-                if key == SHIFT_KEY:
-                    shift_held = False
-                    macropad.pixels[SHIFT_KEY] = BLACK
-                    text_lines[0].text = "Layer: BASE"
-                    text_lines[1].text = ""
-                    continue
-                elif key == CTRL_KEY:
-                    ctrl_held = False
-                    macropad.pixels[CTRL_KEY] = BLACK
-                    gamepad.release_buttons(CTRL_KICKER_BUTTON) 
-                    text_lines[0].text = "Layer: BASE"
-                    text_lines[1].text = ""
-                    continue
+                # Handle Modifiers
+                if key in (SHIFT_KEY, CTRL_KEY):
+                    current_layer_name = "BASE"
+                    macropad.pixels[key] = BLACK
+                    
+                    if key == CTRL_KEY:
+                        gamepad.release_buttons(CTRL_KICKER_BUTTON) 
+                        
+                    update_display(current_layer_name)
                 
-                # Release the button that was pressed
-                if key in pressed_buttons:
-                    btn_num = pressed_buttons[key]
+                # Handle Standard Keys
+                elif key in pressed_buttons:
+                    btn_num = pressed_buttons.pop(key) # Retrieves and deletes in one step
                     
                     if btn_num is not None:
                         gamepad.release_buttons(btn_num)
                         
-                    del pressed_buttons[key]
                     macropad.pixels[key] = BLACK
-                    text_lines[2].text = ""
+                    update_display(current_layer_name, text_lines[1].text, "")
                     
     except Exception as e:
         print(e)
