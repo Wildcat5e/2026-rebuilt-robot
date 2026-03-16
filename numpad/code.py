@@ -43,7 +43,7 @@ macropad = MacroPad()
 gamepad = Gamepad32(usb_hid.devices)
 
 # Set up the OLED screen
-text_lines = macropad.display_text(title="FRC Aux Pad")
+text_lines = macropad.display_text(title="Team 6705 Wildcat5e")
 text_lines[0].text = "Layer: BASE"
 text_lines[1].text = "" # Reserved for Modifier Status (e.g., Kicker Spinning)
 text_lines[2].text = "" # Reserved for Active Command
@@ -60,7 +60,7 @@ BLACK = 0x000000
 SHIFT_KEY = 9
 CTRL_KEY = 11
 
-# Maps physical key index to (HID Button Number, Color, Message)
+# Maps physical key (0-indexed) to (HID Button Number (1-indexed), Color, Message)
 BASE_LAYER = {
     0: (1, GREEN, "Extender Up 2V"),
     3: (2, GREEN, "Extender Down 1V"),
