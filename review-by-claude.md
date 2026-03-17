@@ -1,48 +1,6 @@
-Issues & Recommendations 🔧
+### 🟡 Major Issues
 
- ### 🔴 Critical Issues
-
- #### 1. Intake Motor IDs are all 0
-
- ```java
-   // Intake.java
-   private final TalonFX scooperMotor = new TalonFX(0);
-   private final TalonFX pusherMotor = new TalonFX(0);
-   private final TalonFX extenderMotor = new TalonFX(0);
- ```
-
- Problem: All three motors have CAN ID 0, causing conflicts.
- Fix: Assign unique IDs to each motor.
-
- #### 2. Duplicate Code in Utilities
-
- You have two implementations of similar helper methods:
- - Utilities.java - Current implementation
- - util/Hub.java - Cleaner OOP approach
- - util/ShotEstimator.java - More sophisticated shooting calculator
-
- Recommendation: Consolidate to use Hub and ShotEstimator classes, remove duplicates from Utilities.
-
- #### 3. PhotonVision Bug in periodic()
-
- ```java
-   // PhotonVision.java line 45-47
-   if (visionEst.isEmpty()) {
-       visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result); // Estimates again!
-   }
- ```
-
- This re-estimates if empty (which won't help). Should use different strategy:
-
- ```java
-   if (visionEst.isEmpty()) {
-       visionEst = ESTIMATOR.estimateBestPose(result); // Try multi-tag
-   }
- ```
-
- ### 🟡 Major Issues
-
- #### 4. Magic Numbers Throughout Code
+#### 4. Magic Numbers Throughout Code
 
  ```java
    // Multiple files have hardcoded values:
@@ -54,7 +12,7 @@ Issues & Recommendations 🔧
 
  Recommendation: Move to Constants.java with explanatory comments.
 
- #### 5. Inconsistent Alliance Detection
+#### 5. Inconsistent Alliance Detection
 
  ```java
    // Robot.java
@@ -71,7 +29,7 @@ Issues & Recommendations 🔧
    }
  ```
 
- #### 6. Missing Safety Checks in Flywheel
+#### 6. Missing Safety Checks in Flywheel
 
  ```java
    public boolean flywheelUpToSpeed() {
@@ -82,7 +40,7 @@ Issues & Recommendations 🔧
  Problem: If targetFlywheelSpeed is -1 (initial value), this always returns true.
  Fix: Add validation that target speed is positive.
 
- #### 7. Controller Architecture Confusion
+#### 7. Controller Architecture Confusion
 
  ```java
    // Robot.java creates instance:
@@ -96,60 +54,19 @@ Issues & Recommendations 🔧
  Problem: The controller instance field is never used. All bindings use the static Controller.joystick.
  Fix: Either use instance or static consistently.
 
- ### 🟢 Minor Issues
+### Architectural Fixes
 
- #### 8. Dashboard Manager Organization
-
- - Very long interface with many static methods
- - Consider breaking into multiple managers by subsystem
-
- #### 9. Commented-Out Code
-
- ```java
-   // Multiple locations have commented code that should be removed:
-   // Controller.joystick.povUp().whileTrue(commands.flywheel.sysIdDynamicForward());
- ```
-
- Recommendation: Remove or move to documentation if needed for reference.
-
- #### 10. Error Handling Could Be Better
-
- ```java
-   // Paths.java
-   } catch (Exception e) {
-       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-       error = true;
-   }
- ```
-
- Recommendation: More specific exception types and recovery strategies.
-
- #### 11. Incomplete ShootingCalculator Hood Angle
-
- ```java
-   // ShotEstimator.java line 22
-   static final double FIXED_HOOD_ANGLE_RADIANS = 10; // This is 10 radians = 573°!
-   // vs
-   // Constants.java
-   double HOOD_ANGLE_RADIANS = Math.toRadians(64);
- ```
-
- Problem: ShotEstimator has wrong value (should be in radians).
-
- ────────────────────────────────────────────────────────────────────────────────
-
- Architectural Suggestions 🏗️
-
- ### 1. Standardize Shooting Logic
+#### 1. Standardize Shooting Logic
 
  You have three implementations:
- - ShootingCalculator (interface)
- - ShotEstimator (class)
- - Flywheel's internal calculations
+
+- ShootingCalculator (interface)
+- ShotEstimator (class)
+- Flywheel's internal calculations
 
  Recommendation: Pick one authoritative implementation, delete duplicates.
 
- ### 2. Command Factory Pattern
+#### 2. Command Factory Pattern
 
  Instead of RobotCommands holding subsystems:
 
@@ -175,15 +92,16 @@ Issues & Recommendations 🔧
    }
  ```
 
- ### 3. State Machine for Shooting
+#### 3. State Machine for Shooting
 
  The ShootFuel command could benefit from a state machine:
+
  1. Spin up flywheel
  2. Wait for speed
  3. Run feeder
  4. Monitor for completion
 
- ### 4. Vision Measurement Validation
+#### 4. Vision Measurement Validation
 
  Add validation before accepting vision measurements:
 
@@ -199,18 +117,18 @@ Issues & Recommendations 🔧
 
  Performance & Best Practices ⚡
 
- ### Good Practices Used:
+### Good Practices Used
 
- - ✅ Moving average filter for flywheel speed
- - ✅ Feedforward + feedback control in RotateToHub
- - ✅ PathPlanner integration with proper flipping
- - ✅ Simulation support with PhotonVision
+- ✅ Moving average filter for flywheel speed
+- ✅ Feedforward + feedback control in RotateToHub
+- ✅ PathPlanner integration with proper flipping
+- ✅ Simulation support with PhotonVision
 
- ### Could Improve:
+### Could Improve
 
- - ⚠️ Consider caching frequently calculated values (hub distance, angle)
- - ⚠️ Add rate limiting to dashboard updates if needed
- - ⚠️ Profile autonomous routines for optimization
+- ⚠️ Consider caching frequently calculated values (hub distance, angle)
+- ⚠️ Add rate limiting to dashboard updates if needed
+- ⚠️ Profile autonomous routines for optimization
 
  ────────────────────────────────────────────────────────────────────────────────
 
@@ -234,30 +152,26 @@ Issues & Recommendations 🔧
 
  Priority Action Items 📋
 
- ### Before Competition:
+### Before Competition
 
- 1. ✅ Fix Intake motor IDs (CAN ID conflicts)
- 2. ✅ Consolidate shooting calculation logic
- 3. ✅ Remove duplicate Hub/angle utilities
- 4. ✅ Fix PhotonVision double estimation
- 5. ✅ Validate all PID gains with real robot
- 6. ✅ Fix hood angle in ShotEstimator
+ 1. ✅ Consolidate shooting calculation logic
+ 2. ✅ Fix PhotonVision double estimation
+ 3. ✅ Validate all PID gains with real robot
 
- ### For Robustness:
+### For Robustness
 
- 7. Add validation to flywheelUpToSpeed()
- 8. Consolidate alliance detection
- 9. Clean up commented code
- 10. Add more error recovery logic
+ 1. Add validation to flywheelUpToSpeed()
+ 2. Consolidate alliance detection
 
  ────────────────────────────────────────────────────────────────────────────────
 
  Summary
 
  This is solid competition-ready code with good architecture and modern practices. The main concerns are:
- - Motor ID conflicts in Intake
- - Duplicate/inconsistent shooting logic
- - Minor safety checks needed
+
+- Motor ID conflicts in Intake
+- Duplicate/inconsistent shooting logic
+- Minor safety checks needed
 
  With the fixes above, this would be excellent competition code. The team clearly understands command-based programming, PathPlanner, and vision integration well.
 
