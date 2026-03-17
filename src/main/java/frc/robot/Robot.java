@@ -176,27 +176,25 @@ public class Robot extends TimedRobot {
             Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
         macropad.button(4).onTrue(
             Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
-        macropad.button(15)
+        macropad.button(5)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(0.5)).ignoringDisable(true));
-        macropad.button(16)
+        macropad.button(6)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(-0.5)).ignoringDisable(true));
-        macropad.button(17).whileTrue(flywheel.testStaticStartFlywheel());
-        macropad.button(18).whileTrue(hopper.testTunableKicker());
+        macropad.button(7).whileTrue(hopper.testTunableKicker());
+        macropad.button(8).whileTrue(flywheel.testStaticStartFlywheel());
 
         // LAYER 1 (Shift Held)
-        macropad.button(5).whileTrue(intake.reverseScooper());
-        macropad.button(6).whileTrue(intake.reversePusher());
-        macropad.button(7).whileTrue(hopper.reverseConveyor());
-        macropad.button(8).whileTrue(hopper.reverseKicker());
-        macropad.button(9).whileTrue(flywheel.reverseFlywheel());
-        // Emergency Stop
-        // macropad.button(10).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
+        macropad.button(9).whileTrue(intake.reverseScooper());
+        macropad.button(10).whileTrue(intake.reversePusher());
+        macropad.button(11).whileTrue(hopper.reverseConveyor());
+        macropad.button(12).whileTrue(hopper.reverseKicker());
+        macropad.button(13).whileTrue(flywheel.reverseFlywheel());
 
         // LAYER 2 (Control Held)
         macropad.button(11).whileTrue(hopper.runHopperCommand());
-        macropad.button(12).whileTrue(flywheel.backupFlywheelL1());
-        macropad.button(13).whileTrue(flywheel.backupFlywheelL2());
-        macropad.button(14).whileTrue(flywheel.backupFlywheelL3());
+        macropad.button(14).whileTrue(flywheel.backupFlywheelL1());
+        macropad.button(15).whileTrue(flywheel.backupFlywheelL2());
+        macropad.button(16).whileTrue(flywheel.backupFlywheelL3());
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
