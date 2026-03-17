@@ -64,22 +64,22 @@ LAYERS = {
         3: (2, GREEN, "Extender Down 1V"),
         1: (3, YELLOW, "Flywheel Mult +"),
         4: (4, YELLOW, "Flywheel Mult -"),
-        2: (15, PURPLE, "Stat Flywheel +"),
-        5: (16, PURPLE, "Stat Flywheel -"),
-        7: (18, BLUE, "Static Kicker"),
-        8: (17, BLUE, "Static Flywheel"),
+        2: (5, PURPLE, "Tune Flywheel +"),
+        5: (6, PURPLE, "Tune Flywheel -"),
+        7: (7, BLUE, "Static Kicker"),
+        8: (8, BLUE, "Tunable Flywheel"),
     },
     "SHIFT": {
-        0: (5, RED, "Scooper Reverse"),
-        1: (6, RED, "Pusher Reverse"),
-        2: (7, RED, "Conveyor Reverse"),
-        3: (8, RED, "Kicker Reverse"),
-        4: (9, RED, "Flywheel Reverse")
+        0: (9, RED, "Scooper Reverse"),
+        1: (10, RED, "Pusher Reverse"),
+        2: (11, RED, "Conveyor Reverse"),
+        3: (12, RED, "Kicker Reverse"),
+        4: (13, RED, "Flywheel Reverse")
     },
     "CONTROL": {
-        0: (12, PURPLE, "Spin Flywheel L1"),
-        1: (13, PURPLE, "Spin Flywheel L2"),
-        2: (14, PURPLE, "Spin Flywheel L3")
+        0: (14, PURPLE, "Spin Flywheel L1"),
+        1: (15, PURPLE, "Spin Flywheel L2"),
+        2: (16, PURPLE, "Spin Flywheel L3")
     }
 }
 
