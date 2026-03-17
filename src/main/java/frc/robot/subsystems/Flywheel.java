@@ -120,15 +120,15 @@ public class Flywheel extends SubsystemBase {
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
-    public Command backupFlywheelL1() {
+    public Command spinFlywheelL1() {
         return backupFlywheelCommandHelper(2.0);
     }
 
-    public Command backupFlywheelL2() {
+    public Command spinFlywheelL2() {
         return backupFlywheelCommandHelper(3.5);
     }
 
-    public Command backupFlywheelL3() {
+    public Command spinFlywheelL3() {
         return backupFlywheelCommandHelper(5.0);
     }
 
