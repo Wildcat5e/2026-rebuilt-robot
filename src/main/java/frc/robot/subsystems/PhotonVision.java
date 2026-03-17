@@ -41,9 +41,9 @@ public class PhotonVision extends SubsystemBase {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
         for (PhotonPipelineResult result : CAMERA_2.getAllUnreadResults()) {
             visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            if (visionEst.isEmpty()) {
-                visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            }
+            // if (visionEst.isEmpty()) {
+            //     visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
+            // }
             final Matrix<N3, N1> stddev = getEstimationStdDevs(visionEst, result.getTargets());
             visionEst.ifPresent(est -> {
                 estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, TEMP_STD_DEV);
