@@ -41,8 +41,8 @@ public class OperatorConsole {
 
         // LAYER 2 (Control Held)
         macropad.button(11).whileTrue(hopper.runHopperCommand());
-        macropad.button(14).whileTrue(flywheel.backupFlywheelL1());
-        macropad.button(15).whileTrue(flywheel.backupFlywheelL2());
-        macropad.button(16).whileTrue(flywheel.backupFlywheelL3());
+        macropad.button(14).whileTrue(flywheel.spinFlywheelL1());
+        macropad.button(15).whileTrue(flywheel.spinFlywheelL2());
+        macropad.button(16).whileTrue(flywheel.spinFlywheelL3());
     }
 }
