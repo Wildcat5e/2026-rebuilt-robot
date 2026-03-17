@@ -22,13 +22,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.*;
+import frc.robot.controller.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Controller;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -43,9 +43,7 @@ public class Robot extends TimedRobot {
     private final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
-
-    private final CommandGenericHID macropad = new CommandGenericHID(4);
-
+    private final OperatorConsole operatorConsole = new OperatorConsole();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
@@ -67,6 +65,7 @@ public class Robot extends TimedRobot {
         configureAutoBuilder();
 
         bindingsSetup();
+        operatorConsole.bindMacropad(commands, flywheel, intake, hopper);
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
@@ -169,35 +168,7 @@ public class Robot extends TimedRobot {
 
         Controller.joystick.b().whileTrue(flywheel.tunableFlywheelVoltageCommand());
 
-        // --- MACROPAD BINDINGS ---
-        // LAYER 0 (No Modifiers)
-        macropad.button(1).whileTrue(intake.bumpExtenderUp());
-        macropad.button(2).whileTrue(intake.bumpExtenderDown());
-        macropad.button(3).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
-        macropad.button(4).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
-        macropad.button(15)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(0.5)).ignoringDisable(true));
-        macropad.button(16)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(-0.5)).ignoringDisable(true));
-        macropad.button(17).whileTrue(flywheel.tunableFlywheelSpeedCommand());
-        macropad.button(18).whileTrue(hopper.testTunableKicker());
 
-        // LAYER 1 (Shift Held)
-        macropad.button(5).whileTrue(intake.reverseScooper());
-        macropad.button(6).whileTrue(intake.reversePusher());
-        macropad.button(7).whileTrue(hopper.reverseConveyor());
-        macropad.button(8).whileTrue(hopper.reverseKicker());
-        macropad.button(9).whileTrue(flywheel.reverseFlywheel());
-        // Emergency Stop
-        // macropad.button(10).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
-
-        // LAYER 2 (Control Held)
-        macropad.button(11).whileTrue(hopper.runHopperCommand());
-        macropad.button(12).whileTrue(flywheel.backupFlywheelL1());
-        macropad.button(13).whileTrue(flywheel.backupFlywheelL2());
-        macropad.button(14).whileTrue(flywheel.backupFlywheelL3());
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
