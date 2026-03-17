@@ -1,5 +1,6 @@
 package frc.robot.controller;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,6 +10,7 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 
 /**
  * Controller that will use the {@link Controller} selected by the dashboard widget. For example, you can select the
@@ -18,13 +20,15 @@ import frc.robot.subsystems.Hopper;
 public class MultiController extends Controller {
     final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
-    public MultiController(Drivetrain drivetrain, RobotCommands commands, Flywheel flywheel, Hopper hopper) {
+    public MultiController(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
+        Flywheel flywheel, Hopper hopper, Intake intake) {
         DriverStation.silenceJoystickConnectionWarning(true);
         controllerChooser.setDefaultOption("Xbox Controller", new Xbox(0));
         controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
         controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
         SmartDashboard.putData("Controller Chooser", controllerChooser);
-        controllerChooser.onChange(controller -> bindingsSetup(drivetrain, commands, flywheel, hopper));
+        controllerChooser
+            .onChange(controller -> bindingsSetup(drivetrain, swerveRequest, commands, flywheel, hopper, intake));
     }
 
     @Override
