@@ -28,7 +28,6 @@ import frc.robot.commands.*;
 import frc.robot.controller.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Controller;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
@@ -40,9 +39,10 @@ public class Robot extends TimedRobot {
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
-    private final SwerveRequest.FieldCentric swerveRequest =
+    private final SwerveRequest.FieldCentric controllerSwerveReq =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
+    private final Controller controller =
+        IS_COMPETITION ? new Xbox(0) : new MultiController(drivetrain, controllerSwerveReq, null, null, null, null);
     private final OperatorConsole operatorConsole = new OperatorConsole();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     public final Flywheel flywheel = new Flywheel(drivetrain);
     public final Hopper hopper = new Hopper();
     public final Intake intake = new Intake();
-    private final RobotCommands commands = new RobotCommands(drivetrain, swerveRequest, flywheel, hopper);
+    private final RobotCommands commands = new RobotCommands(drivetrain, controllerSwerveReq, flywheel, hopper);
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     public Robot() {
         configureAutoBuilder();
 
-        bindingsSetup();
+        controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper);
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
@@ -132,43 +132,6 @@ public class Robot extends TimedRobot {
     @Override
     public void simulationPeriodic() {
         simulation.poseUpdate();
-    }
-
-    /** Sets up key/button/joystick bindings for driving and controlling the robot. */
-    public void bindingsSetup() {
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            Translation2d translation = controller.getTranslation();
-            if (Controller.allowControllerTranslation) {
-                swerveRequest.withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
-                    .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
-            }
-            if (Controller.allowControllerRotation) {
-                swerveRequest.withRotationalRate(controller.getRotation() * Controller.MAX_ANGULAR_SPEED);
-            }
-            return swerveRequest;
-        }));
-
-        // --- MAIN CONTROLLER BINDINGS ---
-        // Controller.joystick.povUp().whileTrue(intake.testExtender());
-        // Controller.joystick.povRight().whileTrue(intake.testPusher());
-        // Controller.joystick.povDown().whileTrue(intake.testScooper());
-        // Controller.joystick.povLeft().whileTrue(hopper.testConveyor());
-
-        // Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
-        // Controller.joystick.b().whileTrue(hopper.testTunableKicker());
-
-        /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
-        Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
-        Controller.joystick.rightTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.rightBumper().whileTrue(intake.testExtender());
-        Controller.joystick.a().whileTrue(commands.aimHandler);
-        Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        Controller.joystick.y().whileTrue(intake.reverseScooper());
-
-        Controller.joystick.b().whileTrue(flywheel.tunableFlywheelVoltageCommand());
-
-
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */

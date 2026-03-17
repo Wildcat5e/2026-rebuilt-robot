@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,8 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AimAtTarget;
-import frc.robot.commands.RobotCommands;
-import frc.robot.subsystems.Controller;
+import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Utilities.*;

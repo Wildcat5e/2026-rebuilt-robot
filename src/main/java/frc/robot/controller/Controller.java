@@ -11,6 +11,7 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Flywheel;
 
 /**
@@ -27,9 +28,6 @@ public abstract class Controller {
     private static final double SCALE_EXPONENT = 1;
     /** Limit max controller angular speed to prevent flicking robot around too fast and spilling balls. */
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI; // Check if this is even needed or reasonable.
-    /** Use this to create requests for driving the robot and use the drivetrain to apply them. */
-    private static final SwerveRequest.FieldCentric swerveRequest =
-        new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
     /** Change whether or not controller can control translation. */
     public static boolean allowControllerTranslation = true;
@@ -79,21 +77,31 @@ public abstract class Controller {
 
 
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
-    public void bindingsSetup(Drivetrain drivetrain, RobotCommands commands, Flywheel flywheel, Hopper hopper) {
-        // reset the field-centric heading on left trigger
-        activateIntake().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    public void bindingsSetup(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
+        Flywheel flywheel, Hopper hopper, Intake intake) {
 
-        // a and right bumper
-        // rotateToHub().whileTrue(new RotateToHub(drivetrain, true)); // PID + Shooting Calculator testing
-        // lowerIntake().whileTrue(new RotateToHub(drivetrain, false)); // Pure Feedforward + PID testing
+        // --- MAIN CONTROLLER BINDINGS ---
+        povUp().whileTrue(intake.testExtender());
+        povRight().whileTrue(intake.testPusher());
+        povDown().whileTrue(intake.testScooper());
+        povLeft().whileTrue(hopper.testConveyor());
 
-        // shootFuel().whileTrue(flywheel.testTunableFlywheel()); // b, change to right trigger
-        // shootFuel().whileTrue(hopper.testTunableKicker()); // b, change to right trigger
+        b().whileTrue(flywheel.testDynamicStartFlywheel());
+        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
-        povUp().whileTrue(flywheel.sysIdDynamicForward());
-        povRight().whileTrue(flywheel.sysIdDynamicReverse());
-        povDown().whileTrue(flywheel.sysIdQuasistaticForward());
-        povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
+        /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
+        rightTrigger().whileTrue(commands.shootFuel);
+        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
+        Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
+        Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
+        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
+        Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+        // sysid tests
+        // povUp().whileTrue(flywheel.sysIdDynamicForward());
+        // povRight().whileTrue(flywheel.sysIdDynamicReverse());
+        // povDown().whileTrue(flywheel.sysIdQuasistaticForward());
+        // povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
 
         /*
          * Tests for motor identification:
