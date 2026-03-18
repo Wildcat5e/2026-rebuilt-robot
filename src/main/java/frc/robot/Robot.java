@@ -162,8 +162,8 @@ public class Robot extends TimedRobot {
         /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
         Controller.joystick.rightTrigger().whileTrue(commands.shootFuel);
         Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
-        Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
+        Controller.joystick.rightBumper().onTrue(intake.dropArmFinalImplementation());
+        Controller.joystick.leftBumper().onTrue(intake.raiseArmFinalImplementation());
         Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
