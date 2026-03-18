@@ -111,51 +111,51 @@ public interface DashboardManager {
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
         });
 
-        SmartDashboard.putNumber("Extender kP", 0);
-        SmartDashboard.putNumber("Extender kI", 0);
-        SmartDashboard.putNumber("Extender kD", 0);
-        SmartDashboard.putNumber("Extender kS", 0);
-        SmartDashboard.putNumber("Extender kV", 0);
-        SmartDashboard.putNumber("Extender kG", 0);
-        SmartDashboard.putNumber("Extender Motion Magic Cruise Velocity", 1);
-        SmartDashboard.putNumber("Extender Motion Magic Acceleration", 2);
-        SmartDashboard.putNumber("Extender Motion Magic Jerk", 0);
+        SmartDashboard.putNumber("Extender Tuning/1: kP", 0);
+        SmartDashboard.putNumber("Extender Tuning/2: kI", 0);
+        SmartDashboard.putNumber("Extender Tuning/3: kD", 0);
+        SmartDashboard.putNumber("Extender Tuning/4: kS", 0);
+        SmartDashboard.putNumber("Extender Tuning/5: kV", 0);
+        SmartDashboard.putNumber("Extender Tuning/6: kG", 0);
+        SmartDashboard.putNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 1);
+        SmartDashboard.putNumber("Extender Tuning/8: Motion Magic Acceleration", 2);
+        SmartDashboard.putNumber("Extender Tuning/9: Motion Magic Jerk", 0);
     }
 
     static double getExtenderkP() {
-        return SmartDashboard.getNumber("Extender kP", 0);
+        return SmartDashboard.getNumber("Extender Tuning/1: kP", 0);
     }
 
     static double getExtenderkI() {
-        return SmartDashboard.getNumber("Extender kI", 0);
+        return SmartDashboard.getNumber("Extender Tuning/2: kI", 0);
     }
 
     static double getExtenderkD() {
-        return SmartDashboard.getNumber("Extender kD", 0);
+        return SmartDashboard.getNumber("Extender Tuning/3: kD", 0);
     }
 
     static double getExtenderkS() {
-        return SmartDashboard.getNumber("Extender kS", 0);
+        return SmartDashboard.getNumber("Extender Tuning/4: kS", 0);
     }
 
     static double getExtenderkV() {
-        return SmartDashboard.getNumber("Extender kV", 0);
+        return SmartDashboard.getNumber("Extender Tuning/5: kV", 0);
     }
 
     static double getExtenderkG() {
-        return SmartDashboard.getNumber("Extender kG", 0);
+        return SmartDashboard.getNumber("Extender Tuning/6: kG", 0);
     }
 
     static double getExtenderMotionMagicCruiseVelocity() {
-        return SmartDashboard.getNumber("Extender Motion Magic Cruise Velocity", 1);
+        return SmartDashboard.getNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 1);
     }
 
     static double getExtenderMotionMagicAcceleration() {
-        return SmartDashboard.getNumber("Extender Motion Magic Acceleration", 2);
+        return SmartDashboard.getNumber("Extender Tuning/8: Motion Magic Acceleration", 2);
     }
 
     static double getExtenderMotionMagicJerk() {
-        return SmartDashboard.getNumber("Extender Motion Magic Jerk", 0);
+        return SmartDashboard.getNumber("Extender Tuning/9: Motion Magic Jerk", 0);
     }
 
     static double getExtenderMotorTestVoltage() {
