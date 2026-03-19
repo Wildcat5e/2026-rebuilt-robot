@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
-public class Intake extends SubsystemBase implements MotionMagicCapable {
+public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCapable {
     /** Motor that is closer to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     private final double SCOOPER_RADIUS = 0.06858 / 2;
@@ -79,7 +79,7 @@ public class Intake extends SubsystemBase implements MotionMagicCapable {
         extenderMotorPosition = getExtenderPosition();
     }
 
-    public Command configureMotor() {
+    public Command configureExtenderMotor() {
         return runOnce(() -> {
             configureMotionMagic(extenderMotor, DashboardManager.getExtenderkP(), DashboardManager.getExtenderkI(),
                 DashboardManager.getExtenderkD(), DashboardManager.getExtenderkS(), DashboardManager.getExtenderkV(),

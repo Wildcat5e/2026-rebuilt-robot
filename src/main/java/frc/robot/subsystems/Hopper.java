@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 import static frc.robot.Utilities.*;
 
-public class Hopper extends SubsystemBase {
+public class Hopper extends SubsystemBase implements SysIdCapable {
     private final TalonFX kickerMotor = new TalonFX(14);
     private final double KICKER_RADIUS = 0.03175 / 2;
     private final double KICKER_CIRCUMFERENCE = 2 * Math.PI * KICKER_RADIUS;

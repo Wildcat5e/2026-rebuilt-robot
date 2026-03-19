@@ -118,24 +118,4 @@ public interface Utilities {
                         primaryMotor.getVelocity().getValueAsDouble() * distancePerRotation, MetersPerSecond));
             }, subsystem));
     }
-
-    /** Returns a command to run a quasistatic forward test for the given routine. */
-    static Command sysIdQuasistaticForward(SysIdRoutine routine) {
-        return routine.quasistatic(SysIdRoutine.Direction.kForward);
-    }
-
-    /** Returns a command to run a quasistatic reverse test for the given routine. */
-    static Command sysIdQuasistaticReverse(SysIdRoutine routine) {
-        return routine.quasistatic(SysIdRoutine.Direction.kReverse);
-    }
-
-    /** Returns a command to run a dynamic forward test for the given routine. */
-    static Command sysIdDynamicForward(SysIdRoutine routine) {
-        return routine.dynamic(SysIdRoutine.Direction.kForward);
-    }
-
-    /** Returns a command to run a dynamic reverse test for the given routine. */
-    static Command sysIdDynamicReverse(SysIdRoutine routine) {
-        return routine.dynamic(SysIdRoutine.Direction.kReverse);
-    }
 }
