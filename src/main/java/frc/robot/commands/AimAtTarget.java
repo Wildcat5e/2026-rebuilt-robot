@@ -1,10 +1,12 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,7 +17,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootingCalculator;
 
 import static frc.robot.Utilities.*;
-import java.util.function.Supplier;
 
 public class AimAtTarget extends Command {
     // Limit max speed to less than main controller just for safety
@@ -28,14 +29,16 @@ public class AimAtTarget extends Command {
     private final SwerveRequest.FieldCentric swerveRequest;
     private final Supplier<Translation2d> targetSupplier;
     private Translation2d target;
+    private final InterpolatingDoubleTreeMap flywheelSpeedMap;
     private Pose2d currentPose;
     private double targetHeading;
 
     public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest,
-        Supplier<Translation2d> targetSupplier) {
+        Supplier<Translation2d> targetSupplier, InterpolatingDoubleTreeMap flywheelSpeedMap) {
         this.drivetrain = drivetrain;
         this.swerveRequest = swerveRequest;
         this.targetSupplier = targetSupplier;
+        this.flywheelSpeedMap = flywheelSpeedMap;
         registerTelemetry();
     }
 
@@ -49,7 +52,7 @@ public class AimAtTarget extends Command {
     @Override
     public void execute() {
         currentPose = drivetrain.getState().Pose;
-        targetHeading = ShootingCalculator.calculate(drivetrain, target).robotHeading();
+        targetHeading = ShootingCalculator.calculate(drivetrain, target, flywheelSpeedMap).robotHeading();
         // --- 1. Feedforward ---
         double feedforwardVelocity = getFeedforwardVelocity(currentPose, target);
 
