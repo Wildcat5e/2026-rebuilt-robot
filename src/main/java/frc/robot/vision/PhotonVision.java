@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.DashboardManager;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -29,6 +30,8 @@ public class PhotonVision extends SubsystemBase {
     private final PhotonPoseEstimator poseEstimator;
     private final PoseEstimateConsumer poseEstimateConsumer;
     private final Map<Integer, Pose2d> aprilTagPoses;
+    private double numOfTags;
+    private double averageDistance;
 
     /**
      * @param camera The camera to use for pose estimation. Make sure to set the correct camera name and robot-to-camera
@@ -43,10 +46,11 @@ public class PhotonVision extends SubsystemBase {
         this.poseEstimator = estimator;
         // Only convert AprilTags to poses once since the field layout is static. Map tag ID to pose for fast lookup during pose estimation.
         // @formatter:off
-        this.aprilTagPoses = estimator.getFieldTags()
-                                      .getTags()
-                                      .stream()
-                                      .collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d())); // @formatter:on
+            this.aprilTagPoses = estimator.getFieldTags()
+                                          .getTags()
+                                          .stream()
+                                          .collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d())); // @formatter:on
+        DashboardManager.setupVision(() -> numOfTags, () -> averageDistance);
     }
 
 
@@ -72,11 +76,13 @@ public class PhotonVision extends SubsystemBase {
 
             // Convert targets to April Tag 2d poses, removing null values
             // @formatter:off
-            var tagPoses = result.targets.stream()
-                                         .map(PhotonTrackedTarget::getFiducialId)
-                                         .map(aprilTagPoses::get)
-                                         .filter(Objects::nonNull)
-                                         .toList(); // @formatter:on
+                var tagPoses = result.targets.stream()
+                                             .map(PhotonTrackedTarget::getFiducialId)
+                                             .map(aprilTagPoses::get)
+                                             .filter(Objects::nonNull)
+                                             .toList(); // @formatter:on
+
+            numOfTags = tagPoses.size();
 
             if (tagPoses.isEmpty()) {
                 // No valid April Tag poses for the targets in this result, skip it since we can't calculate distances to tags.
@@ -90,12 +96,12 @@ public class PhotonVision extends SubsystemBase {
             // This gives us a rough idea of how far the robot is from the tags it sees,
             // which is a major factor in pose estimation accuracy. We use this to adjust our
             // confidence in the pose estimate (i.e. the standard deviation we pass to the consumer).
-            var averageDistance =
+            averageDistance =
                 tagPoses.stream().map(tagPose -> tagPose.getTranslation().getDistance(poseEstimate2d.getTranslation()))
-                    .reduce(0.0, Double::sum) / tagPoses.size();
+                    .reduce(0.0, Double::sum) / numOfTags;
 
 
-            if (tagPoses.size() > 1) {
+            if (numOfTags > 1) {
                 // For multiple tags, we can be more confident in the pose estimate, so we use a lower standard deviation.
                 // However, we still want to account for distance to the tags, since farther tags generally lead to less
                 // accurate estimates. This heuristic scales the standard deviation based on the average distance to the tags,

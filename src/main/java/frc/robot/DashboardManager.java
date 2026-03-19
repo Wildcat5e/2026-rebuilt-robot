@@ -48,6 +48,7 @@ public interface DashboardManager {
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
     }
 
+
     // =====================================
     // Subsystem: Hopper
     // =====================================
@@ -128,6 +129,18 @@ public interface DashboardManager {
 
     static double getPusherMotorTestVoltage() {
         return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0);
+    }
+
+    // =====================================
+    // Subsystem: PhotonVision
+    // =====================================
+
+    static void setupVision(DoubleSupplier numberOfTagsSupplier, DoubleSupplier averageDistanceTagsSupplier) {
+        SmartDashboard.putData("Photon Data", builder -> {
+            builder.addDoubleProperty("Number of Tags", () -> round(numberOfTagsSupplier.getAsDouble(), 2), null);
+            builder.addDoubleProperty("Average Distance", () -> round(averageDistanceTagsSupplier.getAsDouble(), 3),
+                null);
+        });
     }
 
     // =====================================
