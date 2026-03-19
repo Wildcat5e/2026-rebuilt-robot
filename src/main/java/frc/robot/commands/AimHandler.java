@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
 import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
@@ -24,9 +25,7 @@ public class AimHandler extends Command {
     @Override
     public void initialize() {
         activeCommand = chooseCommand();
-        if (activeCommand != null) {
-            activeCommand.initialize();
-        }
+        scheduleActive();
     }
 
     @Override
@@ -34,26 +33,16 @@ public class AimHandler extends Command {
         Command newCommand = chooseCommand();
 
         if (newCommand != activeCommand) {
-            if (activeCommand != null) {
-                activeCommand.end(true);
-            }
+            cancelActive();
 
             activeCommand = newCommand;
-            if (activeCommand != null) {
-                activeCommand.initialize();
-            }
-        }
-
-        if (activeCommand != null) {
-            activeCommand.execute();
+            scheduleActive();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (activeCommand != null) {
-            activeCommand.end(interrupted);
-        }
+        cancelActive();
     }
 
     /** @return The specific AimAtTarget command to run, or null if in the deadzone. */
@@ -70,5 +59,13 @@ public class AimHandler extends Command {
         }
 
         return null;
+    }
+
+    private void scheduleActive() {
+        if (activeCommand != null) CommandScheduler.getInstance().schedule(activeCommand);
+    }
+
+    private void cancelActive() {
+        if (activeCommand != null) CommandScheduler.getInstance().cancel(activeCommand);
     }
 }
