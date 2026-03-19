@@ -150,12 +150,11 @@ public class Robot extends TimedRobot {
             return swerveRequest;
         }));
 
-        // --- MAIN CONTROLLER BINDINGS ---
-        Controller.joystick.povUp().whileTrue(intake.testExtender());
-        Controller.joystick.povRight().whileTrue(intake.testPusher());
-        Controller.joystick.povDown().whileTrue(intake.testScooper());
-        Controller.joystick.povLeft().whileTrue(hopper.testConveyor());
+        // --- SYSID BINDINGS ---
+        // Comment out when not using
+        setupMotorTuningBindings();
 
+        // --- MAIN CONTROLLER BINDINGS ---
         Controller.joystick.b().whileTrue(flywheel.testDynamicStartFlywheel());
         Controller.joystick.b().whileTrue(hopper.testTunableKicker());
 
@@ -191,6 +190,21 @@ public class Robot extends TimedRobot {
         macropad.button(12).whileTrue(flywheel.backupFlywheelL1());
         macropad.button(13).whileTrue(flywheel.backupFlywheelL2());
         macropad.button(14).whileTrue(flywheel.backupFlywheelL3());
+    }
+
+    /** Groups all SysId and extender tuning bindings. */
+    private void setupMotorTuningBindings() {
+        // Change this to the subsystem being characterized
+        // Valid options: flywheel, intake, hopper
+        SysIdCapable subsystemToTest = flywheel;
+
+        Controller.joystick.povUp().whileTrue(subsystemToTest.sysIdQuasistaticForward());
+        Controller.joystick.povDown().whileTrue(subsystemToTest.sysIdQuasistaticReverse());
+        Controller.joystick.povRight().whileTrue(subsystemToTest.sysIdDynamicForward());
+        Controller.joystick.povLeft().whileTrue(subsystemToTest.sysIdDynamicReverse());
+
+        // Apply MotionMagic configuration using constants from Elastic dashboard on the fly (extender only)
+        Controller.joystick.back().onTrue(intake.configureExtenderMotor());
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
