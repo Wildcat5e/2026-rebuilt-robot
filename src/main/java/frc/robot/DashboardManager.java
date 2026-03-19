@@ -29,17 +29,15 @@ public interface DashboardManager {
     // =====================================
     // Robot (Init & Periodic)
     // =====================================
-    public static void setupRobotInit(Field2d fieldWidget, SendableChooser<Command> autoChooser,
-        Drivetrain drivetrain) {
-        SmartDashboard.putData("Field", fieldWidget);
+    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain) {
+        SmartDashboard.putData("Field", field);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("Robot Telemetry", builder -> {
             builder.addDoubleProperty("Distance to Hub (m)", () -> round(getHubDistance(drivetrain), 3), null);
         });
-        if (!Robot.IS_COMPETITION) {
-            SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
-        }
+
+        if (!Robot.IS_COMPETITION) SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
     }
 
     static void updateRobotPeriodic(Drivetrain drivetrain) {
@@ -68,20 +66,17 @@ public interface DashboardManager {
     // =====================================
     // Subsystem: Flywheel
     // =====================================
-    static void setupFlywheel(DoubleSupplier currentSpeedSupplier, DoubleSupplier targetSpeedSupplier,
-        DoubleSupplier averageSpeedSupplier, DoubleSupplier calculatedVoltageSupplier) {
+    static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp,
+        DoubleSupplier calculatedVoltageSupp) {
+        SmartDashboard.putNumber("Target Flywheel Speed (m∕s)", 0);
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.04);
         SmartDashboard.putNumber("Static Flywheel Speed", 10);
         SmartDashboard.putData("Flywheel Telemetry", builder -> {
-            builder.addDoubleProperty("Current Speed (m\u2215s)", () -> round(currentSpeedSupplier.getAsDouble(), 3),
-                null);
-            builder.addDoubleProperty("5s Avg Speed (m\u2215s)", () -> round(averageSpeedSupplier.getAsDouble(), 3),
-                null);
-            builder.addDoubleProperty("Target Speed (m\u2215s)", () -> round(targetSpeedSupplier.getAsDouble(), 3),
-                null);
-            builder.addDoubleProperty("Calculated Voltage", () -> round(calculatedVoltageSupplier.getAsDouble(), 3),
-                null);
+            builder.addDoubleProperty("Current Speed (m\u2215s)", () -> round(currSpeedSupp.getAsDouble(), 3), null);
+            builder.addDoubleProperty("5s Avg Speed (m\u2215s)", () -> round(avgSpeedSupp.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Target Speed (m\u2215s)", () -> round(targetSpeedSupp.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Calculated Voltage", () -> round(calculatedVoltageSupp.getAsDouble(), 3), null);
         });
     }
 
@@ -137,25 +132,19 @@ public interface DashboardManager {
     // Controllers
     // =====================================
     static void setupController(SendableChooser<Controller> controllerChooser) {
-        if (!Robot.IS_COMPETITION) {
-            SmartDashboard.putData("Controller Chooser", controllerChooser);
-        }
+        if (!Robot.IS_COMPETITION) SmartDashboard.putData("Controller Chooser", controllerChooser);
     }
 
     // =====================================
     // Commands: RotateToHub
     // =====================================
-    static void setupRotateToHub(BooleanSupplier useShootingCalculatorSupplier, Supplier<Pose2d> currentPoseSupplier,
-        DoubleSupplier targetHeadingSupplier, DoubleSupplier angDiffSupplier) {
+    static void setupRotateToHub(BooleanSupplier useShootingCalculatorSupp, Supplier<Pose2d> currPoseSupp,
+        DoubleSupplier targetHeadingSupp, DoubleSupplier angDiffSupp) {
         SmartDashboard.putData("RotateToHub Telemetry", builder -> { // @formatter:off
-            builder.addBooleanProperty("Enable Shooting Calculator",
-                useShootingCalculatorSupplier, null);
-            builder.addDoubleProperty("Robot Rotation",
-                () -> round(currentPoseSupplier.get().getRotation().getDegrees(), 1), null);
-            builder.addDoubleProperty("Target Heading",
-                () -> round(Math.toDegrees(targetHeadingSupplier.getAsDouble()), 1), null);
-            builder.addDoubleProperty("Angle Difference",
-                () -> round(Math.toDegrees(angDiffSupplier.getAsDouble()), 1), null);
+            builder.addBooleanProperty("Enable Shooting Calculator", useShootingCalculatorSupp, null);
+            builder.addDoubleProperty("Robot Rotation", () -> round(currPoseSupp.get().getRotation().getDegrees(), 1), null);
+            builder.addDoubleProperty("Target Heading", () -> round(Math.toDegrees(targetHeadingSupp.getAsDouble()), 1), null);
+            builder.addDoubleProperty("Angle Difference", () -> round(Math.toDegrees(angDiffSupp.getAsDouble()), 1), null);
         }); // @formatter:on
     }
 
