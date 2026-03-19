@@ -17,6 +17,11 @@ public interface MotionMagicCapable {
     /** @return The subsystem itself (usually 'this') for command requirements. */
     Subsystem getAssociatedSubsystem();
 
+    /** @return The current position of the Motion Magic mechanism. */
+    default double getMechanismPosition() {
+        return getMotionMagicMotor().getPosition().getValueAsDouble();
+    }
+
     /**
      * Generates a WPILib Command to smoothly move the mechanism to a target position.
      * 

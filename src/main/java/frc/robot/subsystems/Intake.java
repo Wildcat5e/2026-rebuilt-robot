@@ -76,7 +76,7 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
 
     @Override
     public void periodic() {
-        extenderMotorPosition = getExtenderPosition();
+        extenderMotorPosition = getMechanismPosition();
     }
 
     public Command configureExtenderMotor() {
@@ -154,10 +154,5 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
     public Command bumpExtenderDown() {
         return startEnd(() -> extenderMotor.setVoltage(1), () -> extenderMotor.setVoltage(0))
             .withName("Bump Extender Down");
-    }
-
-    /** @return Extender motor's position in REVOLUTIONS */
-    public double getExtenderPosition() {
-        return extenderMotor.getPosition().getValueAsDouble();
     }
 }
