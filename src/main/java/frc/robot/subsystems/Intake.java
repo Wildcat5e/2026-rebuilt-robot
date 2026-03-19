@@ -77,7 +77,7 @@ public class Intake extends SubsystemBase {
     }
 
     public Command dropIntake() {
-        return startEnd(() -> extenderMotor.setVoltage(1), () -> extenderMotor.setVoltage(0));
+        return startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0));
     }
 
     public void spinPusher() {
