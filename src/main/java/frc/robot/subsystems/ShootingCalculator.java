@@ -11,15 +11,15 @@ import static frc.robot.Utilities.*;
 /**
  * A helper class to calculate shooting parameters while moving.<br>
  * <br>
- * Assumptions: <br>
- * 1) Robot position and velocity are Field-Centric.<br>
+ * The math assumes that: <br>
+ * 1) Robot position and velocity are Field-Centric (some conversion is necessary for this).<br>
  * 2) Hood angle is fixed.<br>
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
     /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
     // @formatter:off
-    static final InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
+    InterpolatingDoubleTreeMap FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
         Map.entry(2.28, 14.35),
@@ -28,7 +28,7 @@ public interface ShootingCalculator {
         Map.entry(4.9, 17.55)); // @formatter:on
 
     // Returned by calculate()
-    static record ShotSolution(double flywheelSpeed, double robotHeading) {}
+    record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
     /**
      * Calculates the necessary robot heading and shot speed to hit the target while moving.
