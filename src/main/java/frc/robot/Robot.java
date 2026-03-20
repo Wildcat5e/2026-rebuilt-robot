@@ -54,17 +54,16 @@ public class Robot extends TimedRobot {
         NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
     private final StringPublisher elasticTabPublisher = elasticTabTopic.publish(PubSubOption.keepDuplicates(true));
     /** Contains all the commands we use and needs to be instantiated after running {@link #configureAutoBuilder()}. */
-    private final RobotCommands commands;
     public final Flywheel flywheel = new Flywheel(drivetrain);
     public final Hopper hopper = new Hopper();
     public final Intake intake = new Intake();
+    private final RobotCommands commands = new RobotCommands(drivetrain, flywheel, intake, hopper);
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
     /** This function is run when the robot is first started up and should be used for any initialization code. */
     public Robot() {
         configureAutoBuilder();
-        commands = new RobotCommands(drivetrain, flywheel, intake, hopper);
 
         bindingsSetup();
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
