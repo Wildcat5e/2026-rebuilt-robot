@@ -34,12 +34,12 @@ public class PhotonVision extends SubsystemBase {
     private final PhotonPoseEstimator poseEstimator;
     private final PoseEstimateConsumer poseEstimateConsumer;
     private final Map<Integer, Pose2d> aprilTagPoses;
-    private double numOfTags;
-    private double averageDistance;
-    private String stddevCategory;
-    private double stddevX;
-    private double stddevY;
-    private double stddevRotation;
+    private double numOfTags = 0;
+    private double averageDistance = 0;
+    private String stddevCategory = "DEFAULT";
+    private double stddevX = 0;
+    private double stddevY = 0;
+    private double stddevRotation = 0;
 
 
     /**
@@ -112,21 +112,23 @@ public class PhotonVision extends SubsystemBase {
                 // However, we still want to account for distance to the tags, since farther tags generally lead to less
                 // accurate estimates. This heuristic scales the standard deviation based on the average distance to the tags,
                 // with a cap at around 4 meters (since beyond that, vision is generally not very reliable).
-                var standardDeviation = MULTI_TAG_STD_DEV.times(1 * (averageDistance * averageDistance / 30.0));
+                var standardDeviation = MULTI_TAG_STD_DEV.times(DashboardManager.getStandardDeviationMultiplier()
+                    * (1 * (averageDistance * averageDistance / 30.0)));
                 poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, standardDeviation);
                 stddevCategory = "Multi-Tag";
-                stddevX = standardDeviation.get(1, 1);
-                stddevY = standardDeviation.get(2, 1);
-                stddevRotation = standardDeviation.get(3, 1);
+                stddevX = standardDeviation.get(0, 0);
+                stddevY = standardDeviation.get(1, 0);
+                stddevRotation = standardDeviation.get(2, 0);
             } else if (averageDistance <= 4.0) {
                 // Only use single tag pose estimate if the average distance is less than 4 meters.
                 // This is an empirical threshold based on testing that balances trusting single tag estimates
                 // when they are likely accurate and ignoring them when they are likely inaccurate.
-                poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, SINGLE_TAG_STD_DEV);
+                var standardDeviation = SINGLE_TAG_STD_DEV.times(DashboardManager.getStandardDeviationMultiplier());
+                poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, standardDeviation);
                 stddevCategory = "Single-Tag (Less than 4 meters)";
-                stddevX = SINGLE_TAG_STD_DEV.get(1, 1);
-                stddevY = SINGLE_TAG_STD_DEV.get(2, 1);
-                stddevRotation = SINGLE_TAG_STD_DEV.get(3, 1);
+                stddevX = SINGLE_TAG_STD_DEV.get(0, 0);
+                stddevY = SINGLE_TAG_STD_DEV.get(1, 0);
+                stddevRotation = SINGLE_TAG_STD_DEV.get(2, 0);
             } else {
                 stddevCategory = "Single-Tag (NOT USED, GREATER THAN 4 METERS)";
             }

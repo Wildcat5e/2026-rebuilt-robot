@@ -148,6 +148,11 @@ public interface DashboardManager {
                 null);
             builder.addStringProperty("Standard Deviation Category", stddevCategorySupplier, null);
         });
+        SmartDashboard.putNumber("Standard Deviation Multiplier", 1.0);
+    }
+
+    static double getStandardDeviationMultiplier() {
+        return SmartDashboard.getNumber("Standard Deviation Multiplier", 1.0);
     }
 
     // =====================================
