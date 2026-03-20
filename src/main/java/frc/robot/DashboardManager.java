@@ -135,11 +135,18 @@ public interface DashboardManager {
     // Subsystem: PhotonVision
     // =====================================
 
-    static void setupVision(DoubleSupplier numberOfTagsSupplier, DoubleSupplier averageDistanceTagsSupplier) {
+    static void setupVision(DoubleSupplier numberOfTagsSupplier, DoubleSupplier averageDistanceTagsSupplier,
+        DoubleSupplier stddevX, DoubleSupplier stddevY, DoubleSupplier stddevRotation,
+        Supplier<String> stddevCategorySupplier) {
         SmartDashboard.putData("Photon Data", builder -> {
             builder.addDoubleProperty("Number of Tags", () -> round(numberOfTagsSupplier.getAsDouble(), 2), null);
             builder.addDoubleProperty("Average Distance", () -> round(averageDistanceTagsSupplier.getAsDouble(), 3),
                 null);
+            builder.addDoubleProperty("Standard Deviation X", () -> round(stddevX.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Y", () -> round(stddevY.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Rotation", () -> round(stddevRotation.getAsDouble(), 3),
+                null);
+            builder.addStringProperty("Standard Deviation Category", stddevCategorySupplier, null);
         });
     }
 

@@ -32,6 +32,11 @@ public class PhotonVision extends SubsystemBase {
     private final Map<Integer, Pose2d> aprilTagPoses;
     private double numOfTags;
     private double averageDistance;
+    private String stddevCategory;
+    private double stddevX;
+    private double stddevY;
+    private double stddevRotation;
+
 
     /**
      * @param camera The camera to use for pose estimation. Make sure to set the correct camera name and robot-to-camera
@@ -50,9 +55,9 @@ public class PhotonVision extends SubsystemBase {
                                           .getTags()
                                           .stream()
                                           .collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d())); // @formatter:on
-        DashboardManager.setupVision(() -> numOfTags, () -> averageDistance);
+        DashboardManager.setupVision(() -> numOfTags, () -> averageDistance, () -> stddevX, () -> stddevY,
+            () -> stddevRotation, () -> stddevCategory);
     }
-
 
     public PhotonVision(PoseEstimateConsumer estimateConsumer) {
         this(new PhotonCamera("HD_Pro_Webcam_C920"),
@@ -100,7 +105,6 @@ public class PhotonVision extends SubsystemBase {
                 tagPoses.stream().map(tagPose -> tagPose.getTranslation().getDistance(poseEstimate2d.getTranslation()))
                     .reduce(0.0, Double::sum) / numOfTags;
 
-
             if (numOfTags > 1) {
                 // For multiple tags, we can be more confident in the pose estimate, so we use a lower standard deviation.
                 // However, we still want to account for distance to the tags, since farther tags generally lead to less
@@ -108,11 +112,21 @@ public class PhotonVision extends SubsystemBase {
                 // with a cap at around 4 meters (since beyond that, vision is generally not very reliable).
                 var standardDeviation = MULTI_TAG_STD_DEV.times(1 * (averageDistance * averageDistance / 30.0));
                 poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, standardDeviation);
+                stddevCategory = "Multi-Tag";
+                stddevX = standardDeviation.get(1, 1);
+                stddevY = standardDeviation.get(2, 1);
+                stddevRotation = standardDeviation.get(3, 1);
             } else if (averageDistance <= 4.0) {
                 // Only use single tag pose estimate if the average distance is less than 4 meters.
                 // This is an empirical threshold based on testing that balances trusting single tag estimates
                 // when they are likely accurate and ignoring them when they are likely inaccurate.
                 poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, SINGLE_TAG_STD_DEV);
+                stddevCategory = "Single-Tag (Less than 4 meters)";
+                stddevX = SINGLE_TAG_STD_DEV.get(1, 1);
+                stddevY = SINGLE_TAG_STD_DEV.get(2, 1);
+                stddevRotation = SINGLE_TAG_STD_DEV.get(3, 1);
+            } else {
+                stddevCategory = "Single-Tag (NOT USED, GREATER THAN 4 METERS)";
             }
         }
     }
