@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
@@ -35,13 +34,12 @@ import frc.robot.subsystems.*;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    public static final boolean IS_COMPETITION = false;
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     public static final SwerveRequest.FieldCentric swerveRequest =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller = IS_COMPETITION ? new Controller.Xbox(0) : new Controller.MultiController();
+    private final Controller controller                          = !DriverStation.isTest() ? new Controller.Xbox(0) : new Controller.MultiController();
 
     private final CommandGenericHID macropad = new CommandGenericHID(4);
 
@@ -89,7 +87,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        if (IS_COMPETITION) elasticTabPublisher.set("Autonomous");
+        if (!DriverStation.isTest()) elasticTabPublisher.set("Autonomous");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
         }
@@ -101,7 +99,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-        if (IS_COMPETITION) elasticTabPublisher.set("Teleoperated");
+        if (!DriverStation.isTest()) elasticTabPublisher.set("Teleoperated");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
         }
@@ -229,4 +227,5 @@ public class Robot extends TimedRobot {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
         }
     }// @formatter:on
+
 }

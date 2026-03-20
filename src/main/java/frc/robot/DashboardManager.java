@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +38,7 @@ public interface DashboardManager {
         SmartDashboard.putData("Robot Telemetry", builder -> {
             builder.addDoubleProperty("Distance to Hub (m)", () -> round(getHubDistance(drivetrain), 3), null);
         });
-        if (!Robot.IS_COMPETITION) {
+        if (DriverStation.isTest()) {
             SmartDashboard.putData("RotateToHub PID Controller", RotateToHub.PID_CONTROLLER);
         }
     }
@@ -137,7 +138,7 @@ public interface DashboardManager {
     // Controllers
     // =====================================
     static void setupController(SendableChooser<Controller> controllerChooser) {
-        if (!Robot.IS_COMPETITION) {
+        if (DriverStation.isTest()) {
             SmartDashboard.putData("Controller Chooser", controllerChooser);
         }
     }
