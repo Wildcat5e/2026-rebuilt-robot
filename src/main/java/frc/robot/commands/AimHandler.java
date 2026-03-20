@@ -9,17 +9,17 @@ import frc.robot.subsystems.Drivetrain;
 public class AimHandler extends Command {
     private final Drivetrain drivetrain;
     private final AimAtTarget aimAtHub;
-    private final AimAtTarget aimAtLeftHome;
-    private final AimAtTarget aimAtRightHome;
+    private final AimAtTarget aimAtUpperHome;
+    private final AimAtTarget aimAtLowerHome;
 
     private Command activeCommand;
 
-    public AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtLeftHome,
-        AimAtTarget aimAtRightHome) {
+    public AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtUpperHome,
+        AimAtTarget aimAtLowerHome) {
         this.drivetrain = drivetrain;
         this.aimAtHub = aimAtHub;
-        this.aimAtLeftHome = aimAtLeftHome;
-        this.aimAtRightHome = aimAtRightHome;
+        this.aimAtUpperHome = aimAtUpperHome;
+        this.aimAtLowerHome = aimAtLowerHome;
     }
 
     @Override
@@ -53,11 +53,10 @@ public class AimHandler extends Command {
 
         double yPosition = drivetrain.getState().Pose.getY();
         if (yPosition > 4.25) {
-            return Robot.isBlueAlliance ? aimAtLeftHome : aimAtRightHome;
+            return aimAtUpperHome;
         } else if (yPosition < 3.75) {
-            return Robot.isBlueAlliance ? aimAtRightHome : aimAtLeftHome;
+            return aimAtLowerHome;
         }
-
         return null;
     }
 

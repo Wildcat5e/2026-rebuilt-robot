@@ -36,10 +36,10 @@ public interface Constants {
     /** x-coordinate Threshold for Red Alliance Home Zone */
     double RED_X_AXIS_HOME_THRESHOLD = 12.54;
 
-    /** index zero is blue */
-    List<Translation2d> LEFT_HOMES = List.of(new Translation2d(2, 6.25), new Translation2d(14.5, 6.25));
-    /** index zero is blue */
-    List<Translation2d> RIGHT_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
+    /** Index 0 is Blue. Upper homes are Blue Left and Red Right. */
+    List<Translation2d> UPPER_HOMES = List.of(new Translation2d(2, 6.25), new Translation2d(14.5, 6.25));
+    /** Index 0 is Blue. Lower homes are Blue Right and Red Left. */
+    List<Translation2d> LOWER_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
 
     /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
     // @formatter:off

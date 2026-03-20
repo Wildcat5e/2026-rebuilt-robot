@@ -15,8 +15,8 @@ import frc.robot.subsystems.Intake;
 
 public class RobotCommands {
     public final AimAtTarget aimAtHub;
-    public final AimAtTarget aimAtLeftHome;
-    public final AimAtTarget aimAtRightHome;
+    public final AimAtTarget aimAtUpperHome;
+    public final AimAtTarget aimAtLowerHome;
     public final AimHandler aimHandler;
     // public final Paths paths;
     public final ShootFuel shootFuel;
@@ -25,11 +25,11 @@ public class RobotCommands {
         Hopper hopper) {
         aimAtHub =
             new AimAtTarget(drivetrain, swerveRequest, flywheel, Utilities::getHubPosition, HUB_FLYWHEEL_SPEEDS_MAP);
-        aimAtLeftHome =
+        aimAtUpperHome =
             new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getLeftHome, HOME_FLYWHEEL_SPEEDS_MAP);
-        aimAtRightHome =
+        aimAtLowerHome =
             new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getRightHome, HOME_FLYWHEEL_SPEEDS_MAP);
-        aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtLeftHome, aimAtRightHome);
+        aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtUpperHome, aimAtLowerHome);
         // paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
     }
@@ -39,11 +39,11 @@ public class RobotCommands {
 
     /** @return Translation2d of the Left Home for the current alliance. */
     static Translation2d getLeftHome() {
-        return Robot.isBlueAlliance ? Constants.LEFT_HOMES.get(0) : Constants.LEFT_HOMES.get(1);
+        return Robot.isBlueAlliance ? Constants.UPPER_HOMES.get(0) : Constants.UPPER_HOMES.get(1);
     }
 
     /** @return Translation2d of the Left Home for the current alliance. */
     static Translation2d getRightHome() {
-        return Robot.isBlueAlliance ? Constants.RIGHT_HOMES.get(0) : Constants.RIGHT_HOMES.get(1);
+        return Robot.isBlueAlliance ? Constants.LOWER_HOMES.get(0) : Constants.LOWER_HOMES.get(1);
     }
 }
