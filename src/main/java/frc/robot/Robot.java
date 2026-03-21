@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
     public final Flywheel flywheel = new Flywheel(drivetrain);
     public final Hopper hopper = new Hopper();
     public final Intake intake = new Intake();
-    private final RobotCommands commands = new RobotCommands(drivetrain, flywheel, intake, hopper);
+    private final RobotCommands commands = new RobotCommands(drivetrain, flywheel, hopper);
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
