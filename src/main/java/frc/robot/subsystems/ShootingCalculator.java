@@ -1,13 +1,11 @@
 package frc.robot.subsystems;
 
-import java.util.Map;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants;
 import frc.robot.DashboardManager;
-import frc.robot.Robot;
 import static frc.robot.Utilities.*;
 
 /**
@@ -54,10 +52,8 @@ public interface ShootingCalculator {
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
         double newFlywheelSpeed = newShotHorizontalSpeed / Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
-        if (!Robot.IS_COMPETITION) {
-            // 7. Multiply by flywheel speed multiplier from dashboard
-            newFlywheelSpeed *= DashboardManager.getFlywheelSpeedMultiplier();
-        }
+        // 7. Multiply by flywheel speed multiplier from dashboard
+        newFlywheelSpeed *= DashboardManager.getFlywheelSpeedMultiplier();
 
         return new ShotSolution(newFlywheelSpeed, targetHeading);
     }
