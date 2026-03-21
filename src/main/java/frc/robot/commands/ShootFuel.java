@@ -14,10 +14,9 @@ public class ShootFuel extends Command {
     Drivetrain drivetrain;
     boolean flywheelUpToSpeed;
 
-    public ShootFuel(Flywheel flywheel, Hopper hopper, Intake intake, Drivetrain drivetrain) {
+    public ShootFuel(Flywheel flywheel, Hopper hopper, Drivetrain drivetrain) {
         this.flywheel = flywheel;
         this.hopper = hopper;
-        this.intake = intake;
         this.drivetrain = drivetrain;
         addRequirements(flywheel, hopper);
     }

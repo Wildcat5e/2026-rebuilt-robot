@@ -24,6 +24,25 @@
           }
         },
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Start to Depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -34,7 +53,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Right Start to Shooting"
+                        "pathName": "Depot to Shooting"
                       }
                     },
                     {
@@ -44,7 +63,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 5.0
+                              "waitTime": 7.5
                             }
                           },
                           {
