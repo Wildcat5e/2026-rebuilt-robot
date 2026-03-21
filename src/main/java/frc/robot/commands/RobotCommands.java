@@ -34,9 +34,6 @@ public class RobotCommands {
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
     }
 
-    public record PositionAndFlywheelSpeedMap(Translation2d target, InterpolatingDoubleTreeMap flywheelSpeedMap) {}
-
-
     /** @return Translation2d of the Upper Home for the current Alliance. */
     static Translation2d getUpperHome() {
         return Robot.isBlueAlliance ? Constants.UPPER_HOMES.get(0) : Constants.UPPER_HOMES.get(1);
