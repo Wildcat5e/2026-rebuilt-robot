@@ -33,8 +33,8 @@ public class PhotonVision extends SubsystemBase {
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
     public static PhotonCamera photonCamera1 = new PhotonCamera("HD_Pro_Webcam_C920");
-    public static PhotonCamera photonCamera2 = new PhotonCamera("goated awesome streamer cam");
-    public static Transform3d ROBOT_TO_CAMERA1 = new Transform3d(-0.07, .295, .57, Rotation3d.kZero);
+    public static PhotonCamera photonCamera2 = new PhotonCamera("C922_Pro_Stream_Webcam");
+    public static Transform3d ROBOT_TO_CAMERA1 = new Transform3d(-0.318, .21, .267, new Rotation3d(0, 0, 0));
     public static Transform3d ROBOT_TO_CAMERA2 = new Transform3d(0.07, -.295, -.57, Rotation3d.kZero);
     private PhotonPoseEstimator poseEstimator1 =
         new PhotonPoseEstimator(AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded), ROBOT_TO_CAMERA1);
