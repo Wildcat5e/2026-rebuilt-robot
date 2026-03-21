@@ -68,7 +68,7 @@ public class Flywheel extends SubsystemBase {
     public Command hubRunFlywheelCommand() {
         return runEnd(() -> {
             // This code is run every 20 ms
-            ShotSolution shotSolution =
+            var shotSolution =
                 ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
@@ -98,7 +98,7 @@ public class Flywheel extends SubsystemBase {
 
     /** Spins flywheel and calculates speed based on distance. */
     public void hubRunFlywheel() {
-        ShotSolution shotSolution =
+        var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -114,7 +114,7 @@ public class Flywheel extends SubsystemBase {
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void homeRunFlywheel() {
         // THIS NEEDS TO BE EDITED TO USE THE INTERPOLATION TABLE FOR SHOOTING FROM NEUTRAL ZONE
-        ShotSolution shotSolution =
+        var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HOME_FLYWHEEL_SPEEDS_MAP); // temp get hub
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
