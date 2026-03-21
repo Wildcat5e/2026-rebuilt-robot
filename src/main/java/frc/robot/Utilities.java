@@ -32,7 +32,10 @@ public interface Utilities {
         return Math.atan2((target.getY() - currentPose.getY()), (target.getX() - currentPose.getX()));
     }
 
-    /** @deprecated This needs to be replaced/removed because of {@link frc.robot.subsystems.ShootingCalculator } */
+    /**
+     * @deprecated This needs to be replaced/removed because of {@link frc.robot.subsystems.ShootingCalculator } and
+     *             because reversed shooter.
+     */
     static boolean withinShootingAngle(Drivetrain drivetrain, Translation2d target) {
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
         double angleDiff = MathUtil.angleModulus(getRobotToTargetAngle(drivetrain, target) - robotRotation);
