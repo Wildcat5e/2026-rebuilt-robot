@@ -2,12 +2,10 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -48,12 +46,11 @@ public class PhotonVision extends SubsystemBase {
 
     private void processResults(int index) {
         for (PhotonPipelineResult result : CAMERAS.get(index).getAllUnreadResults()) {
-            Optional<EstimatedRobotPose> visionEst = ESTIMATORS.get(index).estimateCoprocMultiTagPose(result);
-            if (visionEst.isEmpty()) {
-                visionEst = ESTIMATORS.get(index).estimateLowestAmbiguityPose(result);
-            }
-            final Matrix<N3, N1> stddev = getEstimationStdDevs(visionEst, result.getTargets(), index);
-            visionEst.ifPresent(est -> {
+            var optionalPoseEstimate = ESTIMATORS.get(index).estimateCoprocMultiTagPose(result)
+                .or(() -> ESTIMATORS.get(index).estimateLowestAmbiguityPose(result));
+
+            optionalPoseEstimate.ifPresent((est) -> {
+                Matrix<N3, N1> stddev = getEstimationStdDevs(est, result, index);
                 estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, stddev);
             });
         }
@@ -64,27 +61,25 @@ public class PhotonVision extends SubsystemBase {
      * on number of tags, estimation strategy, and distance from the tags. Credit:
      * https://github.com/PhotonVision/photonvision/blob/v2026.1.1/photonlib-java-examples/poseest/src/main/java/frc/robot/Vision.java
      *
-     * @param estimatedPose The estimated pose to guess standard deviations for.
+     * @param estimation The estimated pose to guess standard deviations for.
      * @param targets All targets in this camera frame
      * @param index Index of current camera and estimator
      * @return Standard deviation
      */
-    private Matrix<N3, N1> getEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose,
-        List<PhotonTrackedTarget> targets, int index) {
+    private Matrix<N3, N1> getEstimationStdDevs(EstimatedRobotPose estimation, PhotonPipelineResult result, int index) {
         Matrix<N3, N1> estStdDevs = SINGLE_TAG_STD_DEV;
-        if (estimatedPose.isEmpty()) return estStdDevs;
 
         // Pose present. Start running Heuristic
         int numTags = 0;
         double avgDist = 0;
 
         // Precalculation - see how many tags we found, and calculate an average-distance metric
-        for (var tgt : targets) {
+        for (var tgt : result.getTargets()) {
             var tagPose = ESTIMATORS.get(index).getFieldTags().getTagPose(tgt.getFiducialId());
             if (tagPose.isEmpty()) continue;
             numTags++;
             avgDist += tagPose.get().toPose2d().getTranslation()
-                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+                .getDistance(estimation.estimatedPose.toPose2d().getTranslation());
         }
         // No tags visible.
         if (numTags == 0) return estStdDevs;
