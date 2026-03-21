@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AimAtTarget;
 import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.Controller;
 import frc.robot.subsystems.Drivetrain;
@@ -30,8 +31,7 @@ public interface DashboardManager {
     // =====================================
     // Robot (Init & Periodic)
     // =====================================
-    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain,
-        RobotCommands commands) {
+    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain) {
         SmartDashboard.putData("Field", field);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
@@ -39,9 +39,7 @@ public interface DashboardManager {
             builder.addDoubleProperty("Distance to Hub (m)",
                 () -> round(getTargetDistance(drivetrain, getHubPosition()), 3), null);
         });
-
-        if (!Robot.IS_COMPETITION)
-            SmartDashboard.putData("Aim At Hub PID Controller", commands.aimAtHub.PID_CONTROLLER);
+        if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
     }
 
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
