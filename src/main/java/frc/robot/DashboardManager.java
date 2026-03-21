@@ -135,21 +135,36 @@ public interface DashboardManager {
     // Subsystem: PhotonVision
     // =====================================
 
-    static void setupVision(DoubleSupplier numberOfTagsSupplier, DoubleSupplier averageDistanceTagsSupplier,
-        DoubleSupplier stddevX, DoubleSupplier stddevY, DoubleSupplier stddevRotation,
-        Supplier<String> stddevCategorySupplier) {
-        SmartDashboard.putData("Photon Data", builder -> {
-            builder.addDoubleProperty("Number of Tags", () -> round(numberOfTagsSupplier.getAsDouble(), 2), null);
-            builder.addDoubleProperty("Average Distance", () -> round(averageDistanceTagsSupplier.getAsDouble(), 3),
+    static void setupVision(DoubleSupplier numberOfTagsCam1Supplier, DoubleSupplier averageDistanceTagsCam1Supplier,
+        DoubleSupplier stddevXCam1Supplier, DoubleSupplier stddevYCam1Supplier,
+        DoubleSupplier stddevRotationCam1Supplier, Supplier<String> stddevCategoryCam1Supplier,
+        DoubleSupplier numberOfTagsCam2Supplier, DoubleSupplier averageDistanceTagsCam2Supplier,
+        DoubleSupplier stddevXCam2Supplier, DoubleSupplier stddevYCam2Supplier,
+        DoubleSupplier stddevRotationCam2Supplier, Supplier<String> stddevCategoryCam2Supplier) {
+        SmartDashboard.putData("Photon Data CAMERA ONE", builder -> {
+            builder.addDoubleProperty("Number of Tags", () -> round(numberOfTagsCam1Supplier.getAsDouble(), 2), null);
+            builder.addDoubleProperty("Average Distance", () -> round(averageDistanceTagsCam1Supplier.getAsDouble(), 3),
                 null);
-            builder.addDoubleProperty("Standard Deviation X", () -> round(stddevX.getAsDouble(), 3), null);
-            builder.addDoubleProperty("Standard Deviation Y", () -> round(stddevY.getAsDouble(), 3), null);
-            builder.addDoubleProperty("Standard Deviation Rotation", () -> round(stddevRotation.getAsDouble(), 3),
+            builder.addDoubleProperty("Standard Deviation X", () -> round(stddevXCam1Supplier.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Y", () -> round(stddevYCam1Supplier.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Rotation",
+                () -> round(stddevRotationCam1Supplier.getAsDouble(), 3), null);
+            builder.addStringProperty("Standard Deviation Category", stddevCategoryCam1Supplier, null);
+        });
+        SmartDashboard.putData("Photon Data CAMERA TWO", builder -> {
+            builder.addDoubleProperty("Number of Tags", () -> round(numberOfTagsCam2Supplier.getAsDouble(), 2), null);
+            builder.addDoubleProperty("Average Distance", () -> round(averageDistanceTagsCam2Supplier.getAsDouble(), 3),
                 null);
-            builder.addStringProperty("Standard Deviation Category", stddevCategorySupplier, null);
+            builder.addDoubleProperty("Standard Deviation X", () -> round(stddevXCam2Supplier.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Y", () -> round(stddevYCam2Supplier.getAsDouble(), 3), null);
+            builder.addDoubleProperty("Standard Deviation Rotation",
+                () -> round(stddevRotationCam2Supplier.getAsDouble(), 3), null);
+            builder.addStringProperty("Standard Deviation Category", stddevCategoryCam2Supplier, null);
         });
         SmartDashboard.putNumber("Standard Deviation Multiplier", 1.0);
+
     }
+
 
     static double getStandardDeviationMultiplier() {
         return SmartDashboard.getNumber("Standard Deviation Multiplier", 1.0);
