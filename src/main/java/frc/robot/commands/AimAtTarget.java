@@ -19,7 +19,10 @@ import static frc.robot.Utilities.*;
 public class AimAtTarget extends Command {
     // Limit max speed to less than main controller just for safety
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
-    public final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
+    public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
+    static {
+        PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
+    }
     private final Drivetrain drivetrain;
     private final SwerveRequest.FieldCentric swerveRequest;
     private final Translation2d target;

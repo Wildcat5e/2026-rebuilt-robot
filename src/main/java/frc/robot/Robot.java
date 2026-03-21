@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
         SignalLogger.enableAutoLogging(false);
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain, commands);
+        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
