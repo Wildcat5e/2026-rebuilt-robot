@@ -16,9 +16,11 @@ public class Simulation {
     public Simulation(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         visionSim.addAprilTags(Constants.FIELD_LAYOUT);
-        final PhotonCameraSim cameraSim = new PhotonCameraSim(PhotonVision.CAMERA_2, cameraSettings());
-        visionSim.addCamera(cameraSim, PhotonVision.ROBOT_TO_CAMERA);
-        cameraSim.enableDrawWireframe(ENABLE_WIREFRAME);
+        for (int i = 0; i < PhotonVision.CAMERAS.size(); i++) {
+            final var cameraSim = new PhotonCameraSim(PhotonVision.CAMERAS.get(i), cameraSettings());
+            visionSim.addCamera(cameraSim, PhotonVision.ROBOT_TO_CAMERA.get(i));
+            cameraSim.enableDrawWireframe(ENABLE_WIREFRAME);
+        }
         DashboardManager.setupSimulation(visionSim.getDebugField());
     }
 

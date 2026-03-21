@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -19,34 +20,41 @@ import frc.robot.Constants;
 
 public class PhotonVision extends SubsystemBase {
     // Standard deviations to weight vision pose updates. (Higher values weight vision less.)
-    public static final Matrix<N3, N1> TEMP_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
-    public static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
-    public static final PhotonCamera CAMERA_2 = new PhotonCamera("HD_Pro_Webcam_C920");
+    public static final List<PhotonCamera> CAMERAS =
+        List.of(new PhotonCamera("C922_Pro_Stream_Webcam"), new PhotonCamera("HD_Pro_Webcam_C920"));
     /** Offset from center of the robot to camera mount position (robot ➔ camera) in the Robot Coordinate System. */
-    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0));
-
-    private static final PhotonPoseEstimator ESTIMATOR =
-        new PhotonPoseEstimator(Constants.FIELD_LAYOUT, ROBOT_TO_CAMERA);
+    public static final List<Transform3d> ROBOT_TO_CAMERA =
+        List.of(new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0)),
+            new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0)));
+    private static final List<PhotonPoseEstimator> ESTIMATORS = new ArrayList<PhotonPoseEstimator>();
     private final EstimateConsumer estConsumer;
 
     public PhotonVision(EstimateConsumer estimateConsumer) {
         this.estConsumer = estimateConsumer;
+        for (int i = 0; i < CAMERAS.size(); i++) {
+            ESTIMATORS.add(new PhotonPoseEstimator(Constants.FIELD_LAYOUT, ROBOT_TO_CAMERA.get(i)));
+        }
     }
 
     @Override
     public void periodic() {
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        for (PhotonPipelineResult result : CAMERA_2.getAllUnreadResults()) {
-            visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            // if (visionEst.isEmpty()) {
-            //     visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            // }
-            final Matrix<N3, N1> stddev = getEstimationStdDevs(visionEst, result.getTargets());
+        for (int i = 0; i < CAMERAS.size(); i++) {
+            processResults(i);
+        }
+    }
+
+    private void processResults(int index) {
+        for (PhotonPipelineResult result : CAMERAS.get(index).getAllUnreadResults()) {
+            Optional<EstimatedRobotPose> visionEst = ESTIMATORS.get(index).estimateCoprocMultiTagPose(result);
+            if (visionEst.isEmpty()) {
+                visionEst = ESTIMATORS.get(index).estimateLowestAmbiguityPose(result);
+            }
+            final Matrix<N3, N1> stddev = getEstimationStdDevs(visionEst, result.getTargets(), index);
             visionEst.ifPresent(est -> {
-                estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, TEMP_STD_DEV);
+                estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, stddev);
             });
         }
     }
@@ -58,10 +66,11 @@ public class PhotonVision extends SubsystemBase {
      *
      * @param estimatedPose The estimated pose to guess standard deviations for.
      * @param targets All targets in this camera frame
+     * @param index Index of current camera and estimator
      * @return Standard deviation
      */
     private Matrix<N3, N1> getEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose,
-        List<PhotonTrackedTarget> targets) {
+        List<PhotonTrackedTarget> targets, int index) {
         Matrix<N3, N1> estStdDevs = SINGLE_TAG_STD_DEV;
         if (estimatedPose.isEmpty()) return estStdDevs;
 
@@ -71,7 +80,7 @@ public class PhotonVision extends SubsystemBase {
 
         // Precalculation - see how many tags we found, and calculate an average-distance metric
         for (var tgt : targets) {
-            var tagPose = ESTIMATOR.getFieldTags().getTagPose(tgt.getFiducialId());
+            var tagPose = ESTIMATORS.get(index).getFieldTags().getTagPose(tgt.getFiducialId());
             if (tagPose.isEmpty()) continue;
             numTags++;
             avgDist += tagPose.get().toPose2d().getTranslation()
