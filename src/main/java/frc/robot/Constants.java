@@ -41,10 +41,10 @@ public interface Constants {
     /** Index 0 is Blue. Lower homes are Blue Right and Red Left. */
     List<Translation2d> LOWER_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
 
-    /** Shooter offset, as the shooter is facing 180 degrees away from the front of the robot. */
+    /** Offset is from the "forward" direction. Should be set to Math.PI (180 deg) for a backwards-facing shooter. */
     double SHOOTER_ROTATION_OFFSET = Math.PI;
 
-    /** Lookup table mapping distance from the hub to the ideal static flywheel speed. */
+    /** Lookup table mapping distance from the Hub to the ideal static flywheel speed. */
     // @formatter:off
     InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
@@ -52,7 +52,8 @@ public interface Constants {
         Map.entry(2.28, 14.35),
         Map.entry(3.09, 14.85),
         Map.entry(4.14, 16.39),
-        Map.entry(4.9, 17.55)); // @formatter:on// @formatter:off
+        Map.entry(4.9, 17.55));
+    /** Lookup table mapping distance from the current Alliance Home to the ideal static flywheel speed. */
     InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
