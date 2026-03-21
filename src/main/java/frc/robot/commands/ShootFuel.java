@@ -34,10 +34,10 @@ public class ShootFuel extends Command {
             flywheelUpToSpeed = true;
         }
         if (Utilities.inHome(drivetrain)) {
-            flywheel.dynamicRunFlywheel();
+            flywheel.hubRunFlywheel();
             System.out.println("DYNAMIC !!!");
         } else {
-            flywheel.staticRunFlywheel();
+            flywheel.homeRunFlywheel();
             System.out.println("STATIC !!!!");
         }
         if (flywheelUpToSpeed) {
