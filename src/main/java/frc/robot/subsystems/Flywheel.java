@@ -106,9 +106,8 @@ public class Flywheel extends SubsystemBase {
     }
 
     /** Spins flywheel at specified speed. */
-    public void setFlywheelSpeed(double speed) {
-        targetFlywheelSpeed = speed;
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+    public void setFlywheelSpeed(double targetSpeed) {
+        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
