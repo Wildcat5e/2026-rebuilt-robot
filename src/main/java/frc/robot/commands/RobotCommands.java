@@ -37,12 +37,12 @@ public class RobotCommands {
     public record PositionAndFlywheelSpeedMap(Translation2d target, InterpolatingDoubleTreeMap flywheelSpeedMap) {}
 
 
-    /** @return Translation2d of the Upper Home for the current alliance. */
+    /** @return Translation2d of the Upper Home for the current Alliance. */
     static Translation2d getUpperHome() {
         return Robot.isBlueAlliance ? Constants.UPPER_HOMES.get(0) : Constants.UPPER_HOMES.get(1);
     }
 
-    /** @return Translation2d of the Lower Home for the current alliance. */
+    /** @return Translation2d of the Lower Home for the current Alliance. */
     static Translation2d getLowerHome() {
         return Robot.isBlueAlliance ? Constants.LOWER_HOMES.get(0) : Constants.LOWER_HOMES.get(1);
     }
