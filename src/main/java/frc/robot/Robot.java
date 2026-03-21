@@ -167,6 +167,8 @@ public class Robot extends TimedRobot {
         Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         Controller.joystick.y().whileTrue(intake.reverseScooper());
 
+        Controller.joystick.b().whileTrue(flywheel.tunableFlywheelVoltageCommand());
+
         // --- MACROPAD BINDINGS ---
         // LAYER 0 (No Modifiers)
         macropad.button(1).whileTrue(intake.bumpExtenderUp());
@@ -179,7 +181,7 @@ public class Robot extends TimedRobot {
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(0.5)).ignoringDisable(true));
         macropad.button(16)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementStaticFlywheelSpeed(-0.5)).ignoringDisable(true));
-        macropad.button(17).whileTrue(flywheel.testStaticStartFlywheel());
+        macropad.button(17).whileTrue(flywheel.tunableFlywheelSpeedCommand());
         macropad.button(18).whileTrue(hopper.testTunableKicker());
 
         // LAYER 1 (Shift Held)
