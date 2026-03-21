@@ -34,9 +34,10 @@ public class PhotonVision extends SubsystemBase {
 
     public static PhotonCamera photonCamera1 = new PhotonCamera("HD_Pro_Webcam_C920");
     public static PhotonCamera photonCamera2 = new PhotonCamera("C922_Pro_Stream_Webcam");
-    public static Transform3d ROBOT_TO_CAMERA1 = new Transform3d(-0.310, 0.213, 0.292, new Rotation3d(1.501, 0, 0));
+    public static Transform3d ROBOT_TO_CAMERA1 =
+        new Transform3d(-0.310, 0.213, 0.292, new Rotation3d(1.501, 0, Math.PI));
     public static Transform3d ROBOT_TO_CAMERA2 =
-        new Transform3d(-0.315, -0.217, 0.292, new Rotation3d(4.712, 0.087, 0));
+        new Transform3d(-0.315, -0.217, 0.292, new Rotation3d(4.712, 0.087, Math.PI));
     private PhotonPoseEstimator poseEstimator1 =
         new PhotonPoseEstimator(AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded), ROBOT_TO_CAMERA1);
     private PhotonPoseEstimator poseEstimator2 =
