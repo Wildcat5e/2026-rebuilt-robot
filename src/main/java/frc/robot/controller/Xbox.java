@@ -49,6 +49,16 @@ public class Xbox extends Controller {
     }
 
     @Override
+    Trigger seedFieldCentric() {
+        return controller.x();
+    }
+
+    @Override
+    Trigger reverse() {
+        return controller.y();
+    }
+
+    @Override
     Trigger povUp() {
         return controller.povUp();
     }

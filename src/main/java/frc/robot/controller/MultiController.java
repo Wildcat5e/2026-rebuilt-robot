@@ -67,6 +67,16 @@ public class MultiController extends Controller {
     }
 
     @Override
+    Trigger seedFieldCentric() {
+        return controllerChooser.getSelected().seedFieldCentric();
+    }
+
+    @Override
+    Trigger reverse() {
+        return controllerChooser.getSelected().reverse();
+    }
+
+    @Override
     Trigger povUp() {
         return controllerChooser.getSelected().povUp();
     }

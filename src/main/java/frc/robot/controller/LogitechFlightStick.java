@@ -51,6 +51,16 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
+    Trigger seedFieldCentric() {
+        /* change this */ return controller.button(0);
+    }
+
+    @Override
+    Trigger reverse() {
+        /* change this */ return controller.button(0);
+    }
+
+    @Override
     Trigger povUp() {
         return controller.povUp();
     }
