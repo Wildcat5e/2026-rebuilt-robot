@@ -26,7 +26,7 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
-    Trigger activateIntake() {
+    Trigger runIntake() {
         /* change this */ return controller.button(0);
     }
 
