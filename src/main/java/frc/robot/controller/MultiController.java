@@ -1,16 +1,10 @@
 package frc.robot.controller;
 
-import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.RobotCommands;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Intake;
 
 /**
  * Controller that will use the {@link Controller} selected by the dashboard widget. For example, you can select the
@@ -20,15 +14,12 @@ import frc.robot.subsystems.Intake;
 public class MultiController extends Controller {
     private final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
-    public MultiController(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
-        Flywheel flywheel, Hopper hopper, Intake intake) {
+    public MultiController() {
         DriverStation.silenceJoystickConnectionWarning(true);
         controllerChooser.setDefaultOption("Xbox Controller", new Xbox(0));
         controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
         controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
         SmartDashboard.putData("Controller Chooser", controllerChooser);
-        controllerChooser
-            .onChange(controller -> bindingsSetup(drivetrain, swerveRequest, commands, flywheel, hopper, intake));
     }
 
     @Override
@@ -43,81 +34,81 @@ public class MultiController extends Controller {
 
     @Override
     Trigger activateIntake() {
-        return controllerChooser.getSelected().activateIntake();
+        return new Trigger(() -> controllerChooser.getSelected().activateIntake().getAsBoolean());
     }
 
     @Override
     Trigger shootFuel() {
-        return controllerChooser.getSelected().shootFuel();
+        return new Trigger(() -> controllerChooser.getSelected().shootFuel().getAsBoolean());
     }
 
     @Override
     Trigger lowerIntake() {
-        return controllerChooser.getSelected().lowerIntake();
+        return new Trigger(() -> controllerChooser.getSelected().lowerIntake().getAsBoolean());
     }
 
     @Override
     Trigger raiseIntake() {
-        return controllerChooser.getSelected().raiseIntake();
+        return new Trigger(() -> controllerChooser.getSelected().raiseIntake().getAsBoolean());
     }
 
     @Override
     Trigger aimHandler() {
-        return controllerChooser.getSelected().aimHandler();
+        return new Trigger(() -> controllerChooser.getSelected().aimHandler().getAsBoolean());
     }
 
     @Override
     Trigger manualFlywheel() {
-        return controllerChooser.getSelected().manualFlywheel();
+        return new Trigger(() -> controllerChooser.getSelected().manualFlywheel().getAsBoolean());
     }
 
     @Override
     Trigger seedFieldCentric() {
-        return controllerChooser.getSelected().seedFieldCentric();
+        return new Trigger(() -> controllerChooser.getSelected().seedFieldCentric().getAsBoolean());
     }
 
     @Override
     Trigger reverse() {
-        return controllerChooser.getSelected().reverse();
+        return new Trigger(() -> controllerChooser.getSelected().reverse().getAsBoolean());
     }
 
     @Override
     Trigger povUp() {
-        return controllerChooser.getSelected().povUp();
+        return new Trigger(() -> controllerChooser.getSelected().povUp().getAsBoolean());
     }
 
     @Override
     Trigger povDown() {
-        return controllerChooser.getSelected().povDown();
+        return new Trigger(() -> controllerChooser.getSelected().povDown().getAsBoolean());
     }
 
     @Override
     Trigger povLeft() {
-        return controllerChooser.getSelected().povLeft();
+        return new Trigger(() -> controllerChooser.getSelected().povLeft().getAsBoolean());
     }
 
     @Override
     Trigger povRight() {
-        return controllerChooser.getSelected().povRight();
+        return new Trigger(() -> controllerChooser.getSelected().povRight().getAsBoolean());
     }
 
     @Override
     Trigger forwardSysIdQuasi() {
-        return controllerChooser.getSelected().forwardSysIdQuasi();
+        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdQuasi().getAsBoolean());
     }
 
     @Override
     Trigger backwardSysIdQuasi() {
-        return controllerChooser.getSelected().backwardSysIdQuasi();
+        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdQuasi().getAsBoolean());
     }
 
     @Override
     Trigger forwardSysIdDynamic() {
-        return controllerChooser.getSelected().forwardSysIdDynamic();
+        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdDynamic().getAsBoolean());
     }
 
     @Override
     Trigger backwardSysIdDynamic() {
-        return controllerChooser.getSelected().backwardSysIdDynamic();
+        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdDynamic().getAsBoolean());
     }
 }
