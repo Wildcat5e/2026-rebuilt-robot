@@ -36,17 +36,22 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
-    Trigger rotateToHub() {
-        /* change this */ return controller.button(1);
-    }
-
-    @Override
     Trigger lowerIntake() {
         /* change this */ return controller.button(2);
     }
 
     @Override
     Trigger raiseIntake() {
+        /* change this */ return controller.button(0);
+    }
+
+    @Override
+    Trigger aimHandler() {
+        /* change this */ return controller.button(1);
+    }
+
+    @Override
+    Trigger manualFlywheel() {
         /* change this */ return controller.button(0);
     }
 

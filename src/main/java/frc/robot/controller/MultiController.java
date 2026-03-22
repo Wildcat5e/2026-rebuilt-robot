@@ -52,11 +52,6 @@ public class MultiController extends Controller {
     }
 
     @Override
-    Trigger rotateToHub() {
-        return controllerChooser.getSelected().rotateToHub();
-    }
-
-    @Override
     Trigger lowerIntake() {
         return controllerChooser.getSelected().lowerIntake();
     }
@@ -64,6 +59,16 @@ public class MultiController extends Controller {
     @Override
     Trigger raiseIntake() {
         return controllerChooser.getSelected().raiseIntake();
+    }
+
+    @Override
+    Trigger aimHandler() {
+        return controllerChooser.getSelected().aimHandler();
+    }
+
+    @Override
+    Trigger manualFlywheel() {
+        return controllerChooser.getSelected().manualFlywheel();
     }
 
     @Override
