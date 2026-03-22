@@ -10,13 +10,13 @@ This is the default state of the macropad. All keys run commands continuously wh
 
 ```text
 +--------------------+--------------------+--------------------+
-| [0]  Extender      | [1]  Flywheel      | [2]  Static        |
+| [0]  Extender      | [1]  Flywheel      | [2]  Tunable       |
 |      Up            |     Speed Mult +   |  Flywheel Speed +  |
 +--------------------+--------------------+--------------------+
-| [3]  Extender      | [4]  Flywheel      | [5]  Static        |
+| [3]  Extender      | [4]  Flywheel      | [5]  Tunable       |
 |      Down          |     Speed Mult -   |  Flywheel Speed -  |
 +--------------------+--------------------+--------------------+
-| [6]                | [7]  Run Static    | [8]  Run Static    |
+| [6]                | [7]  Run Static    | [8]  Run Tunable   |
 |                    |      Kicker        |      Flywheel      |
 +--------------------+--------------------+--------------------+
 | [9]                | [10]               | [11]               |
