@@ -18,7 +18,7 @@ import frc.robot.subsystems.Intake;
  * controller before competition instead of using this.
  */
 public class MultiController extends Controller {
-    final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
+    private final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
 
     public MultiController(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
         Flywheel flywheel, Hopper hopper, Intake intake) {

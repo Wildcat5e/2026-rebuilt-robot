@@ -1,6 +1,5 @@
 package frc.robot;
 
-import static frc.robot.Utilities.getHubPosition;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -10,7 +9,6 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
@@ -23,11 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.*;
+import frc.robot.commands.RobotCommands;
 import frc.robot.controller.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
+
+import static frc.robot.Utilities.*;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
