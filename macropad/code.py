@@ -1,4 +1,6 @@
 """
+Note: This code is largely AI-generated and should be thoroughly tested before use.
+
 Macropad with Shift and Control layers for FRC auxiliary commands.
 Supports 32 mapped buttons via a custom Gamepad32 class.
 Displays current layer and active command on the screen.
