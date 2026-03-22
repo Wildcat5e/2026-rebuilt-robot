@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class LogitechFlightStick extends Controller {
-    final CommandJoystick controller;
+    protected final CommandJoystick controller;
     /** Deadzone specific to flight stick. */
     // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
 

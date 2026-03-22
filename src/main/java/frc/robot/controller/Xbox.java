@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Xbox extends Controller {
-    private final CommandXboxController controller;
+    protected final CommandXboxController controller;
 
     /** Uses {@link CommandXboxController}. @param port index on Driver Station */
     public Xbox(int port) {
@@ -34,11 +34,6 @@ public class Xbox extends Controller {
     }
 
     @Override
-    Trigger rotateToHub() {
-        return controller.a();
-    }
-
-    @Override
     Trigger lowerIntake() {
         return controller.rightBumper();
     }
@@ -46,6 +41,16 @@ public class Xbox extends Controller {
     @Override
     Trigger raiseIntake() {
         return controller.leftBumper();
+    }
+
+    @Override
+    Trigger aimHandler() {
+        return controller.a();
+    }
+
+    @Override
+    Trigger manualFlywheel() {
+        return controller.b();
     }
 
     @Override
