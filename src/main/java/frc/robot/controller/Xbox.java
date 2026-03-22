@@ -30,7 +30,7 @@ public class Xbox extends Controller {
 
     @Override
     Trigger shootFuel() {
-        return controller.b(); // change to right trigger
+        return controller.rightTrigger();
     }
 
     @Override
