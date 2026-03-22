@@ -24,7 +24,7 @@ public class Xbox extends Controller {
     }
 
     @Override
-    Trigger activateIntake() {
+    Trigger runIntake() {
         return controller.leftTrigger();
     }
 

@@ -33,8 +33,8 @@ public class MultiController extends Controller {
     }
 
     @Override
-    Trigger activateIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().activateIntake().getAsBoolean());
+    Trigger runIntake() {
+        return new Trigger(() -> controllerChooser.getSelected().runIntake().getAsBoolean());
     }
 
     @Override

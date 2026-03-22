@@ -37,8 +37,8 @@ public abstract class Controller {
     /** Get the rotation axis value. @return The axis value. */
     abstract double getRotation();
 
-    /** Xbox left trigger to activate the intake. */
-    abstract Trigger activateIntake();
+    /** Xbox left trigger to run the intake. */
+    abstract Trigger runIntake();
 
     /** Xbox right trigger to shoot fuel. Flight Stick trigger. */
     abstract Trigger shootFuel();
@@ -87,7 +87,7 @@ public abstract class Controller {
         Flywheel flywheel, Hopper hopper, Intake intake) {
         /** Competition Bindings */
         shootFuel().whileTrue(commands.shootFuel);
-        activateIntake().whileTrue(intake.spinIntakeMotors());
+        runIntake().whileTrue(intake.spinIntakeMotors());
         lowerIntake().whileTrue(intake.testExtender());
         // raiseIntake().whileTrue(intake.raiseArmFinalImplementation());
         aimHandler().whileTrue(commands.aimHandler);
