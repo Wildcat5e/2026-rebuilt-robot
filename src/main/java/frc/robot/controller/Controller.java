@@ -55,6 +55,12 @@ public abstract class Controller {
     /** Xbox left bumper to raise the intake. */
     abstract Trigger raiseIntake();
 
+    /** Xbox button X to seed field centric heading to current heading. */
+    abstract Trigger seedFieldCentric();
+
+    /** Xbox button Y to reverse motors. */
+    abstract Trigger reverse();
+
     abstract Trigger povUp();
 
     abstract Trigger povDown();
@@ -79,23 +85,14 @@ public abstract class Controller {
     /** Sets up key/button/joystick bindings for driving and controlling the robot. */
     public void bindingsSetup(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
         Flywheel flywheel, Hopper hopper, Intake intake) {
-
-        // --- MAIN CONTROLLER BINDINGS ---
-        povUp().whileTrue(intake.testExtender());
-        povRight().whileTrue(intake.testPusher());
-        povDown().whileTrue(intake.testScooper());
-        povLeft().whileTrue(hopper.testConveyor());
-
-        b().whileTrue(flywheel.testDynamicStartFlywheel());
-        Controller.joystick.b().whileTrue(hopper.testTunableKicker());
-
-        /** FINAL CONTROL BINDINGS MADE FOR ACTUAL COMPETITION */
-        rightTrigger().whileTrue(commands.shootFuel);
-        Controller.joystick.leftTrigger().whileTrue(intake.spinIntakeMotors());
-        Controller.joystick.rightBumper().whileTrue(intake.dropArmFinalImplementation());
-        Controller.joystick.leftBumper().whileTrue(intake.raiseArmFinalImplementation());
-        Controller.joystick.a().whileTrue(commands.rotateToHubShootingCalc);
-        Controller.joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        /** Competition Bindings */
+        shootFuel().whileTrue(commands.shootFuel);
+        activateIntake().whileTrue(intake.spinIntakeMotors());
+        lowerIntake().whileTrue(intake.dropArmFinalImplementation());
+        raiseIntake().whileTrue(intake.raiseArmFinalImplementation());
+        rotateToHub().whileTrue(commands.rotateToHubShootingCalc);
+        seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        reverse().whileTrue(intake.reverseScooper());
 
         // sysid tests
         // povUp().whileTrue(flywheel.sysIdDynamicForward());
@@ -108,12 +105,12 @@ public abstract class Controller {
          * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
          * https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/wpilib-integration/sysid-integration
          */
-        // Quasistatic test for motor identification
-        forwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        backwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        // Dynamic test for motor identification
-        forwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        backwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // // Quasistatic test for motor identification
+        // forwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // backwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // // Dynamic test for motor identification
+        // forwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // backwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
 
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
             var translation = getTranslation();
