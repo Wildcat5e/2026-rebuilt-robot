@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class LogitechFlightStick extends Controller {
+    /** Button numbers match numbers printed on the controller. */
     protected final CommandJoystick controller;
     /** Deadzone specific to flight stick. */
     // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
@@ -27,42 +28,42 @@ public class LogitechFlightStick extends Controller {
 
     @Override
     Trigger runIntake() {
-        /* change this */ return controller.button(0);
+        return controller.button(3); // also consider button 10
     }
 
     @Override
     Trigger shootFuel() {
-        return controller.trigger();
+        return controller.trigger(); // == controller.button(1)
     }
 
     @Override
     Trigger lowerIntake() {
-        /* change this */ return controller.button(2);
+        return controller.button(5);
     }
 
     @Override
     Trigger raiseIntake() {
-        /* change this */ return controller.button(0);
+        return controller.button(6);
     }
 
     @Override
     Trigger aimHandler() {
-        /* change this */ return controller.button(1);
+        return controller.button(2); // Thumb button, while holding easy to trigger to shoot.
     }
 
     @Override
     Trigger manualFlywheel() {
-        /* change this */ return controller.button(0);
+        return controller.button(4);
     }
 
     @Override
     Trigger seedFieldCentric() {
-        /* change this */ return controller.button(0);
+        return controller.button(12);
     }
 
     @Override
     Trigger reverse() {
-        /* change this */ return controller.button(0);
+        return controller.button(11);
     }
 
     @Override
@@ -87,25 +88,25 @@ public class LogitechFlightStick extends Controller {
 
     @Override
     Trigger forwardSysIdQuasi() {
-        /* change this */ return controller.button(0);
+        /* change this */ return new Trigger(() -> false);
         // return Controller.joystick.start().and(Controller.joystick.y());
     }
 
     @Override
     Trigger backwardSysIdQuasi() {
-        /* change this */ return controller.button(0);
+        /* change this */ return new Trigger(() -> false);
         // return Controller.joystick.start().and(Controller.joystick.x());
     }
 
     @Override
     Trigger forwardSysIdDynamic() {
-        /* change this */ return controller.button(0);
+        /* change this */ return new Trigger(() -> false);
         // return Controller.joystick.back().and(Controller.joystick.y());
     }
 
     @Override
     Trigger backwardSysIdDynamic() {
-        /* change this */ return controller.button(0);
+        /* change this */ return new Trigger(() -> false);
         // return Controller.joystick.back().and(Controller.joystick.x());
     }
 }
