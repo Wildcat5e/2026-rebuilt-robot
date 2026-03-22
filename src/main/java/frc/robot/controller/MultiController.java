@@ -19,6 +19,8 @@ public class MultiController extends Controller {
         controllerChooser.setDefaultOption("Xbox Controller", new Xbox(0));
         controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
         controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
+        controllerChooser.addOption("8BitDo Controller", new Xbox(3));
+        controllerChooser.addOption("Linux 8BitDo Controller", new Linux8BitDo(4));
         SmartDashboard.putData("Controller Chooser", controllerChooser);
     }
 
