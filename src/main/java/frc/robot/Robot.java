@@ -41,8 +41,7 @@ public class Robot extends TimedRobot {
     /** Use this to create requests for driving the robot and use {@link #drivetrain} to apply them. */
     private final SwerveRequest.FieldCentric controllerSwerveReq =
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final Controller controller =
-        IS_COMPETITION ? new Xbox(0) : new MultiController(drivetrain, controllerSwerveReq, null, null, null, null);
+    private final Controller controller = IS_COMPETITION ? new Xbox(0) : new MultiController();
     private final OperatorConsole operatorConsole = new OperatorConsole();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 

@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants;
 import frc.robot.commands.RobotCommands;
-import frc.robot.commands.RotateToHub;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Flywheel;
@@ -46,14 +46,17 @@ public abstract class Controller {
     /** Xbox right trigger to shoot fuel. Flight Stick trigger. */
     abstract Trigger shootFuel();
 
-    /** Xbox button A to rotate to hub. */
-    abstract Trigger rotateToHub();
-
     /** Xbox right bumper to lower the intake. */
     abstract Trigger lowerIntake();
 
     /** Xbox left bumper to raise the intake. */
     abstract Trigger raiseIntake();
+
+    /** Xbox button A to automatically aim at home or hub. */
+    abstract Trigger aimHandler();
+
+    /** Xbox button B to set manual flywheel speed. */
+    abstract Trigger manualFlywheel();
 
     /** Xbox button X to seed field centric heading to current heading. */
     abstract Trigger seedFieldCentric();
@@ -88,9 +91,10 @@ public abstract class Controller {
         /** Competition Bindings */
         shootFuel().whileTrue(commands.shootFuel);
         activateIntake().whileTrue(intake.spinIntakeMotors());
-        lowerIntake().whileTrue(intake.dropArmFinalImplementation());
-        raiseIntake().whileTrue(intake.raiseArmFinalImplementation());
-        rotateToHub().whileTrue(commands.rotateToHubShootingCalc);
+        lowerIntake().whileTrue(intake.testExtender());
+        // raiseIntake().whileTrue(intake.raiseArmFinalImplementation());
+        aimHandler().whileTrue(commands.aimHandler);
+        manualFlywheel().whileTrue(flywheel.tunableFlywheelVoltageCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         reverse().whileTrue(intake.reverseScooper());
 
