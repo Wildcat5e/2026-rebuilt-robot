@@ -1,3 +1,5 @@
+import javax.swing.JOptionPane
+
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2026.2.1"
@@ -113,3 +115,38 @@ wpi.java.configureTestTasks(test)
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
+
+// Custom Macropad Verification Task
+task checkMacropadCode {
+    doLast {
+        def localFile = file("macropad/code.py")
+        // The macropad is mounted on the D: drive on the Driver Station, so we check for code.py there.
+        // If testing on a different device where the macropad is mounted elsewhere, this will throw a warning.
+        // In such a case, functionality will not be impacted.
+        def macropadFile = file("D:/code.py")
+
+        // Prints to terminal
+        if (!localFile.exists()) {
+            println "WARNING: Local macropad/code.py not found in project."
+            return
+        }
+
+        // Prints to terminal
+        if (!macropadFile.exists()) {
+            println "WARNING: Macropad not found on D:/. Cannot verify code.py.\n\nEnsure that the macropad is connected if you intend to use it."
+            return
+        }
+
+        // Shows a Pop-Up
+        if (localFile.text != macropadFile.text) {
+            JOptionPane.showMessageDialog(null, 
+                "WAIT! The Macropad code on D:/ does not match your local macropad/code.py.\n\nPlease update the physical Macropad before your match.", 
+                "Macropad Code Out of Sync", 
+                JOptionPane.WARNING_MESSAGE)
+        } else {
+            println "Macropad code is fully synced."
+        }
+    }
+}
+
+deploy.dependsOn checkMacropadCode
