@@ -31,34 +31,26 @@ public abstract class Controller {
     /** Change whether or not controller can control rotation. */
     public static boolean allowControllerRotation = true;
 
-    /** Get Translation2d of controller axes. */
+    /** Get vector of controller axes. @return Translation2d of X and Y axes */
     abstract Translation2d getTranslation();
 
     /** Get the rotation axis value. @return The axis value. */
     abstract double getRotation();
 
-    /** Xbox left trigger to run the intake. */
     abstract Trigger runIntake();
 
-    /** Xbox right trigger to shoot fuel. Flight Stick trigger. */
     abstract Trigger shootFuel();
 
-    /** Xbox right bumper to lower the intake. */
     abstract Trigger lowerIntake();
 
-    /** Xbox left bumper to raise the intake. */
     abstract Trigger raiseIntake();
 
-    /** Xbox button A to automatically aim at home or hub. */
     abstract Trigger aimHandler();
 
-    /** Xbox button B to set manual flywheel speed. */
     abstract Trigger manualFlywheel();
 
-    /** Xbox button X to seed field centric heading to current heading. */
     abstract Trigger seedFieldCentric();
 
-    /** Xbox button Y to reverse motors. */
     abstract Trigger reverse();
 
     abstract Trigger povUp();
