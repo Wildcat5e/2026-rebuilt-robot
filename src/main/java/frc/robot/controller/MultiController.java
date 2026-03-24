@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Controller that will use the {@link Controller} selected by the dashboard widget. For example, you can select the
- * {@link Xbox} controller. Also, this silences unplugged controller warnings. You should probably directly us your
+ * {@link Xbox} controller. Also, this silences unplugged controller warnings. You should probably directly use your
  * controller before competition instead of using this.
  */
 public class MultiController extends Controller {
