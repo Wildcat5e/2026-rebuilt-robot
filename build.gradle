@@ -149,4 +149,8 @@ task checkMacropadCode {
     }
 }
 
-deploy.dependsOn checkMacropadCode
+// Ensure the custom task runs right before the deploy occurs
+// (Using tasks.named() specifically targets the deploy task instead of the deploy configuration extension)
+tasks.named("deploy") {
+    dependsOn checkMacropadCode
+}
