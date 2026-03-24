@@ -128,7 +128,8 @@ public abstract class Controller {
 
     /**
      * APPLY FIRST! Applies a deadzone as a proportion of the input. Values shifted up out of deadzone and compressed
-     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input.
+     * outside deadzone. The max value of 1 remains at the max. This is a scaled radial deadzone. Also, curves input
+     * based on {@link #SCALE_EXPONENT}.
      * 
      * @param xAxis raw value from controller
      * @param yAxis raw value from controller
