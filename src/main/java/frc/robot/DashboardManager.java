@@ -4,6 +4,7 @@ import static frc.robot.utilities.FieldUtils.*;
 import static frc.robot.utilities.MatchUtils.*;
 import static frc.robot.utilities.MathUtils.*;
 import static frc.robot.utilities.TargetingUtils.*;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -94,7 +95,7 @@ public interface DashboardManager {
     }
 
     static double getTunableFlywheelSpeed() {
-        return SmartDashboard.getNumber("Tunable Flywheel Speed", 10.0);
+        return SmartDashboard.getNumber("Tunable Flywheel Speed", 0.0);
     }
 
     static void incrementFlywheelSpeedMultiplier(double increment) {
@@ -109,16 +110,61 @@ public interface DashboardManager {
     // Subsystem: Intake 
     // =====================================
 
-    static void setupIntake(DoubleSupplier extenderMotorPositionSupplier, DoubleSupplier scooperVelocitySupplier) {
+    static void setupIntake(DoubleSupplier extenderMotorPositionSupp, BooleanSupplier isScooperSpinningSupp) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
-                () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
-            builder.addBooleanProperty("Scooper Speed", () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1,
-                null);
+                () -> round(extenderMotorPositionSupp.getAsDouble(), 3), null);
+            builder.addBooleanProperty("Is Scooper Spinning", isScooperSpinningSupp, null);
         });
+
+        SmartDashboard.putNumber("Extender Tuning/1: kP", 0);
+        SmartDashboard.putNumber("Extender Tuning/2: kI", 0);
+        SmartDashboard.putNumber("Extender Tuning/3: kD", 0);
+        SmartDashboard.putNumber("Extender Tuning/4: kS", 0);
+        SmartDashboard.putNumber("Extender Tuning/5: kV", 0);
+        SmartDashboard.putNumber("Extender Tuning/6: kG", 0);
+        SmartDashboard.putNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 1);
+        SmartDashboard.putNumber("Extender Tuning/8: Motion Magic Acceleration", 2);
+        SmartDashboard.putNumber("Extender Tuning/9: Motion Magic Jerk", 0);
+    }
+
+    static double getExtenderkP() {
+        return SmartDashboard.getNumber("Extender Tuning/1: kP", 0);
+    }
+
+    static double getExtenderkI() {
+        return SmartDashboard.getNumber("Extender Tuning/2: kI", 0);
+    }
+
+    static double getExtenderkD() {
+        return SmartDashboard.getNumber("Extender Tuning/3: kD", 0);
+    }
+
+    static double getExtenderkS() {
+        return SmartDashboard.getNumber("Extender Tuning/4: kS", 0);
+    }
+
+    static double getExtenderkV() {
+        return SmartDashboard.getNumber("Extender Tuning/5: kV", 0);
+    }
+
+    static double getExtenderkG() {
+        return SmartDashboard.getNumber("Extender Tuning/6: kG", 0);
+    }
+
+    static double getExtenderMotionMagicCruiseVelocity() {
+        return SmartDashboard.getNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 1);
+    }
+
+    static double getExtenderMotionMagicAcceleration() {
+        return SmartDashboard.getNumber("Extender Tuning/8: Motion Magic Acceleration", 2);
+    }
+
+    static double getExtenderMotionMagicJerk() {
+        return SmartDashboard.getNumber("Extender Tuning/9: Motion Magic Jerk", 0);
     }
 
     static double getExtenderMotorTestVoltage() {
