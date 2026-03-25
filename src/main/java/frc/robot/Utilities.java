@@ -1,16 +1,57 @@
 package frc.robot;
 
+import java.util.Optional;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.Drivetrain;
 
 /**
  * import static frc.robot.Utilities.*;
  */
 public interface Utilities {
+    static boolean isHubActive() {
+        if (DriverStation.isAutonomousEnabled()) {
+            return true;
+        }
+
+        if (!DriverStation.isTeleopEnabled()) {
+            return false;
+        }
+
+        String gameData = DriverStation.getGameSpecificMessage();
+        // If we have no game data, we cannot compute, assume hub is active, as it's likely early in teleop.
+        if (gameData == null || gameData.isEmpty()) {
+            DriverStation.reportWarning("Game Data is empty.", false);
+            return true;
+        }
+
+        char firstChar = gameData.charAt(0);
+        if (firstChar != 'R' && firstChar != 'B') {
+            DriverStation.reportWarning("Game Data is invalid: " + gameData, false);
+            return true;
+        }
+
+        // Shift 1 is active for Blue if Red won auto ('R'), or for Red if Blue won auto ('B')
+        boolean redInactiveFirst = (firstChar == 'R');
+        boolean shift1Active = Robot.isBlueAlliance ? redInactiveFirst : !redInactiveFirst;
+
+        // 4. Calculate current shift based on time remaining
+        double matchTime = DriverStation.getMatchTime();
+
+        if (matchTime > 130) return true; // Transition shift
+        if (matchTime > 105) return shift1Active; // Shift 1
+        if (matchTime > 80) return !shift1Active; // Shift 2
+        if (matchTime > 55) return shift1Active; // Shift 3
+        if (matchTime > 30) return !shift1Active; // Shift 4
+
+        return true; // Endgame (<= 30s)
+    }
+
     /** @return Translation2d of the Hub for the current alliance. */
     static Translation2d getHubPosition() {
         return Robot.isBlueAlliance ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;
