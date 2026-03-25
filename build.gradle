@@ -127,13 +127,13 @@ task checkMacropadCode {
 
         // Prints to terminal
         if (!localFile.exists()) {
-            println "WARNING: Local macropad/code.py not found in project."
+            println "\nWARNING: Local macropad/code.py not found in project."
             return
         }
 
         // Prints to terminal
         if (!macropadFile.exists()) {
-            println "WARNING: Macropad not found on D:/. Cannot verify code.py.\n\nEnsure that the macropad is connected if you intend to use it."
+            println "\nWARNING: Macropad not found on D:/. Cannot verify code.py.\nEnsure that the macropad is connected if you intend to use it."
             return
         }
 
