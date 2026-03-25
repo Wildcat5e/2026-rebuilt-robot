@@ -1,12 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.List;
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,85 +8,100 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import java.util.Map;
+import java.util.Objects;
+
+import static frc.robot.Constants.FIELD_LAYOUT;
+import static java.util.stream.Collectors.toMap;
 
 public class PhotonVision extends SubsystemBase {
     // Standard deviations to weight vision pose updates. (Higher values weight vision less.)
-    public static final Matrix<N3, N1> TEMP_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
-    public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
+    public static final Matrix<N3, N1> MULTI_TAG_STD_DEV  = VecBuilder.fill(0.5, 0.5, 1);
+    public static final PhotonCamera   CAMERA             = new PhotonCamera("HD_Pro_Webcam_C920");
+    public static final Transform3d    ROBOT_TO_CAMERA    = new Transform3d(-0.07, .295, .57, Rotation3d.kZero);
 
-    public static final PhotonCamera CAMERA = new PhotonCamera("C922_Pro_Stream_Webcam");
-    public static final PhotonCamera CAMERA_2 = new PhotonCamera("HD_Pro_Webcam_C920");
-    /** Offset from center of the robot to camera mount position (robot ➔ camera) in the Robot Coordinate System. */
-    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0));
-
-    private static final PhotonPoseEstimator ESTIMATOR =
-        new PhotonPoseEstimator(Constants.FIELD_LAYOUT, ROBOT_TO_CAMERA);
-    private final EstimateConsumer estConsumer;
-
-    public PhotonVision(EstimateConsumer estimateConsumer) {
-        this.estConsumer = estimateConsumer;
-    }
-
-    @Override
-    public void periodic() {
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        for (PhotonPipelineResult result : CAMERA_2.getAllUnreadResults()) {
-            visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            // if (visionEst.isEmpty()) {
-            //     visionEst = ESTIMATOR.estimateLowestAmbiguityPose(result);
-            // }
-            final Matrix<N3, N1> stddev = getEstimationStdDevs(visionEst, result.getTargets());
-            visionEst.ifPresent(est -> {
-                estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, TEMP_STD_DEV);
-            });
-        }
-    }
+    private final PhotonCamera         photonCamera;
+    private final PhotonPoseEstimator  poseEstimator;
+    private final PoseEstimateConsumer poseEstimateConsumer;
+    private final Map<Integer, Pose2d> aprilTagPoses;
 
     /**
-     * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard deviations based
-     * on number of tags, estimation strategy, and distance from the tags. Credit:
-     * https://github.com/PhotonVision/photonvision/blob/v2026.1.1/photonlib-java-examples/poseest/src/main/java/frc/robot/Vision.java
-     *
-     * @param estimatedPose The estimated pose to guess standard deviations for.
-     * @param targets All targets in this camera frame
-     * @return Standard deviation
+     * @param camera           The camera to use for pose estimation. Make sure to set the correct camera name and robot-to-camera transform.
+     * @param estimator        The photon pose estimator used for pose estimation.
+     * @param estimateConsumer The consumer receiving the estimated pose and timestamp.
      */
-    private Matrix<N3, N1> getEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose,
-        List<PhotonTrackedTarget> targets) {
-        Matrix<N3, N1> estStdDevs = SINGLE_TAG_STD_DEV;
-        if (estimatedPose.isEmpty()) return estStdDevs;
-
-        // Pose present. Start running Heuristic
-        int numTags = 0;
-        double avgDist = 0;
-
-        // Precalculation - see how many tags we found, and calculate an average-distance metric
-        for (var tgt : targets) {
-            var tagPose = ESTIMATOR.getFieldTags().getTagPose(tgt.getFiducialId());
-            if (tagPose.isEmpty()) continue;
-            numTags++;
-            avgDist += tagPose.get().toPose2d().getTranslation()
-                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
-        }
-        // No tags visible.
-        if (numTags == 0) return estStdDevs;
-        // One or more tags visible, run the full heuristic.
-        avgDist /= numTags;
-        // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = MULTI_TAG_STD_DEV;
-        // Increase std devs based on (average) distance
-        if (numTags == 1 && avgDist > 4) {
-            estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        } else {
-            estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
-        }
-        return estStdDevs;
+    public PhotonVision(PhotonCamera camera, PhotonPoseEstimator estimator, PoseEstimateConsumer estimateConsumer) {
+        super(camera.getName());
+        this.photonCamera         = camera;
+        this.poseEstimateConsumer = estimateConsumer;
+        this.poseEstimator        = estimator;
+        // Only convert AprilTags to poses once since the field layout is static. Map tag ID to pose for fast lookup during pose estimation.
+        this.aprilTagPoses = estimator.getFieldTags()
+                                      .getTags()
+                                      .stream()
+                                      .collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d()));
     }
 
-    @FunctionalInterface
-    public static interface EstimateConsumer {
-        public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
+
+    public PhotonVision(PoseEstimateConsumer estimateConsumer) {
+        this(CAMERA, new PhotonPoseEstimator(FIELD_LAYOUT, ROBOT_TO_CAMERA), estimateConsumer);
+    }
+
+    @Override public void periodic() {
+        for (PhotonPipelineResult result : photonCamera.getAllUnreadResults()) {
+
+            // Use coprocessor if available, otherwise use lowest ambiguity pose.
+            var optionalPoseEstimate = poseEstimator.estimateCoprocMultiTagPose(result)
+                                                    .or(() -> poseEstimator.estimateLowestAmbiguityPose(result));
+
+            if (optionalPoseEstimate.isEmpty()) {
+                // No valid pose estimate for this result, skip it.
+                continue;
+            }
+
+            // Convert targets to April Tag 2d poses, removing null values
+            var tagPoses = result.targets.stream()
+                                         .map(PhotonTrackedTarget::getFiducialId)
+                                         .map(aprilTagPoses::get)
+                                         .filter(Objects::nonNull)
+                                         .toList();
+
+            if (tagPoses.isEmpty()) {
+                // No valid April Tag poses for the targets in this result, skip it since we can't calculate distances to tags.
+                continue;
+            }
+
+            var poseEstimate   = optionalPoseEstimate.get();
+            var poseEstimate2d = poseEstimate.estimatedPose.toPose2d();
+
+            // Average distance between tag pose and robot pose estimate.
+            // This gives us a rough idea of how far the robot is from the tags it sees,
+            // which is a major factor in pose estimation accuracy. We use this to adjust our
+            // confidence in the pose estimate (i.e. the standard deviation we pass to the consumer).
+            var averageDistance = tagPoses.stream()
+                                          .map(tagPose -> tagPose.getTranslation()
+                                                                 .getDistance(poseEstimate2d.getTranslation()))
+                                          .reduce(0.0, Double::sum) / tagPoses.size();
+
+            if (tagPoses.size() == 1 && averageDistance <= 4.0) {
+                // Only use single tag pose estimate if the average distance is less than 4 meters.
+                // This is an empirical threshold based on testing that balances trusting single tag estimates
+                // when they are likely accurate and ignoring them when they are likely inaccurate.
+                poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, SINGLE_TAG_STD_DEV);
+            } else {
+                // For multiple tags, we can be more confident in the pose estimate, so we use a lower standard deviation.
+                // However, we still want to account for distance to the tags, since farther tags generally lead to less
+                // accurate estimates. This heuristic scales the standard deviation based on the average distance to the tags,
+                // with a cap at around 4 meters (since beyond that, vision is generally not very reliable).
+                var standardDeviation = MULTI_TAG_STD_DEV.times(1 * (averageDistance * averageDistance / 30.0));
+                poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, standardDeviation);
+            }
+        }
     }
 }

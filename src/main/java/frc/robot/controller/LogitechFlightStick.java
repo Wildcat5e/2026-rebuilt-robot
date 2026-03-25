@@ -5,108 +5,76 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class LogitechFlightStick extends Controller {
-    /** Button numbers match numbers printed on the controller. */
-    protected final CommandJoystick controller;
-    /** Deadzone specific to flight stick. */
-    // private static final double DEADZONE = ControllerWrapper.DEADZONE; // for now use main deadzone
+public class LogitechFlightStick implements Controller {
+    /**
+     * Button numbers match numbers printed on the controller.
+     */
+    protected final CommandJoystick joystick;
 
-    /** Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station */
+    /**
+     * Uses {@link CommandJoystick} for Logitech Extreme 3D Pro. @param port index on Driver Station
+     */
     public LogitechFlightStick(int port) {
-        controller = new CommandJoystick(port);
+        joystick = new CommandJoystick(port);
     }
 
-    @Override
-    Translation2d getTranslation() {
-        return applyRadialDeadzone(-controller.getRawAxis(1), -controller.getRawAxis(0), DEADZONE);
+    @Override public Translation2d translation() {
+        return new Translation2d(-joystick.getRawAxis(1), -joystick.getRawAxis(0));
     }
 
-    @Override
-    double getRotation() {
-        return MathUtil.applyDeadband(-controller.getRawAxis(2), .3);
+    @Override public double rotation() {
+        return MathUtil.applyDeadband(-joystick.getRawAxis(2), .3);
     }
 
-    @Override
-    Trigger runIntake() {
-        return controller.button(3); // also consider button 10
+    @Override public Trigger runIntake() {return joystick.button(3);}
+
+    @Override public Trigger shootFuel() {return joystick.trigger();}
+
+    @Override public Trigger lowerIntake() {
+        return joystick.button(5);
     }
 
-    @Override
-    Trigger shootFuel() {
-        return controller.trigger(); // == controller.button(1)
+    @Override public Trigger raiseIntake() {
+        return joystick.button(6);
     }
 
-    @Override
-    Trigger lowerIntake() {
-        return controller.button(5);
+    @Override public Trigger aimHandler() {
+        return joystick.button(2); // Thumb button, while holding easy to trigger to shoot.
     }
 
-    @Override
-    Trigger raiseIntake() {
-        return controller.button(6);
+    @Override public Trigger manualFlywheel() {
+        return joystick.button(4);
     }
 
-    @Override
-    Trigger aimHandler() {
-        return controller.button(2); // Thumb button, while holding easy to trigger to shoot.
+    @Override public Trigger seedFieldCentric() {
+        return joystick.button(12);
     }
 
-    @Override
-    Trigger manualFlywheel() {
-        return controller.button(4);
+    @Override public Trigger reverse() {
+        return joystick.button(11);
     }
 
-    @Override
-    Trigger seedFieldCentric() {
-        return controller.button(12);
+    @Override public Trigger povUp() {
+        return joystick.povUp();
     }
 
-    @Override
-    Trigger reverse() {
-        return controller.button(11);
+    @Override public Trigger povDown() {
+        return joystick.povDown();
     }
 
-    @Override
-    Trigger povUp() {
-        return controller.povUp();
+    @Override public Trigger povLeft() {
+        return joystick.povLeft();
     }
 
-    @Override
-    Trigger povDown() {
-        return controller.povDown();
+    @Override public Trigger povRight() {
+        return joystick.povRight();
     }
 
-    @Override
-    Trigger povLeft() {
-        return controller.povLeft();
-    }
+    @Override public Trigger forwardSysIdQuasi() {return new Trigger(() -> false);}
 
-    @Override
-    Trigger povRight() {
-        return controller.povRight();
-    }
+    @Override public Trigger backwardSysIdQuasi() {return new Trigger(() -> false);}
 
-    @Override
-    Trigger forwardSysIdQuasi() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.start().and(Controller.joystick.y());
-    }
+    @Override public Trigger forwardSysIdDynamic() {return new Trigger(() -> false);}
 
-    @Override
-    Trigger backwardSysIdQuasi() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.start().and(Controller.joystick.x());
-    }
-
-    @Override
-    Trigger forwardSysIdDynamic() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.back().and(Controller.joystick.y());
-    }
-
-    @Override
-    Trigger backwardSysIdDynamic() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.back().and(Controller.joystick.x());
-    }
+    @Override public Trigger backwardSysIdDynamic() {return new Trigger(() -> false);}
 }

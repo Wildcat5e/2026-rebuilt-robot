@@ -11,106 +11,56 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * {@link Xbox} controller. Also, this silences unplugged controller warnings. You should probably directly use your
  * controller before competition instead of using this.
  */
-public class MultiController extends Controller {
-    private final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
+public class MultiController implements Controller {
+    private final SendableChooser<Controller> controllerChooser = new SendableChooser<>();
 
     public MultiController() {
         DriverStation.silenceJoystickConnectionWarning(true);
         controllerChooser.setDefaultOption("Xbox Controller", new Xbox(0));
-        controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
-        controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
-        controllerChooser.addOption("8BitDo Controller", new Xbox(3));
-        controllerChooser.addOption("Linux 8BitDo Controller", new Linux8BitDo(4));
+        if (DriverStation.isTest()) {
+            controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
+            controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
+            controllerChooser.addOption("8BitDo Controller", new Xbox(3));
+            controllerChooser.addOption("Linux 8BitDo Controller", new Linux8BitDo(4));
+        }
         SmartDashboard.putData("Controller Chooser", controllerChooser);
     }
 
-    @Override
-    double getRotation() {
-        return controllerChooser.getSelected().getRotation();
-    }
+    private Controller controller() {return controllerChooser.getSelected();}
 
-    @Override
-    Translation2d getTranslation() {
-        return controllerChooser.getSelected().getTranslation();
-    }
+    @Override public double rotation() {return controller().rotation();}
 
-    @Override
-    Trigger runIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().runIntake().getAsBoolean());
-    }
+    @Override public Translation2d translation() {return controller().translation();}
 
-    @Override
-    Trigger shootFuel() {
-        return new Trigger(() -> controllerChooser.getSelected().shootFuel().getAsBoolean());
-    }
+    @Override public Trigger runIntake() {return controller().runIntake();}
 
-    @Override
-    Trigger lowerIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().lowerIntake().getAsBoolean());
-    }
+    @Override public Trigger shootFuel() {return controller().shootFuel();}
 
-    @Override
-    Trigger raiseIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().raiseIntake().getAsBoolean());
-    }
+    @Override public Trigger lowerIntake() {return controller().lowerIntake();}
 
-    @Override
-    Trigger aimHandler() {
-        return new Trigger(() -> controllerChooser.getSelected().aimHandler().getAsBoolean());
-    }
+    @Override public Trigger raiseIntake() {return controller().raiseIntake();}
 
-    @Override
-    Trigger manualFlywheel() {
-        return new Trigger(() -> controllerChooser.getSelected().manualFlywheel().getAsBoolean());
-    }
+    @Override public Trigger aimHandler() {return controller().aimHandler();}
 
-    @Override
-    Trigger seedFieldCentric() {
-        return new Trigger(() -> controllerChooser.getSelected().seedFieldCentric().getAsBoolean());
-    }
+    @Override public Trigger manualFlywheel() {return controller().manualFlywheel();}
 
-    @Override
-    Trigger reverse() {
-        return new Trigger(() -> controllerChooser.getSelected().reverse().getAsBoolean());
-    }
+    @Override public Trigger seedFieldCentric() {return controller().seedFieldCentric();}
 
-    @Override
-    Trigger povUp() {
-        return new Trigger(() -> controllerChooser.getSelected().povUp().getAsBoolean());
-    }
+    @Override public Trigger reverse() {return controller().reverse();}
 
-    @Override
-    Trigger povDown() {
-        return new Trigger(() -> controllerChooser.getSelected().povDown().getAsBoolean());
-    }
+    @Override public Trigger povUp() {return controller().povUp();}
 
-    @Override
-    Trigger povLeft() {
-        return new Trigger(() -> controllerChooser.getSelected().povLeft().getAsBoolean());
-    }
+    @Override public Trigger povDown() {return controller().povDown();}
 
-    @Override
-    Trigger povRight() {
-        return new Trigger(() -> controllerChooser.getSelected().povRight().getAsBoolean());
-    }
+    @Override public Trigger povLeft() {return controller().povLeft();}
 
-    @Override
-    Trigger forwardSysIdQuasi() {
-        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdQuasi().getAsBoolean());
-    }
+    @Override public Trigger povRight() {return controller().povRight();}
 
-    @Override
-    Trigger backwardSysIdQuasi() {
-        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdQuasi().getAsBoolean());
-    }
+    @Override public Trigger forwardSysIdQuasi() {return controller().forwardSysIdQuasi();}
 
-    @Override
-    Trigger forwardSysIdDynamic() {
-        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdDynamic().getAsBoolean());
-    }
+    @Override public Trigger backwardSysIdQuasi() {return controller().backwardSysIdQuasi();}
 
-    @Override
-    Trigger backwardSysIdDynamic() {
-        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdDynamic().getAsBoolean());
-    }
+    @Override public Trigger forwardSysIdDynamic() {return controller().forwardSysIdDynamic();}
+
+    @Override public Trigger backwardSysIdDynamic() {return controller().backwardSysIdDynamic();}
 }

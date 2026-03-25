@@ -1,16 +1,10 @@
 // @formatter:off
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.*;
-
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,6 +18,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -108,7 +108,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
     );
 
     /* The SysId routine to test */
-    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
+    private final SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.

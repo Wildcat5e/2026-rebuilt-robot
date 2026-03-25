@@ -7,29 +7,31 @@ import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
 
 public class AimHandler extends Command {
-    private final Drivetrain drivetrain;
+    private final Drivetrain  drivetrain;
     private final AimAtTarget aimAtHub;
     private final AimAtTarget aimAtUpperHome;
     private final AimAtTarget aimAtLowerHome;
 
     private Command activeCommand;
 
-    public AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtUpperHome,
-        AimAtTarget aimAtLowerHome) {
-        this.drivetrain = drivetrain;
-        this.aimAtHub = aimAtHub;
+    AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtUpperHome, AimAtTarget aimAtLowerHome) {
+        this.drivetrain     = drivetrain;
+        this.aimAtHub       = aimAtHub;
         this.aimAtUpperHome = aimAtUpperHome;
         this.aimAtLowerHome = aimAtLowerHome;
+        addRequirements(drivetrain);
     }
 
-    @Override
-    public void initialize() {
+    public AimHandler(Robot robot) {
+        this(robot.drivetrain, AimAtTarget.hub(robot), AimAtTarget.upperHome(robot), AimAtTarget.lowerHome(robot));
+    }
+
+    @Override public void initialize() {
         activeCommand = chooseCommand();
         scheduleActive();
     }
 
-    @Override
-    public void execute() {
+    @Override public void execute() {
         Command newCommand = chooseCommand();
 
         if (newCommand != activeCommand) {
@@ -40,31 +42,28 @@ public class AimHandler extends Command {
         }
     }
 
-    @Override
-    public void end(boolean interrupted) {
+    @Override public void end(boolean interrupted) {
         cancelActive();
     }
 
-    /** @return The specific AimAtTarget command to run, or null if in the deadzone. */
+    /**
+     * @return The specific AimAtTarget command to run, or null if in the deadzone.
+     */
     private Command chooseCommand() {
         if (Utilities.inHome(drivetrain)) {
             return aimAtHub;
         }
-
-        double yPosition = drivetrain.getState().Pose.getY();
-        if (yPosition > 4.25) {
+        if (drivetrain.getState().Pose.getY() > 4.25) {
             return aimAtUpperHome;
-        } else if (yPosition < 3.75) {
-            return aimAtLowerHome;
         }
-        return null;
+        return aimAtLowerHome;
     }
 
     private void scheduleActive() {
-        if (activeCommand != null) CommandScheduler.getInstance().schedule(activeCommand);
+        if (activeCommand != null) {CommandScheduler.getInstance().schedule(activeCommand);}
     }
 
     private void cancelActive() {
-        if (activeCommand != null) CommandScheduler.getInstance().cancel(activeCommand);
+        if (activeCommand != null) {CommandScheduler.getInstance().cancel(activeCommand);}
     }
 }

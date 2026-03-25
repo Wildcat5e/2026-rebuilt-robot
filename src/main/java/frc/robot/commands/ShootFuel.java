@@ -1,23 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Utilities;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Intake;
+
+import java.util.function.BooleanSupplier;
 
 public class ShootFuel extends Command {
-    Flywheel flywheel;
-    Hopper hopper;
-    Intake intake;
-    Drivetrain drivetrain;
+    Flywheel        flywheel;
+    Hopper          hopper;
+    BooleanSupplier inHome;
+
     boolean flywheelUpToSpeed;
 
-    public ShootFuel(Flywheel flywheel, Hopper hopper, Drivetrain drivetrain) {
+    public ShootFuel(Flywheel flywheel, Hopper hopper, BooleanSupplier inHome) {
         this.flywheel = flywheel;
-        this.hopper = hopper;
-        this.drivetrain = drivetrain;
+        this.hopper   = hopper;
+        this.inHome   = inHome;
         addRequirements(flywheel, hopper);
     }
 
@@ -28,31 +27,22 @@ public class ShootFuel extends Command {
 
     @Override
     public void execute() {
+        if (inHome.getAsBoolean()) {
+            flywheel.homeRunFlywheel();
+        } else {
+            flywheel.hubRunFlywheel();
+        }
         if (!flywheelUpToSpeed && flywheel.flywheelUpToSpeed()) {
-            System.out.println(" UP TO SPEED ");
             flywheelUpToSpeed = true;
         }
-        if (Utilities.inHome(drivetrain)) {
-            flywheel.hubRunFlywheel();
-            System.out.println("DYNAMIC !!!");
-        } else {
-            flywheel.homeRunFlywheel();
-            System.out.println("STATIC !!!!");
-        }
         if (flywheelUpToSpeed) {
-            hopper.runHopper();
+            hopper.start();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         flywheel.stopFlywheel();
-        hopper.stopHopper();
-        System.out.println("DONE");
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
+        hopper.stop();
     }
 }
