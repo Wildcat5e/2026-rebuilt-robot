@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,6 +42,8 @@ public interface DashboardManager {
     }
 
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
+        // Remaining time in the current period (Auto/Teleop)
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
         SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain, target));
         SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain, target));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
