@@ -68,7 +68,6 @@ BLACK = 0x000000
 
 SHIFT_KEY = 9
 CTRL_KEY = 11
-CTRL_KICKER_BUTTON = 11
 
 # LAYERS is a Dictionary of Dictionaries. The top-level keys are layer names,
 # and the values are dictionaries that map physical key numbers to tuples of
@@ -133,8 +132,7 @@ while True:
                 elif key == CTRL_KEY:
                     current_layer_name = "CONTROL"
                     macropad.pixels[key] = CYAN
-                    gamepad.press_buttons(CTRL_KICKER_BUTTON) 
-                    update_display(current_layer_name, modifier_msg="Kicker Spinning!")
+                    update_display(current_layer_name)
                 
                 # Handle Standard Keys based on the active layer
                 else:
@@ -168,10 +166,6 @@ while True:
                 if key in (SHIFT_KEY, CTRL_KEY):
                     current_layer_name = "BASE"
                     macropad.pixels[key] = BLACK # Turns the LED off
-                    
-                    if key == CTRL_KEY:
-                        gamepad.release_buttons(CTRL_KICKER_BUTTON) 
-                        
                     update_display(current_layer_name)
                 
                 # Handle Standard Keys
