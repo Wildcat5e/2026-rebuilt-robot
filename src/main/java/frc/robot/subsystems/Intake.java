@@ -42,11 +42,6 @@ public class Intake extends SubsystemBase {
         });
     }
 
-
-    /**
-     * TURN ON INTAKE TO TAKE IN FUEL COMMAND <br>
-     * Currently plan to bind to a while true button, but may be easier to have it run on toggle or for the entire match
-     */
     public Command testScooper() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
