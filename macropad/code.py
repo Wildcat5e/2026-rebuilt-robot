@@ -66,8 +66,8 @@ PURPLE = 0xff00ff
 CYAN = 0x00ffff
 BLACK = 0x000000
 
-SHIFT_KEY = 9
-CTRL_KEY = 11
+SHIFT_PHYSICAL_KEY = 9
+CTRL_PHYSICAL_KEY = 11
 
 # LAYERS is a Dictionary of Dictionaries. The top-level keys are layer names,
 # and the values are dictionaries that map physical key numbers to tuples of
@@ -124,12 +124,12 @@ while True:
             if key_event.pressed:
                 
                 # Handle Modifiers (Shift/Ctrl layers)
-                if key == SHIFT_KEY:
+                if key == SHIFT_PHYSICAL_KEY:
                     current_layer_name = "SHIFT"
                     macropad.pixels[key] = CYAN # Turn the physical LED cyan
                     update_display(current_layer_name)
                 
-                elif key == CTRL_KEY:
+                elif key == CTRL_PHYSICAL_KEY:
                     current_layer_name = "CONTROL"
                     macropad.pixels[key] = CYAN
                     update_display(current_layer_name)
@@ -163,7 +163,7 @@ while True:
                 
                 # Handle Modifiers
                 # 'in (X, Y)' is equivalent to 'if key == X or key == Y'
-                if key in (SHIFT_KEY, CTRL_KEY):
+                if key in (SHIFT_PHYSICAL_KEY, CTRL_PHYSICAL_KEY):
                     current_layer_name = "BASE"
                     macropad.pixels[key] = BLACK # Turns the LED off
                     update_display(current_layer_name)
