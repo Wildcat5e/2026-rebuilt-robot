@@ -45,8 +45,8 @@ public interface ShootingCalculator {
         // 4. Calculate the Shot Vector (Vector Subtraction: V_shot = V_static - V_robot)
         Translation2d shotVector = staticVector.minus(robotVector);
 
-        // 5. Extract outputs and offset shooter angle from robot.
-        double targetHeading = shotVector.getAngle().getRadians() + Constants.SHOOTER_ROTATION_OFFSET;
+        // 5. Extract outputs from robot.
+        double targetHeading = shotVector.getAngle().getRadians();
         double newShotHorizontalSpeed = shotVector.getNorm();
 
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)
