@@ -41,9 +41,6 @@ public interface Constants {
     /** Index 0 is Blue. Lower homes are Blue Right and Red Left. */
     List<Translation2d> LOWER_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
 
-    /** Offset is from the "forward" direction. Should be set to Math.PI (180 deg) for a backwards-facing shooter. */
-    double SHOOTER_ROTATION_OFFSET = Math.PI;
-
     /** Lookup table mapping distance from the Hub to the ideal static flywheel speed. */
     // @formatter:off
     InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
