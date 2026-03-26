@@ -5,25 +5,13 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Start to Shooting"
-          }
-        },
-        {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Drop Intake"
+                  "pathName": "Right Trench Middle Fuel Grab"
                 }
               }
             ]
@@ -36,7 +24,13 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 4.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
                 }
               },
               {
@@ -48,7 +42,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Run Intake"
+                  "name": "Aim at Hub"
                 }
               }
             ]
