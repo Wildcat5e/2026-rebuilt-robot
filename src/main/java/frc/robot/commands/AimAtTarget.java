@@ -32,23 +32,22 @@ public class AimAtTarget extends Command {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     }
 
-    private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric()
-            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+    private final SwerveRequest.FieldCentric swerveRequest =
+        new SwerveRequest.FieldCentric().withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
 
-    private final Robot                      robot;
-    private final Supplier<Translation2d>    targetSupplier;
+    private final Robot robot;
+    private final Supplier<Translation2d> targetSupplier;
     private final InterpolatingDoubleTreeMap flywheelSpeedMap;
 
     private Translation2d target;
-    private Pose2d        currentPose;
-    private double        targetHeading;
+    private Pose2d currentPose;
+    private double targetHeading;
 
-    private AimAtTarget(Robot robot,
-                        Supplier<Translation2d> targetSupplier,
-                        InterpolatingDoubleTreeMap flywheelSpeedMap) {
-        this.robot            = robot;
-        this.targetSupplier   = targetSupplier;
+    private AimAtTarget(Robot robot, Supplier<Translation2d> targetSupplier,
+        InterpolatingDoubleTreeMap flywheelSpeedMap) {
+        this.robot = robot;
+        this.targetSupplier = targetSupplier;
         this.flywheelSpeedMap = flywheelSpeedMap;
         registerTelemetry();
         // Do not add the drivetrain -- AimAtTarget controls rotation, the Driver retains control of translation.
@@ -67,13 +66,15 @@ public class AimAtTarget extends Command {
         return new AimAtTarget(robot, Utilities::getLowerHome, HOME_FLYWHEEL_SPEEDS_MAP);
     }
 
-    @Override public void initialize() {
+    @Override
+    public void initialize() {
         PID_CONTROLLER.reset();
-        target               = targetSupplier.get();
+        target = targetSupplier.get();
         robot.manualRotation = false;
     }
 
-    @Override public void execute() {
+    @Override
+    public void execute() {
         currentPose = robot.drivetrain.getState().Pose;
         var shotSolution = ShootingCalculator.calculate(robot.drivetrain, target, flywheelSpeedMap);
         targetHeading = shotSolution.robotHeading();
@@ -85,14 +86,15 @@ public class AimAtTarget extends Command {
 
         // --- 3. Combine and Cap ---
         // FF does the physics tracking, PID cleans up the physical errors
-        double totalVelocity  = feedforwardVelocity + pidVelocity;
+        double totalVelocity = feedforwardVelocity + pidVelocity;
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         applyRotation(cappedVelocity);
         robot.flywheel.setFlywheelSpeed(shotSolution.flywheelSpeed());
     }
 
-    @Override public void end(boolean interrupted) {
+    @Override
+    public void end(boolean interrupted) {
         robot.flywheel.stopFlywheel();
         // This is pretty important: Clear the override when the command ends
         PPHolonomicDriveController.clearRotationFeedbackOverride();
@@ -106,12 +108,14 @@ public class AimAtTarget extends Command {
         ChassisSpeeds fieldVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, currentPose.getRotation());
 
         // Get the vector pointing from the robot to the target
-        Translation2d delta      = target.minus(currentPose.getTranslation());
-        double        distanceSq = Math.pow(getTargetDistance(robot.drivetrain, target), 2);
+        Translation2d delta = target.minus(currentPose.getTranslation());
+        double distanceSq = Math.pow(getTargetDistance(robot.drivetrain, target), 2);
 
         if (distanceSq > 0.01) {
             return (fieldVel.vxMetersPerSecond * delta.getY() - fieldVel.vyMetersPerSecond * delta.getX()) / distanceSq;
-        } else {return 0;}
+        } else {
+            return 0;
+        }
     }
 
     private void applyRotation(double cappedVelocity) {

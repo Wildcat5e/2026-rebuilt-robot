@@ -9,7 +9,7 @@ import org.photonvision.simulation.VisionSystemSim;
 
 public class Simulation {
     private final VisionSystemSim visionSim = new VisionSystemSim("Main");
-    private final Drivetrain      drivetrain;
+    private final Drivetrain drivetrain;
 
     public Simulation(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -19,14 +19,11 @@ public class Simulation {
     }
 
     private static PhotonCameraSim photonCamera() {
-        var cameraSim = new PhotonCameraSim(
-                PhotonVision.CAMERA,
-                new SimCameraProperties()
-                        .setCalibration(1280, 720, Rotation2d.fromDegrees(100))
-                        .setCalibError(0.15, 0.05) // approximate detection noise
-                        .setFPS(30) // (Note: this is limited by robot loop rate).
-                        .setAvgLatencyMs(35) // image data latency
-                        .setLatencyStdDevMs(5));
+        var cameraSim = new PhotonCameraSim(PhotonVision.CAMERA,
+            new SimCameraProperties().setCalibration(1280, 720, Rotation2d.fromDegrees(100)).setCalibError(0.15, 0.05) // approximate detection noise
+                .setFPS(30) // (Note: this is limited by robot loop rate).
+                .setAvgLatencyMs(35) // image data latency
+                .setLatencyStdDevMs(5));
         // Enable drawing a wireframe visualization of the field to the camera streams. Extremely resource-intensive!
         cameraSim.enableDrawWireframe(true);
         return cameraSim;

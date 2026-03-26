@@ -40,7 +40,7 @@ public interface Constants {
     AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
     Translation2d BLUE_HUB_POSITION = new Translation2d(4.625, 4.03);
-    Translation2d RED_HUB_POSITION  = new Translation2d(11.915, 4.03);
+    Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
 
     /**
      * x-coordinate Threshold for Blue Alliance Home Zone
@@ -49,12 +49,12 @@ public interface Constants {
     /**
      * x-coordinate Threshold for Red Alliance Home Zone
      */
-    double RED_X_AXIS_HOME_THRESHOLD  = 12.54;
+    double RED_X_AXIS_HOME_THRESHOLD = 12.54;
 
     Translation2d BLUE_UPPER_HOME = new Translation2d(2.0, 6.25);
-    Translation2d RED_UPPER_HOME  = new Translation2d(14.5, 6.25);
+    Translation2d RED_UPPER_HOME = new Translation2d(14.5, 6.25);
     Translation2d BLUE_LOWER_HOME = new Translation2d(2.0, 1.75);
-    Translation2d RED_LOWER_HOME  = new Translation2d(14.5, 1.75);
+    Translation2d RED_LOWER_HOME = new Translation2d(14.5, 1.75);
 
     /**
      * Offset is from the "forward" direction. Should be set to Math.PI (180 deg) for a backwards-facing shooter.
@@ -64,22 +64,14 @@ public interface Constants {
     /**
      * Lookup table mapping distance from the Hub to the ideal static flywheel speed.
      */
-    InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
-            InterpolatingDoubleTreeMap.ofEntries(
-                    // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-                    Map.entry(2.28, 14.35),
-                    Map.entry(3.09, 14.85),
-                    Map.entry(4.14, 16.39),
-                    Map.entry(4.9, 17.55));
+    InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP = InterpolatingDoubleTreeMap.ofEntries(
+        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
+        Map.entry(2.28, 14.35), Map.entry(3.09, 14.85), Map.entry(4.14, 16.39), Map.entry(4.9, 17.55));
 
     /**
      * Lookup table mapping distance from the current Alliance Home to the ideal static flywheel speed.
      */
-    InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
-            InterpolatingDoubleTreeMap.ofEntries(
-                    // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-                    Map.entry(2.28, 14.35),
-                    Map.entry(3.09, 14.85),
-                    Map.entry(4.14, 16.39),
-                    Map.entry(4.9, 17.55)); // @formatter:on
+    InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP = InterpolatingDoubleTreeMap.ofEntries(
+        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
+        Map.entry(2.28, 14.35), Map.entry(3.09, 14.85), Map.entry(4.14, 16.39), Map.entry(4.9, 17.55)); // @formatter:on
 }

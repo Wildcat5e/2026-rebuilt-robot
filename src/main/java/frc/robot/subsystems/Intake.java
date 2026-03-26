@@ -12,16 +12,16 @@ public class Intake extends SubsystemBase {
     /**
      * Motor that shoots fuel into the robot
      */
-    private final TalonFX pusherMotor           = new TalonFX(16);
+    private final TalonFX pusherMotor = new TalonFX(16);
     /**
      * Motor that extends intake system outside of bumper.
      */
-    private final TalonFX extenderMotor         = new TalonFX(17);
+    private final TalonFX extenderMotor = new TalonFX(17);
     /**
      * Motor that is closer to the floor and scoops fuel into other set of wheels.
      */
-    private final TalonFX scooperMotor          = new TalonFX(18);
-    private       double  extenderMotorPosition = 0;
+    private final TalonFX scooperMotor = new TalonFX(18);
+    private double extenderMotorPosition = 0;
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase {
     public Command spinIntakeMotors() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-            double pusherMotorVoltage  = DashboardManager.getPusherMotorTestVoltage();
+            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             scooperMotor.setVoltage(-scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
@@ -97,12 +97,12 @@ public class Intake extends SubsystemBase {
 
     public Command bumpExtenderUp() {
         return startEnd(() -> extenderMotor.setVoltage(2), () -> extenderMotor.setVoltage(0))
-                .withName("Bump Extender Up");
+            .withName("Bump Extender Up");
     }
 
     public Command bumpExtenderDown() {
         return startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
-                .withName("Bump Extender Down");
+            .withName("Bump Extender Down");
     }
 
     /**

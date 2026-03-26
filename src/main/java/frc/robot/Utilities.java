@@ -45,12 +45,12 @@ public interface Utilities {
     }
 
     /**
-     * @deprecated This needs to be replaced/removed because of {@link frc.robot.subsystems.ShootingCalculator }
-     * and because reversed shooter.
+     * @deprecated This needs to be replaced/removed because of {@link frc.robot.subsystems.ShootingCalculator } and
+     *             because reversed shooter.
      */
     static boolean withinShootingAngle(Drivetrain drivetrain, Translation2d target) {
         double robotRotation = drivetrain.getState().Pose.getRotation().getRadians();
-        double angleDiff     = MathUtil.angleModulus(getRobotToTargetAngle(drivetrain, target) - robotRotation);
+        double angleDiff = MathUtil.angleModulus(getRobotToTargetAngle(drivetrain, target) - robotRotation);
         return Math.abs(angleDiff) < Math.toRadians(30); // Split out to constant if we make a new one of this function.
     }
 
@@ -59,9 +59,8 @@ public interface Utilities {
 
         // If the Robot is on the Blue Alliance, return whether it's to the left of the Blue Home Zone threshold.
         // If the Robot is on the Red Alliance, return whether it's to the right of the Red Home Zone threshold.
-        return isBlueAlliance()
-               ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
-               : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
+        return isBlueAlliance() ? robotXPosition < Constants.BLUE_X_AXIS_HOME_THRESHOLD
+            : robotXPosition > Constants.RED_X_AXIS_HOME_THRESHOLD;
     }
 
     /**
@@ -76,7 +75,7 @@ public interface Utilities {
      * Applies a gear ratio to a TalonFX motor so that getPosition() and getVelocity() automatically return mechanism
      * rotations instead of motor rotor rotations.
      *
-     * @param motor     The TalonFX motor to configure.
+     * @param motor The TalonFX motor to configure.
      * @param gearRatio
      * @return The TalonFX motor that was configured so this can be chained.
      */

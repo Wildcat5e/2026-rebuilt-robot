@@ -11,73 +11,93 @@ public class Xbox implements Controller {
         controller = new CommandXboxController(port);
     }
 
-    @Override public Translation2d translation() {
+    @Override
+    public Translation2d translation() {
         return new Translation2d(-controller.getLeftY(), -controller.getLeftX());
     }
 
-    @Override public double rotation() {return -controller.getRightX();}
+    @Override
+    public double rotation() {
+        return -controller.getRightX();
+    }
 
-    @Override public Trigger runIntake() {
+    @Override
+    public Trigger runIntake() {
         return controller.leftTrigger();
     }
 
-    @Override public Trigger shootFuel() {
+    @Override
+    public Trigger shootFuel() {
         return controller.rightTrigger();
     }
 
-    @Override public Trigger lowerIntake() {
+    @Override
+    public Trigger lowerIntake() {
         return controller.rightBumper();
     }
 
-    @Override public Trigger raiseIntake() {
+    @Override
+    public Trigger raiseIntake() {
         return controller.leftBumper();
     }
 
-    @Override public Trigger aimHandler() {
+    @Override
+    public Trigger aimHandler() {
         return controller.a();
     }
 
-    @Override public Trigger manualFlywheel() {
+    @Override
+    public Trigger manualFlywheel() {
         return controller.b();
     }
 
-    @Override public Trigger seedFieldCentric() {
+    @Override
+    public Trigger seedFieldCentric() {
         return controller.x();
     }
 
-    @Override public Trigger reverse() {
+    @Override
+    public Trigger reverse() {
         return controller.y();
     }
 
-    @Override public Trigger povUp() {
+    @Override
+    public Trigger povUp() {
         return controller.povUp();
     }
 
-    @Override public Trigger povDown() {
+    @Override
+    public Trigger povDown() {
         return controller.povDown();
     }
 
-    @Override public Trigger povLeft() {
+    @Override
+    public Trigger povLeft() {
         return controller.povLeft();
     }
 
-    @Override public Trigger povRight() {
+    @Override
+    public Trigger povRight() {
         return controller.povRight();
     }
 
-    @Override public Trigger forwardSysIdQuasi() {
+    @Override
+    public Trigger forwardSysIdQuasi() {
         return controller.start().and(controller.y());
     }
 
-    @Override public Trigger backwardSysIdQuasi() {
+    @Override
+    public Trigger backwardSysIdQuasi() {
         return controller.start().and(controller.x());
     }
 
-    @Override public Trigger forwardSysIdDynamic() {
+    @Override
+    public Trigger forwardSysIdDynamic() {
         return controller.back().and(controller.y());
     }
 
-    @Override public Trigger backwardSysIdDynamic() {
+    @Override
+    public Trigger backwardSysIdDynamic() {
         return controller.back().and(controller.x());
     }
 }

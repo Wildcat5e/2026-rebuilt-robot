@@ -28,7 +28,7 @@ public interface ShootingCalculator {
      * @return ShotSolution containing new heading and speed
      */
     static ShotSolution calculate(Drivetrain drivetrain, Translation2d target,
-                                  InterpolatingDoubleTreeMap flywheelSpeedMap) {
+        InterpolatingDoubleTreeMap flywheelSpeedMap) {
         ChassisSpeeds robotVel = drivetrain.getState().Speeds;
         // Convert robot centric speeds to field centric speeds
         robotVel = ChassisSpeeds.fromRobotRelativeSpeeds(robotVel, drivetrain.getState().Pose.getRotation());
@@ -41,14 +41,14 @@ public interface ShootingCalculator {
         double staticSpeedHorizontal = staticSpeed * Math.cos(Constants.HOOD_ANGLE_RADIANS);
 
         // 3. Create the Static Vector pointing directly at the hub.
-        double        angleToTarget = getRobotToTargetAngle(drivetrain, target);
-        Translation2d staticVector  = new Translation2d(staticSpeedHorizontal, new Rotation2d(angleToTarget));
+        double angleToTarget = getRobotToTargetAngle(drivetrain, target);
+        Translation2d staticVector = new Translation2d(staticSpeedHorizontal, new Rotation2d(angleToTarget));
 
         // 4. Calculate the Shot Vector (Vector Subtraction: V_shot = V_static - V_robot)
         Translation2d shotVector = staticVector.minus(robotVector);
 
         // 5. Extract outputs and offset shooter angle from robot.
-        double targetHeading          = shotVector.getAngle().getRadians() + Constants.SHOOTER_ROTATION_OFFSET;
+        double targetHeading = shotVector.getAngle().getRadians() + Constants.SHOOTER_ROTATION_OFFSET;
         double newShotHorizontalSpeed = shotVector.getNorm();
 
         // 6. Convert back to full 3D flywheel speed (2D Plane -> 3D)

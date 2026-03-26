@@ -20,20 +20,20 @@ import static frc.robot.Utilities.getHubPosition;
 public class Flywheel extends SubsystemBase {
 
     private final Drivetrain drivetrain;
-    private final TalonFX    leftFlywheelMotor      = new TalonFX(21);
-    private final TalonFX    rightFlywheelMotor     = new TalonFX(20);
-    private final double     FLYWHEEL_RADIUS        = 0.0508;
-    private final double     FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
+    private final TalonFX leftFlywheelMotor = new TalonFX(21);
+    private final TalonFX rightFlywheelMotor = new TalonFX(20);
+    private final double FLYWHEEL_RADIUS = 0.0508;
+    private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
 
     private double currentFlywheelSpeed = 0;
-    private       double targetFlywheelSpeed = 0;
-    private final double flywheelSpeedMult   = 1.0;
+    private double targetFlywheelSpeed = 0;
+    private final double flywheelSpeedMult = 1.0;
 
     // 5 seconds * 50 loops per second = 250 samples
-    private final LinearFilter speedFilter          = LinearFilter.movingAverage(250);
-    private       double       averageFlywheelSpeed = 0;
-    private       double       calculatedVoltage    = 0;
+    private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
+    private double averageFlywheelSpeed = 0;
+    private double calculatedVoltage = 0;
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -75,7 +75,7 @@ public class Flywheel extends SubsystemBase {
         return runEnd(() -> {
             // This code is run every 20 ms
             var shotSolution =
-                    ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
+                ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
             calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
@@ -94,11 +94,13 @@ public class Flywheel extends SubsystemBase {
 
     public Command reverseFlywheel() {
         return startEnd(() -> setFlywheelMotorVoltages(-3), () -> setFlywheelMotorVoltages(0))
-                .withName("Reverse Flywheel");
+            .withName("Reverse Flywheel");
     }
 
     public boolean flywheelUpToSpeed() {
-        if (targetFlywheelSpeed == 0) {return false;}
+        if (targetFlywheelSpeed == 0) {
+            return false;
+        }
         return currentFlywheelSpeed > targetFlywheelSpeed;
     }
 
@@ -107,7 +109,7 @@ public class Flywheel extends SubsystemBase {
      */
     public void hubRunFlywheel() {
         var shotSolution =
-                ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
+            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
@@ -127,9 +129,7 @@ public class Flywheel extends SubsystemBase {
     public void homeRunFlywheel() {
         // THIS NEEDS TO BE EDITED TO USE THE INTERPOLATION TABLE FOR SHOOTING FROM NEUTRAL ZONE
         var shotSolution =
-                ShootingCalculator.calculate(drivetrain,
-                                             getHubPosition(),
-                                             Constants.HOME_FLYWHEEL_SPEEDS_MAP); // temp get hub
+            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HOME_FLYWHEEL_SPEEDS_MAP); // temp get hub
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
@@ -183,20 +183,12 @@ public class Flywheel extends SubsystemBase {
 
     // Untested
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
-                                            new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()),
-                                                                       log -> {
-                                                                           log.motor("flywheel-motors").voltage(
-                                                                                      rightFlywheelMotor.getMotorVoltage()
-                                                                                                        .getValue())
-                                                                              .linearPosition(Distance.ofRelativeUnits(
-                                                                                      rightFlywheelMotor.getPosition()
-                                                                                                        .getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE,
-                                                                                      Meters))
-                                                                              .linearVelocity(LinearVelocity.ofRelativeUnits(
-                                                                                      getFlywheelSpeed(),
-                                                                                      MetersPerSecond));
-                                                                       },
-                                                                       this));
+        new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()), log -> {
+            log.motor("flywheel-motors").voltage(rightFlywheelMotor.getMotorVoltage().getValue())
+                .linearPosition(Distance.ofRelativeUnits(
+                    rightFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
+                .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
+        }, this));
 
     // --- sysId Flywheel FeedForward Calibration Tests ---
 

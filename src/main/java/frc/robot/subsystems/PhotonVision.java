@@ -22,30 +22,29 @@ import static java.util.stream.Collectors.toMap;
 public class PhotonVision extends SubsystemBase {
     // Standard deviations to weight vision pose updates. (Higher values weight vision less.)
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
-    public static final Matrix<N3, N1> MULTI_TAG_STD_DEV  = VecBuilder.fill(0.5, 0.5, 1);
-    public static final PhotonCamera   CAMERA             = new PhotonCamera("HD_Pro_Webcam_C920");
-    public static final Transform3d    ROBOT_TO_CAMERA    = new Transform3d(-0.07, .295, .57, Rotation3d.kZero);
+    public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
+    public static final PhotonCamera CAMERA = new PhotonCamera("HD_Pro_Webcam_C920");
+    public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(-0.07, .295, .57, Rotation3d.kZero);
 
-    private final PhotonCamera         photonCamera;
-    private final PhotonPoseEstimator  poseEstimator;
+    private final PhotonCamera photonCamera;
+    private final PhotonPoseEstimator poseEstimator;
     private final PoseEstimateConsumer poseEstimateConsumer;
     private final Map<Integer, Pose2d> aprilTagPoses;
 
     /**
-     * @param camera           The camera to use for pose estimation. Make sure to set the correct camera name and robot-to-camera transform.
-     * @param estimator        The photon pose estimator used for pose estimation.
+     * @param camera The camera to use for pose estimation. Make sure to set the correct camera name and robot-to-camera
+     *        transform.
+     * @param estimator The photon pose estimator used for pose estimation.
      * @param estimateConsumer The consumer receiving the estimated pose and timestamp.
      */
     public PhotonVision(PhotonCamera camera, PhotonPoseEstimator estimator, PoseEstimateConsumer estimateConsumer) {
         super(camera.getName());
-        this.photonCamera         = camera;
+        this.photonCamera = camera;
         this.poseEstimateConsumer = estimateConsumer;
-        this.poseEstimator        = estimator;
+        this.poseEstimator = estimator;
         // Only convert AprilTags to poses once since the field layout is static. Map tag ID to pose for fast lookup during pose estimation.
-        this.aprilTagPoses = estimator.getFieldTags()
-                                      .getTags()
-                                      .stream()
-                                      .collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d()));
+        this.aprilTagPoses =
+            estimator.getFieldTags().getTags().stream().collect(toMap(tag -> tag.ID, tag -> tag.pose.toPose2d()));
     }
 
 
@@ -53,12 +52,13 @@ public class PhotonVision extends SubsystemBase {
         this(CAMERA, new PhotonPoseEstimator(FIELD_LAYOUT, ROBOT_TO_CAMERA), estimateConsumer);
     }
 
-    @Override public void periodic() {
+    @Override
+    public void periodic() {
         for (PhotonPipelineResult result : photonCamera.getAllUnreadResults()) {
 
             // Use coprocessor if available, otherwise use lowest ambiguity pose.
             var optionalPoseEstimate = poseEstimator.estimateCoprocMultiTagPose(result)
-                                                    .or(() -> poseEstimator.estimateLowestAmbiguityPose(result));
+                .or(() -> poseEstimator.estimateLowestAmbiguityPose(result));
 
             if (optionalPoseEstimate.isEmpty()) {
                 // No valid pose estimate for this result, skip it.
@@ -66,28 +66,24 @@ public class PhotonVision extends SubsystemBase {
             }
 
             // Convert targets to April Tag 2d poses, removing null values
-            var tagPoses = result.targets.stream()
-                                         .map(PhotonTrackedTarget::getFiducialId)
-                                         .map(aprilTagPoses::get)
-                                         .filter(Objects::nonNull)
-                                         .toList();
+            var tagPoses = result.targets.stream().map(PhotonTrackedTarget::getFiducialId).map(aprilTagPoses::get)
+                .filter(Objects::nonNull).toList();
 
             if (tagPoses.isEmpty()) {
                 // No valid April Tag poses for the targets in this result, skip it since we can't calculate distances to tags.
                 continue;
             }
 
-            var poseEstimate   = optionalPoseEstimate.get();
+            var poseEstimate = optionalPoseEstimate.get();
             var poseEstimate2d = poseEstimate.estimatedPose.toPose2d();
 
             // Average distance between tag pose and robot pose estimate.
             // This gives us a rough idea of how far the robot is from the tags it sees,
             // which is a major factor in pose estimation accuracy. We use this to adjust our
             // confidence in the pose estimate (i.e. the standard deviation we pass to the consumer).
-            var averageDistance = tagPoses.stream()
-                                          .map(tagPose -> tagPose.getTranslation()
-                                                                 .getDistance(poseEstimate2d.getTranslation()))
-                                          .reduce(0.0, Double::sum) / tagPoses.size();
+            var averageDistance =
+                tagPoses.stream().map(tagPose -> tagPose.getTranslation().getDistance(poseEstimate2d.getTranslation()))
+                    .reduce(0.0, Double::sum) / tagPoses.size();
 
             if (tagPoses.size() == 1 && averageDistance <= 4.0) {
                 // Only use single tag pose estimate if the average distance is less than 4 meters.

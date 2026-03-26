@@ -7,7 +7,7 @@ import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
 
 public class AimHandler extends Command {
-    private final Drivetrain  drivetrain;
+    private final Drivetrain drivetrain;
     private final AimAtTarget aimAtHub;
     private final AimAtTarget aimAtUpperHome;
     private final AimAtTarget aimAtLowerHome;
@@ -15,8 +15,8 @@ public class AimHandler extends Command {
     private Command activeCommand;
 
     AimHandler(Drivetrain drivetrain, AimAtTarget aimAtHub, AimAtTarget aimAtUpperHome, AimAtTarget aimAtLowerHome) {
-        this.drivetrain     = drivetrain;
-        this.aimAtHub       = aimAtHub;
+        this.drivetrain = drivetrain;
+        this.aimAtHub = aimAtHub;
         this.aimAtUpperHome = aimAtUpperHome;
         this.aimAtLowerHome = aimAtLowerHome;
         addRequirements(drivetrain);
@@ -26,12 +26,14 @@ public class AimHandler extends Command {
         this(robot.drivetrain, AimAtTarget.hub(robot), AimAtTarget.upperHome(robot), AimAtTarget.lowerHome(robot));
     }
 
-    @Override public void initialize() {
+    @Override
+    public void initialize() {
         activeCommand = chooseCommand();
         scheduleActive();
     }
 
-    @Override public void execute() {
+    @Override
+    public void execute() {
         Command newCommand = chooseCommand();
 
         if (newCommand != activeCommand) {
@@ -42,7 +44,8 @@ public class AimHandler extends Command {
         }
     }
 
-    @Override public void end(boolean interrupted) {
+    @Override
+    public void end(boolean interrupted) {
         cancelActive();
     }
 
@@ -60,10 +63,14 @@ public class AimHandler extends Command {
     }
 
     private void scheduleActive() {
-        if (activeCommand != null) {CommandScheduler.getInstance().schedule(activeCommand);}
+        if (activeCommand != null) {
+            CommandScheduler.getInstance().schedule(activeCommand);
+        }
     }
 
     private void cancelActive() {
-        if (activeCommand != null) {CommandScheduler.getInstance().cancel(activeCommand);}
+        if (activeCommand != null) {
+            CommandScheduler.getInstance().cancel(activeCommand);
+        }
     }
 }

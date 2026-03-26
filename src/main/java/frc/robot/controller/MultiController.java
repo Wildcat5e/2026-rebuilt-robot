@@ -26,41 +26,97 @@ public class MultiController implements Controller {
         SmartDashboard.putData("Controller Chooser", controllerChooser);
     }
 
-    private Controller controller() {return controllerChooser.getSelected();}
+    private Controller controller() {
+        return controllerChooser.getSelected();
+    }
 
-    @Override public double rotation() {return controller().rotation();}
+    @Override
+    public double rotation() {
+        return controller().rotation();
+    }
 
-    @Override public Translation2d translation() {return controller().translation();}
+    @Override
+    public Translation2d translation() {
+        return controller().translation();
+    }
 
-    @Override public Trigger runIntake() {return controller().runIntake();}
+    @Override
+    public Trigger runIntake() {
+        return controller().runIntake();
+    }
 
-    @Override public Trigger shootFuel() {return controller().shootFuel();}
+    @Override
+    public Trigger shootFuel() {
+        return controller().shootFuel();
+    }
 
-    @Override public Trigger lowerIntake() {return controller().lowerIntake();}
+    @Override
+    public Trigger lowerIntake() {
+        return controller().lowerIntake();
+    }
 
-    @Override public Trigger raiseIntake() {return controller().raiseIntake();}
+    @Override
+    public Trigger raiseIntake() {
+        return controller().raiseIntake();
+    }
 
-    @Override public Trigger aimHandler() {return controller().aimHandler();}
+    @Override
+    public Trigger aimHandler() {
+        return controller().aimHandler();
+    }
 
-    @Override public Trigger manualFlywheel() {return controller().manualFlywheel();}
+    @Override
+    public Trigger manualFlywheel() {
+        return controller().manualFlywheel();
+    }
 
-    @Override public Trigger seedFieldCentric() {return controller().seedFieldCentric();}
+    @Override
+    public Trigger seedFieldCentric() {
+        return controller().seedFieldCentric();
+    }
 
-    @Override public Trigger reverse() {return controller().reverse();}
+    @Override
+    public Trigger reverse() {
+        return controller().reverse();
+    }
 
-    @Override public Trigger povUp() {return controller().povUp();}
+    @Override
+    public Trigger povUp() {
+        return controller().povUp();
+    }
 
-    @Override public Trigger povDown() {return controller().povDown();}
+    @Override
+    public Trigger povDown() {
+        return controller().povDown();
+    }
 
-    @Override public Trigger povLeft() {return controller().povLeft();}
+    @Override
+    public Trigger povLeft() {
+        return controller().povLeft();
+    }
 
-    @Override public Trigger povRight() {return controller().povRight();}
+    @Override
+    public Trigger povRight() {
+        return controller().povRight();
+    }
 
-    @Override public Trigger forwardSysIdQuasi() {return controller().forwardSysIdQuasi();}
+    @Override
+    public Trigger forwardSysIdQuasi() {
+        return controller().forwardSysIdQuasi();
+    }
 
-    @Override public Trigger backwardSysIdQuasi() {return controller().backwardSysIdQuasi();}
+    @Override
+    public Trigger backwardSysIdQuasi() {
+        return controller().backwardSysIdQuasi();
+    }
 
-    @Override public Trigger forwardSysIdDynamic() {return controller().forwardSysIdDynamic();}
+    @Override
+    public Trigger forwardSysIdDynamic() {
+        return controller().forwardSysIdDynamic();
+    }
 
-    @Override public Trigger backwardSysIdDynamic() {return controller().backwardSysIdDynamic();}
+    @Override
+    public Trigger backwardSysIdDynamic() {
+        return controller().backwardSysIdDynamic();
+    }
 }

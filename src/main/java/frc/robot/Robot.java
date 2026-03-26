@@ -36,27 +36,25 @@ import static frc.robot.DashboardManager.incrementStaticFlywheelSpeed;
 import static frc.robot.Utilities.getHubPosition;
 
 public class Robot extends TimedRobot {
-    public final Drivetrain   drivetrain = TunerConstants.createDrivetrain();
-    public final Flywheel     flywheel   = new Flywheel(drivetrain);
-    public final Hopper       hopper     = new Hopper();
-    public final Intake       intake     = new Intake();
-    public final PhotonVision vision     = new PhotonVision(drivetrain::addVisionMeasurement);
+    public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Flywheel flywheel = new Flywheel(drivetrain);
+    public final Hopper hopper = new Hopper();
+    public final Intake intake = new Intake();
+    public final PhotonVision vision = new PhotonVision(drivetrain::addVisionMeasurement);
 
-    private final Controller        controller  = new MultiController();
-    private final CommandGenericHID macropad    = new CommandGenericHID(4);
-    private final Field2d           fieldWidget = new Field2d();
+    private final Controller controller = new MultiController();
+    private final CommandGenericHID macropad = new CommandGenericHID(4);
+    private final Field2d fieldWidget = new Field2d();
 
     // https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java
 
-    private final StringPublisher elasticTabPublisher = NetworkTableInstance
-            .getDefault()
-            .getStringTopic("/Elastic/SelectedTab")
-            .publish(PubSubOption.keepDuplicates(true));
+    private final StringPublisher elasticTabPublisher = NetworkTableInstance.getDefault()
+        .getStringTopic("/Elastic/SelectedTab").publish(PubSubOption.keepDuplicates(true));
 
     private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
     private Simulation simulation;
-    public  boolean    manualRotation = true;
+    public boolean manualRotation = true;
 
     /**
      * This function is run when the robot is first started up and should be used for any initialization code.
@@ -78,33 +76,39 @@ public class Robot extends TimedRobot {
     }
 
 
-    @Override public void robotPeriodic() {
+    @Override
+    public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         fieldWidget.setRobotPose(drivetrain.getState().Pose);
         DashboardManager.updateRobotPeriodic(drivetrain, getHubPosition());
     }
 
-    @Override public void autonomousInit() {
+    @Override
+    public void autonomousInit() {
         elasticTabPublisher.set("Autonomous");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
         }
     }
 
-    @Override public void autonomousPeriodic() {}
+    @Override
+    public void autonomousPeriodic() {}
 
-    @Override public void teleopInit() {
+    @Override
+    public void teleopInit() {
         elasticTabPublisher.set("Teleoperated");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
         }
     }
 
-    @Override public void simulationInit() {
+    @Override
+    public void simulationInit() {
         simulation = new Simulation(drivetrain);
     }
 
-    @Override public void simulationPeriodic() {
+    @Override
+    public void simulationPeriodic() {
         simulation.poseUpdate();
     }
 
@@ -142,8 +146,8 @@ public class Robot extends TimedRobot {
     }// @formatter:on
 
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
-    private static final double RADIAL_DEAD_ZONE  = .15;
-    private static final double SCALE_EXPONENT    = 1;
+    private static final double RADIAL_DEAD_ZONE = .15;
+    private static final double SCALE_EXPONENT = 1;
 
     public void bindMacropad() {
         // LAYER 0 (No Modifiers)
@@ -165,8 +169,8 @@ public class Robot extends TimedRobot {
 
         // Emergency Stop
         if (DriverStation.isTest()) {
-            macropad.button(10).whileTrue(Commands.run(() -> CommandScheduler.getInstance().cancelAll())
-                                                  .ignoringDisable(true));
+            macropad.button(10)
+                .whileTrue(Commands.run(() -> CommandScheduler.getInstance().cancelAll()).ignoringDisable(true));
         }
 
         // LAYER 2 (Control Held)
@@ -185,23 +189,24 @@ public class Robot extends TimedRobot {
         controller.seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         controller.reverse().whileTrue(intake.reverseScooper());
         drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
-            double x         = controller.translation().getX();
-            double y         = controller.translation().getY();
+            double x = controller.translation().getX();
+            double y = controller.translation().getY();
             double magnitude = Math.hypot(x, y);
 
             Translation2d translation;
             if (magnitude < RADIAL_DEAD_ZONE) {
                 translation = new Translation2d(0, 0);
             } else {
-                translation = new Translation2d(x, y)
-                        .div(magnitude)
-                        .times(Math.pow(applyDeadband(magnitude, RADIAL_DEAD_ZONE), SCALE_EXPONENT));
+                translation = new Translation2d(x, y).div(magnitude)
+                    .times(Math.pow(applyDeadband(magnitude, RADIAL_DEAD_ZONE), SCALE_EXPONENT));
             }
-            SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric()
-                    .withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
+            SwerveRequest.FieldCentric fieldCentric =
+                new SwerveRequest.FieldCentric().withVelocityX(translation.getX() * Constants.MAX_LINEAR_SPEED)
                     .withVelocityY(translation.getY() * Constants.MAX_LINEAR_SPEED);
 
-            if (manualRotation) {fieldCentric.withRotationalRate(controller.rotation() * MAX_ANGULAR_SPEED);}
+            if (manualRotation) {
+                fieldCentric.withRotationalRate(controller.rotation() * MAX_ANGULAR_SPEED);
+            }
 
             return fieldCentric;
         }));

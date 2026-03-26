@@ -7,16 +7,16 @@ import frc.robot.subsystems.Hopper;
 import java.util.function.BooleanSupplier;
 
 public class ShootFuel extends Command {
-    Flywheel        flywheel;
-    Hopper          hopper;
+    Flywheel flywheel;
+    Hopper hopper;
     BooleanSupplier inHome;
 
     boolean flywheelUpToSpeed;
 
     public ShootFuel(Flywheel flywheel, Hopper hopper, BooleanSupplier inHome) {
         this.flywheel = flywheel;
-        this.hopper   = hopper;
-        this.inHome   = inHome;
+        this.hopper = hopper;
+        this.inHome = inHome;
         addRequirements(flywheel, hopper);
     }
 

@@ -37,13 +37,9 @@ public interface DashboardManager {
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("Robot Telemetry", builder -> builder.addDoubleProperty("Distance to Hub (m)",
-                                                                                       () -> round(getTargetDistance(
-                                                                                               drivetrain,
-                                                                                               getHubPosition()), 3),
-                                                                                       null));
+            () -> round(getTargetDistance(drivetrain, getHubPosition()), 3), null));
         if (!DriverStation.isTest()) {
-            SmartDashboard.putData("Aim At Target PID Controller",
-                                   AimAtTarget.PID_CONTROLLER);
+            SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
         }
     }
 
@@ -74,7 +70,7 @@ public interface DashboardManager {
     // Subsystem: Flywheel
     // =====================================
     static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp,
-                              DoubleSupplier calculatedVoltageSupp) {
+        DoubleSupplier calculatedVoltageSupp) {
         SmartDashboard.putNumber("Target Flywheel Speed (m∕s)", 0);
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.0);
@@ -117,9 +113,9 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
-                                      () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
+                () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
             builder.addBooleanProperty("Scooper Speed", () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1,
-                                       null);
+                null);
         });
     }
 

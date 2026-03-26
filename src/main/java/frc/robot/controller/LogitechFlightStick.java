@@ -18,63 +18,93 @@ public class LogitechFlightStick implements Controller {
         joystick = new CommandJoystick(port);
     }
 
-    @Override public Translation2d translation() {
+    @Override
+    public Translation2d translation() {
         return new Translation2d(-joystick.getRawAxis(1), -joystick.getRawAxis(0));
     }
 
-    @Override public double rotation() {
+    @Override
+    public double rotation() {
         return MathUtil.applyDeadband(-joystick.getRawAxis(2), .3);
     }
 
-    @Override public Trigger runIntake() {return joystick.button(3);}
+    @Override
+    public Trigger runIntake() {
+        return joystick.button(3);
+    }
 
-    @Override public Trigger shootFuel() {return joystick.trigger();}
+    @Override
+    public Trigger shootFuel() {
+        return joystick.trigger();
+    }
 
-    @Override public Trigger lowerIntake() {
+    @Override
+    public Trigger lowerIntake() {
         return joystick.button(5);
     }
 
-    @Override public Trigger raiseIntake() {
+    @Override
+    public Trigger raiseIntake() {
         return joystick.button(6);
     }
 
-    @Override public Trigger aimHandler() {
+    @Override
+    public Trigger aimHandler() {
         return joystick.button(2); // Thumb button, while holding easy to trigger to shoot.
     }
 
-    @Override public Trigger manualFlywheel() {
+    @Override
+    public Trigger manualFlywheel() {
         return joystick.button(4);
     }
 
-    @Override public Trigger seedFieldCentric() {
+    @Override
+    public Trigger seedFieldCentric() {
         return joystick.button(12);
     }
 
-    @Override public Trigger reverse() {
+    @Override
+    public Trigger reverse() {
         return joystick.button(11);
     }
 
-    @Override public Trigger povUp() {
+    @Override
+    public Trigger povUp() {
         return joystick.povUp();
     }
 
-    @Override public Trigger povDown() {
+    @Override
+    public Trigger povDown() {
         return joystick.povDown();
     }
 
-    @Override public Trigger povLeft() {
+    @Override
+    public Trigger povLeft() {
         return joystick.povLeft();
     }
 
-    @Override public Trigger povRight() {
+    @Override
+    public Trigger povRight() {
         return joystick.povRight();
     }
 
-    @Override public Trigger forwardSysIdQuasi() {return new Trigger(() -> false);}
+    @Override
+    public Trigger forwardSysIdQuasi() {
+        return new Trigger(() -> false);
+    }
 
-    @Override public Trigger backwardSysIdQuasi() {return new Trigger(() -> false);}
+    @Override
+    public Trigger backwardSysIdQuasi() {
+        return new Trigger(() -> false);
+    }
 
-    @Override public Trigger forwardSysIdDynamic() {return new Trigger(() -> false);}
+    @Override
+    public Trigger forwardSysIdDynamic() {
+        return new Trigger(() -> false);
+    }
 
-    @Override public Trigger backwardSysIdDynamic() {return new Trigger(() -> false);}
+    @Override
+    public Trigger backwardSysIdDynamic() {
+        return new Trigger(() -> false);
+    }
 }
