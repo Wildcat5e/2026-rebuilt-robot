@@ -45,7 +45,7 @@ public interface ShootingCalculator {
         // 4. Calculate the Shot Vector (Vector Subtraction: V_shot = V_static - V_robot)
         Translation2d shotVector = staticVector.minus(robotVector);
 
-        // 5. Extract outputs from robot.
+        // 5. Extract outputs.
         double targetHeading = shotVector.getAngle().getRadians();
         double newShotHorizontalSpeed = shotVector.getNorm();
 
