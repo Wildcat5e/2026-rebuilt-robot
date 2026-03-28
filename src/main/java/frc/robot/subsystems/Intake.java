@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +17,8 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
     private final TalonFX pusherMotor = new TalonFX(16);
     private final double PUSHER_RADIUS = 0.058 / 2;
     private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
+    /** Feedforward controller for the pusher. */
+    private final SimpleMotorFeedforward pusherFF = new SimpleMotorFeedforward(0, 0, 0);
 
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
@@ -34,6 +37,8 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
     private final TalonFX scooperMotor = new TalonFX(18);
     private final double SCOOPER_RADIUS = 0.06858 / 2;
     private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
+    /** Feedforward controller for the scooper. */
+    private final SimpleMotorFeedforward scooperFF = new SimpleMotorFeedforward(0, 0, 0);
 
     // --- SysId Configuration (Rollers Only) ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.

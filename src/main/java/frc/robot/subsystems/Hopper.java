@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -12,10 +13,14 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
     private final TalonFX kickerMotor = new TalonFX(14);
     private final double KICKER_RADIUS = 0.03175 / 2;
     private final double KICKER_CIRCUMFERENCE = 2 * Math.PI * KICKER_RADIUS;
+    /** Feedforward controller for the kicker. */
+    private final SimpleMotorFeedforward kickerFF = new SimpleMotorFeedforward(0, 0, 0);
 
     private final TalonFX conveyorMotor = new TalonFX(15);
     private final double CONVEYOR_RADIUS = 0.028575 / 2;
     private final double CONVEYOR_CIRCUMFERENCE = 2 * Math.PI * CONVEYOR_RADIUS;
+    /** Feedforward controller for the conveyor. */
+    private final SimpleMotorFeedforward conveyorFF = new SimpleMotorFeedforward(0, 0, 0);
 
     // --- SysId Configuration ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.

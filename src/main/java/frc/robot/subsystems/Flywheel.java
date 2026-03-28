@@ -23,7 +23,8 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
     private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
+    /** Feedforward controller for the flywheel. */
+    private final SimpleMotorFeedforward flywheelFF = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
@@ -65,7 +66,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+        double calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
@@ -76,7 +77,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
                 ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
             // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
-            calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
@@ -87,7 +88,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+        double calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
@@ -115,7 +116,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     public Command tunableFlywheelSpeedCommand() {
         return runEnd(() -> {
             targetFlywheelSpeed = DashboardManager.getTunableFlywheelSpeed();
-            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            double calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
     }
@@ -129,7 +130,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
 
     /** Spins flywheel at specified speed in m/s. */
     public void setFlywheelSpeed(double targetSpeed) {
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetSpeed);
+        double calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
 
@@ -155,7 +156,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     private Command backupFlywheelCommandHelper(double distance) {
         return runEnd(() -> {
             targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(distance);
-            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+            double calculatedVoltage = flywheelFF.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
             setFlywheelMotorVoltages(calculatedVoltage);
         }, () -> setFlywheelMotorVoltages(0));
     }
