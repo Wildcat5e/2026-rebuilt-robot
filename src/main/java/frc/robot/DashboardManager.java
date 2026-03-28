@@ -126,8 +126,8 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Extender Tuning/4: kS", 0);
         SmartDashboard.putNumber("Extender Tuning/5: kV", 0);
         SmartDashboard.putNumber("Extender Tuning/6: kG", 0);
-        SmartDashboard.putNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 1);
-        SmartDashboard.putNumber("Extender Tuning/8: Motion Magic Acceleration", 2);
+        SmartDashboard.putNumber("Extender Tuning/7: Motion Magic Cruise Velocity", 0.33);
+        SmartDashboard.putNumber("Extender Tuning/8: Motion Magic Acceleration", 0.66);
         SmartDashboard.putNumber("Extender Tuning/9: Motion Magic Jerk", 0);
     }
 
