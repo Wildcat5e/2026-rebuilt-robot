@@ -33,6 +33,16 @@ public interface MotionMagicCapable {
         motor.getConfigurator().apply(config);
     }
 
+    /** Zero the position of the motor. */
+    default Command zeroPosition() {
+        return Commands.runOnce(() -> getMotionMagicMotor().setPosition(0));
+    }
+
+    /** @return The current position of the Motion Magic mechanism. */
+    default double getMechanismPosition() {
+        return getMotionMagicMotor().getPosition().getValueAsDouble();
+    }
+
     /** @return The motor controller running the Motion Magic profile. */
     TalonFX getMotionMagicMotor();
 
@@ -41,11 +51,6 @@ public interface MotionMagicCapable {
 
     /** @return The subsystem itself (usually 'this') for command requirements. */
     Subsystem getAssociatedSubsystem();
-
-    /** @return The current position of the Motion Magic mechanism. */
-    default double getMechanismPosition() {
-        return getMotionMagicMotor().getPosition().getValueAsDouble();
-    }
 
     /**
      * Generates a WPILib Command to smoothly move the mechanism to a target position.

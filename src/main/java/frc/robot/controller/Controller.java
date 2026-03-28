@@ -91,6 +91,11 @@ public abstract class Controller {
         reverse().whileTrue(intake.reverseScooper());
         trenchPath().whileTrue(commands.paths);
 
+        /* Temp bindings */
+        povUp().whileTrue(intake.testExtender());
+        povDown().whileTrue(intake.configureExtenderMotor());
+        povLeft().onTrue(intake.zeroPosition());
+
         // sysid tests
         // povUp().whileTrue(flywheel.sysIdDynamicForward());
         // povRight().whileTrue(flywheel.sysIdDynamicReverse());
