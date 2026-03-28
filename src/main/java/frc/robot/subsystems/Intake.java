@@ -99,6 +99,16 @@ public class Intake extends SubsystemBase {
             .withName("Bump Extender Down");
     }
 
+
+    // Used to avoid the subsystem locking when scheduling a command
+    public void setExtenderVoltageNegative() {
+        extenderMotor.setVoltage(-1);
+    }
+
+    public void setExtenderVoltageZero() {
+        extenderMotor.setVoltage(0);
+    }
+
     /** @return Extender motor's position in REVOLUTIONS */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble();

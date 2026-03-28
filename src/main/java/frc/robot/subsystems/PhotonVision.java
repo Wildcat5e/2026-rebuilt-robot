@@ -21,12 +21,12 @@ public class PhotonVision extends SubsystemBase {
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
-    public static final List<PhotonCamera> CAMERAS =
-        List.of(new PhotonCamera("C922_Pro_Stream_Webcam"), new PhotonCamera("HD_Pro_Webcam_C920"));
+    public static final List<PhotonCamera> CAMERAS = List.of(new PhotonCamera("Microsoft_LifeCam_HD-3000-Left"),
+        new PhotonCamera("Microsoft_LifeCam_HD-3000-Right"));
     /** Offset from center of the robot to camera mount position (robot ➔ camera) in the Robot Coordinate System. */
     public static final List<Transform3d> ROBOT_TO_CAMERA =
-        List.of(new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0)),
-            new Transform3d(-0.07, .295, .57, new Rotation3d(0, 0, 0)));
+        List.of(new Transform3d(.203, .216, .533, new Rotation3d(0, 0, Math.toRadians(7))),
+            new Transform3d(.216, -0.229, .533, new Rotation3d(0, 0, Math.toRadians(-15))));
     private static final List<PhotonPoseEstimator> ESTIMATORS = new ArrayList<PhotonPoseEstimator>();
     private final EstimateConsumer estConsumer;
 
