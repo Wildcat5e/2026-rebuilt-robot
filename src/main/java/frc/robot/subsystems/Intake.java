@@ -135,11 +135,11 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
         });
     }
 
-    public Command raiseArmFinalImplementation() {
+    public Command raiseIntake() {
         return moveToPosition(EXTENDER_STOWED_POSITION, EXTENDER_TOLERANCE);
     }
 
-    public Command dropArmFinalImplementation() {
+    public Command lowerIntake() {
         return moveToPosition(EXTENDER_DROPPED_POSITION, EXTENDER_TOLERANCE);
     }
 
