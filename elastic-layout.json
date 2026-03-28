@@ -607,26 +607,13 @@
         "containers": [
           {
             "title": "C922_Pro_Stream_Webcam-processed",
-            "x": 0.0,
+            "x": 128.0,
             "y": 0.0,
             "width": 896.0,
             "height": 640.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/C922_Pro_Stream_Webcam-processed",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
-            "title": "HD_Pro_Webcam_C920-processed",
-            "x": 896.0,
-            "y": 0.0,
-            "width": 896.0,
-            "height": 640.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/HD_Pro_Webcam_C920-processed",
               "period": 0.06,
               "rotation_turns": 0
             }
