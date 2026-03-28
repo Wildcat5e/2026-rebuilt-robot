@@ -101,7 +101,7 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Flywheel Speed Multiplier", getFlywheelSpeedMultiplier() + increment);
     }
 
-    static void incrementStaticFlywheelSpeed(double increment) {
+    static void incrementTunableFlywheelSpeed(double increment) {
         SmartDashboard.putNumber("Tunable Flywheel Speed", getTunableFlywheelSpeed() + increment);
     }
 
