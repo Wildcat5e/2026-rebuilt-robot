@@ -101,6 +101,10 @@ public class Intake extends SubsystemBase {
 
 
     // Used to avoid the subsystem locking when scheduling a command
+    public void setExtenderVoltagePositive() {
+        extenderMotor.setVoltage(1);
+    }
+
     public void setExtenderVoltageNegative() {
         extenderMotor.setVoltage(-1);
     }
