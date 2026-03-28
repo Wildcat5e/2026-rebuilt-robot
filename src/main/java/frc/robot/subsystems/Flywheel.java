@@ -113,9 +113,8 @@ public class Flywheel extends SubsystemBase {
 
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void homeRunFlywheel() {
-        // THIS NEEDS TO BE EDITED TO USE THE INTERPOLATION TABLE FOR SHOOTING FROM NEUTRAL ZONE
         var shotSolution =
-            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HOME_FLYWHEEL_SPEEDS_MAP); // temp get hub
+            ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);

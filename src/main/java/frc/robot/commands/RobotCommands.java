@@ -26,21 +26,11 @@ public class RobotCommands {
         aimAtHub =
             new AimAtTarget(drivetrain, swerveRequest, flywheel, Utilities::getHubPosition, HUB_FLYWHEEL_SPEEDS_MAP);
         aimAtUpperHome =
-            new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getUpperHome, HOME_FLYWHEEL_SPEEDS_MAP);
+            new AimAtTarget(drivetrain, swerveRequest, flywheel, Utilities::getUpperHome, HOME_FLYWHEEL_SPEEDS_MAP);
         aimAtLowerHome =
-            new AimAtTarget(drivetrain, swerveRequest, flywheel, RobotCommands::getLowerHome, HOME_FLYWHEEL_SPEEDS_MAP);
+            new AimAtTarget(drivetrain, swerveRequest, flywheel, Utilities::getLowerHome, HOME_FLYWHEEL_SPEEDS_MAP);
         aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtUpperHome, aimAtLowerHome);
         // paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
-    }
-
-    /** @return Translation2d of the Upper Home for the current Alliance. */
-    static Translation2d getUpperHome() {
-        return Robot.isBlueAlliance ? Constants.UPPER_HOMES.get(0) : Constants.UPPER_HOMES.get(1);
-    }
-
-    /** @return Translation2d of the Lower Home for the current Alliance. */
-    static Translation2d getLowerHome() {
-        return Robot.isBlueAlliance ? Constants.LOWER_HOMES.get(0) : Constants.LOWER_HOMES.get(1);
     }
 }

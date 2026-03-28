@@ -72,4 +72,30 @@ public interface Utilities {
         motor.getConfigurator().apply(config);
         return motor;
     }
+
+    /**
+     * @return Returns a translation2d of the spot where the robot should shoot when shooting from neutral zone into
+     *         home.
+     */
+    static Translation2d getHomeTarget(Drivetrain drivetrain) {
+        // In aim handler, we have a dead zone between y = 4.25 and y = 3.75, so the robot doesn't rotate in that space.
+        // But this method is to be used for shootingCalculator and finding the speed to set the flywheel, so I
+        // don't believe we should have a deadzone for not being able to shoot fuel, as it could be catastrophic
+        // if our pose is incorrect.
+        if (drivetrain.getState().Pose.getY() > 4.00) {
+            return getUpperHome();
+        } else {
+            return getLowerHome();
+        }
+    }
+
+    /** @return Translation2d of the Upper Home for the current Alliance. */
+    static Translation2d getUpperHome() {
+        return Robot.isBlueAlliance ? Constants.UPPER_HOMES.get(0) : Constants.UPPER_HOMES.get(1);
+    }
+
+    /** @return Translation2d of the Lower Home for the current Alliance. */
+    static Translation2d getLowerHome() {
+        return Robot.isBlueAlliance ? Constants.LOWER_HOMES.get(0) : Constants.LOWER_HOMES.get(1);
+    }
 }
