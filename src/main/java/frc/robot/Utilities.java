@@ -35,13 +35,9 @@ public interface Utilities {
     }
 
     static boolean isHubActive() {
-        if (DriverStation.isAutonomousEnabled()) {
-            return true;
-        }
+        if (DriverStation.isAutonomousEnabled()) return true;
 
-        if (!DriverStation.isTeleopEnabled()) {
-            return false;
-        }
+        if (!DriverStation.isTeleopEnabled()) return false;
 
         String gameData = DriverStation.getGameSpecificMessage();
         // If we have no game data, we cannot compute, assume hub is active, as it's likely early in teleop.
