@@ -43,9 +43,10 @@ public interface DashboardManager {
 
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
         // Remaining time in the current period (Auto/Teleop)
-        SmartDashboard.putNumber("Match Time Remaining", DriverStation.getMatchTime());
-        SmartDashboard.putNumber("Hub Shift Time Remaining", getHubShiftTimeRemaining());
-        SmartDashboard.putBoolean("Is Hub Active", isHubActive());
+        SmartDashboard.putNumber("Hub Shift and Times/Match Time Remaining", round(DriverStation.getMatchTime(), 1));
+        SmartDashboard.putNumber("Hub Shift and Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
+        SmartDashboard.putBoolean("Hub Shift and Times/Is Hub Active", isHubActive());
+        SmartDashboard.putString("Hub Shift and Times/Game Specific Message", DriverStation.getGameSpecificMessage());
         SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain, target));
         SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain, target));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
