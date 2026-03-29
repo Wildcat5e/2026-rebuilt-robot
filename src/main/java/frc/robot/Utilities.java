@@ -46,7 +46,7 @@ public interface Utilities {
             return true;
         }
 
-        char firstChar = gameData.charAt(0);
+        char firstChar = Character.toUpperCase(gameData.charAt(0));
         if (firstChar != 'R' && firstChar != 'B') {
             DriverStation.reportWarning("Game Data is invalid: " + gameData, false);
             return true;
