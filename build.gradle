@@ -1,4 +1,5 @@
 import javax.swing.JOptionPane
+import javax.swing.JFrame
 
 plugins {
     id 'java'
@@ -140,9 +141,15 @@ task checkMacropadCode {
 
         // Shows a Pop-Up
         if (localFile.text != macropadFile.text) {
+            // Create a temporary, invisible frame and force it to the front
+            JFrame frame = new JFrame()
+            frame.setAlwaysOnTop(true)
+            frame.setLocationRelativeTo(null) // Center popup on screen
+            
             def s = DDriveFileExists ? "D:/" : "E:/"
-            def errMsg = 'WAIT! The Macropad code on ' + s + ' does not match your local macropad/code.py.\n\nPlease update the physical Macropad before your match.'
-            JOptionPane.showMessageDialog(null, errMsg, 'Macropad Code Out of Sync', JOptionPane.WARNING_MESSAGE)
+            def errMsg = 'WAIT! The Macropad code on ' + s + ' does not match your local macropad/code.py.\n\nPlease update the physical Macropad\'s code before your match.'
+            JOptionPane.showMessageDialog(frame, errMsg, 'Macropad Code Out of Sync', JOptionPane.WARNING_MESSAGE)
+            frame.dispose()
         } else {
             println 'Macropad code is fully synced.'
         }
