@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     public final Flywheel flywheel = new Flywheel(drivetrain);
     public final Hopper hopper = new Hopper();
     public final Intake intake = new Intake();
-    private final RobotCommands commands = new RobotCommands(drivetrain, controllerSwerveReq, flywheel, hopper);
+    private final RobotCommands commands;
 
     public static boolean isBlueAlliance = true; // Default to Blue
 
@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
     public Robot() {
         configureAutoBuilder();
 
+        commands = new RobotCommands(drivetrain, controllerSwerveReq, flywheel, hopper);
         controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper);
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());

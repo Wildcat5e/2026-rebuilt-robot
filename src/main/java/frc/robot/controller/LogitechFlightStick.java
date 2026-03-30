@@ -67,6 +67,11 @@ public class LogitechFlightStick extends Controller {
     }
 
     @Override
+    Trigger trenchPath() {
+        return new Trigger(() -> false);
+    }
+
+    @Override
     Trigger povUp() {
         return controller.povUp();
     }

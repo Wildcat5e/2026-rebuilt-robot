@@ -3,6 +3,7 @@ package frc.robot.controller;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.commands.RobotCommands;
@@ -53,6 +54,8 @@ public abstract class Controller {
 
     abstract Trigger reverse();
 
+    abstract Trigger trenchPath();
+
     abstract Trigger povUp();
 
     abstract Trigger povDown();
@@ -86,6 +89,7 @@ public abstract class Controller {
         manualFlywheel().whileTrue(flywheel.tunableFlywheelSpeedCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         reverse().whileTrue(intake.reverseScooper());
+        trenchPath().whileTrue(commands.paths);
 
         // sysid tests
         // povUp().whileTrue(flywheel.sysIdDynamicForward());

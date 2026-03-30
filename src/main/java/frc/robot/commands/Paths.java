@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
+import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
 
 public class Paths extends Command {
@@ -25,6 +26,7 @@ public class Paths extends Command {
     private boolean error = false;
 
     public Paths(Drivetrain drivetrain) {
+        System.out.println("CONSTRUCTOR PATHS !!!");
         this.drivetrain = drivetrain;
         try {
             PathPlannerPath Mid_Top_Bump_DS_Path = PathPlannerPath.fromPathFile("Mid Top Bump DS");
@@ -43,6 +45,7 @@ public class Paths extends Command {
             commandPathList.add(AutoBuilder.followPath(Mid_Bottom_Bump_DS_Path));
             commandPathList.add(AutoBuilder.followPath(DS_Bottom_Bump_Mid_Path));
         } catch (Exception e) {
+            System.out.println("CBIG OOPS !!!");
             DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
             error = true;
         }
@@ -51,7 +54,11 @@ public class Paths extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("PRE ERROR !!!!");
         if (error) return; // Exit early if paths failed to load
+        System.out.println(" POST ERROR< INTERNAL STARTING !!!!!");
+        Controller.allowControllerTranslation = false;
+        Controller.allowControllerRotation = false;
 
         List<Translation2d> translationsList = new ArrayList<>();
 
@@ -80,9 +87,12 @@ public class Paths extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("ENDED HOORAY");
         if (closestCommand != null) {
             CommandScheduler.getInstance().cancel(closestCommand);
         }
+        Controller.allowControllerTranslation = true;
+        Controller.allowControllerRotation = true;
     }
 
     @Override
