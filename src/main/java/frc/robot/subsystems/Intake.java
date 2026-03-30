@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 import static frc.robot.subsystems.SysIdCapable.*;
 
-public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCapable {
-
+public class Intake extends SubsystemBase implements SysIdCapable, Arm {
 
     /** Motor that shoots fuel into the robot */
     private final TalonFX pusherMotor = new TalonFX(16);
@@ -22,16 +21,10 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
 
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
-    private final MotionMagicVoltage extenderMotionRequest = new MotionMagicVoltage(0);
     /* Measured in mechanism revolutions. Depends on SensorToMechanismRatio. */
     private final double EXTENDER_STOWED_POSITION = 120.0 / 360.0; // Roughly 120 degrees from the horizontal
     /* Measured in mechanism revolutions. Depends on SensorToMechanismRatio. */
     private final double EXTENDER_DROPPED_POSITION = 0.0;
-    /*
-     * Measured in mechanism revolutions. Represents how close to the target position the extender must be before the
-     * moveToPosition command stops. Depends on SensorToMechanismRatio.
-     */
-    private final double EXTENDER_TOLERANCE = 0.02; // In rotations of the motor (not the output)
 
     /** Motor that is closer to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
@@ -65,13 +58,8 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
 
     // --- MotionMagicCapable Interface Requirements ---
     @Override
-    public TalonFX getMotionMagicMotor() {
+    public TalonFX getMotor() {
         return extenderMotor;
-    }
-
-    @Override
-    public MotionMagicVoltage getMotionMagicRequest() {
-        return extenderMotionRequest;
     }
 
     @Override
@@ -124,24 +112,6 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
         }, () -> pusherMotor.set(0));
     }
 
-    public Command configureExtenderMotor() {
-        return runOnce(() -> {
-            MotionMagicCapable.configureMotionMagic(extenderMotor, DashboardManager.getExtenderkP(),
-                DashboardManager.getExtenderkI(), DashboardManager.getExtenderkD(), DashboardManager.getExtenderkS(),
-                DashboardManager.getExtenderkV(), DashboardManager.getExtenderkG(),
-                DashboardManager.getExtenderMotionMagicCruiseVelocity(),
-                DashboardManager.getExtenderMotionMagicAcceleration(), DashboardManager.getExtenderMotionMagicJerk());
-        });
-    }
-
-    public Command raiseIntake() {
-        return moveToPosition(EXTENDER_STOWED_POSITION, EXTENDER_TOLERANCE);
-    }
-
-    public Command lowerIntake() {
-        return moveToPosition(EXTENDER_DROPPED_POSITION, EXTENDER_TOLERANCE);
-    }
-
     public Command bumpExtenderUp() {
         return startEnd(() -> setExtenderStowVoltage(), () -> stopExtender()).withName("Bump Extender Up");
     }
@@ -150,11 +120,12 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
         return startEnd(() -> setExtenderDeployVoltage(), () -> stopExtender()).withName("Bump Extender Down");
     }
 
-    // Used to avoid the subsystem locking when scheduling a command
+    /** Used to avoid the subsystem locking when scheduling a command. */
     public void setExtenderStowVoltage() {
         extenderMotor.setVoltage(1);
     }
 
+    /** Used to avoid the subsystem locking when scheduling a command. */
     public void setExtenderDeployVoltage() {
         extenderMotor.setVoltage(-0.5);
     }
