@@ -74,8 +74,8 @@ CTRL_PHYSICAL_KEY = 11
 # (gamepad button number, LED color, display message).
 LAYERS = {
     "BASE": {
-        0: (1, GREEN, "Extender Up 2V"),
-        3: (2, GREEN, "Extender Down 1V"),
+        0: (1, GREEN, "Bump Extender Up"),
+        3: (2, GREEN, "Bump Extender Down"),
         1: (3, YELLOW, "Flywheel Mult +"),
         4: (4, YELLOW, "Flywheel Mult -"),
         2: (5, PURPLE, "Tune Flywheel +"),
