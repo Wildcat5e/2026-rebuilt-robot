@@ -57,13 +57,7 @@ public class Intake extends SubsystemBase implements SysIdCapable, MotionMagicCa
         applyGearRatio(extenderMotor, 36);
         applyGearRatio(scooperMotor, 1);
 
-        // --- Extender Motion Magic Setup ---
-        // Assume arm starts stowed at the beginning of the match
-        extenderMotor.setPosition(EXTENDER_STOWED_POSITION);
-        // Initializing with zeros; actual values will be pushed via configureMotor()
-        MotionMagicCapable.configureMotionMagic(extenderMotor, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.33, 0.66, 0.0);
-
-        DashboardManager.setupIntake(this::getMechanismPosition, this::isScooperSpinning);
+        DashboardManager.setupIntake(this::getArmVelocity, this::isScooperSpinning);
     }
 
     @Override
