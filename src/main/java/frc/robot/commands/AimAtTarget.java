@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import static frc.robot.utilities.TargetingUtils.*;
 import java.util.function.Supplier;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -17,9 +18,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.ShootingCalculator;
 
-import static frc.robot.Utilities.*;
-
 public class AimAtTarget extends Command {
+
     // Limit max speed to less than main controller just for safety
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
     public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);

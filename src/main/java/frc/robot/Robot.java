@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static frc.robot.utilities.FieldUtils.*;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -26,14 +27,13 @@ import frc.robot.controller.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 
-import static frc.robot.Utilities.*;
-
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after creating this project, you must also update
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+
     public static final boolean IS_COMPETITION = false;
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();
