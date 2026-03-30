@@ -121,19 +121,19 @@ public class Flywheel extends SubsystemBase {
     }
 
     public Command spinFlywheelL1() {
-        return backupFlywheelCommandHelper(2.0);
+        return spinFlywheelLevelCommandHelper(2.0);
     }
 
     public Command spinFlywheelL2() {
-        return backupFlywheelCommandHelper(3.5);
+        return spinFlywheelLevelCommandHelper(3.5);
     }
 
     public Command spinFlywheelL3() {
-        return backupFlywheelCommandHelper(5.0);
+        return spinFlywheelLevelCommandHelper(5.0);
     }
 
     /** Base command helper for flywheel levels in case PhotonVision breaks */
-    private Command backupFlywheelCommandHelper(double distance) {
+    private Command spinFlywheelLevelCommandHelper(double distance) {
         return runEnd(() -> {
             targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(distance);
             double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
