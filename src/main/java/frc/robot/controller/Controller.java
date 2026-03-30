@@ -83,8 +83,8 @@ public abstract class Controller {
         /** Competition Bindings */
         shootFuel().whileTrue(commands.shootFuel);
         runIntake().whileTrue(intake.spinIntakeMotors());
-        lowerIntake().whileTrue(intake.testExtender());
-        // raiseIntake().whileTrue(intake.raiseArmFinalImplementation());
+        lowerIntake().whileTrue(intake.bumpExtenderDown());
+        raiseIntake().whileTrue(intake.bumpExtenderUp());
         aimHandler().whileTrue(commands.aimHandler);
         manualFlywheel().whileTrue(flywheel.tunableFlywheelSpeedCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
