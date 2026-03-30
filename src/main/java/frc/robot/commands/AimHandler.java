@@ -1,12 +1,13 @@
 package frc.robot.commands;
 
+import static frc.robot.utilities.FieldUtils.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
-import frc.robot.Utilities;
 import frc.robot.subsystems.Drivetrain;
 
 public class AimHandler extends Command {
+
     private final Drivetrain drivetrain;
     private final AimAtTarget aimAtHub;
     private final AimAtTarget aimAtUpperHome;
@@ -47,10 +48,13 @@ public class AimHandler extends Command {
 
     /** @return The specific AimAtTarget command to run, or null if in the deadzone. */
     private Command chooseCommand() {
-        if (Utilities.inHome(drivetrain)) {
+        if (inHome(drivetrain)) {
             return aimAtHub;
         }
 
+        // Here, we have a deadzone between y = 3.75 y = 4.25, so the robot doesn't rotate there.
+        // However, this is used by ShootingCalculator to find and set the ideal flywheel speed.
+        // Thus, having a deadzone where we cannot shoot fuel could be catastrophic if our pose is incorrect.
         double yPosition = drivetrain.getState().Pose.getY();
         if (yPosition > 4.25) {
             return aimAtUpperHome;

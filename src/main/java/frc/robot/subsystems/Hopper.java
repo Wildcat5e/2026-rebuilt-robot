@@ -1,13 +1,14 @@
 package frc.robot.subsystems;
 
+import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DashboardManager;
-import static frc.robot.Utilities.*;
 
 public class Hopper extends SubsystemBase {
+
     private final TalonFX conveyorMotor = new TalonFX(15);
     private final TalonFX kickerMotor = new TalonFX(14);
 

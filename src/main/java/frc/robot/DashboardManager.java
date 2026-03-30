@@ -1,5 +1,9 @@
 package frc.robot;
 
+import static frc.robot.utilities.FieldUtils.*;
+import static frc.robot.utilities.MatchUtils.*;
+import static frc.robot.utilities.MathUtils.*;
+import static frc.robot.utilities.TargetingUtils.*;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AimAtTarget;
 import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
-
-import static frc.robot.Utilities.*;
 
 /** Handles all telemetry and Elastic/SmartDashboard interactions. */
 public interface DashboardManager {
@@ -47,8 +49,6 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Hub Shift and Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
         SmartDashboard.putBoolean("Hub Shift and Times/Is Hub Active", isHubActive());
         SmartDashboard.putString("Hub Shift and Times/Game Specific Message", DriverStation.getGameSpecificMessage());
-        SmartDashboard.putBoolean("Within Shooting Angle", withinShootingAngle(drivetrain, target));
-        SmartDashboard.putBoolean("Within Shooting Distance", withinShootingDistance(drivetrain, target));
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
     }
 

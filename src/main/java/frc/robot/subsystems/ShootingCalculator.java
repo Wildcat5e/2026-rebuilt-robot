@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
+import static frc.robot.utilities.TargetingUtils.*;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants;
 import frc.robot.DashboardManager;
-import static frc.robot.Utilities.*;
 
 /**
  * A helper class to calculate shooting parameters while moving.<br>
@@ -17,6 +17,7 @@ import static frc.robot.Utilities.*;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
+
     // Returned by calculate()
     record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
