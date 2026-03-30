@@ -75,6 +75,11 @@ public class MultiController extends Controller {
     }
 
     @Override
+    Trigger trenchPath() {
+        return new Trigger(() -> controllerChooser.getSelected().trenchPath().getAsBoolean());
+    }
+
+    @Override
     Trigger povUp() {
         return new Trigger(() -> controllerChooser.getSelected().povUp().getAsBoolean());
     }

@@ -50,7 +50,7 @@ public class Xbox extends Controller {
 
     @Override
     Trigger manualFlywheel() {
-        return controller.b();
+        return new Trigger(() -> false);
     }
 
     @Override
@@ -61,6 +61,11 @@ public class Xbox extends Controller {
     @Override
     Trigger reverse() {
         return controller.y();
+    }
+
+    @Override
+    Trigger trenchPath() {
+        return controller.b();
     }
 
     @Override
