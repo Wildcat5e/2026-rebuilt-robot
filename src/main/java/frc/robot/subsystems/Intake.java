@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -17,6 +18,7 @@ public class Intake extends SubsystemBase {
     /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
     private final TalonFX scooperMotor = new TalonFX(18);
     private double extenderMotorPosition = 0;
+    private final Timer autoReverseTimer = new Timer();
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
@@ -41,6 +43,36 @@ public class Intake extends SubsystemBase {
             scooperMotor.setVoltage(3);
             pusherMotor.setVoltage(0);
         });
+    }
+
+    public Command spinIntakeMotorsAutoReverse() {
+        return new FunctionalCommand(
+            // initialize
+            () -> {
+                autoReverseTimer.restart();
+                double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+                double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+                scooperMotor.setVoltage(-scooperMotorVoltage);
+                pusherMotor.setVoltage(pusherMotorVoltage);
+            },
+            // execute
+            () -> {
+                double scooperSpeed = Math.abs(scooperMotor.getVelocity().getValueAsDouble());
+                if (autoReverseTimer.get() > .1) {
+                    if (scooperSpeed < .1) {
+                        autoReverseTimer.restart();
+                        scooperMotor.setVoltage(12);
+                    } else {
+                        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+                        scooperMotor.setVoltage(-scooperMotorVoltage);
+                    }
+                }
+            },
+            // end
+            interrupted -> {
+                scooperMotor.setVoltage(0);
+                pusherMotor.setVoltage(0);
+            }, () -> false, this);
     }
 
     public Command testScooper() {
