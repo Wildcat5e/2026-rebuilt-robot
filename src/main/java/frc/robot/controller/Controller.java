@@ -82,7 +82,7 @@ public abstract class Controller {
         Flywheel flywheel, Hopper hopper, Intake intake) {
         /** Competition Bindings */
         shootFuel().whileTrue(commands.shootFuel);
-        runIntake().whileTrue(intake.spinIntakeMotors());
+        runIntake().whileTrue(intake.spinIntakeMotorsAutoReverse());
         lowerIntake().whileTrue(intake.bumpExtenderDown());
         raiseIntake().whileTrue(intake.bumpExtenderUp());
         aimHandler().whileTrue(commands.aimHandler);
