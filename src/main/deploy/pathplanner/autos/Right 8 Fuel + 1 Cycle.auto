@@ -11,32 +11,19 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 4.0
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Drop Intake"
+                  "name": "Shoot Fuel"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "sequential",
                 "data": {
                   "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Left Start to Shooting"
-                      }
-                    },
                     {
                       "type": "deadline",
                       "data": {
@@ -44,31 +31,62 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 5.0
+                              "waitTime": 0.75
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Shoot Fuel"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Run Intake"
+                              "name": "Drop Intake"
                             }
                           }
                         ]
                       }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Run Intake"
+                      }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Trench Middle Fuel Grab"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 10.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Fuel"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Aim at Hub"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
                 }
               }
             ]
@@ -77,7 +95,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
