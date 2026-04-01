@@ -33,7 +33,6 @@ import frc.robot.subsystems.*;
  * the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-
     public static final boolean IS_COMPETITION = false;
     /** The only instance of Drivetrain. */
     private final Drivetrain drivetrain = TunerConstants.createDrivetrain();

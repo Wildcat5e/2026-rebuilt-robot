@@ -8,7 +8,6 @@ import frc.robot.subsystems.Drivetrain;
  * import static frc.robot.utilities.TargetingUtils.*;
  */
 public interface TargetingUtils {
-
     /**
      * @param drivetrain
      * @param target The target from which to calculate the robot's distance.

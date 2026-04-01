@@ -19,7 +19,6 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.ShootingCalculator;
 
 public class AimAtTarget extends Command {
-
     // Limit max speed to less than main controller just for safety
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
     public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);

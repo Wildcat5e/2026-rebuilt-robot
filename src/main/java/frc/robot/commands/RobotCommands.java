@@ -13,7 +13,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.utilities.FieldUtils;
 
 public class RobotCommands {
-
     public final AimAtTarget aimAtHub;
     public final AimAtTarget aimAtUpperHome;
     public final AimAtTarget aimAtLowerHome;

@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DashboardManager;
 
 public class Hopper extends SubsystemBase {
-
     private final TalonFX conveyorMotor = new TalonFX(15);
     private final TalonFX kickerMotor = new TalonFX(14);
 

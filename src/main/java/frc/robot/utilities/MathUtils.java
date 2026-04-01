@@ -4,7 +4,6 @@ package frc.robot.utilities;
  * import static frc.robot.utilities.MathUtils.*;
  */
 public interface MathUtils {
-
     /**
      * @param value The double to round.
      * @param places The number of decimal places to round the double to. Must be an integer >= 1.

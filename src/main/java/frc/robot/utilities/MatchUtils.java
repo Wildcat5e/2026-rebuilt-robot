@@ -7,7 +7,6 @@ import frc.robot.Robot;
  * import static frc.robot.utilities.MatchUtils.*;
  */
 public interface MatchUtils {
-
     enum MatchPhase {
         TRANSITION(130.0), SHIFT_1(105.0), SHIFT_2(80.0), SHIFT_3(55.0), SHIFT_4(30.0), ENDGAME(0.0);
 
