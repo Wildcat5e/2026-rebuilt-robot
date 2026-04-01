@@ -23,4 +23,4 @@
 - Check the Orange Pi battery level.
     - If the battery is less than 20%, immediately notify the Driver and Operator.
         - You can attach Nicholas's MagSafe battery to charge it while in queue.
-        - You cannot run the Orange Pi off of the MagSafe battery as it is not powerful enough. You MUST unplug it before putting the robot on the field.
+        - You cannot run the Orange Pi off of the MagSafe battery as it is not powerful enough. You MUST remove the MagSafe battery from the robot before putting the robot on the field.
