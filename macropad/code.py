@@ -91,9 +91,9 @@ LAYERS = {
         4: (13, RED, "Flywheel Reverse")
     },
     "CONTROL": {
-        0: (14, PURPLE, "Spin Flywheel L1"),
-        1: (15, PURPLE, "Spin Flywheel L2"),
-        2: (16, PURPLE, "Spin Flywheel L3")
+        0: (14, PURPLE, "Scooper Forward"),
+        1: (15, PURPLE, "Pusher Forward"),
+        2: (16, PURPLE, "Conveyor Forward")
     }
 }
 

@@ -40,8 +40,8 @@ public class OperatorConsole {
         macropad.button(13).whileTrue(flywheel.reverseFlywheel());
 
         // LAYER 2 (Control Held)
-        macropad.button(14).whileTrue(flywheel.spinFlywheelL1());
-        macropad.button(15).whileTrue(flywheel.spinFlywheelL2());
-        macropad.button(16).whileTrue(flywheel.spinFlywheelL3());
+        macropad.button(14).whileTrue(intake.testScooper());
+        macropad.button(15).whileTrue(intake.testPusher());
+        macropad.button(16).whileTrue(hopper.testConveyor());
     }
 }
