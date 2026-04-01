@@ -5,32 +5,32 @@
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Left Shooting to Depot"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Depot to Left Shooting"
-                      }
-                    }
-                  ]
+                  "pathName": "Destroy Right Middle"
                 }
               },
               {
-                "type": "named",
+                "type": "deadline",
                 "data": {
-                  "name": "Run Intake"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.75
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Drop Intake"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -43,7 +43,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.5
+                  "waitTime": 10.0
                 }
               },
               {

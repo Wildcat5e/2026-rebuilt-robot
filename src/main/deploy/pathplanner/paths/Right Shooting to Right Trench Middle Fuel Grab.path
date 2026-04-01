@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.184,
-        "y": 1.46
+        "x": 2.971,
+        "y": 1.136
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2407127192982457,
-        "y": 0.5731578947368416
+        "x": 3.3893583320010805,
+        "y": 0.7056629721941201
       },
       "isLocked": false,
       "linkedName": null
@@ -20,44 +20,44 @@
         "y": 0.6175535714285718
       },
       "prevControl": {
-        "x": 4.257638455787721,
-        "y": 0.5852816052567619
+        "x": 4.264959172154933,
+        "y": 0.5820726410131392
       },
       "nextControl": {
-        "x": 5.512105510048956,
-        "y": 0.7441736338464219
+        "x": 5.888873748589721,
+        "y": 0.8149014281529129
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.605946428576585,
-        "y": 1.1358392857213118
+        "x": 7.866118421052631,
+        "y": 1.136
       },
       "prevControl": {
-        "x": 6.980241959385958,
-        "y": 0.28555400799688235
+        "x": 7.4043279768346615,
+        "y": 0.22889007076115664
       },
       "nextControl": {
-        "x": 8.850755532210492,
-        "y": 2.8274411625089106
+        "x": 8.897795920647276,
+        "y": 3.1625575335571003
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.971896929824561,
-        "y": 4.044616228070175
+        "x": 8.05844298245614,
+        "y": 3.890756578947368
       },
       "prevControl": {
-        "x": 8.457133662417922,
-        "y": 4.0680311014829
+        "x": 8.30591042211869,
+        "y": 3.809770560604183
       },
       "nextControl": {
-        "x": 6.904334783264053,
-        "y": 3.993101511967922
+        "x": 7.638476780246054,
+        "y": 4.0281944196672725
       },
       "isLocked": false,
       "linkedName": null
@@ -68,40 +68,24 @@
         "y": 2.6745000000000005
       },
       "prevControl": {
-        "x": 6.791975744335766,
-        "y": 2.8330205943927114
+        "x": 6.867870689075737,
+        "y": 2.8950692441934773
       },
       "nextControl": {
-        "x": 4.667602529072149,
-        "y": 2.4461473064941646
+        "x": 4.444589093867782,
+        "y": 2.3302678594591093
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.808070175438597,
-        "y": 2.4387061403508765
+        "x": 3.298,
+        "y": 2.285
       },
       "prevControl": {
-        "x": 4.113768154304482,
-        "y": 2.506337698587901
-      },
-      "nextControl": {
-        "x": 3.4973461938853267,
-        "y": 2.369962646749698
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.184,
-        "y": 1.459767857149884
-      },
-      "prevControl": {
-        "x": 3.185232720325232,
-        "y": 1.8901685108023853
+        "x": 3.5478311291707074,
+        "y": 2.2941873226398903
       },
       "nextControl": null,
       "isLocked": false,
@@ -129,10 +113,23 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 2.391382405745062,
-      "maxWaypointRelativePos": 2.843806104129264,
+      "minWaypointRelativePos": 2.3339317773788153,
+      "maxWaypointRelativePos": 2.890484739676838,
       "constraints": {
         "maxVelocity": 1.0,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 455.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 4.021543985637335,
+      "maxWaypointRelativePos": 5.0,
+      "constraints": {
+        "maxVelocity": 2.75,
         "maxAcceleration": 2.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 455.0,
@@ -160,7 +157,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 61.61442448912639
+    "rotation": 53.13010235415598
   },
   "reversed": false,
   "folder": null,
