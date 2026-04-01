@@ -7,7 +7,6 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 public class AimHandler extends Command {
-
     private final Drivetrain drivetrain;
     private final AimAtTarget aimAtHub;
     private final AimAtTarget aimAtUpperHome;

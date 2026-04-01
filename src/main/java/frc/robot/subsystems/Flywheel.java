@@ -17,7 +17,6 @@ import frc.robot.DashboardManager;
 import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Flywheel extends SubsystemBase {
-
     private final Drivetrain drivetrain;
     private final TalonFX leftFlywheelMotor = new TalonFX(21);
     private final TalonFX rightFlywheelMotor = new TalonFX(20);

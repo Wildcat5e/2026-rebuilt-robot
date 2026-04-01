@@ -8,7 +8,6 @@ import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 
 public class ShootFuel extends Command {
-
     Flywheel flywheel;
     Hopper hopper;
     Intake intake;

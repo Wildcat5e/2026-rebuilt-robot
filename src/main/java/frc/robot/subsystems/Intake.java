@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DashboardManager;
 
 public class Intake extends SubsystemBase {
-    
     /** Motor that shoots fuel into the robot */
     private final TalonFX pusherMotor = new TalonFX(16);
     /** Motor that extends intake system outside of bumper. */

@@ -21,7 +21,6 @@ import frc.robot.subsystems.Drivetrain;
 
 /** Handles all telemetry and Elastic/SmartDashboard interactions. */
 public interface DashboardManager {
-
     // =====================================
     // Simulation
     // =====================================

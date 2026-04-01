@@ -9,7 +9,6 @@ import frc.robot.subsystems.Drivetrain;
  * import static frc.robot.utilities.FieldUtils.*;
  */
 public interface FieldUtils {
-
     /** @return The position of the current Alliance's Hub as a Translation2d. */
     static Translation2d getHubPosition() {
         return Robot.isBlueAlliance ? Constants.BLUE_HUB_POSITION : Constants.RED_HUB_POSITION;

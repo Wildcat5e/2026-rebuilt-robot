@@ -7,7 +7,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
  * import static frc.robot.utilities.HardwareUtils.*;
  */
 public interface HardwareUtils {
-
     /**
      * Applies a gear ratio to a TalonFX motor so that getPosition(), getVelocity(), etc., automatically return
      * mechanism rotations instead of motor revolutions.

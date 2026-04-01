@@ -17,7 +17,6 @@ import frc.robot.DashboardManager;
  * 3) A lookup table exists for static shooting.<br>
  */
 public interface ShootingCalculator {
-
     // Returned by calculate()
     record ShotSolution(double flywheelSpeed, double robotHeading) {}
 
