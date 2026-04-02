@@ -32,9 +32,9 @@ public interface Constants {
     Translation2d RED_HUB_POSITION = new Translation2d(11.915, 4.03);
 
     /** x-coordinate Threshold for Blue Alliance Home Zone */
-    double BLUE_X_AXIS_HOME_THRESHOLD = 4.0;
+    double BLUE_X_AXIS_HOME_THRESHOLD = 4.625;
     /** x-coordinate Threshold for Red Alliance Home Zone */
-    double RED_X_AXIS_HOME_THRESHOLD = 12.54;
+    double RED_X_AXIS_HOME_THRESHOLD = 11.915;
 
     /** Index 0 is Blue. Upper homes are Blue Left and Red Right. */
     List<Translation2d> UPPER_HOMES = List.of(new Translation2d(2, 6.25), new Translation2d(14.5, 6.25));
