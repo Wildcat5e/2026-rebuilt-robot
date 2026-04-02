@@ -1,6 +1,6 @@
 {
   "version": 1.0,
-  "grid_size": 128,
+  "grid_size": 64,
   "tabs": [
     {
       "name": "Autonomous",
@@ -9,9 +9,9 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 1408.0,
+            "x": 1216.0,
             "y": 0.0,
-            "width": 512.0,
+            "width": 704.0,
             "height": 128.0,
             "type": "FMSInfo",
             "properties": {
@@ -23,8 +23,8 @@
             "title": "Field",
             "x": 0.0,
             "y": 0.0,
-            "width": 1024.0,
-            "height": 640.0,
+            "width": 1216.0,
+            "height": 576.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -42,33 +42,102 @@
           },
           {
             "title": "Auto Command Chooser",
-            "x": 1408.0,
-            "y": 128.0,
-            "width": 512.0,
+            "x": 0.0,
+            "y": 768.0,
+            "width": 1920.0,
             "height": 128.0,
-            "type": "ComboBox Chooser",
+            "type": "Split Button Chooser",
             "properties": {
               "topic": "/SmartDashboard/Auto Command Chooser",
-              "period": 0.06,
-              "sort_options": false
+              "period": 0.06
             }
           },
           {
-            "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 1152.0,
-            "y": 384.0,
-            "width": 640.0,
-            "height": 384.0,
+            "title": "Match Time Remaining",
+            "x": 0.0,
+            "y": 576.0,
+            "width": 384.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Hub Shift and Times/Match Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Is Hub Active",
+            "x": 512.0,
+            "y": 576.0,
+            "width": 320.0,
+            "height": 192.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Hub Shift and Times/Is Hub Active",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Game Specific Message",
+            "x": 384.0,
+            "y": 576.0,
+            "width": 128.0,
+            "height": 192.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Hub Shift and Times/Game Specific Message",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Hub Shift Time Remaining",
+            "x": 832.0,
+            "y": 576.0,
+            "width": 384.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Hub Shift and Times/Hub Shift Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Microsoft_LifeCam_HD-3000-Left-processed",
+            "x": 1216.0,
+            "y": 128.0,
+            "width": 704.0,
+            "height": 320.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
+              "topic": "/CameraPublisher/Microsoft_LifeCam_HD-3000-Left-processed",
               "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 30,
-              "resolution": [
-                426.0,
-                240.0
-              ]
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Microsoft_LifeCam_HD-3000-Right-processed",
+            "x": 1216.0,
+            "y": 448.0,
+            "width": 704.0,
+            "height": 320.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/Microsoft_LifeCam_HD-3000-Right-processed",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
@@ -83,8 +152,8 @@
             "title": "FMSInfo",
             "x": 0.0,
             "y": 0.0,
-            "width": 512.0,
-            "height": 128.0,
+            "width": 576.0,
+            "height": 192.0,
             "type": "FMSInfo",
             "properties": {
               "topic": "/FMSInfo",
@@ -94,9 +163,9 @@
           {
             "title": "Within Shooting Distance",
             "x": 0.0,
-            "y": 128.0,
-            "width": 256.0,
-            "height": 128.0,
+            "y": 192.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/Within Shooting Distance",
@@ -110,10 +179,10 @@
           },
           {
             "title": "Within Shooting Angle",
-            "x": 256.0,
-            "y": 128.0,
-            "width": 256.0,
-            "height": 128.0,
+            "x": 192.0,
+            "y": 192.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/Within Shooting Angle",
@@ -127,10 +196,10 @@
           },
           {
             "title": "Distance to Hub (m)",
-            "x": 256.0,
+            "x": 192.0,
             "y": 384.0,
-            "width": 256.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Robot Telemetry/Distance to Hub (m)",
@@ -141,10 +210,10 @@
           },
           {
             "title": "Flywheel Speed Multiplier",
-            "x": 256.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 128.0,
+            "x": 192.0,
+            "y": 192.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Flywheel Speed Multiplier",
@@ -155,10 +224,10 @@
           },
           {
             "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 512.0,
+            "x": 576.0,
             "y": 0.0,
             "width": 1408.0,
-            "height": 896.0,
+            "height": 832.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
@@ -174,9 +243,9 @@
           {
             "title": "Static Flywheel Speed",
             "x": 0.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 128.0,
+            "y": 192.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Static Flywheel Speed",
@@ -189,8 +258,8 @@
             "title": "Scooper Speed",
             "x": 0.0,
             "y": 384.0,
-            "width": 256.0,
-            "height": 256.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/Intake Telemetry/Scooper Speed",
@@ -212,9 +281,9 @@
           {
             "title": "Robot Telemetry",
             "x": 1024.0,
-            "y": 256.0,
+            "y": 192.0,
             "width": 256.0,
-            "height": 128.0,
+            "height": 256.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
@@ -312,7 +381,7 @@
             "x": 0.0,
             "y": 0.0,
             "width": 384.0,
-            "height": 128.0,
+            "height": 192.0,
             "type": "FMSInfo",
             "properties": {
               "topic": "/FMSInfo",
@@ -322,8 +391,8 @@
           {
             "title": "Field",
             "x": 0.0,
-            "y": 128.0,
-            "width": 768.0,
+            "y": 192.0,
+            "width": 832.0,
             "height": 256.0,
             "type": "Field",
             "properties": {
@@ -344,8 +413,8 @@
             "title": "Auto Command Chooser",
             "x": 384.0,
             "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 192.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Auto Command Chooser",
@@ -355,7 +424,7 @@
           },
           {
             "title": "RotateToHub PID Controller",
-            "x": 768.0,
+            "x": 832.0,
             "y": 0.0,
             "width": 256.0,
             "height": 384.0,
@@ -367,10 +436,10 @@
           },
           {
             "title": "Distance",
-            "x": 640.0,
+            "x": 576.0,
             "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/Photon/Distance",
@@ -381,10 +450,10 @@
           },
           {
             "title": "Within Shooting Angle",
-            "x": 768.0,
+            "x": 832.0,
             "y": 384.0,
-            "width": 256.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/Within Shooting Angle",
@@ -400,8 +469,8 @@
             "title": "Within Shooting Distance",
             "x": 1024.0,
             "y": 384.0,
-            "width": 256.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/Within Shooting Distance",
@@ -415,10 +484,10 @@
           },
           {
             "title": "robot angle",
-            "x": 768.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "x": 832.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/robot angle",
@@ -429,10 +498,10 @@
           },
           {
             "title": "correct angle",
-            "x": 896.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "x": 832.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/correct angle",
@@ -444,9 +513,9 @@
           {
             "title": "Distance",
             "x": 1024.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/Photon/Distance",
@@ -459,8 +528,8 @@
             "title": "Controller Chooser",
             "x": 1024.0,
             "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 192.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Controller Chooser",
@@ -470,10 +539,10 @@
           },
           {
             "title": "Conveyor Test Voltage",
-            "x": 128.0,
+            "x": 192.0,
             "y": 384.0,
-            "width": 128.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Conveyor Test Voltage",
@@ -486,8 +555,8 @@
             "title": "Extender Motor Test Voltage",
             "x": 0.0,
             "y": 384.0,
-            "width": 128.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Extender Motor Test Voltage",
@@ -499,9 +568,9 @@
           {
             "title": "Pusher Motor Test Voltage",
             "x": 0.0,
-            "y": 640.0,
-            "width": 128.0,
-            "height": 128.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Pusher Motor Test Voltage",
@@ -513,9 +582,9 @@
           {
             "title": "Scooper Motor Test Voltage",
             "x": 0.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Scooper Motor Test Voltage",
@@ -526,10 +595,10 @@
           },
           {
             "title": "Kicker Test Voltage",
-            "x": 128.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "x": 192.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Kicker Test Voltage",
@@ -540,10 +609,10 @@
           },
           {
             "title": "Flywheel Speed Multiplier",
-            "x": 256.0,
-            "y": 512.0,
-            "width": 256.0,
-            "height": 128.0,
+            "x": 192.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Flywheel Speed Multiplier",
@@ -554,10 +623,10 @@
           },
           {
             "title": "Extender Motor Position (revs)",
-            "x": 512.0,
+            "x": 576.0,
             "y": 384.0,
-            "width": 128.0,
-            "height": 128.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Intake Telemetry/Extender Motor Position (revs)",
@@ -568,10 +637,10 @@
           },
           {
             "title": "In Home",
-            "x": 640.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
+            "x": 576.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/In Home",
@@ -585,10 +654,10 @@
           },
           {
             "title": "Calculated Voltage",
-            "x": 896.0,
-            "y": 640.0,
-            "width": 128.0,
-            "height": 128.0,
+            "x": 832.0,
+            "y": 576.0,
+            "width": 200.0,
+            "height": 200.0,
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Flywheel Telemetry/Calculated Voltage",
@@ -607,10 +676,10 @@
         "containers": [
           {
             "title": "C922_Pro_Stream_Webcam-processed",
-            "x": 128.0,
+            "x": 192.0,
             "y": 0.0,
-            "width": 896.0,
-            "height": 640.0,
+            "width": 832.0,
+            "height": 576.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/C922_Pro_Stream_Webcam-processed",
