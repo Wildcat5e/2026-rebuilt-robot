@@ -1,1 +1,0 @@
-copy d:\*.py macropad\
