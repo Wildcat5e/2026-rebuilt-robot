@@ -46,12 +46,12 @@ Holding the bottom-left key makes accessible a menu of reverse jogging commands 
 
 ## Control Layer (holding Key 11)
 
-Immediately after the bottom-right key is pressed and held, the Kicker begins to spin. While continuing to hold it, the top row acts as three emergency flywheel speeds, to be used in case automated shooting fails. All keys run commands continuously while held.
+Holding the bottom-right key makes accessible a menu of motor functionality commands to ensure operational status prior to a match. All keys run commands continuously while held. All of these bindings supply the voltages set in the Elastic Dashboard, so they can be tuned on the fly.
 
 ```text
 +--------------------+--------------------+--------------------+
-| [0] Spin           | [1] Spin           | [2] Spin           |
-|     Flywheel L1    |     Flywheel L2    |     Flywheel L3    |
+| [0] Spin Scooper   | [1] Spin Pusher    | [2] Spin Conveyor  |
+|     Forward        |     Forward        |     Forward        |
 +--------------------+--------------------+--------------------+
 | [3]                | [4]                | [5]                |
 |                    |                    |                    |
@@ -60,6 +60,6 @@ Immediately after the bottom-right key is pressed and held, the Kicker begins to
 |                    |                    |                    |
 +--------------------+--------------------+--------------------+
 | [9]                | [10]               | [11]               |
-|     (Inactive)     |                    |   [HELD] + KICKER  |
+|     (Inactive)     |                    |      [HELD]        |
 +--------------------+--------------------+--------------------+
 ```
