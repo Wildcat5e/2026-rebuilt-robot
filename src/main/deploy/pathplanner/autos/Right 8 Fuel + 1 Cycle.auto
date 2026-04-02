@@ -21,6 +21,12 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Aim at Hub"
+                }
+              },
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
