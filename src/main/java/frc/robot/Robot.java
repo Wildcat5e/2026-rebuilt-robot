@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
         controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper);
 
-        NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDown());
+        NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDownNoLock());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);

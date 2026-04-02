@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DashboardManager;
@@ -99,6 +100,14 @@ public class Intake extends SubsystemBase {
             .withName("Bump Extender Down");
     }
 
+    /**
+     * This command is functionally the same as bumpExtenderDown(), but does not require the intake subsystem to be free
+     * and does not lock the intake subsystem when used.
+     */
+    public Command bumpExtenderDownNoLock() {
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
+            .withName("Bump Extender Down");
+    }
 
     // Used to avoid the subsystem locking when scheduling a command
     public void setExtenderVoltagePositive() {
