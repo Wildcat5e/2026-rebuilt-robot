@@ -37,7 +37,7 @@ public interface DashboardManager {
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("Robot Telemetry", builder -> {
             builder.addDoubleProperty("Distance to Hub (m)",
-                () -> round(getTargetDistance(drivetrain, getHubPosition()), 3), null);
+                () -> round(getTargetDistance(drivetrain, getHubPosition()), 2), null);
         });
         if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
     }
