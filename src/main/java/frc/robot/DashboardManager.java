@@ -116,8 +116,8 @@ public interface DashboardManager {
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
-            builder.addBooleanProperty("Scooper Speed", () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1,
-                null);
+            builder.addBooleanProperty("Is Scooper Spinning",
+                () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1, null);
         });
     }
 
