@@ -14,6 +14,7 @@ public class RobotCommands {
     public final AimAtTarget aimAtLowerHome;
     public final AimHandler aimHandler;
     public final Paths paths;
+    public final FeedShooter feedShooter;
     public final ShootFuel shootFuel;
 
     public RobotCommands(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
@@ -26,6 +27,7 @@ public class RobotCommands {
             HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager::getHomeFlywheelSpeedMultiplier);
         aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtUpperHome, aimAtLowerHome);
         paths = new Paths(drivetrain);
+        feedShooter = new FeedShooter(flywheel, hopper, drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
     }
 }

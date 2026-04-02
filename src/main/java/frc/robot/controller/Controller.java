@@ -80,7 +80,7 @@ public abstract class Controller {
     public void bindingsSetup(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
         Flywheel flywheel, Hopper hopper, Intake intake) {
         /** Competition Bindings */
-        shootFuel().whileTrue(commands.shootFuel);
+        shootFuel().whileTrue(commands.feedShooter);
         shootFuel().whileTrue(intake.testPusher());
         runIntake().whileTrue(intake.spinIntakeMotors());
         lowerIntake().whileTrue(intake.bumpExtenderDownNoLock());
