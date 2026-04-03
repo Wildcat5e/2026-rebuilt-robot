@@ -31,16 +31,19 @@ public class AimAtTarget extends Command {
     private final Supplier<Translation2d> targetSupplier;
     private Translation2d target;
     private final InterpolatingDoubleTreeMap flywheelSpeedMap;
+    private double flywheelSpeedMultiplier;
     private Pose2d currentPose;
     private double targetHeading;
 
     public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
-        Supplier<Translation2d> targetSupplier, InterpolatingDoubleTreeMap flywheelSpeedMap) {
+        Supplier<Translation2d> targetSupplier, InterpolatingDoubleTreeMap flywheelSpeedMap,
+        double flywheelSpeedMultiplier) {
         this.drivetrain = drivetrain;
         this.flywheel = flywheel;
         this.swerveRequest = swerveRequest;
         this.targetSupplier = targetSupplier;
         this.flywheelSpeedMap = flywheelSpeedMap;
+        this.flywheelSpeedMultiplier = flywheelSpeedMultiplier;
         registerTelemetry();
     }
 
@@ -68,7 +71,8 @@ public class AimAtTarget extends Command {
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         applyRotation(cappedVelocity);
-        flywheel.setFlywheelSpeed(flywheelSpeedMap.get(getTargetDistance(drivetrain, target)));
+        flywheel
+            .setFlywheelSpeed(flywheelSpeedMap.get(getTargetDistance(drivetrain, target)) * flywheelSpeedMultiplier);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Constants;
+import frc.robot.DashboardManager;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
@@ -22,12 +23,12 @@ public class RobotCommands {
 
     public RobotCommands(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
         Hopper hopper) {
-        aimAtHub =
-            new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getHubPosition, HUB_FLYWHEEL_SPEEDS_MAP);
-        aimAtUpperHome =
-            new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getUpperHome, HOME_FLYWHEEL_SPEEDS_MAP);
-        aimAtLowerHome =
-            new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getLowerHome, HOME_FLYWHEEL_SPEEDS_MAP);
+        aimAtHub = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getHubPosition,
+            HUB_FLYWHEEL_SPEEDS_MAP, DashboardManager.getFlywheelSpeedMultiplier());
+        aimAtUpperHome = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getUpperHome,
+            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager.getHomeFlywheelSpeedMultiplier());
+        aimAtLowerHome = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getLowerHome,
+            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager.getHomeFlywheelSpeedMultiplier());
         aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtUpperHome, aimAtLowerHome);
         paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);
