@@ -87,7 +87,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public Command reverseFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(-3), () -> setFlywheelMotorVoltages(0))
+        return startEnd(() -> setFlywheelMotorVoltages(-12), () -> setFlywheelMotorVoltages(0))
             .withName("Reverse Flywheel");
     }
 
