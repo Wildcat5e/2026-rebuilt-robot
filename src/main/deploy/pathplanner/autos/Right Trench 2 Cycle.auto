@@ -38,9 +38,22 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "parallel",
                       "data": {
-                        "name": "Run Intake"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Run Intake"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Keep Intake Down"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -94,6 +107,12 @@
                 "type": "named",
                 "data": {
                   "name": "Run Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Keep Intake Down"
                 }
               }
             ]
