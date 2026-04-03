@@ -29,7 +29,7 @@ public class OperatorConsole {
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(0.5)).ignoringDisable(true));
         macropad.button(6)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-0.5)).ignoringDisable(true));
-        macropad.button(7).whileTrue(hopper.testTunableKicker());
+        macropad.button(7).whileTrue(hopper.runHopperCommand());
         macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
 
         // LAYER 1 (Shift Held)
