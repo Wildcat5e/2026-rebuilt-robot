@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
             scooperMotor.setVoltage(-scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
-            scooperMotor.setVoltage(3);
+            scooperMotor.setVoltage(0);
             pusherMotor.setVoltage(0);
         });
     }
