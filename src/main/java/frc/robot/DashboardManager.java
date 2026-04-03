@@ -123,6 +123,7 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
+        SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
@@ -137,6 +138,10 @@ public interface DashboardManager {
 
     static double getScooperMotorTestVoltage() {
         return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0);
+    }
+
+    static double getScooperMinSpeed() {
+        return SmartDashboard.getNumber("Minimum Scooper Speed", 0);
     }
 
     static double getPusherMotorTestVoltage() {
