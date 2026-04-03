@@ -132,7 +132,7 @@ public class Intake extends SubsystemBase {
      * and does not lock the intake subsystem when used.
      */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), () -> extenderMotor.setVoltage(0))
             .withName("Bump Extender Down");
     }
 
