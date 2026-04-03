@@ -90,6 +90,10 @@ public class Intake extends SubsystemBase {
             .withName("Reverse Scooper");
     }
 
+    public boolean isScooperSpinning() {
+        return Math.abs(scooperMotor.getVelocity().getValueAsDouble()) > DashboardManager.getScooperMinSpeed();
+    }
+
     public Command testPusher() {
         return startEnd(() -> {
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
