@@ -26,6 +26,7 @@ public class Intake extends SubsystemBase {
         applyGearRatio(extenderMotor, 36);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
         DashboardManager.setupIntake(() -> extenderMotorPosition, () -> scooperMotor.getVelocity().getValueAsDouble());
+        DashboardManager.putScooperReverseTimers();
     }
 
     @Override
