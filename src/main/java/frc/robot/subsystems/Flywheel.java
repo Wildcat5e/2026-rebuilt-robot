@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.utilities.TargetingUtils.*;
 import static frc.robot.utilities.FieldUtils.*;
 import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -14,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.DashboardManager;
-import frc.robot.subsystems.ShootingCalculator.ShotSolution;
 
 public class Flywheel extends SubsystemBase {
     private final Drivetrain drivetrain;
@@ -101,6 +101,7 @@ public class Flywheel extends SubsystemBase {
         var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()));
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
@@ -116,6 +117,8 @@ public class Flywheel extends SubsystemBase {
         var shotSolution =
             ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
         targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        targetFlywheelSpeed =
+            Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)));
         double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
         setFlywheelMotorVoltages(calculatedVoltage);
     }
