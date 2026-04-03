@@ -156,8 +156,8 @@ public interface DashboardManager {
     // Commands: Automatically Reverse Scooper
     // ===================================== 
     static void putScooperReverseTimers() {
-        SmartDashboard.putNumber("Scooper Auto Reverse/Loop Time", .1);
-        SmartDashboard.putNumber("Scooper Auto Reverse/Reverse Delay", .3);
+        SmartDashboard.putNumber("Scooper Auto Reverse/Loop Time", 0.1);
+        SmartDashboard.putNumber("Scooper Auto Reverse/Reverse Delay", 0.3);
     }
 
     static double getScooperReverseLoopTime() {
