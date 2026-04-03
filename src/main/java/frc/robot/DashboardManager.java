@@ -58,7 +58,7 @@ public interface DashboardManager {
     // =====================================
     static void setupHopper() {
         SmartDashboard.putNumber("Kicker Test Voltage", 8);
-        SmartDashboard.putNumber("Conveyor Test Voltage", 6);
+        SmartDashboard.putNumber("Conveyor Test Voltage", 8.0);
 
     }
 
