@@ -143,6 +143,14 @@ public class Intake extends SubsystemBase {
             .withName("Bump Extender Down");
     }
 
+    /**
+     * This is only meant to be used for autonomous paths, it is meant to be used with the run intake method in order to
+     * keep the intake from popping up when collectin fuel
+     */
+    public Command keepExtenderDownNoLock() {
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), () -> extenderMotor.setVoltage(0));
+    }
+
     // Used to avoid the subsystem locking when scheduling a command
     public void setExtenderVoltagePositive() {
         extenderMotor.setVoltage(1);
