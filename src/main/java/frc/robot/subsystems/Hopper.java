@@ -28,7 +28,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public Command reverseConveyor() {
-        return startEnd(() -> conveyorMotor.setVoltage(3), () -> conveyorMotor.setVoltage(0))
+        return startEnd(() -> conveyorMotor.setVoltage(12), () -> conveyorMotor.setVoltage(0))
             .withName("Reverse Conveyor");
     }
 
@@ -41,7 +41,7 @@ public class Hopper extends SubsystemBase {
     }
 
     public Command reverseKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(3), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
+        return startEnd(() -> kickerMotor.setVoltage(12), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
     }
 
     public void runHopper() {
