@@ -24,11 +24,11 @@ public class RobotCommands {
     public RobotCommands(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
         Hopper hopper) {
         aimAtHub = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getHubPosition,
-            HUB_FLYWHEEL_SPEEDS_MAP, DashboardManager.getFlywheelSpeedMultiplier());
+            HUB_FLYWHEEL_SPEEDS_MAP, DashboardManager::getFlywheelSpeedMultiplier);
         aimAtUpperHome = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getUpperHome,
-            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager.getHomeFlywheelSpeedMultiplier());
+            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager::getHomeFlywheelSpeedMultiplier);
         aimAtLowerHome = new AimAtTarget(drivetrain, swerveRequest, flywheel, FieldUtils::getLowerHome,
-            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager.getHomeFlywheelSpeedMultiplier());
+            HOME_FLYWHEEL_SPEEDS_MAP, DashboardManager::getHomeFlywheelSpeedMultiplier);
         aimHandler = new AimHandler(drivetrain, aimAtHub, aimAtUpperHome, aimAtLowerHome);
         paths = new Paths(drivetrain);
         shootFuel = new ShootFuel(flywheel, hopper, drivetrain);

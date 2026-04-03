@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import static frc.robot.utilities.TargetingUtils.*;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -31,13 +32,13 @@ public class AimAtTarget extends Command {
     private final Supplier<Translation2d> targetSupplier;
     private Translation2d target;
     private final InterpolatingDoubleTreeMap flywheelSpeedMap;
-    private double flywheelSpeedMultiplier;
+    private DoubleSupplier flywheelSpeedMultiplier;
     private Pose2d currentPose;
     private double targetHeading;
 
     public AimAtTarget(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, Flywheel flywheel,
         Supplier<Translation2d> targetSupplier, InterpolatingDoubleTreeMap flywheelSpeedMap,
-        double flywheelSpeedMultiplier) {
+        DoubleSupplier flywheelSpeedMultiplier) {
         this.drivetrain = drivetrain;
         this.flywheel = flywheel;
         this.swerveRequest = swerveRequest;
@@ -71,8 +72,8 @@ public class AimAtTarget extends Command {
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         applyRotation(cappedVelocity);
-        flywheel
-            .setFlywheelSpeed(flywheelSpeedMap.get(getTargetDistance(drivetrain, target)) * flywheelSpeedMultiplier);
+        flywheel.setFlywheelSpeed(
+            flywheelSpeedMap.get(getTargetDistance(drivetrain, target)) * flywheelSpeedMultiplier.getAsDouble());
     }
 
     @Override
