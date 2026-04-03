@@ -108,6 +108,10 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Flywheel Speed Multiplier", getFlywheelSpeedMultiplier() + increment);
     }
 
+    static void incrementHomeFlywheelSpeedMultiplier(double increment) {
+        SmartDashboard.putNumber("Home Flywheel Speed Multiplier", getHomeFlywheelSpeedMultiplier() + increment);
+    }
+
     static void incrementTunableFlywheelSpeed(double increment) {
         SmartDashboard.putNumber("Tunable Flywheel Speed", getTunableFlywheelSpeed() + increment);
     }
