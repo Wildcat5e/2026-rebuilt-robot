@@ -118,19 +118,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Run Intake",
-      "waypointRelativePos": 1.1310592459605047,
-      "endWaypointRelativePos": 2.953321364452422,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Run Intake"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.58,
     "maxAcceleration": 2.5,
