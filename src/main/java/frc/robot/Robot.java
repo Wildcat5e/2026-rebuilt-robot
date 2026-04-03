@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper);
 
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDownNoLock());
-        NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
+        NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotorsAutoReverse());
         NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
         SignalLogger.enableAutoLogging(false);

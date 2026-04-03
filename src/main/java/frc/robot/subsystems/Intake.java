@@ -58,8 +58,8 @@ public class Intake extends SubsystemBase {
             // execute
             () -> {
                 double scooperSpeed = Math.abs(scooperMotor.getVelocity().getValueAsDouble());
-                if (autoReverseTimer.get() > .1) {
-                    if (scooperSpeed < .1) {
+                if (autoReverseTimer.get() > 0.2) {
+                    if (scooperSpeed < 0.1) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
