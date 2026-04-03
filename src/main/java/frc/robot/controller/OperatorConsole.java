@@ -42,6 +42,10 @@ public class OperatorConsole {
         macropad.button(11).whileTrue(hopper.reverseConveyor());
         macropad.button(12).whileTrue(hopper.reverseKicker());
         macropad.button(13).whileTrue(flywheel.reverseFlywheel());
+        macropad.button(17).onTrue(
+            Commands.runOnce(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
+        macropad.button(18).onTrue(
+            Commands.runOnce(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
 
         // LAYER 2 (Control Held)
         macropad.button(14).whileTrue(intake.testScooper());
