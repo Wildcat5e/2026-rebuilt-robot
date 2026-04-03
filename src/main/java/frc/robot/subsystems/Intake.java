@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
             scooperMotor.setVoltage(-scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
-            scooperMotor.setVoltage(3);
+            scooperMotor.setVoltage(0);
             pusherMotor.setVoltage(0);
         });
     }
@@ -58,8 +58,8 @@ public class Intake extends SubsystemBase {
             // execute
             () -> {
                 double scooperSpeed = Math.abs(scooperMotor.getVelocity().getValueAsDouble());
-                if (autoReverseTimer.get() > .1) {
-                    if (scooperSpeed < .1) {
+                if (autoReverseTimer.get() > 0.2) {
+                    if (scooperSpeed < 0.1) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
@@ -83,7 +83,8 @@ public class Intake extends SubsystemBase {
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(3), () -> scooperMotor.setVoltage(0)).withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(12), () -> scooperMotor.setVoltage(0))
+            .withName("Reverse Scooper");
     }
 
     public Command testPusher() {
@@ -94,7 +95,7 @@ public class Intake extends SubsystemBase {
     }
 
     public Command reversePusher() {
-        return startEnd(() -> pusherMotor.setVoltage(3), () -> pusherMotor.setVoltage(0)).withName("Reverse Pusher");
+        return startEnd(() -> pusherMotor.setVoltage(-12), () -> pusherMotor.setVoltage(0)).withName("Reverse Pusher");
     }
 
     public Command testExtender() {
@@ -132,7 +133,7 @@ public class Intake extends SubsystemBase {
      * and does not lock the intake subsystem when used.
      */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), () -> extenderMotor.setVoltage(0))
             .withName("Bump Extender Down");
     }
 
