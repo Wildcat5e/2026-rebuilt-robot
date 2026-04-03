@@ -33,15 +33,15 @@
     {
       "anchor": {
         "x": 7.798804824561405,
-        "y": 2.9002850877192974
+        "y": 2.8137390350877185
       },
       "prevControl": {
         "x": 8.040164139863988,
-        "y": 2.835126197944626
+        "y": 2.748580145313047
       },
       "nextControl": {
         "x": 7.299911456708875,
-        "y": 3.0349695018031886
+        "y": 2.9484234491716097
       },
       "isLocked": false,
       "linkedName": null
@@ -89,10 +89,10 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.084380610412927,
-      "maxWaypointRelativePos": 1.7378815080789942,
+      "minWaypointRelativePos": 0.9622980251346502,
+      "maxWaypointRelativePos": 1.7881508078994606,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.5,
         "maxAcceleration": 2.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 455.0,
@@ -102,19 +102,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Run Intake",
-      "waypointRelativePos": 0.8689407540394976,
-      "endWaypointRelativePos": 2.7558348294434443,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Run Intake"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.58,
     "maxAcceleration": 2.5,

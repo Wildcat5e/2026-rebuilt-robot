@@ -62,9 +62,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Right Trench Middle Fuel Grab"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Trench Middle Fuel Grab"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              }
+            ]
           }
         },
         {
