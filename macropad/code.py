@@ -91,7 +91,7 @@ LAYERS = {
         3: (12, RED, "Kicker Reverse"),
         4: (13, RED, "Flywheel Reverse"),
         5: (17, YELLOW, "Home Flywhl Mult +"),
-        6: (18, YELLOW, "Home Flywhl Mult -")
+        8: (18, YELLOW, "Home Flywhl Mult -")
     },
     "CONTROL": {
         0: (14, PURPLE, "Scooper Forward"),
