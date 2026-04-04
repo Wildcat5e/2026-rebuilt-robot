@@ -61,7 +61,7 @@ public class Intake extends SubsystemBase {
                 double loopTime = DashboardManager.getScooperReverseLoopTime();
                 double reverseDelay = DashboardManager.getScooperReverseDelay();
                 if (autoReverseTimer.get() > loopTime) {
-                    if (isScooperSpinning() && autoReverseTimer.get() > reverseDelay) {
+                    if (!isScooperSpinning() && autoReverseTimer.get() > reverseDelay) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
