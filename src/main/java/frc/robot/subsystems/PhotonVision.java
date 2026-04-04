@@ -15,6 +15,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.DashboardManager;
 
 public class PhotonVision extends SubsystemBase {
     // Standard deviations to weight vision pose updates. (Higher values weight vision less.)
@@ -35,12 +36,18 @@ public class PhotonVision extends SubsystemBase {
         for (int i = 0; i < CAMERAS.size(); i++) {
             ESTIMATORS.add(new PhotonPoseEstimator(Constants.FIELD_LAYOUT, ROBOT_TO_CAMERA.get(i)));
         }
+
+        DashboardManager.setupCameraToggles();
     }
 
     @Override
     public void periodic() {
+        boolean[] camerasEnabled = {DashboardManager.isLeftCameraEnabled(), DashboardManager.isRightCameraEnabled()};
+
         for (int i = 0; i < CAMERAS.size(); i++) {
-            processResults(i);
+            if (i < camerasEnabled.length && camerasEnabled[i]) {
+                processResults(i);
+            }
         }
     }
 

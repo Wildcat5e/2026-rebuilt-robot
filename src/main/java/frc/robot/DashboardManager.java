@@ -149,6 +149,22 @@ public interface DashboardManager {
     }
 
     // =====================================
+    // Subsystem: PhotonVision
+    // =====================================
+    static void setupCameraToggles() {
+        SmartDashboard.setDefaultBoolean("Camera Toggles/Left Camera Enabled", true);
+        SmartDashboard.setDefaultBoolean("Camera Toggles/Right Camera Enabled", true);
+    }
+
+    static boolean isLeftCameraEnabled() {
+        return SmartDashboard.getBoolean("Camera Toggles/Left Camera Enabled", true);
+    }
+
+    static boolean isRightCameraEnabled() {
+        return SmartDashboard.getBoolean("Camera Toggles/Right Camera Enabled", true);
+    }
+
+    // =====================================
     // Controllers
     // =====================================
     static void setupController(SendableChooser<Controller> controllerChooser) {
@@ -157,7 +173,7 @@ public interface DashboardManager {
 
     // =====================================
     // Commands: AimAtTarget
-    // ===================================== // @formatter:off
+    // ===================================== @formatter:off
     static void setupRotateToHub(Supplier<Pose2d> currPoseSupp, DoubleSupplier targetHeadingSupp, DoubleSupplier angDiffSupp) {
         SmartDashboard.putData("RotateToHub Telemetry", builder -> {
             builder.addDoubleProperty("Robot Rotation", () -> round(currPoseSupp.get().getRotation().getDegrees(), 1), null);
