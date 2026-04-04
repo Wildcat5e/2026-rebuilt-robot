@@ -78,7 +78,7 @@ public interface DashboardManager {
         DoubleSupplier calculatedVoltageSupp) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.0);
-        SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 0.75);
+        SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 0.85);
         SmartDashboard.putNumber("Tunable Flywheel Speed", 10);
         SmartDashboard.putData("Flywheel Telemetry", builder -> { // @formatter:off
             builder.addDoubleProperty("Current Flywheel Speed (m\u2215s)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
@@ -97,7 +97,7 @@ public interface DashboardManager {
     }
 
     static double getHomeFlywheelSpeedMultiplier() {
-        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0.75);
+        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0.0);
     }
 
     static double getTunableFlywheelSpeed() {
