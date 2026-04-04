@@ -4,6 +4,7 @@ import static frc.robot.utilities.FieldUtils.*;
 import static frc.robot.utilities.MatchUtils.*;
 import static frc.robot.utilities.MathUtils.*;
 import static frc.robot.utilities.TargetingUtils.*;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -110,7 +111,7 @@ public interface DashboardManager {
     // Subsystem: Intake 
     // =====================================
 
-    static void setupIntake(DoubleSupplier extenderMotorPositionSupplier, DoubleSupplier scooperVelocitySupplier) {
+    static void setupIntake(DoubleSupplier extenderMotorPositionSupplier, BooleanSupplier isScooperSpinningSupplier) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
@@ -118,8 +119,7 @@ public interface DashboardManager {
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupplier.getAsDouble(), 3), null);
-            builder.addBooleanProperty("Is Scooper Spinning",
-                () -> Math.abs(scooperVelocitySupplier.getAsDouble()) > 0.1, null);
+            builder.addBooleanProperty("Is Scooper Spinning", isScooperSpinningSupplier, null);
         });
     }
 

@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
         applyGearRatio(pusherMotor, 1);
         applyGearRatio(extenderMotor, 36);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
-        DashboardManager.setupIntake(() -> extenderMotorPosition, () -> scooperMotor.getVelocity().getValueAsDouble());
+        DashboardManager.setupIntake(() -> extenderMotorPosition, this::isScooperSpinning);
         DashboardManager.putScooperReverseTimers();
     }
 
@@ -60,9 +60,8 @@ public class Intake extends SubsystemBase {
             () -> {
                 double loopTime = DashboardManager.getScooperReverseLoopTime();
                 double reverseDelay = DashboardManager.getScooperReverseDelay();
-                double scooperSpeed = Math.abs(scooperMotor.getVelocity().getValueAsDouble());
                 if (autoReverseTimer.get() > loopTime) {
-                    if (scooperSpeed < 0.1 && autoReverseTimer.get() > reverseDelay) {
+                    if (isScooperSpinning() && autoReverseTimer.get() > reverseDelay) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
