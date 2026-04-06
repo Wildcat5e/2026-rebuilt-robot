@@ -109,7 +109,9 @@ def generate_files():
     with open(py_out_path, "w") as f:
         f.write(py_code)
 
-    print("Successfully generated MacropadButtonsGenerated.java and macropad_buttons_generated.py.")
+    print(
+        "Successfully generated MacropadButtonsGenerated.java and macropad_buttons_generated.py."
+    )
 
 
 if __name__ == "__main__":

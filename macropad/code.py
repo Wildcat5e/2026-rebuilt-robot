@@ -11,9 +11,9 @@ import usb_hid
 from adafruit_macropad import MacroPad
 from macropad_buttons_generated import LAYERS, CYAN, BLACK
 
+
 # Custom Gamepad Class to support 32 buttons (8-byte report)
 class Gamepad32:
-    
     # Constructor
     def __init__(self, devices):
         for device in devices:
@@ -25,7 +25,7 @@ class Gamepad32:
             # This 'else' belongs to the FOR loop, not the 'if' statement.
             # It only runs if the loop finishes normally without hitting a 'break'.
             raise ValueError("Gamepad device not found")
-        
+
         self._report = bytearray(8)
         self._buttons_state = 0
         self._send()
@@ -51,6 +51,7 @@ class Gamepad32:
         self._report[3] = (self._buttons_state >> 24) & 0xFF
         self._gamepad_device.send_report(self._report)
 
+
 # Now that our Gamepad32 class and constants are defined, we set up our main objects and loop.
 macropad = MacroPad()
 gamepad = Gamepad32(usb_hid.devices)
@@ -65,6 +66,7 @@ CTRL_PHYSICAL_KEY = 11
 pressed_buttons = {}
 current_layer_name = "BASE"
 
+
 # Python allows default parameters (modifier_msg="", command_msg="").
 # If we don't pass in these arguments, they default to empty strings.
 def update_display(layer, modifier_msg="", command_msg=""):
@@ -72,6 +74,7 @@ def update_display(layer, modifier_msg="", command_msg=""):
     text_lines[1].text = modifier_msg
     text_lines[2].text = command_msg
     text_lines.show()
+
 
 # Initial display state
 update_display(current_layer_name)
@@ -83,25 +86,24 @@ while True:
         # It asks: "Did a key just get pressed or released? If so, save it to key_event."
         if key_event := macropad.keys.events.get():
             key = key_event.key_number
-            
+
             # If the physical key was pressed down:
             if key_event.pressed:
-                
                 # Handle Modifiers (Shift/Ctrl layers)
                 if key == SHIFT_PHYSICAL_KEY:
                     current_layer_name = "SHIFT"
-                    macropad.pixels[key] = CYAN # Turn the physical LED cyan
+                    macropad.pixels[key] = CYAN  # Turn the physical LED cyan
                     update_display(current_layer_name)
-                
+
                 elif key == CTRL_PHYSICAL_KEY:
                     current_layer_name = "CONTROL"
                     macropad.pixels[key] = CYAN
                     update_display(current_layer_name)
-                
+
                 # Handle Standard Keys based on the active layer
                 else:
                     active_layer = LAYERS[current_layer_name]
-                    
+
                     # 'in' checks if the key exists in the dictionary
                     if key in active_layer:
                         # This unpacks the tuple into 3 separate variables.
@@ -110,39 +112,38 @@ while True:
                         # 'is not None' is a null check
                         if btn_num is not None:
                             gamepad.press_buttons(btn_num)
-                            
+
                         # Add the key to our tracking dictionary
-                        pressed_buttons[key] = btn_num 
+                        pressed_buttons[key] = btn_num
                         macropad.pixels[key] = color
                         update_display(current_layer_name, text_lines[1].text, message)
-                        
+
                         # Logging to the serial console
                         if btn_num is None:
                             print(f"\x1b[2J\x1b[H--- {message} ---")
                         else:
                             print(message)
-                            
+
             # If the physical key was released:
             elif key_event.released:
-                
                 # Handle Modifiers
                 # 'in (X, Y)' is equivalent to 'if key == X or key == Y'
                 if key in (SHIFT_PHYSICAL_KEY, CTRL_PHYSICAL_KEY):
                     current_layer_name = "BASE"
-                    macropad.pixels[key] = BLACK # Turns the LED off
+                    macropad.pixels[key] = BLACK  # Turns the LED off
                     update_display(current_layer_name)
-                
+
                 # Handle Standard Keys
                 elif key in pressed_buttons:
                     # .pop() retrieves the value and deletes the key from the dictionary.
-                    btn_num = pressed_buttons.pop(key) 
-                    
+                    btn_num = pressed_buttons.pop(key)
+
                     if btn_num is not None:
                         gamepad.release_buttons(btn_num)
-                        
+
                     macropad.pixels[key] = BLACK
                     update_display(current_layer_name, text_lines[1].text, "")
-                    
+
     # Standard try-catch block to prevent the main loop from ending on an error.
     except Exception as e:
         print(e)
