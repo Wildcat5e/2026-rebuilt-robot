@@ -46,7 +46,7 @@
         "layer": "BASE",
         "key": 7,
         "color": "BLUE",
-        "text": "Run Hopper"
+        "text": "Hopper + Pusher"
     },
     {
         "action": "TUNABLE_FLYWHEEL",

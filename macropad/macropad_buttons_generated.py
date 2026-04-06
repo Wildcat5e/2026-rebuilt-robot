@@ -40,7 +40,7 @@ LAYERS = {
         4: (get_btn("FLYWHEEL_MULT_DOWN"), YELLOW, "Flywheel Mult -"),
         2: (get_btn("TUNE_FLYWHEEL_UP"), PURPLE, "Tune Flywheel +"),
         5: (get_btn("TUNE_FLYWHEEL_DOWN"), PURPLE, "Tune Flywheel -"),
-        7: (get_btn("RUN_HOPPER"), BLUE, "Run Hopper"),
+        7: (get_btn("RUN_HOPPER"), BLUE, "Hopper + Pusher"),
         8: (get_btn("TUNABLE_FLYWHEEL"), BLUE, "Tunable Flywheel")
     },
     "SHIFT": {
