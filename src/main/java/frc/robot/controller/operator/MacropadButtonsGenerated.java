@@ -10,6 +10,7 @@ public enum MacropadButtonsGenerated {
     TUNE_FLYWHEEL_DOWN,
     RUN_HOPPER,
     TUNABLE_FLYWHEEL,
+    SWERVE_BRAKE,
     SCOOPER_REV,
     PUSHER_REV,
     CONVEYOR_REV,

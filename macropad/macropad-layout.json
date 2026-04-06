@@ -56,6 +56,13 @@
         "text": "Tunable Flywheel"
     },
     {
+        "action": "SWERVE_BRAKE",
+        "layer": "BASE",
+        "key": 10,
+        "color": "RED",
+        "text": "Swerve Brake"
+    },
+    {
         "action": "SCOOPER_REV",
         "layer": "SHIFT",
         "key": 0,
