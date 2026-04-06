@@ -33,6 +33,7 @@ public class OperatorConsole {
         macropad.button(6)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-0.5)).ignoringDisable(true));
         macropad.button(7).whileTrue(hopper.runHopperCommand());
+        macropad.button(7).whileTrue(intake.testPusher());
         macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
         macropad.button(17).whileTrue(DrivetrainUtils.swerveDriveBrake(drivetrain));
 
