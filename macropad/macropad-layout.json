@@ -1,0 +1,128 @@
+[
+    {
+        "action": "EXTENDER_POS",
+        "layer": "BASE",
+        "key": 0,
+        "color": "GREEN",
+        "text": "Bump Extender Up"
+    },
+    {
+        "action": "EXTENDER_NEG",
+        "layer": "BASE",
+        "key": 3,
+        "color": "GREEN",
+        "text": "Bump Extender Down"
+    },
+    {
+        "action": "FLYWHEEL_MULT_UP",
+        "layer": "BASE",
+        "key": 1,
+        "color": "YELLOW",
+        "text": "Flywheel Mult +"
+    },
+    {
+        "action": "FLYWHEEL_MULT_DOWN",
+        "layer": "BASE",
+        "key": 4,
+        "color": "YELLOW",
+        "text": "Flywheel Mult -"
+    },
+    {
+        "action": "TUNE_FLYWHEEL_UP",
+        "layer": "BASE",
+        "key": 2,
+        "color": "PURPLE",
+        "text": "Tune Flywheel +"
+    },
+    {
+        "action": "TUNE_FLYWHEEL_DOWN",
+        "layer": "BASE",
+        "key": 5,
+        "color": "PURPLE",
+        "text": "Tune Flywheel -"
+    },
+    {
+        "action": "RUN_HOPPER",
+        "layer": "BASE",
+        "key": 7,
+        "color": "BLUE",
+        "text": "Run Hopper"
+    },
+    {
+        "action": "TUNABLE_FLYWHEEL",
+        "layer": "BASE",
+        "key": 8,
+        "color": "BLUE",
+        "text": "Tunable Flywheel"
+    },
+    {
+        "action": "SCOOPER_REV",
+        "layer": "SHIFT",
+        "key": 0,
+        "color": "RED",
+        "text": "Scooper Reverse"
+    },
+    {
+        "action": "PUSHER_REV",
+        "layer": "SHIFT",
+        "key": 1,
+        "color": "RED",
+        "text": "Pusher Reverse"
+    },
+    {
+        "action": "CONVEYOR_REV",
+        "layer": "SHIFT",
+        "key": 2,
+        "color": "RED",
+        "text": "Conveyor Reverse"
+    },
+    {
+        "action": "KICKER_REV",
+        "layer": "SHIFT",
+        "key": 3,
+        "color": "RED",
+        "text": "Kicker Reverse"
+    },
+    {
+        "action": "FLYWHEEL_REV",
+        "layer": "SHIFT",
+        "key": 4,
+        "color": "RED",
+        "text": "Flywheel Reverse"
+    },
+    {
+        "action": "SCOOPER_FWD",
+        "layer": "CONTROL",
+        "key": 0,
+        "color": "PURPLE",
+        "text": "Scooper Forward"
+    },
+    {
+        "action": "PUSHER_FWD",
+        "layer": "CONTROL",
+        "key": 1,
+        "color": "PURPLE",
+        "text": "Pusher Forward"
+    },
+    {
+        "action": "CONVEYOR_FWD",
+        "layer": "CONTROL",
+        "key": 2,
+        "color": "PURPLE",
+        "text": "Conveyor Forward"
+    },
+    {
+        "action": "HOME_FLYWHEEL_UP",
+        "layer": "SHIFT",
+        "key": 5,
+        "color": "YELLOW",
+        "text": "Home Flywhl Mult +"
+    },
+    {
+        "action": "HOME_FLYWHEEL_DOWN",
+        "layer": "SHIFT",
+        "key": 8,
+        "color": "YELLOW",
+        "text": "Home Flywhl Mult -"
+    }
+]
