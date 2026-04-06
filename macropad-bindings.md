@@ -33,11 +33,11 @@ Holding the bottom-left key makes accessible a menu of reverse jogging commands 
 | [0]  Scooper       | [1]  Pusher        | [2]  Conveyor      |
 |      Reverse       |      Reverse       |      Reverse       |
 +--------------------+--------------------+--------------------+
-| [3]  Kicker        | [4]  Flywheel      | [5]                |
-|      Reverse       |      Reverse       |                    |
+| [3]  Kicker        | [4]  Flywheel      | [5]  Home Flywheel |
+|      Reverse       |      Reverse       |     Speed Mult +   |
 +--------------------+--------------------+--------------------+
-| [6]                | [7]                | [8]                |
-|                    |                    |                    |
+| [6]                | [7]                | [8]  Home Flywheel |
+|                    |                    |     Speed Mult -   |
 +--------------------+--------------------+--------------------+
 | [9]                | [10]               | [11]               |
 |     [HELD]         |                    |     (Inactive)     |
