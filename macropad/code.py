@@ -82,6 +82,7 @@ LAYERS = {
         5: (6, PURPLE, "Tune Flywheel -"),
         7: (7, BLUE, "Static Kicker"),
         8: (8, BLUE, "Tunable Flywheel"),
+        10: (17, RED, "Swerve Brake")
     },
     "SHIFT": {
         0: (9, RED, "Scooper Reverse"),
