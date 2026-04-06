@@ -3,12 +3,10 @@ import os
 
 
 def generate_files():
-    # 1. Setup file paths automatically based on the script's location
     script_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(script_dir, "macropad-layout.json")
     py_out_path = os.path.join(script_dir, "macropad_buttons_generated.py")
 
-    # Trace the path back out of 'macropad' and into the java source directory
     java_out_dir = os.path.join(
         script_dir,
         "..",
@@ -29,12 +27,11 @@ def generate_files():
     with open(json_path, "r") as f:
         layout = json.load(f)
 
-    # -----------------------------------------
-    # 2. Generate the Java Enum
-    # -----------------------------------------
+    # Generate the Java Enum
     os.makedirs(
-        java_out_dir, exist_ok=True
-    )  # Ensure the java directory actually exists
+        java_out_dir,
+        exist_ok=True,  # Ensure the java directory actually exists
+    )
 
     java_code = "package frc.robot.controller.operator;\n\n"
     java_code += "// AUTO-GENERATED FILE. DO NOT EDIT.\n"
@@ -52,12 +49,9 @@ def generate_files():
     with open(java_out_path, "w") as f:
         f.write(java_code)
 
-    # -----------------------------------------
-    # 3. Generate the CircuitPython Layers
-    # -----------------------------------------
+    # Generate the Python-equivalent of the Java enum
+    # Also extract button color definitions
     py_code = "# AUTO-GENERATED FILE. DO NOT EDIT.\n\n"
-
-    # Define colors here so code.py can be perfectly clean
     py_code += "RED = 0xff0000\n"
     py_code += "GREEN = 0x00ff00\n"
     py_code += "BLUE = 0x0000ff\n"
@@ -75,7 +69,7 @@ def generate_files():
     py_code += "def get_btn(action_name):\n"
     py_code += "    return ACTIONS.index(action_name) + 1\n\n"
 
-    # Group the buttons by their assigned Layer
+    # Group buttons by their assigned Layer
     layers = {}
     for btn in layout:
         layer = btn["layer"]

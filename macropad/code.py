@@ -92,7 +92,7 @@ while True:
                 # Handle Modifiers (Shift/Ctrl layers)
                 if key == SHIFT_PHYSICAL_KEY:
                     current_layer_name = "SHIFT"
-                    macropad.pixels[key] = CYAN  # Turn the physical LED cyan
+                    macropad.pixels[key] = CYAN
                     update_display(current_layer_name)
 
                 elif key == CTRL_PHYSICAL_KEY:
