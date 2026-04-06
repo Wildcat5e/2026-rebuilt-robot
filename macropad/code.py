@@ -9,6 +9,7 @@ Displays current layer and active command on the screen.
 import board
 import usb_hid
 from adafruit_macropad import MacroPad
+from macropad_buttons_generated import LAYERS, CYAN, BLACK
 
 # Custom Gamepad Class to support 32 buttons (8-byte report)
 class Gamepad32:
@@ -57,48 +58,8 @@ gamepad = Gamepad32(usb_hid.devices)
 # Display Setup
 text_lines = macropad.display_text(title="Team 6705 Wildcat5e")
 
-# Defining constants
-RED = 0xff0000
-GREEN = 0x00ff00
-BLUE = 0x0000ff
-YELLOW = 0xffff00
-PURPLE = 0xff00ff
-CYAN = 0x00ffff
-BLACK = 0x000000
-
 SHIFT_PHYSICAL_KEY = 9
 CTRL_PHYSICAL_KEY = 11
-
-# LAYERS is a Dictionary of Dictionaries. The top-level keys are layer names,
-# and the values are dictionaries that map physical key numbers to tuples of
-# (gamepad button number, LED color, display message).
-LAYERS = {
-    "BASE": {
-        0: (1, GREEN, "Bump Extender Up"),
-        3: (2, GREEN, "Bump Extender Down"),
-        1: (3, YELLOW, "Flywheel Mult +"),
-        4: (4, YELLOW, "Flywheel Mult -"),
-        2: (5, PURPLE, "Tune Flywheel +"),
-        5: (6, PURPLE, "Tune Flywheel -"),
-        7: (7, BLUE, "Static Kicker"),
-        8: (8, BLUE, "Tunable Flywheel"),
-        10: (17, RED, "Swerve Brake")
-    },
-    "SHIFT": {
-        0: (9, RED, "Scooper Reverse"),
-        1: (10, RED, "Pusher Reverse"),
-        2: (11, RED, "Conveyor Reverse"),
-        3: (12, RED, "Kicker Reverse"),
-        4: (13, RED, "Flywheel Reverse"),
-        5: (17, YELLOW, "Home Flywhl Mult +"),
-        8: (18, YELLOW, "Home Flywhl Mult -")
-    },
-    "CONTROL": {
-        0: (14, PURPLE, "Scooper Forward"),
-        1: (15, PURPLE, "Pusher Forward"),
-        2: (16, PURPLE, "Conveyor Forward")
-    }
-}
 
 # Empty dictionary to track which physical keys are currently being held down.
 pressed_buttons = {}
