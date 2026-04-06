@@ -17,6 +17,7 @@ ACTIONS = [
     "TUNE_FLYWHEEL_DOWN",
     "RUN_HOPPER",
     "TUNABLE_FLYWHEEL",
+    "SWERVE_BRAKE",
     "SCOOPER_REV",
     "PUSHER_REV",
     "CONVEYOR_REV",
@@ -41,7 +42,8 @@ LAYERS = {
         2: (get_btn("TUNE_FLYWHEEL_UP"), PURPLE, "Tune Flywheel +"),
         5: (get_btn("TUNE_FLYWHEEL_DOWN"), PURPLE, "Tune Flywheel -"),
         7: (get_btn("RUN_HOPPER"), BLUE, "Hopper + Pusher"),
-        8: (get_btn("TUNABLE_FLYWHEEL"), BLUE, "Tunable Flywheel")
+        8: (get_btn("TUNABLE_FLYWHEEL"), BLUE, "Tunable Flywheel"),
+        10: (get_btn("SWERVE_BRAKE"), RED, "Swerve Brake")
     },
     "SHIFT": {
         0: (get_btn("SCOOPER_REV"), RED, "Scooper Reverse"),

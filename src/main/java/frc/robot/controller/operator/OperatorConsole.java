@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.DashboardManager;
 import frc.robot.commands.RobotCommands;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.utilities.DrivetrainUtils;
 
 public class OperatorConsole {
     private final CommandGenericHID macropad = new CommandGenericHID(4);
@@ -33,7 +35,8 @@ public class OperatorConsole {
         macropad.button(getBtn(action)).onTrue(Commands.runOnce(runnable).ignoringDisable(true));
     }
 
-    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper) {
+        
+    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper, Drivetrain drivetrain) {
         // --- MACROPAD BINDINGS ---
 
         // LAYER 0 (No Modifiers)
@@ -47,6 +50,7 @@ public class OperatorConsole {
         bindWhileTrue(RUN_HOPPER, hopper.runHopperCommand());
         bindWhileTrue(RUN_HOPPER, intake.testPusher());
         bindWhileTrue(TUNABLE_FLYWHEEL, flywheel.tunableFlywheelSpeedCommand());
+        bindWhileTrue(SWERVE_BRAKE, DrivetrainUtils.swerveDriveBrake(drivetrain));
 
         // LAYER 1 (Shift Held)
         bindWhileTrue(SCOOPER_REV, intake.reverseScooper());
