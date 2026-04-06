@@ -120,37 +120,50 @@ tasks.withType(JavaCompile) {
 // Custom Macropad Verification Task
 task checkMacropadCode {
     doLast {
-        def localFile = file('macropad/code.py')
-        // The macropad is mounted on the D: drive on the Driver Station, so we check for code.py there.
-        // If testing on a different device where the macropad is mounted elsewhere, we check the E: drive.
-        // If we don't find it anywhere, we print an error.
-        // In such a case, functionality will not be impacted.
-        def DDriveFile = file('D:/code.py')
-        def DDriveFileExists = DDriveFile.exists()
-        def macropadFile = DDriveFileExists ? tempFile : file('E:/code.py')
+        def localCodeFile = file('macropad/code.py')
+        def localButtonsFile = file('macropad/macropad_buttons_generated.py')
 
-        // Prints to terminal
-        if (!localFile.exists()) {
-            println '\nWARNING: Local macropad/code.py not found in project.'
+        // Prints to terminal if missing locally
+        if (!localCodeFile.exists() || !localButtonsFile.exists()) {
+            println '\nWARNING: Local macropad/code.py or macropad/macropad_buttons_generated.py not found in project.'
             return
         }
 
-        // Prints to terminal
-        if (!macropadFile.exists()) {
-            println '\nWARNING: Macropad not found on D:/ or E:/. Cannot verify code.py.'
-            println 'Ensure that the macropad is connected if you intend to use it.'
+        // Determine which drive the macropad is mounted on
+        def dDriveCode = file('D:/code.py')
+        def dDriveButtons = file('D:/macropad_buttons_generated.py')
+        def isDDrive = dDriveCode.exists() || dDriveButtons.exists()
+        def driveLetter = isDDrive ? "D:/" : "E:/"
+
+        def macropadCodeFile = file(driveLetter + 'code.py')
+        def macropadButtonsFile = file(driveLetter + 'macropad_buttons_generated.py')
+
+        // Prints to terminal if missing on the external drive
+        if (!macropadCodeFile.exists() || !macropadButtonsFile.exists()) {
+            println '\nWARNING: Macropad files not fully found on D:/ or E:/. Cannot verify synchronization.'
+            println 'Ensure that the macropad is connected and both code.py and macropad_buttons_generated.py are present.'
             return
         }
+
+        // Compare contents
+        boolean codeOutOfSync = localCodeFile.text != macropadCodeFile.text
+        boolean buttonsOutOfSync = localButtonsFile.text != macropadButtonsFile.text
 
         // Shows a Pop-Up
-        if (localFile.text != macropadFile.text) {
+        if (codeOutOfSync || buttonsOutOfSync) {
             // Create a temporary, invisible frame and force it to the front
             JFrame frame = new JFrame()
             frame.setAlwaysOnTop(true)
-            frame.setLocationRelativeTo(null) // Center popup on screen
+            frame.setLocationRelativeTo(null) // Center Pop-Up on screen
             
-            def s = DDriveFileExists ? "D:/" : "E:/"
-            def errMsg = 'WAIT! The Macropad code on ' + s + ' does not match your local macropad/code.py.\n\nPlease update the physical Macropad\'s code before your match.'
+            def outOfSyncFiles = []
+            if (codeOutOfSync) outOfSyncFiles.add("code.py")
+            if (buttonsOutOfSync) outOfSyncFiles.add("macropad_buttons_generated.py")
+            def fileListStr = outOfSyncFiles.join(" and ")
+
+            def errMsg = "WAIT! The Macropad code on ${driveLetter} does not match your local project files.\n\n" +
+                         "Out of sync: ${fileListStr}\n\n" +
+                         "Please update the physical Macropad's code before your match."
             JOptionPane.showMessageDialog(frame, errMsg, 'Macropad Code Out of Sync', JOptionPane.WARNING_MESSAGE)
             frame.dispose()
         } else {
