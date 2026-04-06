@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.DashboardManager;
 import frc.robot.commands.RobotCommands;
+import frc.robot.utilities.DrivetrainUtils;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -14,7 +16,8 @@ public class OperatorConsole {
 
     public OperatorConsole() {}
 
-    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper) {
+    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper,
+        Drivetrain drivetrain) {
         // --- MACROPAD BINDINGS ---
         // LAYER 0 (No Modifiers)
         macropad.button(1).whileTrue(
@@ -31,6 +34,7 @@ public class OperatorConsole {
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-0.5)).ignoringDisable(true));
         macropad.button(7).whileTrue(hopper.runHopperCommand());
         macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
+        macropad.button(17).whileTrue(DrivetrainUtils.swerveDriveBrake(drivetrain));
 
         // LAYER 1 (Shift Held)
         macropad.button(9).whileTrue(intake.reverseScooper());
