@@ -18,12 +18,17 @@ public class Intake extends SubsystemBase {
     private double extenderMotorPosition = 0;
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
+    /** All units are in rotations */
+    private double EXTENDER_STOWED_POSITION = .27;
+    private double EXTENDER_DROPPED_POSITION = 0;
+    private double TOLERANCE = 0.07;
     private final Timer autoReverseTimer = new Timer();
 
     public Intake() {
         applyGearRatio(scooperMotor, 1);
         applyGearRatio(pusherMotor, 1);
         applyGearRatio(extenderMotor, 36);
+        extenderMotor.setPosition(EXTENDER_STOWED_POSITION);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
         DashboardManager.setupIntake(() -> extenderMotorPosition, this::isScooperSpinning);
         DashboardManager.putScooperReverseTimers();
@@ -168,5 +173,43 @@ public class Intake extends SubsystemBase {
     /** @return Extender motor's position in REVOLUTIONS */
     public double getExtenderPosition() {
         return extenderMotor.getPosition().getValueAsDouble();
+    }
+
+    public Command dropArmFinalImplementation() {
+        return new FunctionalCommand(
+            // --initialize--
+            () -> extenderMotor.setVoltage(-1),
+
+            // --execute--
+            () -> {},
+
+            // --end--
+            interrupted -> extenderMotor.setVoltage(0),
+
+            // --isFinished--
+            () -> {
+                return getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE; // Check sign
+            },
+            // --addRequirements--
+            this); // Pass in Intake
+    }
+
+    public Command raiseArmFinalImplementation() {
+        return new FunctionalCommand(
+            // --initialize--
+            () -> extenderMotor.setVoltage(1),
+
+            // --execute--
+            () -> {},
+
+            // --end--
+            interrupted -> extenderMotor.setVoltage(0),
+
+            // --isFinished--
+            () -> {
+                return getExtenderPosition() >= EXTENDER_STOWED_POSITION - TOLERANCE; // Check sign
+            },
+            // --addRequirements--
+            this); // Pass in Intake
     }
 }

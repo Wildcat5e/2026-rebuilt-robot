@@ -98,6 +98,9 @@ public abstract class Controller {
         // povDown().whileTrue(flywheel.sysIdQuasistaticForward());
         // povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
 
+
+        povUp().whileTrue(intake.raiseArmFinalImplementation());
+        povDown().whileTrue(intake.dropArmFinalImplementation());
         /*
          * Tests for motor identification:
          * https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
