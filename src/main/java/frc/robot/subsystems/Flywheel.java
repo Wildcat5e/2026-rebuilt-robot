@@ -91,7 +91,7 @@ public class Flywheel extends SubsystemBase {
             .withName("Reverse Flywheel");
     }
 
-    public boolean flywheelUpToSpeed() {
+    public boolean isFlywheelUpToSpeed() {
         if (targetFlywheelSpeed == 0) return false;
         return currentFlywheelSpeed > targetFlywheelSpeed;
     }

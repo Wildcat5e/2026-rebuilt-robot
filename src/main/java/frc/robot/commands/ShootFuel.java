@@ -28,7 +28,7 @@ public class ShootFuel extends Command {
 
     @Override
     public void execute() {
-        if (!flywheelUpToSpeed && flywheel.flywheelUpToSpeed()) {
+        if (!flywheelUpToSpeed && flywheel.isFlywheelUpToSpeed()) {
             System.out.println(" UP TO SPEED ");
             flywheelUpToSpeed = true;
         }
