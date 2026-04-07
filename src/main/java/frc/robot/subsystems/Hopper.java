@@ -4,11 +4,30 @@ import static frc.robot.utilities.HardwareUtils.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 
-public class Hopper extends SubsystemBase {
-    private final TalonFX conveyorMotor = new TalonFX(15);
+public class Hopper extends SubsystemBase implements SysIdCapable {
     private final TalonFX kickerMotor = new TalonFX(14);
+    private final double KICKER_RADIUS = 0.03175 / 2;
+    private final double KICKER_CIRCUMFERENCE = 2 * Math.PI * KICKER_RADIUS;
+
+    private final TalonFX conveyorMotor = new TalonFX(15);
+    private final double CONVEYOR_RADIUS = 0.028575 / 2;
+    private final double CONVEYOR_CIRCUMFERENCE = 2 * Math.PI * CONVEYOR_RADIUS;
+
+    // --- SysId Configuration ---
+    // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
+    // OTHERWISE, YOU RISK DAMAGING YOUR ROBOT.
+    // MAKE SURE TO COMMENT OUT THE OTHER ONE BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
+
+    // --KICKER MOTOR--
+    private final SysIdRoutine routine =
+        SysIdCapable.createLinearRoutine(this, kickerMotor, kickerMotor::setVoltage, KICKER_CIRCUMFERENCE);
+
+    // --CONVEYOR MOTOR--
+    // private final SysIdRoutine routine =
+    //     SysIdCapable.createLinearRoutine(this, conveyorMotor, conveyorMotor::setVoltage, CONVEYOR_CIRCUMFERENCE);
 
     public Hopper() {
         applyGearRatio(4, conveyorMotor, kickerMotor);
@@ -17,6 +36,11 @@ public class Hopper extends SubsystemBase {
 
     @Override
     public void periodic() {}
+
+    /** @return The SysIdRoutine used to generate characterization commands. */
+    public SysIdRoutine getSysIdRoutine() {
+        return routine;
+    }
 
     public Command testConveyor() {
         return startEnd(() -> {

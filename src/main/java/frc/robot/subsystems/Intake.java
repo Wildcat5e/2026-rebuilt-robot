@@ -8,20 +8,37 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.DashboardManager;
 
-public class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase implements SysIdCapable {
     /** Motor that pushes fuel into storage. */
     private final TalonFX pusherMotor = new TalonFX(16);
+    private final double PUSHER_RADIUS = 0.058 / 2;
+    private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
-    /** Motor that is close to the floor and scoops fuel into pusher. */
-    private final TalonFX scooperMotor = new TalonFX(18);
-    /** All units are in rotations */
+    // All units are in rotations
     private double EXTENDER_STOWED_POSITION = .27;
     private double EXTENDER_DROPPED_POSITION = 0;
     private double TOLERANCE = 0.07;
+    /** Motor that is close to the floor and scoops fuel into pusher. */
+    private final TalonFX scooperMotor = new TalonFX(18);
+    private final double SCOOPER_RADIUS = 0.06858 / 2;
+    private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
     private final Timer autoReverseTimer = new Timer();
+
+    // --- SysId Configuration (Rollers Only) ---
+    // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
+    // MAKE SURE TO COMMENT OUT THE OTHER ONE BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
+
+    // --PUSHER MOTOR--
+    private final SysIdRoutine routine =
+        SysIdCapable.createLinearRoutine(this, pusherMotor, pusherMotor::setVoltage, PUSHER_CIRCUMFERENCE);
+
+    // --SCOOPER MOTOR--
+    // private final SysIdRoutine routine =
+    //     SysIdCapable.createLinearRoutine(this, scooperMotor, scooperMotor::setVoltage, SCOOPER_CIRCUMFERENCE);
 
     public Intake() {
         applyGearRatio(1, scooperMotor, pusherMotor);
@@ -34,6 +51,11 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {}
+
+    /** @return The SysIdRoutine used to generate characterization commands. */
+    public SysIdRoutine getSysIdRoutine() {
+        return routine;
+    }
 
     public Command spinIntakeMotors() {
         return startEnd(() -> {
