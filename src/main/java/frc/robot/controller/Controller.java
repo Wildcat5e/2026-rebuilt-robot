@@ -89,7 +89,7 @@ public abstract class Controller {
         manualFlywheel().whileTrue(flywheel.tunableFlywheelSpeedCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         reverse().whileTrue(intake.reverseScooper());
-        trenchPath().whileTrue(commands.paths);
+        trenchPath().whileTrue(intake.zeroExtenderPosition());
 
         // sysid tests
         // povUp().whileTrue(flywheel.sysIdDynamicForward());
