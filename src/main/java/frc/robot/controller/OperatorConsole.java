@@ -20,10 +20,10 @@ public class OperatorConsole {
         Drivetrain drivetrain) {
         // --- MACROPAD BINDINGS ---
         // LAYER 0 (No Modifiers)
-        macropad.button(1).whileTrue(
-            Commands.startEnd(() -> intake.setExtenderVoltagePositive(), () -> intake.setExtenderVoltageZero()));
-        macropad.button(2).whileTrue(
-            Commands.startEnd(() -> intake.setExtenderVoltageNegative(), () -> intake.setExtenderVoltageZero()));
+        macropad.button(1)
+            .whileTrue(Commands.startEnd(() -> intake.setExtenderVoltagePositive(), () -> intake.stopExtender()));
+        macropad.button(2)
+            .whileTrue(Commands.startEnd(() -> intake.setExtenderVoltageNegative(), () -> intake.stopExtender()));
         macropad.button(3).onTrue(
             Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
         macropad.button(4).onTrue(
