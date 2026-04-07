@@ -160,7 +160,7 @@ public class Intake extends SubsystemBase {
         extenderMotor.setVoltage(-1);
     }
 
-    public void setExtenderVoltageZero() {
+    public void stopExtender() {
         extenderMotor.setVoltage(0);
     }
 
