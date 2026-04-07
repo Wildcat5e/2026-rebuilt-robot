@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AimAtTarget;
 import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PhotonVision;
 
 /** Handles all telemetry and Elastic/SmartDashboard interactions. */
 public interface DashboardManager {
@@ -33,8 +34,11 @@ public interface DashboardManager {
     // =====================================
     // Robot (Init & Periodic)
     // =====================================
-    public static void setupRobotInit(Field2d field, SendableChooser<Command> autoChooser, Drivetrain drivetrain) {
-        SmartDashboard.putData("Field", field);
+    public static void setupRobotInit(Field2d combinedField, Field2d leftCamField, Field2d rightCamField,
+        SendableChooser<Command> autoChooser, Drivetrain drivetrain, PhotonVision photonVision) {
+        SmartDashboard.putData("Combined Field", combinedField);
+        SmartDashboard.putData("Left Camera Field", leftCamField);
+        SmartDashboard.putData("Right Camera Field", rightCamField);
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
         SmartDashboard.putData("Auto Command Chooser", autoChooser);
         SmartDashboard.putData("Robot Telemetry", builder -> {
@@ -43,7 +47,19 @@ public interface DashboardManager {
                 () -> round(getTargetDistance(drivetrain, getHubPosition()), 2), null);
         });
         if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
+        SmartDashboard.putData("Camera Poses", builder -> {
+            builder.addDoubleProperty("Left Camera X", () -> round(photonVision.leftCamPose.getX(), 2), null);
+            builder.addDoubleProperty("Left Camera Y", () -> round(photonVision.leftCamPose.getY(), 2), null);
+            builder.addDoubleProperty("Left Camera Rotation",
+                () -> round(photonVision.leftCamPose.getRotation().getDegrees(), 2), null);
+            builder.addDoubleProperty("Right Camera X", () -> round(photonVision.rightCamPose.getX(), 2), null);
+            builder.addDoubleProperty("Right Camera Y", () -> round(photonVision.rightCamPose.getY(), 2), null);
+            builder.addDoubleProperty("Right Camera Rotation",
+                () -> round(photonVision.rightCamPose.getRotation().getDegrees(), 2), null);
+
+        });
     }
+
 
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
         // Remaining time in the current period (Auto/Teleop)

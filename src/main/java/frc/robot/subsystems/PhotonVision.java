@@ -9,6 +9,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
@@ -30,6 +31,8 @@ public class PhotonVision extends SubsystemBase {
             new Transform3d(0.305, -0.221, 0.527, new Rotation3d(0, Math.toRadians(15), 0)));
     private static final List<PhotonPoseEstimator> ESTIMATORS = new ArrayList<PhotonPoseEstimator>();
     private final EstimateConsumer estConsumer;
+    public Pose2d leftCamPose = new Pose2d(0, 0, new Rotation2d(0));
+    public Pose2d rightCamPose = new Pose2d(0, 0, new Rotation2d(0));
 
     public PhotonVision(EstimateConsumer estimateConsumer) {
         this.estConsumer = estimateConsumer;
@@ -59,6 +62,11 @@ public class PhotonVision extends SubsystemBase {
             optionalPoseEstimate.ifPresent((est) -> {
                 Matrix<N3, N1> stddev = getEstimationStdDevs(est, result, index);
                 estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, stddev);
+                if (index == 0) {
+                    leftCamPose = est.estimatedPose.toPose2d();
+                } else {
+                    rightCamPose = est.estimatedPose.toPose2d();
+                }
             });
         }
     }

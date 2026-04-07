@@ -43,7 +43,9 @@ public class Robot extends TimedRobot {
     private final OperatorConsole operatorConsole = new OperatorConsole();
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
-    private final Field2d fieldWidget = new Field2d();
+    private final Field2d combinedFieldWidget = new Field2d();
+    private final Field2d leftCamFieldWidget = new Field2d();
+    private final Field2d rightCamFieldWidget = new Field2d();
     private final SendableChooser<Command> autoChooser;
     /** https://github.com/Gold872/elastic_dashboard/blob/v2026.1.1/elasticlib/Elastic.java */
     private final StringTopic elasticTabTopic =
@@ -73,14 +75,17 @@ public class Robot extends TimedRobot {
         SignalLogger.enableAutoLogging(false);
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        DashboardManager.setupRobotInit(fieldWidget, autoChooser, drivetrain);
+        DashboardManager.setupRobotInit(combinedFieldWidget, leftCamFieldWidget, rightCamFieldWidget, autoChooser,
+            drivetrain, photonVision);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        fieldWidget.setRobotPose(drivetrain.getState().Pose);
+        combinedFieldWidget.setRobotPose(drivetrain.getState().Pose);
+        leftCamFieldWidget.setRobotPose(photonVision.leftCamPose);
+        rightCamFieldWidget.setRobotPose(photonVision.rightCamPose);
         DashboardManager.updateRobotPeriodic(drivetrain, getHubPosition());
     }
 
