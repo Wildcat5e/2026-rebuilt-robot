@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.DashboardManager;
 
-public class Flywheel extends SubsystemBase {
+public class Flywheel extends SubsystemBase implements SysIdCapable {
     private final Drivetrain drivetrain;
     private final TalonFX leftFlywheelMotor = new TalonFX(21);
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
@@ -32,6 +32,9 @@ public class Flywheel extends SubsystemBase {
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
     private double averageFlywheelSpeed = 0;
     private double calculatedVoltage = 0;
+
+    private final SysIdRoutine routine = SysIdCapable.createLinearRoutine(this, rightFlywheelMotor,
+        this::setFlywheelMotorVoltages, FLYWHEEL_CIRCUMFERENCE);
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -70,6 +73,11 @@ public class Flywheel extends SubsystemBase {
     public void periodic() {
         currentFlywheelSpeed = getFlywheelSpeed();
         averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
+    }
+
+    @Override
+    public SysIdRoutine getSysIdRoutine() {
+        return routine;
     }
 
     public Command hubRunFlywheelCommand() {
@@ -121,32 +129,5 @@ public class Flywheel extends SubsystemBase {
         var speed = Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
             * DashboardManager.getHomeFlywheelSpeedMultiplier();
         setFlywheelVelocity(speed);
-    }
-
-    // Untested
-    SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(),
-        new SysIdRoutine.Mechanism(voltage -> setFlywheelMotorVoltages(voltage.magnitude()), log -> {
-            log.motor("flywheel-motors").voltage(rightFlywheelMotor.getMotorVoltage().getValue())
-                .linearPosition(Distance.ofRelativeUnits(
-                    rightFlywheelMotor.getPosition().getValueAsDouble() * FLYWHEEL_CIRCUMFERENCE, Meters))
-                .linearVelocity(LinearVelocity.ofRelativeUnits(getFlywheelSpeed(), MetersPerSecond));
-        }, this));
-
-    // --- sysId Flywheel FeedForward Calibration Tests ---
-
-    public Command sysIdQuasistaticForward() {
-        return routine.quasistatic(SysIdRoutine.Direction.kForward);
-    }
-
-    public Command sysIdQuasistaticReverse() {
-        return routine.quasistatic(SysIdRoutine.Direction.kReverse);
-    }
-
-    public Command sysIdDynamicForward() {
-        return routine.dynamic(SysIdRoutine.Direction.kForward);
-    }
-
-    public Command sysIdDynamicReverse() {
-        return routine.dynamic(SysIdRoutine.Direction.kReverse);
     }
 }
