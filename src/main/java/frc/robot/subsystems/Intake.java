@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DashboardManager;
 
 public class Intake extends SubsystemBase {
-    /** Motor that shoots fuel into the robot */
+    /** Motor that pushes fuel into storage. */
     private final TalonFX pusherMotor = new TalonFX(16);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
-    /** Motor that is closer to the floor and scoops fuel into other set of wheels. */
-    private final TalonFX scooperMotor = new TalonFX(18);
     private double extenderMotorPosition = 0;
+    /** Motor that is close to the floor and scoops fuel into pusher. */
+    private final TalonFX scooperMotor = new TalonFX(18);
     private final Timer autoReverseTimer = new Timer();
 
     public Intake() {
@@ -41,8 +41,8 @@ public class Intake extends SubsystemBase {
             scooperMotor.setVoltage(-scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
-            scooperMotor.setVoltage(0);
-            pusherMotor.setVoltage(0);
+            stopPusher();
+            stopScooper();
         });
     }
 
@@ -72,8 +72,8 @@ public class Intake extends SubsystemBase {
             },
             // end
             interrupted -> {
-                scooperMotor.setVoltage(0);
-                pusherMotor.setVoltage(0);
+                stopPusher();
+                stopScooper();
             }, () -> false, this);
     }
 
@@ -81,12 +81,11 @@ public class Intake extends SubsystemBase {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             scooperMotor.setVoltage(-scooperMotorVoltage);
-        }, () -> scooperMotor.set(0));
+        }, () -> stopScooper());
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(12), () -> scooperMotor.setVoltage(0))
-            .withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(12), () -> stopScooper()).withName("Reverse Scooper");
     }
 
     public boolean isScooperSpinning() {
@@ -97,22 +96,22 @@ public class Intake extends SubsystemBase {
         return startEnd(() -> {
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             pusherMotor.setVoltage(pusherMotorVoltage);
-        }, () -> pusherMotor.set(0));
+        }, () -> stopPusher());
     }
 
     public Command reversePusher() {
-        return startEnd(() -> pusherMotor.setVoltage(-12), () -> pusherMotor.setVoltage(0)).withName("Reverse Pusher");
+        return startEnd(() -> pusherMotor.setVoltage(-12), () -> stopPusher()).withName("Reverse Pusher");
     }
 
     public Command testExtender() {
         return startEnd(() -> {
             double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
             extenderMotor.setVoltage(extenderMotorVoltage);
-        }, () -> extenderMotor.setVoltage(0));
+        }, () -> stopExtender());
     }
 
     public Command dropIntake() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0));
+        return startEnd(() -> extenderMotor.setVoltage(-1), () -> stopExtender());
     }
 
     public void spinPusher() {
@@ -124,14 +123,20 @@ public class Intake extends SubsystemBase {
         pusherMotor.setVoltage(0);
     }
 
+    public void stopExtender() {
+        extenderMotor.setVoltage(0);
+    }
+
+    public void stopScooper() {
+        scooperMotor.setVoltage(0);
+    }
+
     public Command bumpExtenderUp() {
-        return startEnd(() -> extenderMotor.setVoltage(2), () -> extenderMotor.setVoltage(0))
-            .withName("Bump Extender Up");
+        return startEnd(() -> extenderMotor.setVoltage(2), () -> stopExtender()).withName("Bump Extender Up");
     }
 
     public Command bumpExtenderDown() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), () -> extenderMotor.setVoltage(0))
-            .withName("Bump Extender Down");
+        return startEnd(() -> extenderMotor.setVoltage(-1), () -> stopExtender()).withName("Bump Extender Down");
     }
 
     /**
@@ -139,7 +144,7 @@ public class Intake extends SubsystemBase {
      * and does not lock the intake subsystem when used.
      */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), () -> extenderMotor.setVoltage(0))
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), () -> stopExtender())
             .withName("Bump Extender Down");
     }
 
@@ -148,7 +153,7 @@ public class Intake extends SubsystemBase {
      * keep the intake from popping up when collectin fuel
      */
     public Command keepExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), () -> extenderMotor.setVoltage(0));
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), () -> stopExtender());
     }
 
     // Used to avoid the subsystem locking when scheduling a command
@@ -158,10 +163,6 @@ public class Intake extends SubsystemBase {
 
     public void setExtenderVoltageNegative() {
         extenderMotor.setVoltage(-1);
-    }
-
-    public void stopExtender() {
-        extenderMotor.setVoltage(0);
     }
 
     /** @return Extender motor's position in REVOLUTIONS */
