@@ -85,11 +85,11 @@ public class Intake extends SubsystemBase {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             scooperMotor.setVoltage(-scooperMotorVoltage);
-        }, () -> stopScooper());
+        }, this::stopScooper);
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(12), () -> stopScooper()).withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(12), this::stopScooper).withName("Reverse Scooper");
     }
 
     public boolean isScooperSpinning() {
@@ -100,22 +100,22 @@ public class Intake extends SubsystemBase {
         return startEnd(() -> {
             double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             pusherMotor.setVoltage(pusherMotorVoltage);
-        }, () -> stopPusher());
+        }, this::stopPusher);
     }
 
     public Command reversePusher() {
-        return startEnd(() -> pusherMotor.setVoltage(-12), () -> stopPusher()).withName("Reverse Pusher");
+        return startEnd(() -> pusherMotor.setVoltage(-12), this::stopPusher).withName("Reverse Pusher");
     }
 
     public Command testExtender() {
         return startEnd(() -> {
             double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
             extenderMotor.setVoltage(extenderMotorVoltage);
-        }, () -> stopExtender());
+        }, this::stopExtender);
     }
 
     public Command dropIntake() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), () -> stopExtender());
+        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
     public void spinPusher() {
@@ -136,11 +136,11 @@ public class Intake extends SubsystemBase {
     }
 
     public Command bumpExtenderUp() {
-        return startEnd(() -> extenderMotor.setVoltage(2), () -> stopExtender()).withName("Bump Extender Up");
+        return startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Up");
     }
 
     public Command bumpExtenderDown() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), () -> stopExtender()).withName("Bump Extender Down");
+        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
     }
 
     /**
@@ -148,8 +148,7 @@ public class Intake extends SubsystemBase {
      * and does not lock the intake subsystem when used.
      */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), () -> stopExtender())
-            .withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender).withName("Bump Extender Down");
     }
 
     /**
@@ -157,7 +156,7 @@ public class Intake extends SubsystemBase {
      * keep the intake from popping up when collectin fuel
      */
     public Command keepExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), () -> stopExtender());
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), this::stopExtender);
     }
 
     // Used to avoid the subsystem locking when scheduling a command
