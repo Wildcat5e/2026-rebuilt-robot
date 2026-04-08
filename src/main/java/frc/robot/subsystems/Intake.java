@@ -15,7 +15,6 @@ public class Intake extends SubsystemBase {
     private final TalonFX pusherMotor = new TalonFX(16);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
-    private double extenderMotorPosition = 0;
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     /** All units are in rotations */
@@ -29,13 +28,8 @@ public class Intake extends SubsystemBase {
         applyGearRatio(36, extenderMotor);
         extenderMotor.setPosition(EXTENDER_STOWED_POSITION);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
-        DashboardManager.setupIntake(() -> extenderMotorPosition, this::isScooperSpinning);
+        DashboardManager.setupIntake(this::getExtenderPosition, this::isScooperSpinning);
         DashboardManager.putScooperReverseTimers();
-    }
-
-    @Override
-    public void periodic() {
-        extenderMotorPosition = getExtenderPosition();
     }
 
     public Command spinIntakeMotors() {
