@@ -72,7 +72,7 @@ public class AimAtTarget extends Command {
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
         applyRotation(cappedVelocity);
-        flywheel.setFlywheelSpeed(
+        flywheel.setFlywheelVelocity(
             flywheelSpeedMap.get(getTargetDistance(drivetrain, target)) * flywheelSpeedMultiplier.getAsDouble());
     }
 

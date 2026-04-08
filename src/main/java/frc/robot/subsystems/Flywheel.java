@@ -51,10 +51,32 @@ public class Flywheel extends SubsystemBase {
         rightFlywheelMotor.setVoltage(volts);
     }
 
+    /** Spins flywheel at specified velocity. */
+    public void setFlywheelVelocity(double targetFlywheelSpeed) {
+        setVelocity(this.targetFlywheelSpeed = targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
+    }
+
+    public void stopFlywheel() {
+        setFlywheelMotorVoltages(0);
+    }
+
+    /** @return revolutions per second */
+    public double getFlywheelSpeed() {
+        return rightFlywheelMotor.getVelocity().getValueAsDouble();
+    }
+
     @Override
     public void periodic() {
         currentFlywheelSpeed = getFlywheelSpeed();
         averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
+    }
+
+    public Command hubRunFlywheelCommand() {
+        return runEnd(this::hubRunFlywheel, this::stopFlywheel);
+    }
+
+    public Command homeRunFlywheelCommand() {
+        return runEnd(this::homeRunFlywheel, this::stopFlywheel);
     }
 
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
@@ -62,28 +84,17 @@ public class Flywheel extends SubsystemBase {
         return runEnd(() -> {
             double targetVoltage = DashboardManager.getFlywheelTestVoltage();
             setFlywheelMotorVoltages(targetVoltage);
-        }, () -> setFlywheelMotorVoltages(0));
-    }
-
-    public Command hubRunFlywheelCommand() {
-        return runEnd(() -> {
-            var shotSolution =
-                ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
-            targetFlywheelSpeed = shotSolution.flywheelSpeed();
-            setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
-        }, () -> setFlywheelMotorVoltages(0));
+        }, this::stopFlywheel);
     }
 
     public Command tunableFlywheelSpeedCommand() {
         return runEnd(() -> {
-            targetFlywheelSpeed = SmartDashboard.getNumber("Tunable Flywheel Speed", 0);
-            setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
-        }, () -> setFlywheelMotorVoltages(0));
+            setFlywheelVelocity(SmartDashboard.getNumber("Tunable Flywheel Speed", 0));
+        }, this::stopFlywheel);
     }
 
     public Command reverseFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(-12), () -> setFlywheelMotorVoltages(0))
-            .withName("Reverse Flywheel");
+        return startEnd(() -> setFlywheelMotorVoltages(-12), this::stopFlywheel).withName("Reverse Flywheel");
     }
 
     public boolean isFlywheelUpToSpeed() {
@@ -96,48 +107,19 @@ public class Flywheel extends SubsystemBase {
         // var shotSolution =
         //     ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
+        var speed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
             * DashboardManager.getFlywheelSpeedMultiplier();
-        setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
-    }
-
-    /** Spins flywheel at specified speed. */
-    public void setFlywheelSpeed(double targetFlywheelSpeed) {
-        setVelocity(this.targetFlywheelSpeed = targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
+        setFlywheelVelocity(speed);
     }
 
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
     public void homeRunFlywheel() {
-        var shotSolution =
-            ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
-        targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        targetFlywheelSpeed =
-            Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
-                * DashboardManager.getHomeFlywheelSpeedMultiplier();
-        // double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        // setFlywheelMotorVoltages(calculatedVoltage);
-        setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
-    }
-
-    public void stopFlywheel() {
-        setFlywheelMotorVoltages(0);
-    }
-
-    // final implementation should be a while true
-    // public Command shootFuel() {
-    //     return new ParallelCommandGroup(inHome(drivetrain) ? dynamicStartFlywheel() : staticStartFlywheel(),
-    //         inHome(drivetrain) ? rotateToHub : Commands.none(),
-    //         // could do something where you check the amount of motor ticks that have passed
-    //         // to infer speed of flywheel instead of waiting time
-    //         new SequentialCommandGroup(Commands.waitSeconds(1),
-    //             new ParallelRaceGroup(testBothHoppers(), spinKicker())));
-    // }
-
-    /** @return meters per second */
-    public double getFlywheelSpeed() {
-        // Rotations Per Second (RPS) of flywheel
-        double flywheelRps = rightFlywheelMotor.getVelocity().getValueAsDouble();
-        return flywheelRps * FLYWHEEL_CIRCUMFERENCE;
+        // var shotSolution =
+        //     ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
+        // var speed = shotSolution.flywheelSpeed();
+        var speed = Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
+            * DashboardManager.getHomeFlywheelSpeedMultiplier();
+        setFlywheelVelocity(speed);
     }
 
     // Untested
