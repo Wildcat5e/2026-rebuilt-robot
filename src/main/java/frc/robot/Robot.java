@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
         new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final Controller controller = IS_COMPETITION ? new Xbox(0) : new MultiController();
     private final OperatorConsole operatorConsole = new OperatorConsole();
+    @SuppressWarnings("unused")
     private final PhotonVision photonVision = new PhotonVision(drivetrain::addVisionMeasurement);
 
     private final Field2d fieldWidget = new Field2d();
