@@ -11,8 +11,7 @@ public class Hopper extends SubsystemBase {
     private final TalonFX kickerMotor = new TalonFX(14);
 
     public Hopper() {
-        applyGearRatio(conveyorMotor, 4);
-        applyGearRatio(kickerMotor, 4);
+        applyGearRatio(4, conveyorMotor, kickerMotor);
         DashboardManager.setupHopper();
     }
 

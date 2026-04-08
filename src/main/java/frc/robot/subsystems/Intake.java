@@ -25,9 +25,8 @@ public class Intake extends SubsystemBase {
     private final Timer autoReverseTimer = new Timer();
 
     public Intake() {
-        applyGearRatio(scooperMotor, 1);
-        applyGearRatio(pusherMotor, 1);
-        applyGearRatio(extenderMotor, 36);
+        applyGearRatio(1, scooperMotor, pusherMotor);
+        applyGearRatio(36, extenderMotor);
         extenderMotor.setPosition(EXTENDER_STOWED_POSITION);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
         DashboardManager.setupIntake(() -> extenderMotorPosition, this::isScooperSpinning);
