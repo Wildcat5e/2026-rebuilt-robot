@@ -81,9 +81,9 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 0.85);
         SmartDashboard.putNumber("Tunable Flywheel Speed", 25);
         SmartDashboard.putData("Flywheel Telemetry", builder -> { // @formatter:off
-            builder.addDoubleProperty("Current Flywheel Speed (m\u2215s)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
-            builder.addDoubleProperty("5s Avg Flywheel Speed (m\u2215s)", () -> round(avgSpeedSupp.getAsDouble(), 1), null);
-            builder.addDoubleProperty("Target Flywheel Speed (m\u2215s)", () -> round(targetSpeedSupp.getAsDouble(), 1), null);
+            builder.addDoubleProperty("Current Flywheel Speed (rps)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
+            builder.addDoubleProperty("5s Avg Flywheel Speed (rps)", () -> round(avgSpeedSupp.getAsDouble(), 1), null);
+            builder.addDoubleProperty("Target Flywheel Speed (rps)", () -> round(targetSpeedSupp.getAsDouble(), 1), null);
             builder.addDoubleProperty("Calculated Flywheel Voltage", () -> round(calculatedVoltageSupp.getAsDouble(), 1), null);
         }); // @formatter:on
     }
