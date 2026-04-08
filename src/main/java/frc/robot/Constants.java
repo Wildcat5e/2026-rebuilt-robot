@@ -46,22 +46,22 @@ public interface Constants {
     InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(2.0, 13.5),
-        Map.entry(3.0, 15.6),
-        Map.entry(3.2, 16.25),
-        Map.entry(3.59, 17.25),
-        Map.entry(4.02, 18.75),
-        Map.entry(4.44, 19.75),
-        Map.entry(4.76, 21.0));
+        Map.entry(2.0, 42.3),
+        Map.entry(3.0, 48.9),
+        Map.entry(3.2, 50.9),
+        Map.entry(3.59, 54.0),
+        Map.entry(4.02, 58.7),
+        Map.entry(4.44, 61.9),
+        Map.entry(4.76, 65.8));
     /** Lookup table mapping distance from the current Alliance Home to the ideal static flywheel speed. */
     InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(2.0, 13.5),
-        Map.entry(3.0, 15.6),
-        Map.entry(3.2, 16.25),
-        Map.entry(3.59, 17.25),
-        Map.entry(4.02, 18.75),
-        Map.entry(4.44, 19.75),
-        Map.entry(4.76, 21.0)); // @formatter:on
+        Map.entry(2.0, 36.0),
+        Map.entry(3.0, 41.5),
+        Map.entry(3.2, 43.3),
+        Map.entry(3.59, 45.9),
+        Map.entry(4.02, 49.9),
+        Map.entry(4.44, 52.6),
+        Map.entry(4.76, 55.9)); // @formatter:on
 }
