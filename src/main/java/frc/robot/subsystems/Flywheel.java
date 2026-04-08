@@ -34,8 +34,7 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        applyGearRatio(leftFlywheelMotor, 1);
-        applyGearRatio(rightFlywheelMotor, 1);
+        applyGearRatio(1, leftFlywheelMotor, rightFlywheelMotor);
         // @formatter:off
         DashboardManager.setupFlywheel(
             () -> currentFlywheelSpeed,
