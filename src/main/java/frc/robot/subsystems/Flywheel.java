@@ -26,7 +26,6 @@ public class Flywheel extends SubsystemBase {
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
-    private double flywheelSpeedMult = 1.0;
 
     // 5 seconds * 50 loops per second = 250 samples
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
