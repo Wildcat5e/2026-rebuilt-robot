@@ -4,8 +4,8 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.utilities.TargetingUtils.*;
 import static frc.robot.utilities.FieldUtils.*;
 import static frc.robot.utilities.HardwareUtils.*;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -22,7 +22,7 @@ public class Flywheel extends SubsystemBase {
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
     private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.025659, 0.33677, 0.040121);
+    final Slot0Configs feedforwardConfig = new Slot0Configs().withKS(0.025659).withKV(0.33677).withKA(0.040121);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
@@ -34,7 +34,9 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
+        invertMotor(leftFlywheelMotor);
         applyGearRatio(1, leftFlywheelMotor, rightFlywheelMotor);
+        applyFeedforward(feedforwardConfig, leftFlywheelMotor, rightFlywheelMotor);
         // @formatter:off
         DashboardManager.setupFlywheel(
             () -> currentFlywheelSpeed,
@@ -43,9 +45,9 @@ public class Flywheel extends SubsystemBase {
             () -> calculatedVoltage); // @formatter:on
     }
 
-    /** Sets both flywheel motors to the specified voltage (left voltage negated). */
+    /** Sets both flywheel motors to the specified voltage (left voltage negated in constructor). */
     private void setFlywheelMotorVoltages(double volts) {
-        leftFlywheelMotor.setVoltage(-volts);
+        leftFlywheelMotor.setVoltage(volts);
         rightFlywheelMotor.setVoltage(volts);
     }
 
@@ -65,22 +67,17 @@ public class Flywheel extends SubsystemBase {
 
     public Command hubRunFlywheelCommand() {
         return runEnd(() -> {
-            // This code is run every 20 ms
             var shotSolution =
                 ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
             targetFlywheelSpeed = shotSolution.flywheelSpeed();
-            // targetFlywheelSpeed = SmartDashboard.getNumber("Target Speed (m∕s)", 0);
-            calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-            SmartDashboard.putNumber("Calculated Voltage", calculatedVoltage);
-            setFlywheelMotorVoltages(calculatedVoltage);
+            setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
         }, () -> setFlywheelMotorVoltages(0));
     }
 
     public Command tunableFlywheelSpeedCommand() {
         return runEnd(() -> {
             targetFlywheelSpeed = SmartDashboard.getNumber("Tunable Flywheel Speed", 0);
-            double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-            setFlywheelMotorVoltages(calculatedVoltage);
+            setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
         }, () -> setFlywheelMotorVoltages(0));
     }
 
@@ -96,19 +93,17 @@ public class Flywheel extends SubsystemBase {
 
     /** Spins flywheel and calculates speed based on distance. */
     public void hubRunFlywheel() {
-        var shotSolution =
-            ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
-        targetFlywheelSpeed = shotSolution.flywheelSpeed();
+        // var shotSolution =
+        //     ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
+        // targetFlywheelSpeed = shotSolution.flywheelSpeed();
         targetFlywheelSpeed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
             * DashboardManager.getFlywheelSpeedMultiplier();
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        setFlywheelMotorVoltages(calculatedVoltage);
+        setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
     }
 
     /** Spins flywheel at specified speed. */
-    public void setFlywheelSpeed(double targetSpeed) {
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetSpeed);
-        setFlywheelMotorVoltages(calculatedVoltage);
+    public void setFlywheelSpeed(double targetFlywheelSpeed) {
+        setVelocity(this.targetFlywheelSpeed = targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
     }
 
     /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
@@ -119,8 +114,9 @@ public class Flywheel extends SubsystemBase {
         targetFlywheelSpeed =
             Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
                 * DashboardManager.getHomeFlywheelSpeedMultiplier();
-        double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
-        setFlywheelMotorVoltages(calculatedVoltage);
+        // double calculatedVoltage = feedforward.calculateWithVelocities(currentFlywheelSpeed, targetFlywheelSpeed);
+        // setFlywheelMotorVoltages(calculatedVoltage);
+        setVelocity(targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
     }
 
     public void stopFlywheel() {
