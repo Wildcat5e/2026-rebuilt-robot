@@ -35,8 +35,9 @@ public class OperatorConsole {
         macropad.button(getBtn(action)).onTrue(Commands.runOnce(runnable).ignoringDisable(true));
     }
 
-        
-    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper, Drivetrain drivetrain) {
+
+    public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper,
+        Drivetrain drivetrain) {
         // --- MACROPAD BINDINGS ---
 
         // LAYER 0 (No Modifiers)
