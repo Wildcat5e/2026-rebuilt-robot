@@ -22,7 +22,8 @@ public class Flywheel extends SubsystemBase {
     private final TalonFX rightFlywheelMotor = new TalonFX(20);
     private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
-    final Slot0Configs feedforwardConfig = new Slot0Configs().withKS(0.025659).withKV(0.33677).withKA(0.040121);
+    // old m/s based: ks: 0.025659, kv: 0.33677, ka: 0.040121
+    final Slot0Configs feedforwardConfig = new Slot0Configs().withKS(0.025659).withKV(0.1075).withKA(0.0128);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
