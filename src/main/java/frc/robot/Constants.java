@@ -45,23 +45,46 @@ public interface Constants {
     // @formatter:off
     InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
-        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(2.0, 42.3),
-        Map.entry(3.0, 48.9),
-        Map.entry(3.2, 50.9),
-        Map.entry(3.59, 54.0),
-        Map.entry(4.02, 58.7),
-        Map.entry(4.44, 61.9),
-        Map.entry(4.76, 65.8));
+        // Map.entry(Distance in Meters, Flywheel RPS)
+        Map.entry(1.78, 46.5),
+        Map.entry(1.98, 47.5),
+        Map.entry(2.20, 49.0),
+        Map.entry(2.40, 50.0),
+        Map.entry(2.60, 51.0),
+        Map.entry(2.80, 52.5),
+        Map.entry(3.00, 54.0),
+        Map.entry(3.19, 56.0),
+        Map.entry(3.40, 57.0),
+        Map.entry(3.58, 58.0),
+        Map.entry(3.80, 59.0),
+        Map.entry(4.00, 62.5),
+        Map.entry(4.20, 65.0),
+        Map.entry(4.50, 66.0),
+        Map.entry(4.85, 69.0),
+        Map.entry(4.91, 72.4),
+        Map.entry(5.02, 73.2),
+        Map.entry(5.18, 74.8));
     /** Lookup table mapping distance from the current Alliance Home to the ideal static flywheel speed. */
     InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
-        // Map.entry(Distance in Meters, Flywheel Speed in m/s)
-        Map.entry(2.0, 36.0),
-        Map.entry(3.0, 41.5),
-        Map.entry(3.2, 43.3),
-        Map.entry(3.59, 45.9),
-        Map.entry(4.02, 49.9),
-        Map.entry(4.44, 52.6),
-        Map.entry(4.76, 55.9)); // @formatter:on
+        // Map.entry(Distance in Meters, Flywheel RPS)
+        Map.entry(1.78, 39.5),
+        Map.entry(1.98, 40.4),
+        Map.entry(2.20, 41.7),
+        Map.entry(2.40, 42.5),
+        Map.entry(2.60, 43.4),
+        Map.entry(2.80, 44.6),
+        Map.entry(3.00, 45.9),
+        Map.entry(3.19, 47.6),
+        Map.entry(3.40, 48.5),
+        Map.entry(3.58, 49.3),
+        Map.entry(3.80, 50.2),
+        Map.entry(4.00, 53.1),
+        Map.entry(4.20, 55.2),
+        Map.entry(4.50, 56.1),
+        Map.entry(4.85, 58.6),
+        Map.entry(4.91, 61.5),
+        Map.entry(5.02, 62.2),
+        Map.entry(5.18, 63.6)
+    ); // @formatter:on
 }
