@@ -33,8 +33,8 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     private double averageFlywheelSpeed = 0;
     private double calculatedVoltage = 0;
 
-    private final SysIdRoutine routine = SysIdCapable.createLinearRoutine(this, rightFlywheelMotor,
-        this::setFlywheelMotorVoltages, FLYWHEEL_CIRCUMFERENCE);
+    private final SysIdRoutine routine =
+        SysIdCapable.createAngularRoutine(this, rightFlywheelMotor, this::setFlywheelMotorVoltages);
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
