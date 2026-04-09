@@ -27,7 +27,7 @@ public interface HardwareUtils {
     }
 
     /** Sets the motor to Clockwise_Positive. Motor defaults to CounterClockwise_Positive. */
-    static void invertMotor(TalonFX... motors) {
+    static void setMotorClockwisePositive(TalonFX... motors) {
         var config = new TalonFXConfiguration();
         for (var motor : motors) {
             motor.getConfigurator().refresh(config);
