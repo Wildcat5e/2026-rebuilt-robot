@@ -28,9 +28,9 @@ public class OperatorConsole {
         macropad.button(4).onTrue(
             Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
         macropad.button(5)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(0.5)).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(1)).ignoringDisable(true));
         macropad.button(6)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-0.5)).ignoringDisable(true));
+            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-1)).ignoringDisable(true));
         macropad.button(7).whileTrue(hopper.runHopperCommand());
         macropad.button(7).whileTrue(intake.testPusher());
         macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
