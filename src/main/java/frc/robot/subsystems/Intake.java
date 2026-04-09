@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.utilities.HardwareUtils.*;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,6 +17,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private final TalonFX pusherMotor = new TalonFX(16);
     private final double PUSHER_RADIUS = 0.058 / 2;
     private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
+    final Slot0Configs pusherFFConfig = new Slot0Configs().withKS(0).withKV(0.11632).withKA(0.018731);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
     // All units are in rotations
@@ -26,6 +28,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private final TalonFX scooperMotor = new TalonFX(18);
     private final double SCOOPER_RADIUS = 0.06858 / 2;
     private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
+    final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.15186).withKV(2.5262).withKA(0.11205);
     private final Timer autoReverseTimer = new Timer();
 
     // --PUSHER SYSID CONSTANTS--
