@@ -24,9 +24,19 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
     // --KICKER MOTOR--
     private final SysIdRoutine routine = SysIdCapable.createAngularRoutine(this, kickerMotor, kickerMotor::setVoltage);
 
+    // --KICKER SYSID CONSTANTS--
+    // kS: 
+    // kV: 
+    // kA: 
+
     // --CONVEYOR MOTOR--
     // private final SysIdRoutine routine =
-    //     SysIdCapable.createLinearRoutine(this, conveyorMotor, conveyorMotor::setVoltage, CONVEYOR_CIRCUMFERENCE);
+    //     SysIdCapable.createAngularRoutine(this, conveyorMotor, conveyorMotor::setVoltage);
+
+    // --CONVEYOR SYSID CONSTANTS--
+    // kS: 0.14249
+    // kV: 0.46947
+    // kA: 0.015944
 
     public Hopper() {
         applyGearRatio(4, conveyorMotor, kickerMotor);

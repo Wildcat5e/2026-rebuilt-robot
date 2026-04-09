@@ -28,6 +28,16 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
     private final Timer autoReverseTimer = new Timer();
 
+    // --PUSHER SYSID CONSTANTS--
+    // kS: -0.12147 ERRONEOUS
+    // kV: 0.11632
+    // kA: 0.018731
+
+    // --SCOOPER SYSID CONSTANTS--
+    // kS: 0.15186
+    // kV: 2.5262
+    // kA: 0.11205
+
     // --- SysId Configuration (Rollers Only) ---
     // ONLY UNCOMMENT THE ROUTINE CREATION LINE FOR THE MOTOR YOU WANT TO CHARACTERIZE.
     // MAKE SURE TO COMMENT OUT THE OTHER ONE BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
@@ -37,7 +47,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
 
     // --SCOOPER MOTOR--
     // private final SysIdRoutine routine =
-    //     SysIdCapable.createLinearRoutine(this, scooperMotor, scooperMotor::setVoltage, SCOOPER_CIRCUMFERENCE);
+    //     SysIdCapable.createAngularRoutine(this, scooperMotor, scooperMotor::setVoltage);
 
     public Intake() {
         applyGearRatio(1, scooperMotor, pusherMotor);
