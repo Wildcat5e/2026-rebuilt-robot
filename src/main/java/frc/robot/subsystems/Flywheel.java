@@ -108,7 +108,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
 
     public boolean isFlywheelUpToSpeed() {
         if (targetFlywheelSpeed == 0) return false;
-        return currentFlywheelSpeed > targetFlywheelSpeed;
+        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
     /** Spins flywheel and calculates speed based on distance. */
