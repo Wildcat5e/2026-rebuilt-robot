@@ -82,7 +82,7 @@ public abstract class Controller {
         /** Competition Bindings */
         shootFuel().whileTrue(commands.shootFuel);
         shootFuel().whileTrue(intake.testPusher());
-        runIntake().whileTrue(intake.spinIntakeMotorsAutoReverse());
+        runIntake().whileTrue(intake.spinIntakeMotors());
         lowerIntake().whileTrue(intake.bumpExtenderDown());
         raiseIntake().whileTrue(intake.bumpExtenderUp());
         aimHandler().whileTrue(commands.aimHandler);
