@@ -33,8 +33,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     // MAKE SURE TO COMMENT OUT THE OTHER ONE BEFORE RUNNING ANY CHARACTERIZATION COMMANDS.
 
     // --PUSHER MOTOR--
-    private final SysIdRoutine routine =
-        SysIdCapable.createLinearRoutine(this, pusherMotor, pusherMotor::setVoltage, PUSHER_CIRCUMFERENCE);
+    private final SysIdRoutine routine = SysIdCapable.createAngularRoutine(this, pusherMotor, pusherMotor::setVoltage);
 
     // --SCOOPER MOTOR--
     // private final SysIdRoutine routine =
