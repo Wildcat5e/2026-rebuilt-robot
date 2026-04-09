@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private final TalonFX pusherMotor = new TalonFX(16);
     private final double PUSHER_RADIUS = 0.058 / 2;
     private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
-    final Slot0Configs pusherFFConfig = new Slot0Configs().withKS(0).withKV(0.11632).withKA(0.018731);
+    final Slot0Configs pusherFFConfig = new Slot0Configs().withKS(0.1).withKV(0.11632).withKA(0.018731);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
     // All units are in rotations
