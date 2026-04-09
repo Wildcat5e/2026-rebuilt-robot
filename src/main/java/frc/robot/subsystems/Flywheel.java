@@ -47,7 +47,7 @@ public class Flywheel extends SubsystemBase {
 
     /** Sets both flywheel motors to the specified voltage (left voltage negated). */
     private void setFlywheelMotorVoltages(double volts) {
-        leftFlywheelMotor.setVoltage(-volts);
+        leftFlywheelMotor.setVoltage(volts);
         rightFlywheelMotor.setVoltage(volts);
     }
 
