@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private final TalonFX scooperMotor = new TalonFX(18);
     private final double SCOOPER_RADIUS = 0.06858 / 2;
     private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
-    final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.15186).withKV(2.5262).withKA(0.11205);
+    final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.025896).withKV(0.4199).withKA(0.0096081);
     private final Timer autoReverseTimer = new Timer();
 
     // --PUSHER SYSID CONSTANTS--
