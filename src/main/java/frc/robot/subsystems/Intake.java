@@ -32,6 +32,9 @@ public class Intake extends SubsystemBase {
         DashboardManager.putScooperReverseTimers();
     }
 
+    @Override
+    public void periodic() {}
+
     public Command spinIntakeMotors() {
         return startEnd(() -> {
             double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
