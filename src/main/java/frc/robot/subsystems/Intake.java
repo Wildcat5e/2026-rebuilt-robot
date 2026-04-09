@@ -54,7 +54,8 @@ public class Intake extends SubsystemBase implements SysIdCapable {
 
     public Intake() {
         setMotorClockwisePositive(scooperMotor);
-        applyGearRatio(1, scooperMotor, pusherMotor);
+        applyGearRatio(4, scooperMotor);
+        applyGearRatio(1, pusherMotor);
         applyGearRatio(36, extenderMotor);
         applyFeedforward(pusherFFConfig, pusherMotor);
         applyFeedforward(scooperFFConfig, scooperMotor);
