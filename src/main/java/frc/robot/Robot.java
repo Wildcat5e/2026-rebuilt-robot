@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
         NamedCommands.registerCommand("Run Hopper", hopper.runHopperCommand());
 
         NamedCommands.registerCommand("Raise Intake", intake.raiseArmFinalImplementation());
-        NamedCommands.registerCommand("Drop Intake", intake.dropArmFinalImplementation());
+        NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDownNoLock());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotorsAutoReverse());
         NamedCommands.registerCommand("Keep Intake Down", intake.keepExtenderDownNoLock());
         NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
