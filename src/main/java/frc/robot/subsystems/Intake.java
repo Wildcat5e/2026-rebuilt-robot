@@ -53,7 +53,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     //     SysIdCapable.createAngularRoutine(this, scooperMotor, scooperMotor::setVoltage);
 
     public Intake() {
-        setMotorClockwisePositive(pusherMotor);
+        setMotorCounterClockwisePositive(pusherMotor);
         setMotorCounterClockwisePositive(scooperMotor);
         applyGearRatio(4, scooperMotor);
         applyGearRatio(1, pusherMotor);
