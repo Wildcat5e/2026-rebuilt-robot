@@ -57,7 +57,8 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         applyGearRatio(36, extenderMotor);
         extenderMotor.setPosition(EXTENDER_STOWED_POSITION);
         extenderMotor.setNeutralMode(NeutralModeValue.Brake);
-        DashboardManager.setupIntake(this::getExtenderPosition, this::isScooperSpinning);
+        DashboardManager.setupIntake(this::getExtenderPosition, () -> scooperMotor.getVelocity().getValueAsDouble(),
+            this::isScooperSpinning);
         DashboardManager.putScooperReverseTimers();
     }
 
