@@ -140,9 +140,9 @@ public interface DashboardManager {
         BooleanSupplier isScooperSpinningSupp) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
-        SmartDashboard.putNumber("Scooper Velocity", 20.0);
+        SmartDashboard.putNumber("Scooper Velocity", 60.0);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
-        SmartDashboard.putNumber("Pusher Velocity", 20.0);
+        SmartDashboard.putNumber("Pusher Velocity", 60.0);
         SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
