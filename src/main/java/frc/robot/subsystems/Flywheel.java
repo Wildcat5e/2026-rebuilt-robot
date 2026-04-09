@@ -35,7 +35,7 @@ public class Flywheel extends SubsystemBase {
 
     public Flywheel(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        invertMotor(leftFlywheelMotor);
+        setMotorClockwisePositive(leftFlywheelMotor);
         applyGearRatio(1, leftFlywheelMotor, rightFlywheelMotor);
         applyFeedforward(feedforwardConfig, leftFlywheelMotor, rightFlywheelMotor);
         // @formatter:off
