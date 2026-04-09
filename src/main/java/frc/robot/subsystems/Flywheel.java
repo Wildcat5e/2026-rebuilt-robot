@@ -23,7 +23,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     private final double FLYWHEEL_RADIUS = 0.0508;
     private final double FLYWHEEL_CIRCUMFERENCE = 2 * Math.PI * FLYWHEEL_RADIUS;
     // Old m/s based: ks: 0.025659, kv: 0.33677, ka: 0.040121
-    final Slot0Configs feedforwardConfig = new Slot0Configs().withKS(0.025659).withKV(0.1075).withKA(0.0128);
+    final Slot0Configs feedforwardConfig = new Slot0Configs().withKS(0.033378).withKV(0.10787).withKA(0.014195);
 
     private double currentFlywheelSpeed = 0;
     private double targetFlywheelSpeed = 0;
