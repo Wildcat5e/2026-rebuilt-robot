@@ -136,7 +136,8 @@ public interface DashboardManager {
     // Subsystem: Intake 
     // =====================================
 
-    static void setupIntake(DoubleSupplier extenderMotorPositionSupp, BooleanSupplier isScooperSpinningSupp) {
+    static void setupIntake(DoubleSupplier extenderMotorPositionSupp, DoubleSupplier currScooperSpeedSupp,
+        BooleanSupplier isScooperSpinningSupp) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
@@ -145,6 +146,8 @@ public interface DashboardManager {
             builder.addDoubleProperty("Extender Motor Position (revs)",
                 () -> round(extenderMotorPositionSupp.getAsDouble(), 3), null);
             builder.addBooleanProperty("Is Scooper Spinning", isScooperSpinningSupp, null);
+            builder.addDoubleProperty("Current Scooper Speed (rps)", () -> round(currScooperSpeedSupp.getAsDouble(), 1),
+                null);
         });
     }
 
