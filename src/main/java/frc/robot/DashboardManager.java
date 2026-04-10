@@ -80,11 +80,11 @@ public interface DashboardManager {
     }
 
     static double getKickerTestVoltage() {
-        return SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Kicker Test Voltage", 0);
     }
 
     static double getConveyorTestVoltage() {
-        return SmartDashboard.getNumber("Conveyor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Conveyor Test Voltage", 0);
     }
 
     // =====================================
@@ -103,19 +103,19 @@ public interface DashboardManager {
     }
 
     static double getFlywheelTestVoltage() {
-        return SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Flywheel Test Voltage", 0);
     }
 
     static double getFlywheelSpeedMultiplier() {
-        return SmartDashboard.getNumber("Flywheel Speed Multiplier", 0.0);
+        return SmartDashboard.getNumber("Flywheel Speed Multiplier", 0);
     }
 
     static double getHomeFlywheelSpeedMultiplier() {
-        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0.0);
+        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0);
     }
 
     static double getTunableFlywheelSpeed() {
-        return SmartDashboard.getNumber("Tunable Flywheel Speed", 0.0);
+        return SmartDashboard.getNumber("Tunable Flywheel Speed", 0);
     }
 
     static void incrementFlywheelSpeedMultiplier(double increment) {
@@ -152,11 +152,11 @@ public interface DashboardManager {
     }
 
     static double getExtenderMotorTestVoltage() {
-        return SmartDashboard.getNumber("Extender Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Extender Motor Test Voltage", 0);
     }
 
     static double getScooperMotorTestVoltage() {
-        return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0);
     }
 
     static double getScooperVelocity() {
@@ -164,11 +164,11 @@ public interface DashboardManager {
     }
 
     static double getScooperMinSpeed() {
-        return SmartDashboard.getNumber("Minimum Scooper Speed", 0.0);
+        return SmartDashboard.getNumber("Minimum Scooper Speed", 0);
     }
 
     static double getPusherMotorTestVoltage() {
-        return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0);
     }
 
     static double getPusherVelocity() {
@@ -218,11 +218,11 @@ public interface DashboardManager {
     }
 
     static double getScooperReverseLoopTime() {
-        return SmartDashboard.getNumber("Scooper Auto Reverse/Loop Time", 0.0);
+        return SmartDashboard.getNumber("Scooper Auto Reverse/Loop Time", 0);
     }
 
     static double getScooperReverseDelay() {
-        return SmartDashboard.getNumber("Scooper Auto Reverse/Reverse Delay", 0.0);
+        return SmartDashboard.getNumber("Scooper Auto Reverse/Reverse Delay", 0);
     }
 
 
