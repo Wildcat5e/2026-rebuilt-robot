@@ -71,18 +71,6 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         return routine;
     }
 
-    public Command spinIntakeMotorsVoltage() {
-        return startEnd(() -> {
-            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
-            scooperMotor.setVoltage(scooperMotorVoltage);
-            pusherMotor.setVoltage(pusherMotorVoltage);
-        }, () -> {
-            stopPusher();
-            stopScooper();
-        });
-    }
-
     public Command spinIntakeMotors() {
         return startEnd(() -> {
             double scooperMotorVelocity = DashboardManager.getScooperVelocity();
@@ -95,7 +83,19 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         });
     }
 
-    public Command spinIntakeMotorsAutoReverse() {
+    public Command spinIntakeMotorsVoltage() {
+        return startEnd(() -> {
+            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+            scooperMotor.setVoltage(scooperMotorVoltage);
+            pusherMotor.setVoltage(pusherMotorVoltage);
+        }, () -> {
+            stopPusher();
+            stopScooper();
+        });
+    }
+
+    public Command spinIntakeMotorsVoltageAutoReverse() {
         return new FunctionalCommand(
             // initialize
             () -> {
