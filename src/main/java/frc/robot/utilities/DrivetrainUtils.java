@@ -18,6 +18,6 @@ public class DrivetrainUtils {
      * @param drivetrain The robot's auto-generated Drivetrain instance.
      */
     public static Command swerveDriveBrake(Drivetrain drivetrain) {
-        return drivetrain.applyRequest(() -> brakeRequest).withName("Swerve Drive Brake");
+        return drivetrain.applyRequest(() -> brakeRequest);
     }
 }

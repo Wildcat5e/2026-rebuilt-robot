@@ -98,7 +98,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reverseFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(-12), this::stopFlywheel).withName("Reverse Flywheel");
+        return startEnd(() -> setFlywheelMotorVoltages(-12), this::stopFlywheel);
     }
 
     public boolean isFlywheelUpToSpeed() {

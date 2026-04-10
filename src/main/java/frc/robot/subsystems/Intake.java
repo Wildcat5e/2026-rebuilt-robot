@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(-12), this::stopScooper).withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(-12), this::stopScooper);
     }
 
     public boolean isScooperSpinning() {
@@ -149,7 +149,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reversePusher() {
-        return startEnd(() -> pusherMotor.setVoltage(-12), this::stopPusher).withName("Reverse Pusher");
+        return startEnd(() -> pusherMotor.setVoltage(-12), this::stopPusher);
     }
 
     public Command testExtender() {
@@ -177,11 +177,11 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command bumpExtenderUp() {
-        return startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Up");
+        return startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender);
     }
 
     public Command bumpExtenderDown() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
+        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
     /**
@@ -189,21 +189,21 @@ public class Intake extends SubsystemBase implements SysIdCapable {
      * and does not lock the intake subsystem when used.
      */
     public Command bumpExtenderDownNoLockAuto() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender);
     }
 
     /**
      * Used for teleop, not permanent
      */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
     /**
      * Used for teleop, not permanent
      */
     public Command bumpExtenderUpNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender);
     }
 
 

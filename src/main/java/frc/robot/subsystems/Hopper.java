@@ -58,8 +58,7 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reverseConveyor() {
-        return startEnd(() -> conveyorMotor.setVoltage(12), () -> conveyorMotor.setVoltage(0))
-            .withName("Reverse Conveyor");
+        return startEnd(() -> conveyorMotor.setVoltage(12), () -> conveyorMotor.setVoltage(0));
     }
 
     /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
@@ -71,7 +70,7 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reverseKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(12), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
+        return startEnd(() -> kickerMotor.setVoltage(12), () -> kickerMotor.setVoltage(0));
     }
 
     public void runHopper() {
