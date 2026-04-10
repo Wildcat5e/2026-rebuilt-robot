@@ -141,7 +141,7 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
         SmartDashboard.putNumber("Scooper Velocity", 18.0);
-        SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
+        SmartDashboard.putNumber("Pusher Motor Test Voltage", 6.0);
         SmartDashboard.putNumber("Pusher Velocity", 80.0);
         SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
         SmartDashboard.putData("Intake Telemetry", builder -> {
