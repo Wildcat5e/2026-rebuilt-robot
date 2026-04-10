@@ -229,7 +229,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         return extenderMotor.getPosition().getValueAsDouble();
     }
 
-    public Command dropArmFinalImplementation() {
+    public Command dropArm() {
         return new FunctionalCommand(
             // --initialize--
             () -> extenderMotor.setVoltage(-0.7),
@@ -248,7 +248,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             this); // Pass in Intake
     }
 
-    public Command raiseArmFinalImplementation() {
+    public Command raiseArm() {
         return new FunctionalCommand(
             // --initialize--
             () -> extenderMotor.setVoltage(1),
