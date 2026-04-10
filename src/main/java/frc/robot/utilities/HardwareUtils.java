@@ -10,6 +10,11 @@ import com.ctre.phoenix6.signals.InvertedValue;
  * import static frc.robot.utilities.HardwareUtils.*;
  */
 public interface HardwareUtils {
+    /** DO NOT MODIFY DIRECTLY! */
+    class Requests {
+        private static final VelocityVoltage VEL_REQUEST = new VelocityVoltage(0).withSlot(0);
+    }
+
     /**
      * Applies a gear ratio to a TalonFX motor so that getPosition(), getVelocity(), etc., automatically return
      * mechanism rotations instead of motor revolutions.
@@ -62,9 +67,9 @@ public interface HardwareUtils {
      * Sets velocity for motor using motor controller for feedforward (VelocityVoltage). Requires kS in volts in Slot0.
      */
     static void setVelocity(double velocity, TalonFX... motors) {
-        var request = new VelocityVoltage(velocity).withSlot(0);
+        Requests.VEL_REQUEST.Velocity = velocity;
         for (var motor : motors) {
-            motor.setControl(request);
+            motor.setControl(Requests.VEL_REQUEST);
         }
     }
 }
