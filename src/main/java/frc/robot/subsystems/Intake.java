@@ -159,10 +159,6 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         }, this::stopExtender);
     }
 
-    public Command dropIntake() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
-    }
-
     public void spinPusher() {
         double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
         pusherMotor.setVoltage(pusherMotorVoltage);
