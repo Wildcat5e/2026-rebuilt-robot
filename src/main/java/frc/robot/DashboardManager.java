@@ -93,8 +93,8 @@ public interface DashboardManager {
     static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp,
         DoubleSupplier calculatedVoltageSupp) {
         SmartDashboard.putNumber("Flywheel Test Voltage", 5.0);
-        SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.0);
-        SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 1.0);
+        SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.03);
+        SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putNumber("Tunable Flywheel Speed", 25);
         SmartDashboard.putData("Flywheel Telemetry", builder -> { // @formatter:off
             builder.addDoubleProperty("Current Flywheel Speed (rps)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
@@ -140,7 +140,7 @@ public interface DashboardManager {
         BooleanSupplier isScooperSpinningSupp) {
         SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
         SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
-        SmartDashboard.putNumber("Scooper Velocity", 9.0);
+        SmartDashboard.putNumber("Scooper Velocity", 18.0);
         SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
         SmartDashboard.putNumber("Pusher Velocity", 80.0);
         SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
