@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(12), this::stopScooper).withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(-12), this::stopScooper).withName("Reverse Scooper");
     }
 
     public boolean isScooperSpinning() {
