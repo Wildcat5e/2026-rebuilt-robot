@@ -15,8 +15,6 @@ import frc.robot.DashboardManager;
 public class Intake extends SubsystemBase implements SysIdCapable {
     /** Motor that pushes fuel into storage. */
     private final TalonFX pusherMotor = new TalonFX(16);
-    private final double PUSHER_RADIUS = 0.058 / 2;
-    private final double PUSHER_CIRCUMFERENCE = 2 * Math.PI * PUSHER_RADIUS;
     final Slot0Configs pusherFFConfig = new Slot0Configs().withKS(0.1).withKV(0.11632).withKA(0.018731);
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
@@ -26,8 +24,6 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     private double TOLERANCE = 0.07;
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
-    private final double SCOOPER_RADIUS = 0.06858 / 2;
-    private final double SCOOPER_CIRCUMFERENCE = 2 * Math.PI * SCOOPER_RADIUS;
     final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.025896).withKV(0.4199).withKA(0.0096081);
     private final Timer autoReverseTimer = new Timer();
 
