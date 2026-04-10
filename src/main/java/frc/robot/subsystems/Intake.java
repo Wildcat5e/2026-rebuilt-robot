@@ -206,11 +206,11 @@ public class Intake extends SubsystemBase implements SysIdCapable {
 
     // Used to avoid the subsystem locking when scheduling a command
     public void setExtenderVoltagePositive() {
-        extenderMotor.setVoltage(1);
+        extenderMotor.setVoltage(2);
     }
 
     public void setExtenderVoltageNegative() {
-        extenderMotor.setVoltage(-1);
+        extenderMotor.setVoltage(-2);
     }
 
     /** @return Extender motor's position in REVOLUTIONS */
