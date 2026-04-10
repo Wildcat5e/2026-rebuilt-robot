@@ -26,7 +26,6 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     // 5 seconds * 50 loops per second = 250 samples
     private final LinearFilter speedFilter = LinearFilter.movingAverage(250);
     private double averageFlywheelSpeed = 0;
-    private double calculatedVoltage = 0;
 
     private final SysIdRoutine routine =
         SysIdCapable.createAngularRoutine(this, rightFlywheelMotor, this::setFlywheelMotorVoltages);
@@ -40,8 +39,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         DashboardManager.setupFlywheel(
             () -> currentFlywheelSpeed,
             () -> targetFlywheelSpeed,
-            () -> averageFlywheelSpeed,
-            () -> calculatedVoltage); // @formatter:on
+            () -> averageFlywheelSpeed); // @formatter:on
     }
 
     @Override

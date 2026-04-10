@@ -89,9 +89,8 @@ public interface DashboardManager {
 
     // =====================================
     // Subsystem: Flywheel
-    // =====================================
-    static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp,
-        DoubleSupplier calculatedVoltageSupp) {
+    // ===================================== @formatter:off
+    static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp) { // @formatter:on
         SmartDashboard.putNumber("Flywheel Test Voltage", 5.0);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 1.05);
@@ -100,7 +99,6 @@ public interface DashboardManager {
             builder.addDoubleProperty("Current Flywheel Speed (rps)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
             builder.addDoubleProperty("5s Avg Flywheel Speed (rps)", () -> round(avgSpeedSupp.getAsDouble(), 1), null);
             builder.addDoubleProperty("Target Flywheel Speed (rps)", () -> round(targetSpeedSupp.getAsDouble(), 1), null);
-            builder.addDoubleProperty("Calculated Flywheel Voltage", () -> round(calculatedVoltageSupp.getAsDouble(), 1), null);
         }); // @formatter:on
     }
 
