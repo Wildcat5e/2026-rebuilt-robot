@@ -20,27 +20,6 @@
             }
           },
           {
-            "title": "Field",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 1216.0,
-            "height": 576.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          },
-          {
             "title": "Auto Command Chooser",
             "x": 0.0,
             "y": 768.0,
@@ -70,9 +49,9 @@
           },
           {
             "title": "Is Hub Active",
-            "x": 512.0,
+            "x": 384.0,
             "y": 576.0,
-            "width": 320.0,
+            "width": 448.0,
             "height": 192.0,
             "type": "Boolean Box",
             "properties": {
@@ -83,19 +62,6 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
-            }
-          },
-          {
-            "title": "Game Specific Message",
-            "x": 384.0,
-            "y": 576.0,
-            "width": 128.0,
-            "height": 192.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Game Specific Message",
-              "period": 0.06,
-              "data_type": "string"
             }
           },
           {
@@ -115,39 +81,88 @@
             }
           },
           {
-            "title": "photonvision_Port_1183_Input_MJPEG_Server",
-            "x": 1408.0,
-            "y": 448.0,
-            "width": 512.0,
+            "title": "photonvision_Port_1182_Output_MJPEG_Server",
+            "x": 1472.0,
+            "y": 128.0,
+            "width": 448.0,
             "height": 320.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
+              "topic": "/CameraPublisher/photonvision_Port_1182_Output_MJPEG_Server",
               "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
+              "rotation_turns": 0
             }
           },
           {
-            "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 1408.0,
-            "y": 128.0,
-            "width": 512.0,
+            "title": "photonvision_Port_1184_Output_MJPEG_Server",
+            "x": 1472.0,
+            "y": 448.0,
+            "width": 448.0,
             "height": 320.0,
             "type": "Camera Stream",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
+              "topic": "/CameraPublisher/photonvision_Port_1184_Output_MJPEG_Server",
               "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Command Scheduler",
+            "x": 1216.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "Scheduler",
+            "properties": {
+              "topic": "/SmartDashboard/Command Scheduler",
+              "period": 0.06
+            }
+          },
+          {
+            "title": "Left Camera Enabled",
+            "x": 1216.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Camera Toggles/Left Camera Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Right Camera Enabled",
+            "x": 1216.0,
+            "y": 640.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Camera Toggles/Right Camera Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Combined Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1216.0,
+            "height": 576.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Combined Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           }
         ]
@@ -246,32 +261,11 @@
             }
           },
           {
-            "title": "Field",
-            "x": 448.0,
-            "y": 0.0,
-            "width": 832.0,
-            "height": 384.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Rebuilt",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295,
-              "show_robot_outside_widget": true
-            }
-          },
-          {
             "title": "In Home",
-            "x": 256.0,
-            "y": 320.0,
-            "width": 192.0,
-            "height": 256.0,
+            "x": 128.0,
+            "y": 448.0,
+            "width": 320.0,
+            "height": 128.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "/SmartDashboard/In Home",
@@ -311,34 +305,6 @@
             }
           },
           {
-            "title": "Scooper Motor Test Voltage",
-            "x": 0.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Scooper Motor Test Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Pusher Motor Test Voltage",
-            "x": 0.0,
-            "y": 576.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Pusher Motor Test Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Kicker Test Voltage",
             "x": 128.0,
             "y": 320.0,
@@ -353,24 +319,10 @@
             }
           },
           {
-            "title": "Calculated Voltage",
-            "x": 128.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Telemetry/Calculated Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Battery Voltage (V)",
             "x": 128.0,
             "y": 576.0,
-            "width": 640.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "Voltage View",
             "properties": {
@@ -382,6 +334,32 @@
               "divisions": 5,
               "inverted": false,
               "orientation": "horizontal"
+            }
+          },
+          {
+            "title": "photonvision_Port_1182_Output_MJPEG_Server",
+            "x": 1280.0,
+            "y": 0.0,
+            "width": 640.0,
+            "height": 448.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1182_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "photonvision_Port_1184_Output_MJPEG_Server",
+            "x": 1280.0,
+            "y": 448.0,
+            "width": 640.0,
+            "height": 448.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1184_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           },
           {
@@ -402,39 +380,50 @@
             }
           },
           {
-            "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 1280.0,
-            "y": 0.0,
-            "width": 640.0,
-            "height": 448.0,
-            "type": "Camera Stream",
+            "title": "Left Camera Enabled",
+            "x": 512.0,
+            "y": 576.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
+              "topic": "/SmartDashboard/Camera Toggles/Left Camera Enabled",
               "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
+              "data_type": "boolean"
             }
           },
           {
-            "title": "photonvision_Port_1183_Input_MJPEG_Server",
-            "x": 1280.0,
-            "y": 448.0,
-            "width": 640.0,
-            "height": 448.0,
-            "type": "Camera Stream",
+            "title": "Right Camera Enabled",
+            "x": 640.0,
+            "y": 576.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
             "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
+              "topic": "/SmartDashboard/Camera Toggles/Right Camera Enabled",
               "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Combined Field",
+            "x": 448.0,
+            "y": 0.0,
+            "width": 832.0,
+            "height": 384.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Combined Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           },
           {
@@ -463,12 +452,53 @@
               "data_type": "double",
               "start_angle": -140.0,
               "end_angle": 140.0,
-              "min_value": 0.0,
+              "min_value": 30.0,
               "max_value": 100.0,
               "number_of_labels": 8,
               "wrap_value": false,
               "show_pointer": true,
               "show_ticks": true
+            }
+          },
+          {
+            "title": "Home Flywheel Speed Multiplier",
+            "x": 256.0,
+            "y": 320.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Home Flywheel Speed Multiplier",
+              "period": 0.06,
+              "data_type": "double"
+            }
+          },
+          {
+            "title": "Scooper Velocity",
+            "x": 0.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Scooper Velocity",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Pusher Velocity",
+            "x": 0.0,
+            "y": 576.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Pusher Velocity",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
@@ -680,54 +710,6 @@
             }
           },
           {
-            "title": "Within Shooting Angle",
-            "x": 832.0,
-            "y": 384.0,
-            "width": 192.0,
-            "height": 192.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/Within Shooting Angle",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Within Shooting Distance",
-            "x": 1024.0,
-            "y": 384.0,
-            "width": 192.0,
-            "height": 192.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/Within Shooting Distance",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Distance",
-            "x": 1024.0,
-            "y": 576.0,
-            "width": 192.0,
-            "height": 192.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Photon/Distance",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Controller Chooser",
             "x": 384.0,
             "y": 0.0,
@@ -839,37 +821,6 @@
             }
           },
           {
-            "title": "In Home",
-            "x": 576.0,
-            "y": 576.0,
-            "width": 200.0,
-            "height": 200.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/In Home",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Calculated Voltage",
-            "x": 832.0,
-            "y": 576.0,
-            "width": 192.0,
-            "height": 192.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Telemetry/Calculated Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Command Scheduler",
             "x": 1408.0,
             "y": 0.0,
@@ -892,20 +843,321 @@
               "topic": "/SmartDashboard/Command Scheduler",
               "period": 0.06
             }
+          },
+          {
+            "title": "Minimum Scooper Speed",
+            "x": 1280.0,
+            "y": 320.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Minimum Scooper Speed",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Scooper Velocity",
+            "x": 832.0,
+            "y": 384.0,
+            "width": 192.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Scooper Velocity",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Pusher Velocity",
+            "x": 704.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Pusher Velocity",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Current Scooper Speed (rps)",
+            "x": 768.0,
+            "y": 576.0,
+            "width": 384.0,
+            "height": 320.0,
+            "type": "Radial Gauge",
+            "properties": {
+              "topic": "/SmartDashboard/Intake Telemetry/Current Scooper Speed (rps)",
+              "period": 0.06,
+              "data_type": "double",
+              "start_angle": -140.0,
+              "end_angle": 140.0,
+              "min_value": 0.0,
+              "max_value": 100.0,
+              "number_of_labels": 8,
+              "wrap_value": false,
+              "show_pointer": true,
+              "show_ticks": true
+            }
           }
         ]
       }
     },
     {
-      "name": "Debug Flywheel",
+      "name": "Camera",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "Camera Poses",
+            "x": 640.0,
+            "y": 64.0,
+            "width": 256.0,
+            "height": 448.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "Left Camera Rotation",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Left Camera Rotation",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Left Camera X",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Left Camera X",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Left Camera Y",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Left Camera Y",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Right Camera Rotation",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Right Camera Rotation",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Right Camera X",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Right Camera X",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Right Camera Y",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Camera Poses/Right Camera Y",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "photonvision_Port_1184_Output_MJPEG_Server",
+            "x": 1472.0,
+            "y": 192.0,
+            "width": 448.0,
+            "height": 320.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1184_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Combined Field",
+            "x": 0.0,
+            "y": 64.0,
+            "width": 640.0,
+            "height": 448.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Combined Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Left Camera Field",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 640.0,
+            "height": 320.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Left Camera Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Right Camera Field",
+            "x": 640.0,
+            "y": 512.0,
+            "width": 640.0,
+            "height": 320.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Right Camera Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Right Camera Rotation",
+            "x": 1280.0,
+            "y": 192.0,
+            "width": 192.0,
+            "height": 64.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Camera Poses/Right Camera Rotation",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Right Camera X",
+            "x": 1280.0,
+            "y": 256.0,
+            "width": 192.0,
+            "height": 64.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Camera Poses/Right Camera X",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Right Camera Y",
+            "x": 1280.0,
+            "y": 320.0,
+            "width": 192.0,
+            "height": 64.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Camera Poses/Right Camera Y",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Robot",
+            "x": 640.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 64.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Combined Field/Robot",
+              "period": 0.06,
+              "data_type": "double[]",
+              "show_submit_button": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tab 5",
       "grid_layout": {
         "layouts": [
           {
             "title": "Flywheel Telemetry",
-            "x": 384.0,
-            "y": 0.0,
+            "x": 128.0,
+            "y": 64.0,
             "width": 256.0,
-            "height": 256.0,
+            "height": 320.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
@@ -972,24 +1224,11 @@
         ],
         "containers": [
           {
-            "title": "5s Avg Flywheel Speed (rps)",
-            "x": 640.0,
-            "y": 192.0,
-            "width": 192.0,
-            "height": 192.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Telemetry/5s Avg Flywheel Speed (rps)",
-              "period": 0.06,
-              "data_type": "double"
-            }
-          },
-          {
             "title": "Current Flywheel Speed (rps)",
-            "x": 832.0,
-            "y": 192.0,
-            "width": 704.0,
-            "height": 576.0,
+            "x": 448.0,
+            "y": 0.0,
+            "width": 1472.0,
+            "height": 896.0,
             "type": "Graph",
             "properties": {
               "topic": "/SmartDashboard/Flywheel Telemetry/Current Flywheel Speed (rps)",
@@ -998,142 +1237,6 @@
               "time_displayed": 5.0,
               "color": 4278238420,
               "line_width": 2.0
-            }
-          },
-          {
-            "title": "Flywheel Speed Multiplier",
-            "x": 256.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Speed Multiplier",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Flywheel Test Voltage",
-            "x": 256.0,
-            "y": 384.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel Test Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Home Flywheel Speed Multiplier",
-            "x": 256.0,
-            "y": 512.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Home Flywheel Speed Multiplier",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Tunable Flywheel Speed",
-            "x": 256.0,
-            "y": 640.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Tunable Flywheel Speed",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Camera",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "photonvision_Port_1181_Input_MJPEG_Server",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 704.0,
-            "height": 448.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1181_Input_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
-            }
-          },
-          {
-            "title": "photonvision_Port_1182_Output_MJPEG_Server",
-            "x": 0.0,
-            "y": 448.0,
-            "width": 704.0,
-            "height": 448.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1182_Output_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
-            }
-          },
-          {
-            "title": "photonvision_Port_1183_Input_MJPEG_Server",
-            "x": 1216.0,
-            "y": 0.0,
-            "width": 704.0,
-            "height": 448.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
-            }
-          },
-          {
-            "title": "photonvision_Port_1184_Output_MJPEG_Server",
-            "x": 1216.0,
-            "y": 448.0,
-            "width": 704.0,
-            "height": 448.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1184_Output_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0,
-              "compression": 20,
-              "resolution": [
-                854.0,
-                480.0
-              ]
             }
           }
         ]
