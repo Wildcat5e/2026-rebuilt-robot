@@ -81,19 +81,6 @@
             }
           },
           {
-            "title": "photonvision_Port_1182_Output_MJPEG_Server",
-            "x": 1472.0,
-            "y": 128.0,
-            "width": 448.0,
-            "height": 320.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1182_Output_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
             "title": "photonvision_Port_1184_Output_MJPEG_Server",
             "x": 1472.0,
             "y": 448.0,
@@ -163,6 +150,19 @@
               "robot_color": 4294198070,
               "trajectory_color": 4294967295,
               "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "photonvision_Port_1186_Output_MJPEG_Server",
+            "x": 1472.0,
+            "y": 128.0,
+            "width": 448.0,
+            "height": 320.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1186_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
@@ -337,19 +337,6 @@
             }
           },
           {
-            "title": "photonvision_Port_1182_Output_MJPEG_Server",
-            "x": 1280.0,
-            "y": 0.0,
-            "width": 640.0,
-            "height": 448.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/photonvision_Port_1182_Output_MJPEG_Server",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
             "title": "photonvision_Port_1184_Output_MJPEG_Server",
             "x": 1280.0,
             "y": 448.0,
@@ -499,6 +486,19 @@
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "photonvision_Port_1186_Output_MJPEG_Server",
+            "x": 1280.0,
+            "y": 0.0,
+            "width": 640.0,
+            "height": 448.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1186_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
@@ -1144,6 +1144,19 @@
               "data_type": "double[]",
               "show_submit_button": false
             }
+          },
+          {
+            "title": "photonvision_Port_1186_Output_MJPEG_Server",
+            "x": 1472.0,
+            "y": 512.0,
+            "width": 448.0,
+            "height": 320.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1186_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
           }
         ]
       }
@@ -1237,6 +1250,19 @@
               "time_displayed": 5.0,
               "color": 4278238420,
               "line_width": 2.0
+            }
+          },
+          {
+            "title": "photonvision_Port_1185_Input_MJPEG_Server",
+            "x": 64.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/photonvision_Port_1185_Input_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
