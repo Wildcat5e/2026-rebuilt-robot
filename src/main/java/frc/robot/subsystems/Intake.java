@@ -238,7 +238,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             () -> {},
 
             // --end--
-            interrupted -> extenderMotor.setVoltage(0),
+            interrupted -> stopExtender(),
 
             // --isFinished--
             () -> {
@@ -257,7 +257,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             () -> {},
 
             // --end--
-            interrupted -> extenderMotor.setVoltage(0),
+            interrupted -> stopExtender(),
 
             // --isFinished--
             () -> {
