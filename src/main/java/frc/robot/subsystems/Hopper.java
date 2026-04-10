@@ -10,13 +10,9 @@ import frc.robot.DashboardManager;
 
 public class Hopper extends SubsystemBase implements SysIdCapable {
     private final TalonFX kickerMotor = new TalonFX(14);
-    private final double KICKER_RADIUS = 0.03175 / 2;
-    private final double KICKER_CIRCUMFERENCE = 2 * Math.PI * KICKER_RADIUS;
     final Slot0Configs kickerFFConfig = new Slot0Configs().withKS(0.).withKV(0.).withKA(0.);
 
     private final TalonFX conveyorMotor = new TalonFX(15);
-    private final double CONVEYOR_RADIUS = 0.028575 / 2;
-    private final double CONVEYOR_CIRCUMFERENCE = 2 * Math.PI * CONVEYOR_RADIUS;
     final Slot0Configs conveyerFFConfig = new Slot0Configs().withKS(0.14249).withKV(0.46947).withKA(0.015944);
 
     // --- SysId Configuration ---
