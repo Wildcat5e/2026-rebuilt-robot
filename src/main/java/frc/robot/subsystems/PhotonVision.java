@@ -23,7 +23,7 @@ public class PhotonVision extends SubsystemBase {
     public static final Matrix<N3, N1> SINGLE_TAG_STD_DEV = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> MULTI_TAG_STD_DEV = VecBuilder.fill(0.5, 0.5, 1);
 
-    public static final List<PhotonCamera> CAMERAS = List.of(new PhotonCamera("Microsoft_LifeCam_HD-3000-Left"),
+    public static final List<PhotonCamera> CAMERAS = List.of(new PhotonCamera("Microsoft_LifeCam_HD-3000-Left-USB2-Vert"),
         new PhotonCamera("Microsoft_LifeCam_HD-3000-Right"));
     /** Offset from center of the robot to camera mount position (robot ➔ camera) in the Robot Coordinate System. */
     public static final List<Transform3d> ROBOT_TO_CAMERA =
