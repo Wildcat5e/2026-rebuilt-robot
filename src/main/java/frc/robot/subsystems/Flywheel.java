@@ -44,6 +44,12 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
             () -> calculatedVoltage); // @formatter:on
     }
 
+    @Override
+    public void periodic() {
+        currentFlywheelSpeed = getFlywheelSpeed();
+        averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
+    }
+
     /** Sets both flywheel motors to the specified voltage (left voltage negated in constructor). */
     private void setFlywheelMotorVoltages(double volts) {
         leftFlywheelMotor.setVoltage(volts);
@@ -62,12 +68,6 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     /** @return revolutions per second */
     public double getFlywheelSpeed() {
         return rightFlywheelMotor.getVelocity().getValueAsDouble();
-    }
-
-    @Override
-    public void periodic() {
-        currentFlywheelSpeed = getFlywheelSpeed();
-        averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
     }
 
     @Override
