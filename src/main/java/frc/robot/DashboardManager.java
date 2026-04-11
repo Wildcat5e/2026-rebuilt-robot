@@ -74,8 +74,8 @@ public interface DashboardManager {
     // Subsystem: Hopper
     // =====================================
     static void setupHopper() {
-        SmartDashboard.putNumber("Kicker Test Voltage", 8.0);
-        SmartDashboard.putNumber("Conveyor Test Voltage", 8.0);
+        SmartDashboard.putNumber("Kicker Test Voltage", 8);
+        SmartDashboard.putNumber("Conveyor Test Voltage", 8);
 
     }
 
@@ -91,7 +91,7 @@ public interface DashboardManager {
     // Subsystem: Flywheel
     // ===================================== @formatter:off
     static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp) { // @formatter:on
-        SmartDashboard.putNumber("Flywheel Test Voltage", 5.0);
+        SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putNumber("Tunable Flywheel Speed", 25);
@@ -136,11 +136,11 @@ public interface DashboardManager {
 
     static void setupIntake(DoubleSupplier extenderMotorPositionSupp, DoubleSupplier currScooperSpeedSupp,
         BooleanSupplier isScooperSpinningSupp) {
-        SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
-        SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
-        SmartDashboard.putNumber("Scooper Velocity", 18.0);
-        SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
-        SmartDashboard.putNumber("Pusher Velocity", 80.0);
+        SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
+        SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
+        SmartDashboard.putNumber("Scooper Velocity", 18);
+        SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
+        SmartDashboard.putNumber("Pusher Velocity", 80);
         SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
@@ -160,7 +160,7 @@ public interface DashboardManager {
     }
 
     static double getScooperVelocity() {
-        return SmartDashboard.getNumber("Scooper Velocity", 0.0);
+        return SmartDashboard.getNumber("Scooper Velocity", 0);
     }
 
     static double getScooperMinSpeed() {
@@ -172,7 +172,7 @@ public interface DashboardManager {
     }
 
     static double getPusherVelocity() {
-        return SmartDashboard.getNumber("Pusher Velocity", 0.0);
+        return SmartDashboard.getNumber("Pusher Velocity", 0);
     }
 
     // =====================================
