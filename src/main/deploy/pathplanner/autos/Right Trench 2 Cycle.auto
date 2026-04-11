@@ -58,6 +58,25 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.74
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spin Flywheel"
+                      }
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -113,6 +132,25 @@
                 "type": "named",
                 "data": {
                   "name": "Keep Intake Down"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 4.33
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Spin Flywheel"
+                      }
+                    }
+                  ]
                 }
               }
             ]
