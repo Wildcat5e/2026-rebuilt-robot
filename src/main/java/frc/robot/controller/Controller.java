@@ -83,8 +83,8 @@ public abstract class Controller {
         shootFuel().whileTrue(commands.shootFuel);
         shootFuel().whileTrue(intake.testPusher());
         runIntake().whileTrue(intake.spinIntakeMotors());
-        lowerIntake().whileTrue(intake.bumpExtenderDown());
-        raiseIntake().whileTrue(intake.bumpExtenderUp());
+        lowerIntake().whileTrue(intake.bumpExtenderDownNoLock());
+        raiseIntake().whileTrue(intake.bumpExtenderUpNoLock());
         aimHandler().whileTrue(commands.aimHandler);
         manualFlywheel().whileTrue(flywheel.tunableFlywheelSpeedCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
