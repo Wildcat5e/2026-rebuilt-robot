@@ -23,6 +23,7 @@ public class ShootFuel extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("INIT SHOOTING");
         flywheelUpToSpeed = false;
     }
 
