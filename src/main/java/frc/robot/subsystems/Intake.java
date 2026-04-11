@@ -192,9 +192,24 @@ public class Intake extends SubsystemBase implements SysIdCapable {
      * This command is functionally the same as bumpExtenderDown(), but does not require the intake subsystem to be free
      * and does not lock the intake subsystem when used.
      */
-    public Command bumpExtenderDownNoLock() {
+    public Command bumpExtenderDownNoLockAuto() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender).withName("Bump Extender Down");
     }
+
+    /**
+     * Used for teleop, not permanent
+     */
+    public Command bumpExtenderDownNoLock() {
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
+    }
+
+    /**
+     * Used for teleop, not permanent
+     */
+    public Command bumpExtenderUpNoLock() {
+        return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Down");
+    }
+
 
     /**
      * This is only meant to be used for autonomous paths, it is meant to be used with the run intake method in order to
