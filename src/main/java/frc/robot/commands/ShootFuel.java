@@ -29,15 +29,13 @@ public class ShootFuel extends Command {
     @Override
     public void execute() {
         if (!flywheelUpToSpeed && flywheel.isFlywheelUpToSpeed()) {
-            System.out.println(" UP TO SPEED ");
+            System.out.println("FLYWHEEL UP TO SPEED");
             flywheelUpToSpeed = true;
         }
         if (inHome(drivetrain)) {
             flywheel.hubRunFlywheel();
-            System.out.println("DYNAMIC !!!");
         } else {
             flywheel.homeRunFlywheel();
-            System.out.println("STATIC !!!!");
         }
         if (flywheelUpToSpeed) {
             hopper.runHopper();
@@ -48,7 +46,7 @@ public class ShootFuel extends Command {
     public void end(boolean interrupted) {
         flywheel.stopFlywheel();
         hopper.stopHopper();
-        System.out.println("DONE");
+        System.out.println("DONE SHOOTING");
     }
 
     @Override
