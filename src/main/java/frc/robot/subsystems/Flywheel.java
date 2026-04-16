@@ -84,8 +84,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
     /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
     public Command tunableFlywheelVoltageCommand() {
         return runEnd(() -> {
-            double targetVoltage = DashboardManager.getFlywheelTestVoltage();
-            setFlywheelMotorVoltages(targetVoltage);
+            setFlywheelMotorVoltages(DashboardManager.getFlywheelTestVoltage());
         }, this::stopFlywheel);
     }
 
