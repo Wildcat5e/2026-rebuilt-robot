@@ -26,11 +26,11 @@ public class OperatorConsole {
 
         macropad.button(3).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
         macropad.button(4).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
-        macropad.button(5).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelSpeed(1)));
-        macropad.button(6).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelSpeed(-1)));
+        macropad.button(5).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelRPS(1)));
+        macropad.button(6).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelRPS(-1)));
 
         macropad.button(7).whileTrue(Commands.parallel(hopper.runHopperCommand(), intake.testPusher()));
-        macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
+        macropad.button(8).whileTrue(flywheel.tunableFlywheelRPSCommand());
         macropad.button(17).whileTrue(DrivetrainUtils.swerveDriveBrake(drivetrain));
 
         // LAYER 1 (Shift Held)

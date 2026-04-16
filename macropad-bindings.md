@@ -11,10 +11,10 @@ This is the default state of the macropad. All keys run commands continuously wh
 ```text
 +--------------------+--------------------+--------------------+
 | [0]  Bump          | [1]  Flywheel      | [2]  Tunable       |
-|     Extender Up    |     Speed Mult +   |  Flywheel Speed +  |
+|     Extender Up    |     Speed Mult +   |  Flywheel RPS +    |
 +--------------------+--------------------+--------------------+
 | [3]  Bump          | [4]  Flywheel      | [5]  Tunable       |
-|     Extender Down  |     Speed Mult -   |  Flywheel Speed -  |
+|     Extender Down  |     Speed Mult -   |  Flywheel RPS -    |
 +--------------------+--------------------+--------------------+
 | [6]                | [7]  Run Static    | [8]  Run Tunable   |
 |                    |      Kicker        |      Flywheel      |
