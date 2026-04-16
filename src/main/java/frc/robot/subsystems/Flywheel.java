@@ -91,9 +91,9 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         }, this::stopFlywheel);
     }
 
-    public Command tunableFlywheelSpeedCommand() {
+    public Command tunableFlywheelRPSCommand() {
         return runEnd(() -> {
-            setFlywheelVelocity(SmartDashboard.getNumber("Tunable Flywheel Speed", 0));
+            setFlywheelVelocity(DashboardManager.getTunableFlywheelRPS());
         }, this::stopFlywheel);
     }
 
@@ -111,7 +111,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         // var shotSolution =
         //     ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
         // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        var speed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
+        var speed = Constants.HUB_FLYWHEEL_RPS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
             * DashboardManager.getFlywheelSpeedMultiplier();
         setFlywheelVelocity(speed);
     }
@@ -121,7 +121,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         // var shotSolution =
         //     ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
         // var speed = shotSolution.flywheelSpeed();
-        var speed = Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
+        var speed = Constants.HOME_FLYWHEEL_RPS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
             * DashboardManager.getHomeFlywheelSpeedMultiplier();
         setFlywheelVelocity(speed);
     }
