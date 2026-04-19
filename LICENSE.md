@@ -1,1 +1,1 @@
-All code not copied from WPILib belongs to Ethan or Nicholas or mentors who helped. Please ask before using our code. For now, we retain Copyright.
+All code not copied from WPILib belongs to the active members of the 2026 Season's Programming Team (Ethan, Nicholas, Adi), or mentors who helped. Please ask before using our code. For now, we retain Copyright.
