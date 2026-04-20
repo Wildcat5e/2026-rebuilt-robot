@@ -46,83 +46,27 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
 
     @Override
     public void periodic() {
-        currentFlywheelSpeed = getFlywheelSpeed();
         averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
     }
 
     /** Sets both flywheel motors to the specified voltage (left voltage negated in constructor). */
-    private void setFlywheelMotorVoltages(double volts) {
+    public void setFlywheelMotorVoltages(double volts) {
         leftFlywheelMotor.setVoltage(volts);
         rightFlywheelMotor.setVoltage(volts);
     }
 
-    /** Spins flywheel at specified velocity. */
-    public void setFlywheelVelocity(double targetFlywheelSpeed) {
-        setVelocity(this.targetFlywheelSpeed = targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
-    }
-
-    public void stopFlywheel() {
-        setFlywheelMotorVoltages(0);
-    }
-
-    /** @return revolutions per second */
-    public double getFlywheelSpeed() {
-        return rightFlywheelMotor.getVelocity().getValueAsDouble();
-    }
-
     @Override
     public SysIdRoutine getSysIdRoutine() {
-        return routine;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSysIdRoutine'");
     }
 
-    public Command hubRunFlywheelCommand() {
-        return runEnd(this::hubRunFlywheel, this::stopFlywheel);
+    public double getCurrentFlywheelSpeed() {
+        return currentFlywheelSpeed;
     }
 
-    public Command homeRunFlywheelCommand() {
-        return runEnd(this::homeRunFlywheel, this::stopFlywheel);
+    public double getTargetFlywheelSpeed() {
+        return targetFlywheelSpeed;
     }
 
-    /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
-    public Command tunableFlywheelVoltageCommand() {
-        return runEnd(() -> {
-            double targetVoltage = DashboardManager.getFlywheelTestVoltage();
-            setFlywheelMotorVoltages(targetVoltage);
-        }, this::stopFlywheel);
-    }
-
-    public Command tunableFlywheelSpeedCommand() {
-        return runEnd(() -> {
-            setFlywheelVelocity(SmartDashboard.getNumber("Tunable Flywheel Speed", 0));
-        }, this::stopFlywheel);
-    }
-
-    public Command reverseFlywheel() {
-        return startEnd(() -> setFlywheelMotorVoltages(-12), this::stopFlywheel).withName("Reverse Flywheel");
-    }
-
-    public boolean isFlywheelUpToSpeed() {
-        if (targetFlywheelSpeed == 0) return false;
-        return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
-    }
-
-    /** Spins flywheel and calculates speed based on distance. */
-    public void hubRunFlywheel() {
-        // var shotSolution =
-        //     ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
-        // targetFlywheelSpeed = shotSolution.flywheelSpeed();
-        var speed = Constants.HUB_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHubPosition()))
-            * DashboardManager.getFlywheelSpeedMultiplier();
-        setFlywheelVelocity(speed);
-    }
-
-    /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
-    public void homeRunFlywheel() {
-        // var shotSolution =
-        //     ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);
-        // var speed = shotSolution.flywheelSpeed();
-        var speed = Constants.HOME_FLYWHEEL_SPEEDS_MAP.get(getTargetDistance(drivetrain, getHomeTarget(drivetrain)))
-            * DashboardManager.getHomeFlywheelSpeedMultiplier();
-        setFlywheelVelocity(speed);
-    }
 }

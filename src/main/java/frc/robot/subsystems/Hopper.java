@@ -50,51 +50,10 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
         return routine;
     }
 
-    public Command testConveyor() {
-        return startEnd(() -> {
-            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
-            conveyorMotor.setVoltage(-targetConveyorVoltage);
-        }, () -> conveyorMotor.setVoltage(0));
+    public void setHopperVoltages(double kickerVoltage, double conveyorVoltage) {
+        kickerMotor.setVoltage(kickerVoltage);
+        conveyorMotor.setVoltage(conveyorVoltage);
     }
 
-    public Command reverseConveyor() {
-        return startEnd(() -> conveyorMotor.setVoltage(12), () -> conveyorMotor.setVoltage(0))
-            .withName("Reverse Conveyor");
-    }
 
-    /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
-    public Command testTunableKicker() {
-        return runEnd(() -> {
-            double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
-            kickerMotor.setVoltage(-targetKickerVoltage);
-        }, () -> kickerMotor.setVoltage(0));
-    }
-
-    public Command reverseKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(12), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
-    }
-
-    public void runHopper() {
-        double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
-        double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
-        conveyorMotor.setVoltage(-targetConveyorVoltage);
-        kickerMotor.setVoltage(-targetKickerVoltage);
-    }
-
-    public Command runHopperCommand() {
-        return startEnd(() -> {
-            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
-            double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
-            conveyorMotor.setVoltage(-targetConveyorVoltage);
-            kickerMotor.setVoltage(-targetKickerVoltage);
-        }, () -> {
-            conveyorMotor.setVoltage(0);
-            kickerMotor.setVoltage(0);
-        });
-    }
-
-    public void stopHopper() {
-        conveyorMotor.setVoltage(0);
-        kickerMotor.setVoltage(0);
-    }
 }

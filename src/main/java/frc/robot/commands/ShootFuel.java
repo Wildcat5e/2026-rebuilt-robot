@@ -8,46 +8,33 @@ import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 
 public class ShootFuel extends Command {
+
     Flywheel flywheel;
     Hopper hopper;
-    Intake intake;
-    Drivetrain drivetrain;
-    boolean flywheelUpToSpeed;
 
-    public ShootFuel(Flywheel flywheel, Hopper hopper, Drivetrain drivetrain) {
+
+    public ShootFuel(Flywheel flywheel, Hopper hopper) {
         this.flywheel = flywheel;
         this.hopper = hopper;
-        this.drivetrain = drivetrain;
         addRequirements(flywheel, hopper);
     }
 
     @Override
     public void initialize() {
-        System.out.println("INIT SHOOTING");
-        flywheelUpToSpeed = false;
+        flywheel.setFlywheelMotorVoltages(3);
+        hopper.setHopperVoltages(-8, -3);
     }
 
     @Override
     public void execute() {
-        if (!flywheelUpToSpeed && flywheel.isFlywheelUpToSpeed()) {
-            System.out.println("FLYWHEEL UP TO SPEED");
-            flywheelUpToSpeed = true;
-        }
-        if (inHome(drivetrain)) {
-            flywheel.hubRunFlywheel();
-        } else {
-            flywheel.homeRunFlywheel();
-        }
-        if (flywheelUpToSpeed) {
-            hopper.runHopper();
-        }
+
+
     }
 
     @Override
     public void end(boolean interrupted) {
-        flywheel.stopFlywheel();
-        hopper.stopHopper();
-        System.out.println("DONE SHOOTING");
+        flywheel.setFlywheelMotorVoltages(0);
+        hopper.setHopperVoltages(0, 0);
     }
 
     @Override

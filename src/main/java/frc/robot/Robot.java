@@ -68,15 +68,15 @@ public class Robot extends TimedRobot {
         controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper, drivetrain);
 
-        NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelSpeedCommand());
-        NamedCommands.registerCommand("Run Hopper", hopper.runHopperCommand());
+        // NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelSpeedCommand());
+        // NamedCommands.registerCommand("Run Hopper", hopper.runHopperCommand());
 
-        NamedCommands.registerCommand("Spin Flywheel", flywheel.hubRunFlywheelCommand());
+        // NamedCommands.registerCommand("Spin Flywheel", flywheel.hubRunFlywheelCommand());
         NamedCommands.registerCommand("Raise Intake", intake.raiseArmFinalImplementation());
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDownNoLockAuto());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Keep Intake Down", intake.keepExtenderDownNoLock());
-        NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
+        // NamedCommands.registerCommand("Aim at Hub", commands.aimAtHub);
         NamedCommands.registerCommand("Shoot Fuel", commands.shootFuel);
         SignalLogger.enableAutoLogging(false);
 

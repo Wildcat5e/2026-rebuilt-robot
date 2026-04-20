@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.AimAtTarget;
+// import frc.robot.commands.AimAtTarget;
 import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonVision;
@@ -46,7 +46,7 @@ public interface DashboardManager {
             builder.addDoubleProperty("Distance to Hub (m)",
                 () -> round(getTargetDistance(drivetrain, getHubPosition()), 2), null);
         });
-        if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
+        // if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
         SmartDashboard.putData("Camera Poses", builder -> {
             builder.addDoubleProperty("Left Camera X", () -> round(photonVision.leftCamPose.getX(), 2), null);
             builder.addDoubleProperty("Left Camera Y", () -> round(photonVision.leftCamPose.getY(), 2), null);

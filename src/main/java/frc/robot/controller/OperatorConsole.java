@@ -31,17 +31,17 @@ public class OperatorConsole {
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(1)).ignoringDisable(true));
         macropad.button(6)
             .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-1)).ignoringDisable(true));
-        macropad.button(7).whileTrue(hopper.runHopperCommand());
+        // macropad.button(7).whileTrue(hopper.runHopperCommand());
         macropad.button(7).whileTrue(intake.testPusher());
-        macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
+        // macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
         macropad.button(17).whileTrue(DrivetrainUtils.swerveDriveBrake(drivetrain));
 
         // LAYER 1 (Shift Held)
         macropad.button(9).whileTrue(intake.reverseScooper());
         macropad.button(10).whileTrue(intake.reversePusher());
-        macropad.button(11).whileTrue(hopper.reverseConveyor());
-        macropad.button(12).whileTrue(hopper.reverseKicker());
-        macropad.button(13).whileTrue(flywheel.reverseFlywheel());
+        // macropad.button(11).whileTrue(hopper.reverseConveyor());
+        // macropad.button(12).whileTrue(hopper.reverseKicker());
+        // macropad.button(13).whileTrue(flywheel.reverseFlywheel());
         macropad.button(17).onTrue(
             Commands.runOnce(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
         macropad.button(18).onTrue(
@@ -50,6 +50,6 @@ public class OperatorConsole {
         // LAYER 2 (Control Held)
         macropad.button(14).whileTrue(intake.testScooper());
         macropad.button(15).whileTrue(intake.testPusher());
-        macropad.button(16).whileTrue(hopper.testConveyor());
+        // macropad.button(16).whileTrue(hopper.testConveyor());
     }
 }
