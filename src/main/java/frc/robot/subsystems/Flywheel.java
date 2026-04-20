@@ -48,13 +48,13 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         averageFlywheelSpeed = speedFilter.calculate(currentFlywheelSpeed);
     }
 
-    /** Sets both flywheel motors to the specified voltage (left voltage negated in constructor). */
+    /** Sets both flywheel motors to the specified voltage (left voltage inverted in constructor). */
     private void setFlywheelMotorVoltages(double volts) {
         leftFlywheelMotor.setVoltage(volts);
         rightFlywheelMotor.setVoltage(volts);
     }
 
-    /** Spins flywheel at specified velocity. */
+    /** Spins flywheel at supplied velocity. */
     public void setFlywheelVelocity(double targetFlywheelSpeed) {
         setVelocity(this.targetFlywheelSpeed = targetFlywheelSpeed, leftFlywheelMotor, rightFlywheelMotor);
     }
@@ -73,15 +73,19 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         return routine;
     }
 
+    /** @return Command that spins flywheel at constant speed for when the robot is shooting at the Hub. */
     public Command hubRunFlywheelCommand() {
         return runEnd(this::hubRunFlywheel, this::stopFlywheel);
     }
 
+    /**
+     * @return Command that spins flywheel at constant speed for when the robot is shooting at the Alliance Home Zone.
+     */
     public Command homeRunFlywheelCommand() {
         return runEnd(this::homeRunFlywheel, this::stopFlywheel);
     }
 
-    /** Reads the "Flywheel Test Voltage" from SmartDashboard and applies it continuously. */
+    /** Reads the "Flywheel Test Voltage" from Elastic and applies it continuously. */
     public Command tunableFlywheelVoltageCommand() {
         double flywheelTestVoltage = DashboardManager.getFlywheelTestVoltage();
 
@@ -90,6 +94,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         }, this::stopFlywheel);
     }
 
+    /** Reads the "Tunable Flywheel Speed" from Elastic and applies it continuously. */
     public Command tunableFlywheelSpeedCommand() {
         double tunableFlywheelSpeed = DashboardManager.getTunableFlywheelSpeed();
 
@@ -107,7 +112,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         return currentFlywheelSpeed > targetFlywheelSpeed * 0.9;
     }
 
-    /** Spins flywheel and calculates speed based on distance. */
+    /** Spins flywheel at constant speed for when the robot is shooting at the Hub. */
     public void hubRunFlywheel() {
         // var shotSolution =
         //     ShootingCalculator.calculate(drivetrain, getHubPosition(), Constants.HUB_FLYWHEEL_SPEEDS_MAP);
@@ -117,7 +122,7 @@ public class Flywheel extends SubsystemBase implements SysIdCapable {
         setFlywheelVelocity(speed);
     }
 
-    /** Starts flywheel at constant speed for when the robot is shooting, but NOT into the hub. */
+    /** Spins flywheel at constant speed for when the robot is shooting at the Alliance Home Zone. */
     public void homeRunFlywheel() {
         // var shotSolution =
         //     ShootingCalculator.calculate(drivetrain, getHomeTarget(drivetrain), Constants.HOME_FLYWHEEL_SPEEDS_MAP);

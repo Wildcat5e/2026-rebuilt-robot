@@ -189,42 +189,35 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
-    /**
-     * This command is functionally the same as bumpExtenderDown(), but does not require the intake subsystem to be free
-     * and does not lock the intake subsystem when used.
-     */
+    /** This command does not require the intake subsystem to be free and does not lock it when used. */
     public Command bumpExtenderDownNoLockAuto() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender);
     }
 
-    /**
-     * Used for teleop, not permanent
-     */
+    /** Used for teleop, not permanent. */
     public Command bumpExtenderDownNoLock() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
-    /**
-     * Used for teleop, not permanent
-     */
+    /** Used for teleop, not permanent. */
     public Command bumpExtenderUpNoLock() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender);
     }
 
-
     /**
-     * This is only meant to be used for autonomous paths, it is meant to be used with the run intake method in order to
-     * keep the intake from popping up when collectin fuel
+     * This is only meant to be used for autonomous paths, in conjunction with the Run Intake Named Command, to keep the
+     * intake from popping up when collecting fuel.
      */
     public Command keepExtenderDownNoLock() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), this::stopExtender);
     }
 
-    // Used to avoid the subsystem locking when scheduling a command
+    /** Used to avoid the subsystem locking for this command. */
     public void setExtenderVoltagePositive() {
         extenderMotor.setVoltage(2);
     }
 
+    /** Used to avoid the subsystem locking for this command. */
     public void setExtenderVoltageNegative() {
         extenderMotor.setVoltage(-2);
     }
