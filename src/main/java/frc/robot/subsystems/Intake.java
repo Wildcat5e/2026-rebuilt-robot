@@ -72,9 +72,10 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotors() {
+        double scooperMotorVelocity = DashboardManager.getScooperVelocity();
+        double pusherMotorVelocity = DashboardManager.getPusherVelocity();
+
         return startEnd(() -> {
-            double scooperMotorVelocity = DashboardManager.getScooperVelocity();
-            double pusherMotorVelocity = DashboardManager.getPusherVelocity();
             setVelocity(scooperMotorVelocity, scooperMotor);
             setVelocity(pusherMotorVelocity, pusherMotor);
         }, () -> {
@@ -84,9 +85,10 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotorsVoltage() {
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+
         return startEnd(() -> {
-            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             scooperMotor.setVoltage(scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
@@ -96,25 +98,25 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotorsVoltageAutoReverse() {
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+        double loopTime = DashboardManager.getScooperReverseLoopTime();
+        double reverseDelay = DashboardManager.getScooperReverseDelay();
+
         return new FunctionalCommand(
             // initialize
             () -> {
                 autoReverseTimer.restart();
-                double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-                double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
                 scooperMotor.setVoltage(scooperMotorVoltage);
                 pusherMotor.setVoltage(pusherMotorVoltage);
             },
             // execute
             () -> {
-                double loopTime = DashboardManager.getScooperReverseLoopTime();
-                double reverseDelay = DashboardManager.getScooperReverseDelay();
                 if (autoReverseTimer.get() > loopTime) {
                     if (!isScooperSpinning() && autoReverseTimer.get() > reverseDelay) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
-                        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
                         scooperMotor.setVoltage(scooperMotorVoltage);
                     }
                 }
@@ -127,8 +129,9 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command testScooper() {
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+
         return startEnd(() -> {
-            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             scooperMotor.setVoltage(scooperMotorVoltage);
         }, this::stopScooper);
     }
@@ -142,8 +145,9 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command testPusher() {
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+
         return startEnd(() -> {
-            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, this::stopPusher);
     }
@@ -153,8 +157,9 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command testExtender() {
+        double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
+
         return startEnd(() -> {
-            double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
             extenderMotor.setVoltage(extenderMotorVoltage);
         }, this::stopExtender);
     }
