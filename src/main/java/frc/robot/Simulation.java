@@ -10,7 +10,7 @@ import frc.robot.subsystems.PhotonVision;
 public class Simulation {
     private final VisionSystemSim visionSim = new VisionSystemSim("Main");
     /** Enable drawing a wireframe visualization of the field to the camera streams. Extremely resource-intensive! */
-    private final boolean ENABLE_WIREFRAME = true;
+    private static final boolean ENABLE_WIREFRAME = true;
     private final Drivetrain drivetrain;
 
     public Simulation(Drivetrain drivetrain) {
