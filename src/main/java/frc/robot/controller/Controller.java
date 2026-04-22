@@ -3,6 +3,7 @@ package frc.robot.controller;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.commands.RobotCommands;
@@ -25,6 +26,9 @@ public abstract class Controller {
     private static final double SCALE_EXPONENT = 1;
     /** Limit max controller angular speed to prevent flicking robot around too fast and spilling balls. */
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI; // Check if this is even needed or reasonable.
+
+    /** Reusable inactive trigger to prevent allocating new objects for unimplemented bindings. */
+    protected static final Trigger INACTIVE = new Trigger(() -> false);
 
     /** Change whether or not controller can control translation. */
     public static boolean allowControllerTranslation = true;
@@ -80,8 +84,7 @@ public abstract class Controller {
     public void bindingsSetup(Drivetrain drivetrain, SwerveRequest.FieldCentric swerveRequest, RobotCommands commands,
         Flywheel flywheel, Hopper hopper, Intake intake) {
         /** Competition Bindings */
-        shootFuel().whileTrue(commands.shootFuel);
-        shootFuel().whileTrue(intake.testPusher());
+        shootFuel().whileTrue(Commands.parallel(commands.shootFuel, intake.testPusher()));
         runIntake().whileTrue(intake.spinIntakeMotors());
         lowerIntake().whileTrue(intake.bumpExtenderDownNoLock());
         raiseIntake().whileTrue(intake.bumpExtenderUpNoLock());
