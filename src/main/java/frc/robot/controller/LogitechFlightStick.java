@@ -68,7 +68,7 @@ public class LogitechFlightStick extends Controller {
 
     @Override
     Trigger trenchPath() {
-        return new Trigger(() -> false);
+        return INACTIVE;
     }
 
     @Override
@@ -93,25 +93,21 @@ public class LogitechFlightStick extends Controller {
 
     @Override
     Trigger forwardSysIdQuasi() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.start().and(Controller.joystick.y());
+        return INACTIVE;
     }
 
     @Override
     Trigger backwardSysIdQuasi() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.start().and(Controller.joystick.x());
+        return INACTIVE;
     }
 
     @Override
     Trigger forwardSysIdDynamic() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.back().and(Controller.joystick.y());
+        return INACTIVE;
     }
 
     @Override
     Trigger backwardSysIdDynamic() {
-        /* change this */ return new Trigger(() -> false);
-        // return Controller.joystick.back().and(Controller.joystick.x());
+        return INACTIVE;
     }
 }
