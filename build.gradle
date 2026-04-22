@@ -1,5 +1,6 @@
 import javax.swing.JOptionPane
 import javax.swing.JFrame
+import java.awt.GraphicsEnvironment
 
 plugins {
     id "java"
@@ -36,7 +37,7 @@ deploy {
                     jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")
                     jvmArgs.add("-Dcom.sun.management.jmxremote.ssl=false")
                     jvmArgs.add("-Dcom.sun.management.jmxremote.authenticate=false")
-                    jvmArgs.add("-Djava.rmi.server.hostname=10.67.05.2") // Replace TE.AM with team number
+                    jvmArgs.add("-Djava.rmi.server.hostname=10.67.05.2") // Team 6705
                 }
 
                 // Static files artifact
@@ -144,15 +145,23 @@ task checkMacropadCode {
 
         // Shows a Pop-Up
         if (localFile.text != macropadFile.text) {
-            // Create a temporary, invisible frame and force it to the front
-            JFrame frame = new JFrame()
-            frame.setAlwaysOnTop(true)
-            frame.setLocationRelativeTo(null) // Center popup on screen
-            
             def s = DDriveFileExists ? "D:/" : "E:/"
-            def errMsg = 'WAIT! The Macropad code on ' + s + ' does not match your local macropad/code.py.\n\nPlease update the physical Macropad\'s code before your match.'
-            JOptionPane.showMessageDialog(frame, errMsg, 'Macropad Code Out of Sync', JOptionPane.WARNING_MESSAGE)
-            frame.dispose()
+            def errMsg = "WAIT! The Macropad code on ${s} does not match your local macropad/code.py.\n\nPlease update the physical Macropad's code before your match."
+            
+            if (!GraphicsEnvironment.isHeadless()) {
+                // Create a temporary, invisible frame and force it to the front
+                JFrame frame = new JFrame()
+                frame.setAlwaysOnTop(true)
+                frame.setLocationRelativeTo(null) // Center popup on screen
+                
+                JOptionPane.showMessageDialog(frame, errMsg, 'Macropad Code Out of Sync', JOptionPane.WARNING_MESSAGE)
+                frame.dispose()
+            } else {
+                // Fallback for terminal if running headlessly
+                System.err.println("\n========================================")
+                System.err.println(errMsg)
+                System.err.println("========================================\n")
+            }
         } else {
             println 'Macropad code is fully synced.'
         }
