@@ -125,7 +125,10 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             interrupted -> {
                 stopPusher();
                 stopScooper();
-            }, () -> false, this);
+            },
+
+            // isFinished
+            () -> false, this);
     }
 
     public Command testScooper() {
@@ -239,9 +242,8 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             interrupted -> stopExtender(),
 
             // --isFinished--
-            () -> {
-                return getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE; // Check sign
-            },
+            () -> getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE, // Check sign
+
             // --addRequirements--
             this); // Pass in Intake
     }
@@ -258,9 +260,8 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             interrupted -> stopExtender(),
 
             // --isFinished--
-            () -> {
-                return getExtenderPosition() >= EXTENDER_STOWED_POSITION * 0.75 - TOLERANCE; // Check sign
-            },
+            () -> getExtenderPosition() >= EXTENDER_STOWED_POSITION * 0.75 - TOLERANCE,
+
             // --addRequirements--
             this); // Pass in Intake
     }
