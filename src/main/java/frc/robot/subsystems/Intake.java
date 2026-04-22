@@ -19,9 +19,9 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
     // All units are in rotations
-    private double EXTENDER_STOWED_POSITION = .27;
-    private double EXTENDER_DROPPED_POSITION = 0;
-    private double TOLERANCE = 0.07;
+    private final double EXTENDER_STOWED_POSITION = 0.27;
+    private final double EXTENDER_DROPPED_POSITION = 0;
+    private final double TOLERANCE = 0.07;
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.025896).withKV(0.4199).withKA(0.0096081);
