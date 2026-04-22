@@ -9,13 +9,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Robot;
 import frc.robot.controller.Controller;
 import frc.robot.subsystems.Drivetrain;
 
 public class Paths extends Command {
-    /** Maximum allowable distance (meters) from the robot's current pose to a path's starting pose. */
     private static final double MAX_SAFE_DIST_TO_PATH = 1.0;
 
     private final Drivetrain drivetrain;
@@ -33,7 +31,6 @@ public class Paths extends Command {
             PathPlannerPath Mid_Bottom_Bump_DS_Path = PathPlannerPath.fromPathFile("Mid Bottom Bump DS");
             PathPlannerPath DS_Bottom_Bump_Mid_Path = PathPlannerPath.fromPathFile("DS Bottom Bump Mid");
 
-            // Store the paths so we can access their translations in initialize()
             pathList.add(Mid_Top_Bump_DS_Path);
             pathList.add(DS_Top_Bump_Mid_Path);
             pathList.add(Mid_Bottom_Bump_DS_Path);
@@ -47,24 +44,25 @@ public class Paths extends Command {
             DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
             error = true;
         }
-        // Use addRequirements() here to declare subsystem dependencies.
+
+        // The Paths command proxies Drivetrain commands, so it must require the Drivetrain.
+        addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
-        if (error) return; // Exit early if paths failed to load
+        if (error) return;
+
         Controller.allowControllerTranslation = false;
         Controller.allowControllerRotation = false;
 
         List<Translation2d> translationsList = new ArrayList<>();
-
-        // Loop through the paths to extract coordinates
         for (PathPlannerPath path : pathList) {
-            // Get the starting pose (this always returns Blue Alliance coordinate)
+            // Get path's starting pose (always returns Blue Alliance coordinate)
             Pose2d bluePose = path.getStartingHolonomicPose().orElse(new Pose2d());
             Translation2d translation = bluePose.getTranslation();
 
-            // If we're on the Red Alliance, make PathPlanner flip the coordinate dynamically
+            // If we're on the Red Alliance, flip the coordinate
             if (!Robot.isBlueAlliance) {
                 translation = FlippingUtil.flipFieldPosition(translation);
             }
@@ -74,17 +72,21 @@ public class Paths extends Command {
         closestCommand = findClosestCommand(translationsList);
 
         if (closestCommand != null) {
-            CommandScheduler.getInstance().schedule(closestCommand);
+            closestCommand.initialize();
         }
     }
 
     @Override
-    public void execute() {}
+    public void execute() {
+        if (closestCommand != null) {
+            closestCommand.execute();
+        }
+    }
 
     @Override
     public void end(boolean interrupted) {
         if (closestCommand != null) {
-            CommandScheduler.getInstance().cancel(closestCommand);
+            closestCommand.end(interrupted);
         }
         Controller.allowControllerTranslation = true;
         Controller.allowControllerRotation = true;
@@ -92,12 +94,9 @@ public class Paths extends Command {
 
     @Override
     public boolean isFinished() {
-        // Abort immediately if there was a load error or no valid path was found
-        if (error || closestCommand == null) {
-            return true;
-        }
-        // The command is finished when the scheduled path-following command is no longer running
-        return !CommandScheduler.getInstance().isScheduled(closestCommand);
+        if (error || closestCommand == null) return true;
+
+        return closestCommand.isFinished();
     }
 
     private Command findClosestCommand(List<Translation2d> translationList) {
@@ -107,7 +106,6 @@ public class Paths extends Command {
         }
 
         Translation2d currentTranslation = drivetrain.getState().Pose.getTranslation();
-
         double closestDistance = currentTranslation.getDistance(translationList.get(0));
         int closestIndex = 0;
 

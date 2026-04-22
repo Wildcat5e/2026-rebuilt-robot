@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import static frc.robot.utilities.FieldUtils.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Drivetrain;
 
 public class AimHandler extends Command {
@@ -24,7 +23,7 @@ public class AimHandler extends Command {
     @Override
     public void initialize() {
         activeCommand = chooseCommand();
-        scheduleActive();
+        if (activeCommand != null) activeCommand.initialize();
     }
 
     @Override
@@ -32,41 +31,32 @@ public class AimHandler extends Command {
         Command newCommand = chooseCommand();
 
         if (newCommand != activeCommand) {
-            cancelActive();
-
+            if (activeCommand != null) activeCommand.end(true);
             activeCommand = newCommand;
-            scheduleActive();
+            if (activeCommand != null) activeCommand.initialize();
+        }
+
+        if (activeCommand != null) {
+            activeCommand.execute();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        cancelActive();
+        if (activeCommand != null) activeCommand.end(interrupted);
     }
 
     /** @return The specific AimAtTarget command to run, or null if in the deadzone. */
     private Command chooseCommand() {
-        if (inHome(drivetrain)) {
-            return aimAtHub;
-        }
+        if (inHome(drivetrain)) return aimAtHub;
 
         // Here, we have a deadzone between y = 3.75 y = 4.25, so the robot doesn't rotate there.
         // However, this is used by ShootingCalculator to find and set the ideal flywheel speed.
         // Thus, having a deadzone where we cannot shoot fuel could be catastrophic if our pose is incorrect.
         double yPosition = drivetrain.getState().Pose.getY();
-        if (yPosition > 4.25) {
-            return aimAtUpperHome;
-        } else if (yPosition < 3.75) {
-            return aimAtLowerHome;
-        }
+        if (yPosition > 4.25) return aimAtUpperHome;
+        if (yPosition < 3.75) return aimAtLowerHome;
+
         return null;
-    }
-
-    private void scheduleActive() {
-        if (activeCommand != null) CommandScheduler.getInstance().schedule(activeCommand);
-    }
-
-    private void cancelActive() {
-        if (activeCommand != null) CommandScheduler.getInstance().cancel(activeCommand);
     }
 }
