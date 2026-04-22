@@ -5,6 +5,8 @@ import frc.robot.Robot;
 
 /**
  * import static frc.robot.utilities.MatchUtils.*;
+ * 
+ * Utility interface containing various static match timing functions.
  */
 public interface MatchUtils {
     enum MatchPhase {

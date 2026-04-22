@@ -2,6 +2,8 @@ package frc.robot.utilities;
 
 /**
  * import static frc.robot.utilities.MathUtils.*;
+ * 
+ * Utility interface containing static math helper functions.
  */
 public interface MathUtils {
     /**
