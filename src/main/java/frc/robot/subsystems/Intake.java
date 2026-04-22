@@ -25,7 +25,6 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.025896).withKV(0.4199).withKA(0.0096081);
-    private final Timer autoReverseTimer = new Timer();
 
     // --PUSHER SYSID CONSTANTS--
     // kS: -0.12147 ERRONEOUS
@@ -98,6 +97,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotorsVoltageAutoReverse() {
+        Timer autoReverseTimer = new Timer();
         double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
         double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
         double loopTime = DashboardManager.getScooperReverseLoopTime();
