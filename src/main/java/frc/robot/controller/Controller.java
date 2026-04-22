@@ -4,6 +4,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.commands.RobotCommands;
 import frc.robot.subsystems.Drivetrain;
@@ -92,10 +93,15 @@ public abstract class Controller {
         trenchPath().whileTrue(intake.zeroExtenderPosition());
 
         // sysid tests
-        // povUp().whileTrue(flywheel.sysIdDynamicForward());
-        // povRight().whileTrue(flywheel.sysIdDynamicReverse());
-        // povDown().whileTrue(flywheel.sysIdQuasistaticForward());
-        // povLeft().whileTrue(flywheel.sysIdQuasistaticReverse());
+        forwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistaticTranslation(SysIdRoutine.Direction.kForward));
+        backwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistaticTranslation(SysIdRoutine.Direction.kReverse));
+        forwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamicTranslation(SysIdRoutine.Direction.kForward));
+        backwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamicTranslation(SysIdRoutine.Direction.kReverse));
+
+        // forwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistaticRotation(SysIdRoutine.Direction.kForward));
+        // backwardSysIdQuasi().whileTrue(drivetrain.sysIdQuasistaticRotation(SysIdRoutine.Direction.kReverse));
+        // forwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamicRotation(SysIdRoutine.Direction.kForward));
+        // backwardSysIdDynamic().whileTrue(drivetrain.sysIdDynamicRotation(SysIdRoutine.Direction.kReverse));
 
         /*
          * Tests for motor identification:
