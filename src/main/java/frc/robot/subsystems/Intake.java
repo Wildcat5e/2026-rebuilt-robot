@@ -242,7 +242,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             interrupted -> stopExtender(),
 
             // --isFinished--
-            () -> getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE, // Check sign
+            () -> getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE,
 
             // --addRequirements--
             this); // Pass in Intake
