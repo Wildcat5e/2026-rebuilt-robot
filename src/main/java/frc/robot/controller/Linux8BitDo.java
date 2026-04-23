@@ -6,44 +6,55 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Linux8BitDo extends Xbox {
 
-    /** Uses {@link CommandXboxController} for Simulation Keyboard. @param port index on Driver Station */
+    // Controller mapping constants
+    private static final int ROTATION_AXIS = 2;
+    private static final int RIGHT_TRIGGER_AXIS = 4;
+    private static final int LEFT_TRIGGER_AXIS = 5;
+    private static final int X_BUTTON = 4;
+    private static final int Y_BUTTON = 5;
+    private static final int LEFT_BUMPER = 7;
+    private static final int RIGHT_BUMPER = 8;
+
+    /** Threshold from CommandXboxController. */
+    private static final double TRIGGER_THRESHOLD = 0.5;
+
+    /** Uses {@link CommandXboxController} for Linux 8BitDo Controller. @param port index on Driver Station */
     public Linux8BitDo(int port) {
         super(port);
     }
 
     @Override
     double getRotation() {
-        return MathUtil.applyDeadband(-controller.getRawAxis(2), DEADZONE);
+        return MathUtil.applyDeadband(-controller.getRawAxis(ROTATION_AXIS), DEADZONE);
     }
 
     @Override
     Trigger runIntake() {
-        return controller.axisGreaterThan(5, 0.5); // Left trigger, threshold from CommandXboxController
+        return controller.axisGreaterThan(LEFT_TRIGGER_AXIS, TRIGGER_THRESHOLD);
     }
 
     @Override
     Trigger shootFuel() {
-        return controller.axisGreaterThan(4, 0.5); // Right trigger, threshold from CommandXboxController
-
+        return controller.axisGreaterThan(RIGHT_TRIGGER_AXIS, TRIGGER_THRESHOLD);
     }
 
     @Override
     Trigger lowerIntake() {
-        return controller.button(8); // Right bumper
+        return controller.button(RIGHT_BUMPER);
     }
 
     @Override
     Trigger raiseIntake() {
-        return controller.button(7); // Left bumper
+        return controller.button(LEFT_BUMPER);
     }
 
     @Override
     Trigger seedFieldCentric() {
-        return controller.button(4); // X button
+        return controller.button(X_BUTTON);
     }
 
     @Override
     Trigger reverse() {
-        return controller.button(5); // Y button
+        return controller.button(Y_BUTTON);
     }
 }

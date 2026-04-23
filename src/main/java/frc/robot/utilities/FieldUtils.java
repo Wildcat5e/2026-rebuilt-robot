@@ -7,6 +7,8 @@ import frc.robot.subsystems.Drivetrain;
 
 /**
  * import static frc.robot.utilities.FieldUtils.*;
+ * 
+ * Utility interface containing various static field positioning functions.
  */
 public interface FieldUtils {
     /** @return The position of the current Alliance's Hub as a Translation2d. */

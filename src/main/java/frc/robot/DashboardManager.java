@@ -74,50 +74,48 @@ public interface DashboardManager {
     // Subsystem: Hopper
     // =====================================
     static void setupHopper() {
-        SmartDashboard.putNumber("Kicker Test Voltage", 8.0);
-        SmartDashboard.putNumber("Conveyor Test Voltage", 8.0);
+        SmartDashboard.putNumber("Kicker Test Voltage", 8);
+        SmartDashboard.putNumber("Conveyor Test Voltage", 8);
 
     }
 
     static double getKickerTestVoltage() {
-        return SmartDashboard.getNumber("Kicker Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Kicker Test Voltage", 0);
     }
 
     static double getConveyorTestVoltage() {
-        return SmartDashboard.getNumber("Conveyor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Conveyor Test Voltage", 0);
     }
 
     // =====================================
     // Subsystem: Flywheel
-    // =====================================
-    static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp,
-        DoubleSupplier calculatedVoltageSupp) {
-        SmartDashboard.putNumber("Flywheel Test Voltage", 5.0);
+    // ===================================== @formatter:off
+    static void setupFlywheel(DoubleSupplier currSpeedSupp, DoubleSupplier targetSpeedSupp, DoubleSupplier avgSpeedSupp) { // @formatter:on
+        SmartDashboard.putNumber("Flywheel Test Voltage", 5);
         SmartDashboard.putNumber("Flywheel Speed Multiplier", 1.05);
         SmartDashboard.putNumber("Home Flywheel Speed Multiplier", 1.05);
-        SmartDashboard.putNumber("Tunable Flywheel Speed", 25);
+        SmartDashboard.putNumber("Tunable Flywheel RPS", 25);
         SmartDashboard.putData("Flywheel Telemetry", builder -> { // @formatter:off
             builder.addDoubleProperty("Current Flywheel Speed (rps)", () -> round(currSpeedSupp.getAsDouble(), 1), null);
             builder.addDoubleProperty("5s Avg Flywheel Speed (rps)", () -> round(avgSpeedSupp.getAsDouble(), 1), null);
             builder.addDoubleProperty("Target Flywheel Speed (rps)", () -> round(targetSpeedSupp.getAsDouble(), 1), null);
-            builder.addDoubleProperty("Calculated Flywheel Voltage", () -> round(calculatedVoltageSupp.getAsDouble(), 1), null);
         }); // @formatter:on
     }
 
     static double getFlywheelTestVoltage() {
-        return SmartDashboard.getNumber("Flywheel Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Flywheel Test Voltage", 0);
     }
 
     static double getFlywheelSpeedMultiplier() {
-        return SmartDashboard.getNumber("Flywheel Speed Multiplier", 0.0);
+        return SmartDashboard.getNumber("Flywheel Speed Multiplier", 0);
     }
 
     static double getHomeFlywheelSpeedMultiplier() {
-        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0.0);
+        return SmartDashboard.getNumber("Home Flywheel Speed Multiplier", 0);
     }
 
-    static double getTunableFlywheelSpeed() {
-        return SmartDashboard.getNumber("Tunable Flywheel Speed", 0.0);
+    static double getTunableFlywheelRPS() {
+        return SmartDashboard.getNumber("Tunable Flywheel RPS", 0);
     }
 
     static void incrementFlywheelSpeedMultiplier(double increment) {
@@ -128,8 +126,8 @@ public interface DashboardManager {
         SmartDashboard.putNumber("Home Flywheel Speed Multiplier", getHomeFlywheelSpeedMultiplier() + increment);
     }
 
-    static void incrementTunableFlywheelSpeed(double increment) {
-        SmartDashboard.putNumber("Tunable Flywheel Speed", getTunableFlywheelSpeed() + increment);
+    static void incrementTunableFlywheelRPS(double increment) {
+        SmartDashboard.putNumber("Tunable Flywheel RPS", getTunableFlywheelRPS() + increment);
     }
 
     // =====================================
@@ -138,11 +136,11 @@ public interface DashboardManager {
 
     static void setupIntake(DoubleSupplier extenderMotorPositionSupp, DoubleSupplier currScooperSpeedSupp,
         BooleanSupplier isScooperSpinningSupp) {
-        SmartDashboard.putNumber("Extender Motor Test Voltage", -1.0);
-        SmartDashboard.putNumber("Scooper Motor Test Voltage", 12.0);
-        SmartDashboard.putNumber("Scooper Velocity", 18.0);
-        SmartDashboard.putNumber("Pusher Motor Test Voltage", 4.0);
-        SmartDashboard.putNumber("Pusher Velocity", 80.0);
+        SmartDashboard.putNumber("Extender Motor Test Voltage", -1);
+        SmartDashboard.putNumber("Scooper Motor Test Voltage", 12);
+        SmartDashboard.putNumber("Scooper Velocity", 18);
+        SmartDashboard.putNumber("Pusher Motor Test Voltage", 4);
+        SmartDashboard.putNumber("Pusher Velocity", 80);
         SmartDashboard.putNumber("Minimum Scooper Speed", 0.1);
         SmartDashboard.putData("Intake Telemetry", builder -> {
             builder.addDoubleProperty("Extender Motor Position (revs)",
@@ -154,27 +152,27 @@ public interface DashboardManager {
     }
 
     static double getExtenderMotorTestVoltage() {
-        return SmartDashboard.getNumber("Extender Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Extender Motor Test Voltage", 0);
     }
 
     static double getScooperMotorTestVoltage() {
-        return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Scooper Motor Test Voltage", 0);
     }
 
     static double getScooperVelocity() {
-        return SmartDashboard.getNumber("Scooper Velocity", 0.0);
+        return SmartDashboard.getNumber("Scooper Velocity", 0);
     }
 
     static double getScooperMinSpeed() {
-        return SmartDashboard.getNumber("Minimum Scooper Speed", 0.0);
+        return SmartDashboard.getNumber("Minimum Scooper Speed", 0);
     }
 
     static double getPusherMotorTestVoltage() {
-        return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0.0);
+        return SmartDashboard.getNumber("Pusher Motor Test Voltage", 0);
     }
 
     static double getPusherVelocity() {
-        return SmartDashboard.getNumber("Pusher Velocity", 0.0);
+        return SmartDashboard.getNumber("Pusher Velocity", 0);
     }
 
     // =====================================
@@ -220,11 +218,11 @@ public interface DashboardManager {
     }
 
     static double getScooperReverseLoopTime() {
-        return SmartDashboard.getNumber("Scooper Auto Reverse/Loop Time", 0.0);
+        return SmartDashboard.getNumber("Scooper Auto Reverse/Loop Time", 0);
     }
 
     static double getScooperReverseDelay() {
-        return SmartDashboard.getNumber("Scooper Auto Reverse/Reverse Delay", 0.0);
+        return SmartDashboard.getNumber("Scooper Auto Reverse/Reverse Delay", 0);
     }
 
 

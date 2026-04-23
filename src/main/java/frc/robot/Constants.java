@@ -41,9 +41,9 @@ public interface Constants {
     /** Index 0 is Blue. Lower homes are Blue Right and Red Left. */
     List<Translation2d> LOWER_HOMES = List.of(new Translation2d(2, 1.75), new Translation2d(14.5, 1.75));
 
-    /** Lookup table mapping distance from the Hub to the ideal static flywheel speed. */
+    /** Lookup table mapping distance from the Hub to the ideal static flywheel RPS. */
     // @formatter:off
-    InterpolatingDoubleTreeMap HUB_FLYWHEEL_SPEEDS_MAP =
+    InterpolatingDoubleTreeMap HUB_FLYWHEEL_RPS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel RPS)
         Map.entry(1.78, 46.5),
@@ -64,8 +64,8 @@ public interface Constants {
         Map.entry(4.91, 72.4),
         Map.entry(5.02, 73.2),
         Map.entry(5.18, 74.8));
-    /** Lookup table mapping distance from the current Alliance Home to the ideal static flywheel speed. */
-    InterpolatingDoubleTreeMap HOME_FLYWHEEL_SPEEDS_MAP =
+    /** Lookup table mapping distance from the current Alliance Home to the ideal static flywheel RPS. */
+    InterpolatingDoubleTreeMap HOME_FLYWHEEL_RPS_MAP =
     InterpolatingDoubleTreeMap.ofEntries(
         // Map.entry(Distance in Meters, Flywheel RPS)
         Map.entry(1.78, 39.5),

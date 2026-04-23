@@ -20,19 +20,20 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.ShootingCalculator;
 
 public class AimAtTarget extends Command {
-    // Limit max speed to less than main controller just for safety
+    // Limit max speed to less than main controller just for safety.
     private static final double MAX_ANGULAR_SPEED = Constants.MAX_ANGULAR_SPEED - Math.PI;
     public static final PIDController PID_CONTROLLER = new PIDController(5.0, 0, 0);
     static {
         PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
     }
+
     private final Drivetrain drivetrain;
     private final Flywheel flywheel;
     private final SwerveRequest.FieldCentric swerveRequest;
     private final Supplier<Translation2d> targetSupplier;
     private Translation2d target;
     private final InterpolatingDoubleTreeMap flywheelSpeedMap;
-    private DoubleSupplier flywheelSpeedMultiplier;
+    private final DoubleSupplier flywheelSpeedMultiplier;
     private Pose2d currentPose;
     private double targetHeading;
 
@@ -45,6 +46,7 @@ public class AimAtTarget extends Command {
         this.targetSupplier = targetSupplier;
         this.flywheelSpeedMap = flywheelSpeedMap;
         this.flywheelSpeedMultiplier = flywheelSpeedMultiplier;
+
         registerTelemetry();
     }
 
@@ -60,6 +62,7 @@ public class AimAtTarget extends Command {
         currentPose = drivetrain.getState().Pose;
         var shotSolution = ShootingCalculator.calculate(drivetrain, target, flywheelSpeedMap);
         targetHeading = shotSolution.robotHeading();
+
         // --- 1. Feedforward ---
         double feedforwardVelocity = getFeedforwardVelocity(currentPose, target);
 
@@ -67,7 +70,6 @@ public class AimAtTarget extends Command {
         double pidVelocity = PID_CONTROLLER.calculate(currentPose.getRotation().getRadians(), targetHeading);
 
         // --- 3. Combine and Cap ---
-        // FF does the physics tracking, PID cleans up the physical errors
         double totalVelocity = feedforwardVelocity + pidVelocity;
         double cappedVelocity = Math.max(Math.min(totalVelocity, MAX_ANGULAR_SPEED), -MAX_ANGULAR_SPEED);
 
@@ -80,7 +82,6 @@ public class AimAtTarget extends Command {
     public void end(boolean interrupted) {
         flywheel.stopFlywheel();
         Controller.allowControllerRotation = true;
-        // This is pretty important: Clear the override when the command ends
         PPHolonomicDriveController.clearRotationFeedbackOverride();
     }
 
@@ -101,7 +102,7 @@ public class AimAtTarget extends Command {
 
     private void applyRotation(double cappedVelocity) {
         // --- 4. Apply to Drivetrain & PathPlanner ---
-        if (!DriverStation.isAutonomous()) { // Need to confirm that this works when using a path during teleop.
+        if (!DriverStation.isAutonomous()) {
             drivetrain.setControl(swerveRequest.withRotationalRate(cappedVelocity));
         }
         // Feed the calculated tracking velocity to PathPlanner

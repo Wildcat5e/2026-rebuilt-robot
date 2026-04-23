@@ -6,6 +6,8 @@ import frc.robot.subsystems.Drivetrain;
 
 /**
  * import static frc.robot.utilities.TargetingUtils.*;
+ * 
+ * Utility interface containing various static targeting helper functions.
  */
 public interface TargetingUtils {
     /**

@@ -44,6 +44,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean m_hasAppliedOperatorPerspective = false;
 
+    @SuppressWarnings("unused")
     /** Swerve request to apply during robot-centric path following */
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
@@ -67,6 +68,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
         )
     );
 
+    @SuppressWarnings("unused")
     /* SysId routine for characterizing steer. This is used to find PID gains for the steer motors. */
     private final SysIdRoutine m_sysIdRoutineSteer = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -82,6 +84,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
         )
     );
 
+    @SuppressWarnings("unused")
     /*
      * SysId routine for characterizing rotation.
      * This is used to find PID gains for the FieldCentricFacingAngle HeadingController.

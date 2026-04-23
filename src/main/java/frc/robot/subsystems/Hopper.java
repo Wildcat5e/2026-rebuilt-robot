@@ -32,11 +32,6 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
     // private final SysIdRoutine routine =
     //     SysIdCapable.createAngularRoutine(this, conveyorMotor, conveyorMotor::setVoltage);
 
-    // --CONVEYOR SYSID CONSTANTS--
-    // kS: 0.14249
-    // kV: 0.46947
-    // kA: 0.015944
-
     public Hopper() {
         applyGearRatio(4, conveyorMotor, kickerMotor);
         DashboardManager.setupHopper();
@@ -50,30 +45,33 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
         return routine;
     }
 
+    /** Reads the "Conveyor Test Voltage" from Elastic and applies it continuously. */
     public Command testConveyor() {
+        double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
+
         return startEnd(() -> {
-            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
             conveyorMotor.setVoltage(-targetConveyorVoltage);
-        }, () -> conveyorMotor.setVoltage(0));
+        }, this::stopConveyor);
     }
 
     public Command reverseConveyor() {
-        return startEnd(() -> conveyorMotor.setVoltage(12), () -> conveyorMotor.setVoltage(0))
-            .withName("Reverse Conveyor");
+        return startEnd(() -> conveyorMotor.setVoltage(12), this::stopConveyor);
     }
 
-    /** Reads the "Kicker Test Voltage" from SmartDashboard and applies it continuously. */
+    /** Reads the "Kicker Test Voltage" from Elasic and applies it continuously. */
     public Command testTunableKicker() {
+        double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
+
         return runEnd(() -> {
-            double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
             kickerMotor.setVoltage(-targetKickerVoltage);
-        }, () -> kickerMotor.setVoltage(0));
+        }, this::stopKicker);
     }
 
     public Command reverseKicker() {
-        return startEnd(() -> kickerMotor.setVoltage(12), () -> kickerMotor.setVoltage(0)).withName("Reverse Kicker");
+        return startEnd(() -> kickerMotor.setVoltage(12), this::stopKicker);
     }
 
+    /** Reads Conveyor and Kicker Test Voltages from Elastic and applies them continuously. */
     public void runHopper() {
         double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
         double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
@@ -81,20 +79,21 @@ public class Hopper extends SubsystemBase implements SysIdCapable {
         kickerMotor.setVoltage(-targetKickerVoltage);
     }
 
+    /** @return Command that reads Conveyor and Kicker Test Voltages from Elastic and applies them continuously. */
     public Command runHopperCommand() {
-        return startEnd(() -> {
-            double targetConveyorVoltage = DashboardManager.getConveyorTestVoltage();
-            double targetKickerVoltage = DashboardManager.getKickerTestVoltage();
-            conveyorMotor.setVoltage(-targetConveyorVoltage);
-            kickerMotor.setVoltage(-targetKickerVoltage);
-        }, () -> {
-            conveyorMotor.setVoltage(0);
-            kickerMotor.setVoltage(0);
-        });
+        return startEnd(this::runHopper, this::stopHopper);
+    }
+
+    public void stopConveyor() {
+        conveyorMotor.setVoltage(0);
+    }
+
+    public void stopKicker() {
+        kickerMotor.setVoltage(0);
     }
 
     public void stopHopper() {
-        conveyorMotor.setVoltage(0);
-        kickerMotor.setVoltage(0);
+        stopConveyor();
+        stopKicker();
     }
 }

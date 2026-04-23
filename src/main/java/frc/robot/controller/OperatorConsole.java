@@ -1,5 +1,6 @@
 package frc.robot.controller;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.DashboardManager;
@@ -18,22 +19,18 @@ public class OperatorConsole {
     public void bindMacropad(RobotCommands commands, Flywheel flywheel, Intake intake, Hopper hopper,
         Drivetrain drivetrain) {
         // --- MACROPAD BINDINGS ---
+
         // LAYER 0 (No Modifiers)
-        macropad.button(1)
-            .whileTrue(Commands.startEnd(() -> intake.setExtenderVoltagePositive(), () -> intake.stopExtender()));
-        macropad.button(2)
-            .whileTrue(Commands.startEnd(() -> intake.setExtenderVoltageNegative(), () -> intake.stopExtender()));
-        macropad.button(3).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
-        macropad.button(4).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
-        macropad.button(5)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(1)).ignoringDisable(true));
-        macropad.button(6)
-            .onTrue(Commands.runOnce(() -> DashboardManager.incrementTunableFlywheelSpeed(-1)).ignoringDisable(true));
-        macropad.button(7).whileTrue(hopper.runHopperCommand());
-        macropad.button(7).whileTrue(intake.testPusher());
-        macropad.button(8).whileTrue(flywheel.tunableFlywheelSpeedCommand());
+        macropad.button(1).whileTrue(Commands.startEnd(intake::setExtenderVoltagePositive, intake::stopExtender));
+        macropad.button(2).whileTrue(Commands.startEnd(intake::setExtenderVoltageNegative, intake::stopExtender));
+
+        macropad.button(3).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01)));
+        macropad.button(4).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01)));
+        macropad.button(5).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelRPS(1)));
+        macropad.button(6).onTrue(runOnceIgnoreState(() -> DashboardManager.incrementTunableFlywheelRPS(-1)));
+
+        macropad.button(7).whileTrue(Commands.parallel(hopper.runHopperCommand(), intake.testPusher()));
+        macropad.button(8).whileTrue(flywheel.tunableFlywheelRPSCommand());
         macropad.button(17).whileTrue(DrivetrainUtils.swerveDriveBrake(drivetrain));
 
         // LAYER 1 (Shift Held)
@@ -42,14 +39,23 @@ public class OperatorConsole {
         macropad.button(11).whileTrue(hopper.reverseConveyor());
         macropad.button(12).whileTrue(hopper.reverseKicker());
         macropad.button(13).whileTrue(flywheel.reverseFlywheel());
-        macropad.button(17).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(0.01)).ignoringDisable(true));
-        macropad.button(18).onTrue(
-            Commands.runOnce(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(-0.01)).ignoringDisable(true));
+
+        macropad.button(17)
+            .onTrue(runOnceIgnoreState(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(0.01)));
+        macropad.button(18)
+            .onTrue(runOnceIgnoreState(() -> DashboardManager.incrementHomeFlywheelSpeedMultiplier(-0.01)));
 
         // LAYER 2 (Control Held)
         macropad.button(14).whileTrue(intake.testScooper());
         macropad.button(15).whileTrue(intake.testPusher());
         macropad.button(16).whileTrue(hopper.testConveyor());
+    }
+
+    /**
+     * Helper method to wrap a Runnable in a Command that runs once and is allowed to execute while the robot is
+     * disabled.
+     */
+    private Command runOnceIgnoreState(Runnable action) {
+        return Commands.runOnce(action).ignoringDisable(true);
     }
 }

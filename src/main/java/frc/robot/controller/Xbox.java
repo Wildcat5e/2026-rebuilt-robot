@@ -50,7 +50,7 @@ public class Xbox extends Controller {
 
     @Override
     Trigger manualFlywheel() {
-        return new Trigger(() -> false);
+        return INACTIVE;
     }
 
     @Override

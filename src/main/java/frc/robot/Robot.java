@@ -68,11 +68,11 @@ public class Robot extends TimedRobot {
         controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper, drivetrain);
 
-        NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelSpeedCommand());
+        NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelRPSCommand());
         NamedCommands.registerCommand("Run Hopper", hopper.runHopperCommand());
 
         NamedCommands.registerCommand("Spin Flywheel", flywheel.hubRunFlywheelCommand());
-        NamedCommands.registerCommand("Raise Intake", intake.raiseArmFinalImplementation());
+        NamedCommands.registerCommand("Raise Intake", intake.raiseArm());
         NamedCommands.registerCommand("Drop Intake", intake.bumpExtenderDownNoLockAuto());
         NamedCommands.registerCommand("Run Intake", intake.spinIntakeMotors());
         NamedCommands.registerCommand("Keep Intake Down", intake.keepExtenderDownNoLock());
@@ -86,9 +86,14 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
     }
 
+    private void checkAlliance() {
+        DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
+    }
+
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+        checkAlliance();
         combinedFieldWidget.setRobotPose(drivetrain.getState().Pose);
         leftCamFieldWidget.setRobotPose(photonVision.leftCamPose);
         rightCamFieldWidget.setRobotPose(photonVision.rightCamPose);
@@ -97,7 +102,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
         if (IS_COMPETITION) elasticTabPublisher.set("Autonomous");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().schedule(autoChooser.getSelected());
@@ -109,7 +113,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
         if (IS_COMPETITION) elasticTabPublisher.set("Teleoperated");
         if (autoChooser.getSelected() != null) {
             CommandScheduler.getInstance().cancel(autoChooser.getSelected());
@@ -120,9 +123,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {}
 
     @Override
-    public void disabledInit() {
-        DriverStation.getAlliance().ifPresent(fms_alliance -> isBlueAlliance = fms_alliance == Alliance.Blue);
-    }
+    public void disabledInit() {}
 
     @Override
     public void disabledPeriodic() {}
@@ -137,12 +138,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void simulationInit() {
-        simulation = new Simulation(drivetrain);
+        if (simulation != null) simulation = new Simulation(drivetrain);
     }
 
     @Override
     public void simulationPeriodic() {
-        simulation.poseUpdate();
+        if (simulation != null) simulation.poseUpdate();
     }
 
     /** This configures {@link AutoBuilder} and must be run before creating commands that use it. */
@@ -174,5 +175,5 @@ public class Robot extends TimedRobot {
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
         }
-    }// @formatter:on
+    } // @formatter:on
 }

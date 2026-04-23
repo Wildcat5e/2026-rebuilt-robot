@@ -5,12 +5,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Intake;
 
 public class ShootFuel extends Command {
     Flywheel flywheel;
     Hopper hopper;
-    Intake intake;
     Drivetrain drivetrain;
     boolean flywheelUpToSpeed;
 
@@ -18,7 +16,7 @@ public class ShootFuel extends Command {
         this.flywheel = flywheel;
         this.hopper = hopper;
         this.drivetrain = drivetrain;
-        addRequirements(flywheel, hopper);
+        addRequirements(flywheel, hopper); // drivetrain omitted from requirements since we just read from it
     }
 
     @Override
@@ -33,11 +31,13 @@ public class ShootFuel extends Command {
             System.out.println("FLYWHEEL UP TO SPEED");
             flywheelUpToSpeed = true;
         }
+
         if (inHome(drivetrain)) {
             flywheel.hubRunFlywheel();
         } else {
             flywheel.homeRunFlywheel();
         }
+
         if (flywheelUpToSpeed) {
             hopper.runHopper();
         }

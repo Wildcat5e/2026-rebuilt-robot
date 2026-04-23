@@ -19,13 +19,12 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     /** Motor that extends intake system outside of bumper. */
     private final TalonFX extenderMotor = new TalonFX(17);
     // All units are in rotations
-    private double EXTENDER_STOWED_POSITION = .27;
-    private double EXTENDER_DROPPED_POSITION = 0;
-    private double TOLERANCE = 0.07;
+    private final double EXTENDER_STOWED_POSITION = 0.27;
+    private final double EXTENDER_DROPPED_POSITION = 0;
+    private final double TOLERANCE = 0.07;
     /** Motor that is close to the floor and scoops fuel into pusher. */
     private final TalonFX scooperMotor = new TalonFX(18);
     final Slot0Configs scooperFFConfig = new Slot0Configs().withKS(0.025896).withKV(0.4199).withKA(0.0096081);
-    private final Timer autoReverseTimer = new Timer();
 
     // --PUSHER SYSID CONSTANTS--
     // kS: -0.12147 ERRONEOUS
@@ -72,9 +71,10 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotors() {
+        double scooperMotorVelocity = DashboardManager.getScooperVelocity();
+        double pusherMotorVelocity = DashboardManager.getPusherVelocity();
+
         return startEnd(() -> {
-            double scooperMotorVelocity = DashboardManager.getScooperVelocity();
-            double pusherMotorVelocity = DashboardManager.getPusherVelocity();
             setVelocity(scooperMotorVelocity, scooperMotor);
             setVelocity(pusherMotorVelocity, pusherMotor);
         }, () -> {
@@ -84,9 +84,10 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotorsVoltage() {
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+
         return startEnd(() -> {
-            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             scooperMotor.setVoltage(scooperMotorVoltage);
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, () -> {
@@ -96,25 +97,26 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command spinIntakeMotorsVoltageAutoReverse() {
+        Timer autoReverseTimer = new Timer();
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+        double loopTime = DashboardManager.getScooperReverseLoopTime();
+        double reverseDelay = DashboardManager.getScooperReverseDelay();
+
         return new FunctionalCommand(
             // initialize
             () -> {
                 autoReverseTimer.restart();
-                double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
-                double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
                 scooperMotor.setVoltage(scooperMotorVoltage);
                 pusherMotor.setVoltage(pusherMotorVoltage);
             },
             // execute
             () -> {
-                double loopTime = DashboardManager.getScooperReverseLoopTime();
-                double reverseDelay = DashboardManager.getScooperReverseDelay();
                 if (autoReverseTimer.get() > loopTime) {
                     if (!isScooperSpinning() && autoReverseTimer.get() > reverseDelay) {
                         autoReverseTimer.restart();
                         scooperMotor.setVoltage(12);
                     } else {
-                        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
                         scooperMotor.setVoltage(scooperMotorVoltage);
                     }
                 }
@@ -123,18 +125,22 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             interrupted -> {
                 stopPusher();
                 stopScooper();
-            }, () -> false, this);
+            },
+
+            // isFinished
+            () -> false, this);
     }
 
     public Command testScooper() {
+        double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
+
         return startEnd(() -> {
-            double scooperMotorVoltage = DashboardManager.getScooperMotorTestVoltage();
             scooperMotor.setVoltage(scooperMotorVoltage);
         }, this::stopScooper);
     }
 
     public Command reverseScooper() {
-        return startEnd(() -> scooperMotor.setVoltage(-12), this::stopScooper).withName("Reverse Scooper");
+        return startEnd(() -> scooperMotor.setVoltage(-12), this::stopScooper);
     }
 
     public boolean isScooperSpinning() {
@@ -142,25 +148,23 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command testPusher() {
+        double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
+
         return startEnd(() -> {
-            double pusherMotorVoltage = DashboardManager.getPusherMotorTestVoltage();
             pusherMotor.setVoltage(pusherMotorVoltage);
         }, this::stopPusher);
     }
 
     public Command reversePusher() {
-        return startEnd(() -> pusherMotor.setVoltage(-12), this::stopPusher).withName("Reverse Pusher");
+        return startEnd(() -> pusherMotor.setVoltage(-12), this::stopPusher);
     }
 
     public Command testExtender() {
+        double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
+
         return startEnd(() -> {
-            double extenderMotorVoltage = DashboardManager.getExtenderMotorTestVoltage();
             extenderMotor.setVoltage(extenderMotorVoltage);
         }, this::stopExtender);
-    }
-
-    public Command dropIntake() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
     public void spinPusher() {
@@ -181,49 +185,42 @@ public class Intake extends SubsystemBase implements SysIdCapable {
     }
 
     public Command bumpExtenderUp() {
-        return startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Up");
+        return startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender);
     }
 
     public Command bumpExtenderDown() {
-        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
+        return startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
-    /**
-     * This command is functionally the same as bumpExtenderDown(), but does not require the intake subsystem to be free
-     * and does not lock the intake subsystem when used.
-     */
+    /** This command does not require the intake subsystem to be free and does not lock it when used. */
     public Command bumpExtenderDownNoLockAuto() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-3), this::stopExtender);
     }
 
-    /**
-     * Used for teleop, not permanent
-     */
+    /** Used for teleop, not permanent. */
     public Command bumpExtenderDownNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(-1), this::stopExtender);
     }
 
-    /**
-     * Used for teleop, not permanent
-     */
+    /** Used for teleop, not permanent. */
     public Command bumpExtenderUpNoLock() {
-        return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender).withName("Bump Extender Down");
+        return Commands.startEnd(() -> extenderMotor.setVoltage(2), this::stopExtender);
     }
 
-
     /**
-     * This is only meant to be used for autonomous paths, it is meant to be used with the run intake method in order to
-     * keep the intake from popping up when collectin fuel
+     * This is only meant to be used for autonomous paths, in conjunction with the Run Intake Named Command, to keep the
+     * intake from popping up when collecting fuel.
      */
     public Command keepExtenderDownNoLock() {
         return Commands.startEnd(() -> extenderMotor.setVoltage(-0.25), this::stopExtender);
     }
 
-    // Used to avoid the subsystem locking when scheduling a command
+    /** Used to avoid the subsystem locking for this command. */
     public void setExtenderVoltagePositive() {
         extenderMotor.setVoltage(2);
     }
 
+    /** Used to avoid the subsystem locking for this command. */
     public void setExtenderVoltageNegative() {
         extenderMotor.setVoltage(-2);
     }
@@ -233,7 +230,7 @@ public class Intake extends SubsystemBase implements SysIdCapable {
         return extenderMotor.getPosition().getValueAsDouble();
     }
 
-    public Command dropArmFinalImplementation() {
+    public Command dropArm() {
         return new FunctionalCommand(
             // --initialize--
             () -> extenderMotor.setVoltage(-0.7),
@@ -242,17 +239,16 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             () -> {},
 
             // --end--
-            interrupted -> extenderMotor.setVoltage(0),
+            interrupted -> stopExtender(),
 
             // --isFinished--
-            () -> {
-                return getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE; // Check sign
-            },
+            () -> getExtenderPosition() <= EXTENDER_DROPPED_POSITION + TOLERANCE,
+
             // --addRequirements--
             this); // Pass in Intake
     }
 
-    public Command raiseArmFinalImplementation() {
+    public Command raiseArm() {
         return new FunctionalCommand(
             // --initialize--
             () -> extenderMotor.setVoltage(1),
@@ -261,12 +257,11 @@ public class Intake extends SubsystemBase implements SysIdCapable {
             () -> {},
 
             // --end--
-            interrupted -> extenderMotor.setVoltage(0),
+            interrupted -> stopExtender(),
 
             // --isFinished--
-            () -> {
-                return getExtenderPosition() >= EXTENDER_STOWED_POSITION * 0.75 - TOLERANCE; // Check sign
-            },
+            () -> getExtenderPosition() >= EXTENDER_STOWED_POSITION * 0.75 - TOLERANCE,
+
             // --addRequirements--
             this); // Pass in Intake
     }

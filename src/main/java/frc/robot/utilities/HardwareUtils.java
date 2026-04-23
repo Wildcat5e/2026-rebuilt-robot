@@ -8,6 +8,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 /**
  * import static frc.robot.utilities.HardwareUtils.*;
+ * 
+ * Utility interface containing various static hardware configuration and checking methods.
  */
 public interface HardwareUtils {
     /**
