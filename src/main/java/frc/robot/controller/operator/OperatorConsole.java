@@ -2,7 +2,6 @@ package frc.robot.controller.operator;
 
 import static frc.robot.controller.operator.MacropadButtonsGenerated.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.DashboardManager;
@@ -27,6 +26,7 @@ public class OperatorConsole {
         macropad.button(getBtn(action)).whileTrue(command);
     }
 
+    @SuppressWarnings("unused")
     private void bindOnTrue(MacropadButtonsGenerated action, Command command) {
         macropad.button(getBtn(action)).onTrue(command);
     }
