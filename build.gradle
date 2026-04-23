@@ -127,7 +127,7 @@ task checkMacropadCode {
         // In such a case, functionality will not be impacted.
         def DDriveFile = file('D:/code.py')
         def DDriveFileExists = DDriveFile.exists()
-        def macropadFile = DDriveFileExists ? tempFile : file('E:/code.py')
+        def macropadFile = DDriveFileExists ? DDriveFile : file('E:/code.py')
 
         // Prints to terminal
         if (!localFile.exists()) {
