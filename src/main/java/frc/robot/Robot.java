@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
         controller.bindingsSetup(drivetrain, controllerSwerveReq, commands, flywheel, hopper, intake);
         operatorConsole.bindMacropad(commands, flywheel, intake, hopper, drivetrain);
 
-        NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelSpeedCommand());
+        NamedCommands.registerCommand("Run Flywheel", flywheel.tunableFlywheelRPSCommand());
         NamedCommands.registerCommand("Run Hopper", hopper.runHopperCommand());
 
         NamedCommands.registerCommand("Spin Flywheel", flywheel.hubRunFlywheelCommand());

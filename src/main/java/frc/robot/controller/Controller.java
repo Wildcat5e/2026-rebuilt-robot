@@ -86,7 +86,7 @@ public abstract class Controller {
         lowerIntake().whileTrue(intake.bumpExtenderDownNoLock());
         raiseIntake().whileTrue(intake.bumpExtenderUpNoLock());
         aimHandler().whileTrue(commands.aimHandler);
-        manualFlywheel().whileTrue(flywheel.tunableFlywheelSpeedCommand());
+        manualFlywheel().whileTrue(flywheel.tunableFlywheelRPSCommand());
         seedFieldCentric().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         reverse().whileTrue(intake.reverseScooper());
         trenchPath().whileTrue(intake.zeroExtenderPosition());
