@@ -38,8 +38,8 @@ public class OperatorConsole {
 
         // LAYER 0 (No Modifiers)
         // @formatter:off
-        bindWhileTrue(EXTENDER_POS, Commands.startEnd(() -> intake.setExtenderVoltagePositive(), () -> intake.setExtenderVoltageZero()));
-        bindWhileTrue(EXTENDER_NEG, Commands.startEnd(() -> intake.setExtenderVoltageNegative(), () -> intake.setExtenderVoltageZero())); // @formatter:on
+        bindWhileTrue(EXTENDER_POS, Commands.startEnd(() -> intake.setExtenderVoltagePositive(), () -> intake.stopExtender()));
+        bindWhileTrue(EXTENDER_NEG, Commands.startEnd(() -> intake.setExtenderVoltageNegative(), () -> intake.stopExtender())); // @formatter:on
         bindDashboard(FLYWHEEL_MULT_UP, () -> DashboardManager.incrementFlywheelSpeedMultiplier(0.01));
         bindDashboard(FLYWHEEL_MULT_DOWN, () -> DashboardManager.incrementFlywheelSpeedMultiplier(-0.01));
         bindDashboard(TUNE_FLYWHEEL_UP, () -> DashboardManager.incrementTunableFlywheelSpeed(0.5));
