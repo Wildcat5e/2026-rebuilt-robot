@@ -32,55 +32,6 @@
             }
           },
           {
-            "title": "Match Time Remaining",
-            "x": 0.0,
-            "y": 576.0,
-            "width": 384.0,
-            "height": 192.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Match Time Remaining",
-              "period": 0.06,
-              "data_type": "double",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 20,
-              "yellow_start_time": 30
-            }
-          },
-          {
-            "title": "Is Hub Active",
-            "x": 384.0,
-            "y": 576.0,
-            "width": 448.0,
-            "height": 192.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Is Hub Active",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Hub Shift Time Remaining",
-            "x": 832.0,
-            "y": 576.0,
-            "width": 384.0,
-            "height": 192.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Hub Shift Time Remaining",
-              "period": 0.06,
-              "data_type": "double",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 20,
-              "yellow_start_time": 30
-            }
-          },
-          {
             "title": "photonvision_Port_1184_Output_MJPEG_Server",
             "x": 1472.0,
             "y": 128.0,
@@ -174,6 +125,55 @@
                 360.0
               ]
             }
+          },
+          {
+            "title": "Match Time Remaining",
+            "x": 0.0,
+            "y": 576.0,
+            "width": 384.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Match Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Hub Shift Time Remaining",
+            "x": 832.0,
+            "y": 576.0,
+            "width": 384.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Hub Shift Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Is Hub Active",
+            "x": 384.0,
+            "y": 576.0,
+            "width": 448.0,
+            "height": 192.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Is Hub Active",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
           }
         ]
       }
@@ -219,55 +219,6 @@
               "topic": "/SmartDashboard/Flywheel Speed Multiplier",
               "period": 0.06,
               "data_type": "double"
-            }
-          },
-          {
-            "title": "Match Time Remaining",
-            "x": 0.0,
-            "y": 704.0,
-            "width": 448.0,
-            "height": 192.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Match Time Remaining",
-              "period": 0.06,
-              "data_type": "double",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 20,
-              "yellow_start_time": 30
-            }
-          },
-          {
-            "title": "Is Hub Active",
-            "x": 448.0,
-            "y": 704.0,
-            "width": 384.0,
-            "height": 192.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Is Hub Active",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Hub Shift Time Remaining",
-            "x": 832.0,
-            "y": 704.0,
-            "width": 448.0,
-            "height": 192.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "/SmartDashboard/Hub Shift and Times/Hub Shift Time Remaining",
-              "period": 0.06,
-              "data_type": "double",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 20,
-              "yellow_start_time": 30
             }
           },
           {
@@ -519,6 +470,55 @@
                 640.0,
                 360.0
               ]
+            }
+          },
+          {
+            "title": "Match Time Remaining",
+            "x": 0.0,
+            "y": 704.0,
+            "width": 448.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Match Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Hub Shift Time Remaining",
+            "x": 832.0,
+            "y": 704.0,
+            "width": 448.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Hub Shift Time Remaining",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Is Hub Active",
+            "x": 448.0,
+            "y": 704.0,
+            "width": 384.0,
+            "height": 192.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Match Times/Is Hub Active",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]

@@ -60,13 +60,13 @@ public interface DashboardManager {
         });
     }
 
-
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
-        // Remaining time in the current period (Auto/Teleop)
-        SmartDashboard.putNumber("Hub Shift and Times/Match Time Remaining", round(DriverStation.getMatchTime(), 1));
-        SmartDashboard.putNumber("Hub Shift and Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
-        SmartDashboard.putBoolean("Hub Shift and Times/Is Hub Active", isHubActive());
-        SmartDashboard.putString("Hub Shift and Times/Game Specific Message", DriverStation.getGameSpecificMessage());
+        if (DriverStation.isFMSAttached()) {
+            SmartDashboard.putNumber("Match Times/Match Time Remaining", round(DriverStation.getMatchTime(), 1));
+            SmartDashboard.putNumber("Match Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
+            SmartDashboard.putBoolean("Match Times/Is Hub Active", isHubActive());
+            SmartDashboard.putString("Match Times/Game Specific Message", DriverStation.getGameSpecificMessage());
+        }
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
     }
 
