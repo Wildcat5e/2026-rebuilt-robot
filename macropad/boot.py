@@ -1,4 +1,11 @@
 import usb_hid
+import supervisor
+
+# Set custom USB identification strings for the Driver Station app.
+supervisor.set_usb_identification(
+    manufacturer="Team 6705",
+    product="CircuitPython Macropad"
+)
 
 GAMEPAD_REPORT_DESCRIPTOR = bytes((
     0x05, 0x01,  # Usage Page (Generic Desktop Ctrls)

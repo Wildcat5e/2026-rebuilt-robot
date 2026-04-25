@@ -1,6 +1,7 @@
 package frc.robot;
 
 import static frc.robot.utilities.FieldUtils.*;
+import frc.robot.utilities.HardwareUtils;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -84,6 +85,11 @@ public class Robot extends TimedRobot {
         DashboardManager.setupRobotInit(combinedFieldWidget, leftCamFieldWidget, rightCamFieldWidget, autoChooser,
             drivetrain, photonVision);
         CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
+
+        // Run controller port check every 1.0 seconds while disabled
+        addPeriodic(() -> {
+            if (DriverStation.isDisabled()) HardwareUtils.checkDriverStationPorts();
+        }, 1.0);
     }
 
     @Override
