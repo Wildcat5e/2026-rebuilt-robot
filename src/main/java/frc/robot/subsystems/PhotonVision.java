@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -110,6 +113,44 @@ public class PhotonVision extends SubsystemBase {
         }
         return estStdDevs;
     }
+
+    private Matrix<N3, N1> altGetEstStdDevs(PhotonPipelineResult result) {
+
+        // Convert targets to April Tag 2d poses, removing null values
+        var tagPoses = result.targets.stream().map(PhotonTrackedTarget::getFiducialId).map(aprilTagPoses::get)
+            .filter(Objects::nonNull).toList();
+
+        if (tagPoses.isEmpty()) {
+            // No valid April Tag poses for the targets in this result, skip it since we can't calculate distances to tags.
+            continue;
+        }
+
+        var poseEstimate = optionalPoseEstimate.get();
+        var poseEstimate2d = poseEstimate.estimatedPose.toPose2d();
+
+        // Average distance between tag pose and robot pose estimate.
+        // This gives us a rough idea of how far the robot is from the tags it sees,
+        // which is a major factor in pose estimation accuracy. We use this to adjust our
+        // confidence in the pose estimate (i.e. the standard deviation we pass to the consumer).
+        var averageDistance =
+            tagPoses.stream().map(tagPose -> tagPose.getTranslation().getDistance(poseEstimate2d.getTranslation()))
+                .reduce(0.0, Double::sum) / tagPoses.size();
+
+        if (tagPoses.size() == 1 && averageDistance <= 4.0) {
+            // Only use single tag pose estimate if the average distance is less than 4 meters.
+            // This is an empirical threshold based on testing that balances trusting single tag estimates
+            // when they are likely accurate and ignoring them when they are likely inaccurate.
+            poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, SINGLE_TAG_STD_DEV);
+        } else {
+            // For multiple tags, we can be more confident in the pose estimate, so we use a lower standard deviation.
+            // However, we still want to account for distance to the tags, since farther tags generally lead to less
+            // accurate estimates. This heuristic scales the standard deviation based on the average distance to the tags,
+            // with a cap at around 4 meters (since beyond that, vision is generally not very reliable).
+            var standardDeviation = MULTI_TAG_STD_DEV.times(1 * (averageDistance * averageDistance / 30.0));
+            poseEstimateConsumer.accept(poseEstimate2d, poseEstimate.timestampSeconds, standardDeviation);
+        }
+    }
+
 
     @FunctionalInterface
     public static interface EstimateConsumer {
