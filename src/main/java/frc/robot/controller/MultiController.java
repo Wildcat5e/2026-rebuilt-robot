@@ -3,8 +3,8 @@ package frc.robot.controller;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.DashboardManager;
 
 /**
  * Controller that will use the {@link Controller} selected by the dashboard widget. For example, you can select the
@@ -12,110 +12,119 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * controller before competition instead of using this.
  */
 public class MultiController extends Controller {
-    private final SendableChooser<Controller> controllerChooser = new SendableChooser<Controller>();
+    private final SendableChooser<Controller> controllerChooser = new SendableChooser<>();
+    private final Xbox defaultXbox = new Xbox(0);
 
     public MultiController() {
         DriverStation.silenceJoystickConnectionWarning(true);
-        controllerChooser.setDefaultOption("Xbox Controller", new Xbox(0));
+        controllerChooser.setDefaultOption("Xbox Controller", defaultXbox);
         controllerChooser.addOption("Logitech Flight Stick", new LogitechFlightStick(1));
         controllerChooser.addOption("Simulation Keyboard", new SimulationKeyboard(2));
         controllerChooser.addOption("8BitDo Controller", new Xbox(3));
         controllerChooser.addOption("Linux 8BitDo Controller", new Linux8BitDo(4));
-        SmartDashboard.putData("Controller Chooser", controllerChooser);
+        DashboardManager.setupControllerChooser(controllerChooser);
     }
 
-    @Override
-    double getRotation() {
-        return controllerChooser.getSelected().getRotation();
+    /**
+     * Returns the Xbox controller if connected to the real field, otherwise returns whatever is selected on the
+     * Controller Chooser in Elastic.
+     */
+    private Controller getActiveController() {
+        return DriverStation.isFMSAttached() ? defaultXbox : controllerChooser.getSelected();
     }
 
     @Override
     Translation2d getTranslation() {
-        return controllerChooser.getSelected().getTranslation();
+        return getActiveController().getTranslation();
+    }
+
+    @Override
+    double getRotation() {
+        return getActiveController().getRotation();
     }
 
     @Override
     Trigger runIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().runIntake().getAsBoolean());
+        return new Trigger(() -> getActiveController().runIntake().getAsBoolean());
     }
 
     @Override
     Trigger shootFuel() {
-        return new Trigger(() -> controllerChooser.getSelected().shootFuel().getAsBoolean());
+        return new Trigger(() -> getActiveController().shootFuel().getAsBoolean());
     }
 
     @Override
     Trigger lowerIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().lowerIntake().getAsBoolean());
+        return new Trigger(() -> getActiveController().lowerIntake().getAsBoolean());
     }
 
     @Override
     Trigger raiseIntake() {
-        return new Trigger(() -> controllerChooser.getSelected().raiseIntake().getAsBoolean());
+        return new Trigger(() -> getActiveController().raiseIntake().getAsBoolean());
     }
 
     @Override
     Trigger aimHandler() {
-        return new Trigger(() -> controllerChooser.getSelected().aimHandler().getAsBoolean());
+        return new Trigger(() -> getActiveController().aimHandler().getAsBoolean());
     }
 
     @Override
     Trigger manualFlywheel() {
-        return new Trigger(() -> controllerChooser.getSelected().manualFlywheel().getAsBoolean());
+        return new Trigger(() -> getActiveController().manualFlywheel().getAsBoolean());
     }
 
     @Override
     Trigger seedFieldCentric() {
-        return new Trigger(() -> controllerChooser.getSelected().seedFieldCentric().getAsBoolean());
+        return new Trigger(() -> getActiveController().seedFieldCentric().getAsBoolean());
     }
 
     @Override
     Trigger reverse() {
-        return new Trigger(() -> controllerChooser.getSelected().reverse().getAsBoolean());
+        return new Trigger(() -> getActiveController().reverse().getAsBoolean());
     }
 
     @Override
     Trigger trenchPath() {
-        return new Trigger(() -> controllerChooser.getSelected().trenchPath().getAsBoolean());
+        return new Trigger(() -> getActiveController().trenchPath().getAsBoolean());
     }
 
     @Override
     Trigger povUp() {
-        return new Trigger(() -> controllerChooser.getSelected().povUp().getAsBoolean());
+        return new Trigger(() -> getActiveController().povUp().getAsBoolean());
     }
 
     @Override
     Trigger povDown() {
-        return new Trigger(() -> controllerChooser.getSelected().povDown().getAsBoolean());
+        return new Trigger(() -> getActiveController().povDown().getAsBoolean());
     }
 
     @Override
     Trigger povLeft() {
-        return new Trigger(() -> controllerChooser.getSelected().povLeft().getAsBoolean());
+        return new Trigger(() -> getActiveController().povLeft().getAsBoolean());
     }
 
     @Override
     Trigger povRight() {
-        return new Trigger(() -> controllerChooser.getSelected().povRight().getAsBoolean());
+        return new Trigger(() -> getActiveController().povRight().getAsBoolean());
     }
 
     @Override
     Trigger forwardSysIdQuasi() {
-        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdQuasi().getAsBoolean());
+        return new Trigger(() -> getActiveController().forwardSysIdQuasi().getAsBoolean());
     }
 
     @Override
     Trigger backwardSysIdQuasi() {
-        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdQuasi().getAsBoolean());
+        return new Trigger(() -> getActiveController().backwardSysIdQuasi().getAsBoolean());
     }
 
     @Override
     Trigger forwardSysIdDynamic() {
-        return new Trigger(() -> controllerChooser.getSelected().forwardSysIdDynamic().getAsBoolean());
+        return new Trigger(() -> getActiveController().forwardSysIdDynamic().getAsBoolean());
     }
 
     @Override
     Trigger backwardSysIdDynamic() {
-        return new Trigger(() -> controllerChooser.getSelected().backwardSysIdDynamic().getAsBoolean());
+        return new Trigger(() -> getActiveController().backwardSysIdDynamic().getAsBoolean());
     }
 }

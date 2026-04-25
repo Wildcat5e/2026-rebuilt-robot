@@ -46,7 +46,7 @@ public interface DashboardManager {
             builder.addDoubleProperty("Distance to Hub (m)",
                 () -> round(getTargetDistance(drivetrain, getHubPosition()), 2), null);
         });
-        if (!Robot.IS_COMPETITION) SmartDashboard.putData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
+        putDebugData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
         SmartDashboard.putData("Camera Poses", builder -> {
             builder.addDoubleProperty("Left Camera X", () -> round(photonVision.leftCamPose.getX(), 2), null);
             builder.addDoubleProperty("Left Camera Y", () -> round(photonVision.leftCamPose.getY(), 2), null);
@@ -60,13 +60,13 @@ public interface DashboardManager {
         });
     }
 
-
     static void updateRobotPeriodic(Drivetrain drivetrain, Translation2d target) {
-        // Remaining time in the current period (Auto/Teleop)
-        SmartDashboard.putNumber("Hub Shift and Times/Match Time Remaining", round(DriverStation.getMatchTime(), 1));
-        SmartDashboard.putNumber("Hub Shift and Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
-        SmartDashboard.putBoolean("Hub Shift and Times/Is Hub Active", isHubActive());
-        SmartDashboard.putString("Hub Shift and Times/Game Specific Message", DriverStation.getGameSpecificMessage());
+        if (DriverStation.isFMSAttached()) {
+            SmartDashboard.putNumber("Match Times/Match Time Remaining", round(DriverStation.getMatchTime(), 1));
+            SmartDashboard.putNumber("Match Times/Hub Shift Time Remaining", round(getHubShiftTimeRemaining(), 1));
+            SmartDashboard.putBoolean("Match Times/Is Hub Active", isHubActive());
+            SmartDashboard.putString("Match Times/Game Specific Message", DriverStation.getGameSpecificMessage());
+        }
         SmartDashboard.putBoolean("In Home", inHome(drivetrain));
     }
 
@@ -196,8 +196,8 @@ public interface DashboardManager {
     // =====================================
     // Controllers
     // =====================================
-    static void setupController(SendableChooser<Controller> controllerChooser) {
-        if (!Robot.IS_COMPETITION) SmartDashboard.putData("Controller Chooser", controllerChooser);
+    static void setupControllerChooser(SendableChooser<Controller> controllerChooser) {
+        putDebugData("Controller Chooser", controllerChooser);
     }
 
     // =====================================
