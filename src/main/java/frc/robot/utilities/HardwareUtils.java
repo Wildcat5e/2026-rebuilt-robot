@@ -31,7 +31,7 @@ public interface HardwareUtils {
             allOkay = false;
         } else {
             String joystickName = DriverStation.getJoystickName(4);
-            // Default CircuitPython HID devices usually contain these strings unless renamed in boot.py
+            // We check for the device name defined in boot.py
             if (joystickName != null && !joystickName.toLowerCase().contains("macropad")
                 && !joystickName.toLowerCase().contains("circuitpython")) {
                 DriverStation.reportWarning("Port 4: Connected device is '" + joystickName + "'. Expected a Macropad.",
