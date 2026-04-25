@@ -35,29 +35,7 @@ GAMEPAD_REPORT_DESCRIPTOR = bytes(
         0x20,  # Report Count: 32 (we have 32 of these 1-bit buttons)
         0x81,
         0x02,  # Input: Register this data to be sent to the computer
-        # --- JOYSTICK AXES SECTION (4 Axes) ---
-        # We are setting up 4 directional movements (X, Y, Z, and Rz).
-        0x05,
-        0x01,  # Usage Page: Generic Desktop Controls (back to joysticks/movements)
-        0x15,
-        0x81,  # Logical Minimum: -127 (Joystick pushed all the way to one extreme)
-        0x25,
-        0x7F,  # Logical Maximum: 127 (Joystick pushed all the way to the opposite extreme)
-        0x09,
-        0x30,  # Usage: X-axis (e.g., Left stick moving Left/Right)
-        0x09,
-        0x31,  # Usage: Y-axis (e.g., Left stick moving Up/Down)
-        0x09,
-        0x32,  # Usage: Z-axis (e.g., Right stick moving Left/Right)
-        0x09,
-        0x35,  # Usage: Rz-axis (e.g., Right stick moving Up/Down)
-        0x75,
-        0x08,  # Report Size: 8 bits / 1 byte (each axis value uses 1 full byte of space)
-        0x95,
-        0x04,  # Report Count: 4 (we have 4 of these 1-byte axes)
-        0x81,
-        0x02,  # Input: Register this data to be sent to the computer
-        0xC0,  # End Collection (closes the grouping; our blueprint is complete!)
+        0xC0,  # End Collection (closes the grouping)
     )
 )
 
@@ -70,12 +48,8 @@ gamepad = usb_hid.Device(
     usage_page=0x01,  # Matches "Generic Desktop Controls" from the blueprint
     usage=0x05,  # Matches "Gamepad" from the blueprint
     report_ids=(4,),  # Matches the Report ID (4) we assigned up top
-    in_report_lengths=(
-        8,
-    ),  # MATH: 32 buttons (4 bytes) + 4 axes (1 byte each) = 8 bytes total sent to the PC
-    out_report_lengths=(
-        0,
-    ),  # We receive 0 bytes from the PC (e.g., we don't have rumble motors or lights to control)
+    in_report_lengths=(4,),  # 32 buttons (1 bit each) = 8 bytes total sent to the PC
+    out_report_lengths=(0,),  # We receive 0 bytes from the PC
 )
 
 # ----------------------------------------------------------------------------------
