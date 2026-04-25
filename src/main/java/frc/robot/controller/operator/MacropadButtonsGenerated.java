@@ -1,0 +1,24 @@
+package frc.robot.controller.operator;
+
+// AUTO-GENERATED FILE. DO NOT EDIT.
+public enum MacropadButtonsGenerated {
+    EXTENDER_POS,
+    EXTENDER_NEG,
+    FLYWHEEL_MULT_UP,
+    FLYWHEEL_MULT_DOWN,
+    TUNE_FLYWHEEL_UP,
+    TUNE_FLYWHEEL_DOWN,
+    RUN_HOPPER,
+    TUNABLE_FLYWHEEL,
+    SWERVE_BRAKE,
+    SCOOPER_REV,
+    PUSHER_REV,
+    CONVEYOR_REV,
+    KICKER_REV,
+    FLYWHEEL_REV,
+    SCOOPER_FWD,
+    PUSHER_FWD,
+    CONVEYOR_FWD,
+    HOME_FLYWHEEL_UP,
+    HOME_FLYWHEEL_DOWN
+}
