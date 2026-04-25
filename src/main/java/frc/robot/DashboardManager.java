@@ -46,7 +46,7 @@ public interface DashboardManager {
             builder.addDoubleProperty("Distance to Hub (m)",
                 () -> round(getTargetDistance(drivetrain, getHubPosition()), 2), null);
         });
-        SmartDashboard.putData("Debug/Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
+        putDebugData("Aim At Target PID Controller", AimAtTarget.PID_CONTROLLER);
         SmartDashboard.putData("Camera Poses", builder -> {
             builder.addDoubleProperty("Left Camera X", () -> round(photonVision.leftCamPose.getX(), 2), null);
             builder.addDoubleProperty("Left Camera Y", () -> round(photonVision.leftCamPose.getY(), 2), null);
@@ -197,7 +197,7 @@ public interface DashboardManager {
     // Controllers
     // =====================================
     static void setupControllerChooser(SendableChooser<Controller> controllerChooser) {
-        SmartDashboard.putData("Debug/Controller Chooser", controllerChooser);
+        putDebugData("Controller Chooser", controllerChooser);
     }
 
     // =====================================
